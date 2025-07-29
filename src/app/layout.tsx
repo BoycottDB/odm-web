@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -28,19 +29,19 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}>
         <header className="w-full border-b border-orange-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
           <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" className="text-2xl font-light text-gray-900 hover:text-orange-600 transition-colors">
+            <Link href="/" className="text-2xl font-light text-gray-900 hover:text-orange-600 transition-colors">
               Répertoire Marques
-            </a>
+            </Link>
             <nav className="flex gap-8 text-base font-medium">
-              <a href="/" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
+              <Link href="/" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
                 Accueil
-              </a>
-              <a href="/about" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
+              </Link>
+              <Link href="/about" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
                 À propos
-              </a>
-              <a href="/moderation" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
+              </Link>
+              <Link href="/moderation" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
                 Modération
-              </a>
+              </Link>
             </nav>
           </div>
         </header>

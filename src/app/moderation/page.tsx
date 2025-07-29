@@ -27,7 +27,7 @@ export default function Moderation() {
               <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Principe de modération</h2>
                 <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                  Chaque ajout, correction ou suppression d'entrée est soumis à validation par la communauté et la modération. Les décisions sont publiques, justifiées et consultables ici.
+                  Chaque ajout, correction ou suppression d&apos;entrée est soumis à validation par la communauté et la modération. Les décisions sont publiques, justifiées et consultables ici.
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed">
                   Cette transparence garantit la fiabilité des informations et permet à chacun de comprendre les critères de validation utilisés.
@@ -90,7 +90,7 @@ export default function Moderation() {
                     <div>
                       <p className="text-yellow-800 font-medium mb-1">Fonctionnalité en développement</p>
                       <p className="text-yellow-700 text-sm">
-                        L'affichage automatique des validations/refus d'entrées sera bientôt disponible. En attendant, voici quelques exemples du type de décisions qui seront affichées.
+                        L&apos;affichage automatique des validations/refus d&apos;entrées sera bientôt disponible. En attendant, voici quelques exemples du type de décisions qui seront affichées.&quot;
                       </p>
                     </div>
                   </div>
@@ -101,13 +101,13 @@ export default function Moderation() {
                   <div className="border border-red-200 rounded-lg p-4 bg-red-50">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center">
-                        <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">REFUSÉ</span>
-                        <span className="font-semibold text-gray-900">Ajout de "Nike"</span>
+                        <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;REFUSÉ&quot;</span>
+                        <span className="font-semibold text-gray-900">&quot;Ajout de &quot;Nike&quot;&quot;</span>
                       </div>
                       <span className="text-sm text-gray-500">30 juillet 2025</span>
                     </div>
                     <p className="text-gray-700 mb-2">
-                      <strong>Justification :</strong> Source insuffisante - L'article fourni ne contient pas de preuves suffisantes pour étayer les allégations. Une source plus fiable et détaillée est nécessaire.
+                      <strong>Justification :</strong> Source insuffisante - L&apos;article fourni ne contient pas de preuves suffisantes pour étayer les allégations. Une source plus fiable et détaillée est nécessaire.&quot;
                     </p>
                     <p className="text-sm text-gray-600">
                       <strong>Modérateur :</strong> @moderateur1 • <strong>Votes communauté :</strong> 3 pour, 7 contre
@@ -117,13 +117,13 @@ export default function Moderation() {
                   <div className="border border-green-200 rounded-lg p-4 bg-green-50">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center">
-                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">VALIDÉ</span>
-                        <span className="font-semibold text-gray-900">Ajout de "Nestlé"</span>
+                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;VALIDÉ&quot;</span>
+                        <span className="font-semibold text-gray-900">&quot;Ajout de &quot;Nestlé&quot;&quot;</span>
                       </div>
                       <span className="text-sm text-gray-500">29 juillet 2025</span>
                     </div>
                     <p className="text-gray-700 mb-2">
-                      <strong>Justification :</strong> Source vérifiée - Article de presse fiable avec citations officielles et dates précises. L'information est factuelle et pertinente pour les consommateurs.
+                      <strong>Justification :</strong> Source vérifiée - Article de presse fiable avec citations officielles et dates précises. L&apos;information est factuelle et pertinente pour les consommateurs.&quot;
                     </p>
                     <p className="text-sm text-gray-600">
                       <strong>Modérateur :</strong> @moderateur2 • <strong>Votes communauté :</strong> 8 pour, 1 contre
@@ -133,13 +133,13 @@ export default function Moderation() {
                   <div className="border border-blue-200 rounded-lg p-4 bg-blue-50">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center">
-                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">MODIFIÉ</span>
-                        <span className="font-semibold text-gray-900">Correction "Amazon"</span>
+                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;MODIFIÉ&quot;</span>
+                        <span className="font-semibold text-gray-900">&quot;Correction &quot;Amazon&quot;&quot;</span>
                       </div>
                       <span className="text-sm text-gray-500">28 juillet 2025</span>
                     </div>
                     <p className="text-gray-700 mb-2">
-                      <strong>Justification :</strong> Date corrigée - La date de l'incident a été mise à jour suite à la vérification de sources complémentaires. Description également précisée pour plus de clarté.
+                      <strong>Justification :</strong> Date corrigée - La date de l&apos;incident a été mise à jour suite à la vérification de sources complémentaires. Description également précisée pour plus de clarté.&quot;
                     </p>
                     <p className="text-sm text-gray-600">
                       <strong>Modérateur :</strong> @moderateur1 • <strong>Votes communauté :</strong> 6 pour, 0 contre

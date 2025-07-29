@@ -5,7 +5,7 @@ export interface ValidationResult<T> {
   errors?: string[];
 }
 
-export function validateMarqueCreate(data: any): ValidationResult<{ nom: string }> {
+export function validateMarqueCreate(data: unknown): ValidationResult<{ nom: string }> {
   const errors: string[] = [];
 
   if (!data.nom) {
@@ -34,7 +34,7 @@ export function validateMarqueCreate(data: any): ValidationResult<{ nom: string 
   };
 }
 
-export function validateEvenementCreate(data: any): ValidationResult<{
+export function validateEvenementCreate(data: unknown): ValidationResult<{
   marqueId: number;
   description: string;
   date: string;
