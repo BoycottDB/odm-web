@@ -42,7 +42,7 @@ export function EventList({ events, loading, searching, notFound, hasSearched }:
         </div>
         <h3 className="text-2xl font-medium text-gray-900 mb-2">Aucun résultat trouvé</h3>
         <p className="text-lg font-light text-gray-600">
-          Essayez avec un autre terme de recherche ou vérifiez l'orthographe.
+          Essayez avec un autre terme de recherche ou vérifiez l&apos;orthographe.
         </p>
       </div>
     );
@@ -59,7 +59,7 @@ export function EventList({ events, loading, searching, notFound, hasSearched }:
         </div>
         <h3 className="text-2xl font-medium text-gray-900 mb-2">Commencez votre recherche</h3>
         <p className="text-lg font-light text-gray-600">
-          Tapez le nom d'une marque pour découvrir les événements associés.
+          Tapez le nom d&apos;une marque pour découvrir les événements associés.
         </p>
       </div>
     );

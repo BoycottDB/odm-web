@@ -27,13 +27,13 @@ export default function About() {
               <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Notre mission</h2>
                 <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                  Ce répertoire vous aide à prendre des décisions d'achat éclairées et responsables en vous informant sur les pratiques éthiques, sociales et environnementales des marques. Notre application vous accompagne tout au long de votre parcours d'achat, en vous fournissant des informations factuelles et vérifiées, issues d'une base de données collaborative alimentée par des utilisateurs comme vous.
+                  Ce répertoire vous aide à prendre des décisions d&apos;achat éclairées et responsables en vous informant sur les pratiques éthiques, sociales et environnementales des marques. Notre application vous accompagne tout au long de votre parcours d&apos;achat, en vous fournissant des informations factuelles et vérifiées, issues d&apos;une base de données collaborative alimentée par des utilisateurs comme vous.
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed mb-4">
                   Nous ne vous empêcherons jamais de passer commande. Nous comprenons que pour de nombreuses raisons, notamment pour les produits de première nécessité, vous pouvez être amenés à acheter des produits de marques dont les pratiques ne sont pas parfaitement alignées avec vos valeurs.
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Notre rôle est simplement de vous permettre d'effectuer vos achats en pleine conscience, selon vos propres valeurs et votre seuil de tolérance personnel. Nous restons strictement neutres : vous avez toujours le choix, et notre engagement consiste uniquement à vous fournir les informations nécessaires pour décider librement.
+                  Notre rôle est simplement de vous permettre d&apos;effectuer vos achats en pleine conscience, selon vos propres valeurs et votre seuil de tolérance personnel. Nous restons strictement neutres : vous avez toujours le choix, et notre engagement consiste uniquement à vous fournir les informations nécessaires pour décider librement.
                 </p>
               </div>
             </div>
@@ -52,7 +52,7 @@ export default function About() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="border-l-4 border-blue-500 pl-4">
                     <h3 className="font-semibold text-lg text-gray-900 mb-2">Transparence totale</h3>
-                    <p className="text-gray-700">Toutes les décisions (ajout ou refus d'une marque) sont publiques et argumentées. Nous accordons une grande importance à la transparence : toutes les décisions relatives à l'ajout ou au refus d'une marque dans notre base de données sont publiquement accessibles, avec un historique clair et des motifs argumentés.</p>
+                    <p className="text-gray-700">Toutes les décisions (ajout ou refus d&apos;une marque) sont publiques et argumentées. Nous accordons une grande importance à la transparence : toutes les décisions relatives à l&apos;ajout ou au refus d&apos;une marque dans notre base de données sont publiquement accessibles, avec un historique clair et des motifs argumentés.</p>
                   </div>
                   <div className="border-l-4 border-green-500 pl-4">
                     <h3 className="font-semibold text-lg text-gray-900 mb-2">Collaboration communautaire</h3>
@@ -64,7 +64,7 @@ export default function About() {
                   </div>
                   <div className="border-l-4 border-orange-500 pl-4">
                     <h3 className="font-semibold text-lg text-gray-900 mb-2">Non lucratif</h3>
-                    <p className="text-gray-700">Projet open source, sans publicité ni partenariat commercial. Seuls les dons éventuels serviront à couvrir les frais d'hébergement.</p>
+                    <p className="text-gray-700">Projet open source, sans publicité ni partenariat commercial. Seuls les dons éventuels serviront à couvrir les frais d&apos;hébergement.</p>
                   </div>
                 </div>
               </div>
@@ -93,7 +93,7 @@ export default function About() {
                     <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1">2</div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Workflow de contribution</h3>
-                      <p className="text-gray-700">Fork du dépôt → Création d'une merge request → Validation (ou refus justifié) par la communauté → Historique public et argumenté.</p>
+                      <p className="text-gray-700">Fork du dépôt → Création d&apos;une merge request → Validation (ou refus justifié) par la communauté → Historique public et argumenté.</p>
                     </div>
                   </div>
                   <div className="flex items-start">
@@ -117,7 +117,7 @@ export default function About() {
               <div>
                 <h3 className="font-semibold text-green-900 mb-2">Notre recommandation : privilégier la seconde main</h3>
                 <p className="text-green-800">
-                  Lorsque cela est possible, nous vous encourageons à privilégier l'achat de produits de seconde main, afin de limiter votre impact environnemental et d'éviter de financer directement des entreprises dont vous ne partagez pas les valeurs. Gardez cependant à l'esprit que l'achat en seconde main maintient indirectement la visibilité de ces marques : faites-le donc en connaissance de cause, avec discernement.
+                  Lorsque cela est possible, nous vous encourageons à privilégier l&apos;achat de produits de seconde main, afin de limiter votre impact environnemental et d&apos;éviter de financer directement des entreprises dont vous ne partagez pas les valeurs. Gardez cependant à l&apos;esprit que l&apos;achat en seconde main maintient indirectement la visibilité de ces marques : faites-le donc en connaissance de cause, avec discernement.
                 </p>
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function About() {
               <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Contact et contribution</h2>
                 <p className="text-lg text-gray-700 mb-6">
-                  Pour toute question, suggestion ou pour contribuer au projet, plusieurs options s'offrent à vous :
+                  Pour toute question, suggestion ou pour contribuer au projet, plusieurs options s&apos;offrent à vous :
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <a 
