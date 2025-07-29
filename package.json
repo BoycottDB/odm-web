@@ -15,7 +15,8 @@
     "db:reset": "prisma migrate reset --force",
     "db:studio": "prisma studio",
     "clean": "rm -rf .next",
-    "analyze": "ANALYZE=true npm run build"
+    "analyze": "ANALYZE=true npm run build",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
