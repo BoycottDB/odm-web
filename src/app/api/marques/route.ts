@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { supabase } from '@/lib/supabaseClient';
 import { validateMarqueCreate } from '@/lib/validation/schemas';
 import { getErrorMessage } from '@/lib/utils/helpers';
 
 export async function GET() {
   try {
-    const marques = await prisma.marque.findMany({
-      include: { evenements: true },
-      orderBy: { nom: 'asc' },
-    });
+    const { data: marques, error } = await supabase
+      .from('Marque')
+      .select('*');
+    if (error) throw error;
     return NextResponse.json(marques);
   } catch (error) {
     console.error('Erreur lors de la récupération des marques:', error);
@@ -33,9 +33,12 @@ export async function POST(req: NextRequest) {
     }
 
     // Vérifier si la marque existe déjà
-    const existingMarque = await prisma.marque.findFirst({
-      where: { nom: validation.data!.nom }
-    });
+    const { data: existingMarque, error: findError } = await supabase
+      .from('Marque')
+      .select('*')
+      .eq('nom', validation.data!.nom)
+      .maybeSingle();
+    if (findError) throw findError;
 
     if (existingMarque) {
       return NextResponse.json(
@@ -45,11 +48,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Créer la marque
-    const marque = await prisma.marque.create({ 
-      data: validation.data!,
-      include: { evenements: true }
-    });
-    
+    const { data: marque, error: createError } = await supabase
+      .from('Marque')
+      .insert([validation.data!])
+      .single();
+    if (createError) throw createError;
     return NextResponse.json(marque, { status: 201 });
   } catch (error) {
     console.error('Erreur lors de la création de la marque:', error);
