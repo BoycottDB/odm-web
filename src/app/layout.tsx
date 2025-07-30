@@ -1,6 +1,8 @@
+'use client';
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import { useState } from "react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,11 +15,61 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Répertoire de Marques à Boycotter",
-  description:
-    "Base de données collaborative et transparente pour informer sur les pratiques des marques et incidents historiques.",
-};
+
+
+function MobileNav() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button
+        className="md:hidden flex items-center justify-center w-10 h-10 rounded-full border border-orange-200 bg-white shadow hover:bg-orange-50 transition-all focus:outline-none focus:ring-2 focus:ring-orange-400"
+        aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+        aria-expanded={open}
+        aria-controls="mobile-menu"
+        onClick={() => setOpen((o: boolean) => !o)}
+      >
+        <span className="sr-only">Menu</span>
+        <svg
+          className="w-6 h-6 text-orange-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          {open ? (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+          )}
+        </svg>
+      </button>
+      {/* Overlay */}
+      {open && (
+        <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm md:hidden" onClick={() => setOpen(false)} aria-hidden="true" />
+      )}
+      <div
+        id="mobile-menu"
+        className={`fixed top-0 right-0 z-50 w-64 h-full bg-white/95 shadow-2xl border-l border-orange-100 backdrop-blur-lg transform transition-transform duration-300 md:hidden ${open ? 'translate-x-0' : 'translate-x-full'}`}
+        tabIndex={-1}
+        aria-modal="true"
+        role="dialog"
+      >
+        <nav className="flex flex-col gap-4 p-8 mt-16 bg-white/95 rounded-2xl shadow-lg">
+  {/* Contraste renforcé sur le menu mobile */}
+          <Link href="/" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
+            Accueil
+          </Link>
+          <Link href="/about" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
+            À propos
+          </Link>
+          <Link href="/moderation" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
+            Modération
+          </Link>
+        </nav>
+      </div>
+    </>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -32,17 +84,20 @@ export default function RootLayout({
             <Link href="/" className="text-2xl font-light text-gray-900 hover:text-orange-600 transition-colors">
               Répertoire Marques
             </Link>
-            <nav className="flex gap-8 text-base font-medium">
-              <Link href="/" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
+            {/* Menu desktop */}
+            <nav className="hidden md:flex gap-8 text-base font-medium">
+              <Link href="/" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
                 Accueil
               </Link>
-              <Link href="/about" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
+              <Link href="/about" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
                 À propos
               </Link>
-              <Link href="/moderation" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50">
+              <Link href="/moderation" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
                 Modération
               </Link>
             </nav>
+            {/* Menu mobile */}
+            <MobileNav />
           </div>
         </header>
         <main className="min-h-[calc(100vh-80px)] w-full">

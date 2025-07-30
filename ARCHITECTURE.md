@@ -25,7 +25,7 @@ src/
 │   ├── services/         # Services API
 │   ├── utils/            # Utilitaires
 │   ├── validation/       # Schémas de validation
-│   └── prisma.ts         # Configuration Prisma
+
 └── types/                # Types TypeScript
     └── index.ts          # Types centralisés
 ```
@@ -82,8 +82,8 @@ src/
 
 ## 📊 Base de données
 
-### **Modèles Prisma**
-```prisma
+### **Modèles Supabase**
+```sql
 model Marque {
   id         Int         @id @default(autoincrement())
   nom        String      @unique
@@ -133,11 +133,11 @@ npm run build           # Build de production
 npm run start           # Serveur de production
 
 # Base de données
-npm run db:generate     # Générer le client Prisma
+
 npm run db:push         # Pousser le schéma
 npm run db:seed         # Seeder la base
 npm run db:reset        # Reset complet
-npm run db:studio       # Interface Prisma Studio
+
 
 # Qualité du code
 npm run lint            # Linter

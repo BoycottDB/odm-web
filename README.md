@@ -41,7 +41,7 @@ Exemple :
 ## Stack technique
 - **Front-end** : Next.js (React) + Tailwind CSS
 - **Base de données** : SQLite (développement) / PostgreSQL (production)
-- **ORM** : Prisma
+- **Base de données** : Supabase (API REST via @supabase/supabase-js)
 
 ## Fonctionnalités principales
 - Recherche rapide par marque
