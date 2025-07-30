@@ -47,14 +47,15 @@ function MobileNav() {
       {open && (
         <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm md:hidden" onClick={() => setOpen(false)} aria-hidden="true" />
       )}
-      <div
-        id="mobile-menu"
-        className={`fixed top-0 right-0 z-50 w-64 h-full bg-white/95 shadow-2xl border-l border-orange-100 backdrop-blur-lg transform transition-transform duration-300 md:hidden ${open ? 'translate-x-0' : 'translate-x-full'}`}
-        tabIndex={-1}
-        aria-modal="true"
-        role="dialog"
-      >
-        <nav className="flex flex-col gap-4 p-8 mt-16 bg-white/95 rounded-2xl shadow-lg">
+      {open && (
+  <div
+    id="mobile-menu"
+    className="fixed top-0 right-0 z-50 w-64 h-full bg-white/95 shadow-2xl border-l border-orange-100 backdrop-blur-lg md:hidden animate-in fade-in"
+    tabIndex={-1}
+    aria-modal="true"
+    role="dialog"
+  >
+    <nav className="flex flex-col gap-4 p-8 mt-16 bg-white/95 rounded-2xl shadow-lg">
   {/* Contraste renforcé sur le menu mobile */}
           <Link href="/" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
             Accueil
@@ -67,6 +68,7 @@ function MobileNav() {
           </Link>
         </nav>
       </div>
+      )}
     </>
   );
 }
