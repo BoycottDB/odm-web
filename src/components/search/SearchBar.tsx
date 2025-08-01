@@ -38,7 +38,7 @@ export function SearchBar({
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg className="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-6 w-6 text-berry-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -50,21 +50,21 @@ export function SearchBar({
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
-            className="w-full pl-12 pr-4 py-4 text-lg font-light border-2 border-orange-200 rounded-2xl focus:outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-100 transition-all duration-300 bg-white shadow-lg"
+            className="w-full pl-12 pr-4 py-4 text-lg font-light border-2 border-berry-200 rounded-2xl focus:outline-none focus:border-berry-400 focus:ring-4 focus:ring-berry-100 transition-all duration-300 bg-white shadow-lg"
           />
         </div>
       </form>
 
       {/* Suggestions dropdown */}
       {suggestions.visible && suggestions.items.length > 0 && (
-        <div className="absolute z-10 w-full mt-2 bg-white border-2 border-orange-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto">
+        <div className="absolute z-10 w-full mt-2 bg-white border-2 border-berry-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto">
           {suggestions.items.map((marque, index) => (
             <button
               key={marque.id}
               type="button"
               onMouseDown={() => onSuggestionSelect(marque)}
-              className={`w-full px-4 py-3 text-left hover:bg-orange-50 transition-colors duration-200 ${
-                index === suggestions.highlighted ? 'bg-orange-50' : ''
+              className={`w-full px-4 py-3 text-left hover:bg-berry-50 transition-colors duration-200 ${
+                index === suggestions.highlighted ? 'bg-berry-50' : ''
               } ${index === 0 ? 'rounded-t-2xl' : ''} ${
                 index === suggestions.items.length - 1 ? 'rounded-b-2xl' : ''
               }`}

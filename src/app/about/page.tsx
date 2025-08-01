@@ -2,7 +2,7 @@ export default function About() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 py-20 px-4">
+      <section className="bg-gradient-to-br from-berry-50 via-purple-50 to-indigo-50 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-tight">
             À propos du projet
@@ -61,11 +61,11 @@ export default function About() {
                     <h3 className="font-semibold text-lg text-gray-900 mb-2">Collaboration communautaire</h3>
                     <p className="text-gray-700">Contribution ouverte à tous, avec validation par modération communautaire stricte. Chacun peut proposer, corriger ou enrichir les données dans le respect mutuel.</p>
                   </div>
-                  <div className="border-l-4 border-purple-500 pl-4">
+                  <div className="border-l-4 border-berry-500 pl-4">
                     <h3 className="font-semibold text-lg text-gray-900 mb-2">Neutralité et responsabilité</h3>
                     <p className="text-gray-700">Information claire sans jugement moral ; chaque utilisateur reste libre de son choix. Aucune promotion ou attaque, uniquement des faits vérifiés et sourcés.</p>
                   </div>
-                  <div className="border-l-4 border-orange-500 pl-4">
+                  <div className="border-l-4 border-berry-500 pl-4">
                     <h3 className="font-semibold text-lg text-gray-900 mb-2">Non lucratif</h3>
                     <p className="text-gray-700">Projet open source, sans publicité ni partenariat commercial. Seuls les dons éventuels serviront à couvrir les frais d&apos;hébergement.</p>
                   </div>
@@ -77,8 +77,8 @@ export default function About() {
           {/* Fonctionnement */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
             <div className="flex items-start mb-6">
-              <div className="bg-purple-100 rounded-lg p-3 mr-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-berry-100 rounded-lg p-3 mr-4">
+                <svg className="w-6 h-6 text-berry-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                 </svg>
               </div>

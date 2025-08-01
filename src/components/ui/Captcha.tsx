@@ -76,7 +76,7 @@ export default function Captcha({ onVerify, className = '' }: CaptchaProps) {
             type="text"
             value={userAnswer}
             onChange={(e) => handleVerification(e.target.value)}
-            className="w-16 px-2 py-1 text-center border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-16 px-2 py-1 text-center border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-berry-500"
             placeholder="?"
             aria-label="Réponse au calcul"
           />

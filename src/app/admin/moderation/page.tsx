@@ -85,7 +85,7 @@ export default function AdminModeration() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-berry-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Chargement des signalements...</p>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function AdminModeration() {
           </div>
           <button
             onClick={loadPropositions}
-            className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700"
+            className="bg-berry-600 text-white px-4 py-2 rounded hover:bg-berry-700"
           >
             Réessayer
           </button>

@@ -216,7 +216,7 @@ export default function SignalementForm() {
                 type="text"
                 value={formData.marque_nom}
                 onChange={(e) => setFormData({ ...formData, marque_nom: e.target.value, marque_id: undefined })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                 placeholder="Tapez le nom de la marque..."
                 required
               />
@@ -249,7 +249,7 @@ export default function SignalementForm() {
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                 rows={4}
                 placeholder="Décrivez la controverse ou les pratiques concernées..."
                 required
@@ -271,7 +271,7 @@ export default function SignalementForm() {
                 value={formData.date}
                 max={new Date().toISOString().split('T')[0]} // Empêche les dates futures
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                 required
               />
               <p className="text-sm text-gray-500 mt-1">
@@ -289,7 +289,7 @@ export default function SignalementForm() {
                 type="url"
                 value={formData.source_url}
                 onChange={(e) => setFormData({ ...formData, source_url: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                 placeholder="https://www.mediapart.fr/article-exemple"
                 required
               />
@@ -328,7 +328,7 @@ export default function SignalementForm() {
           <button
             type="submit"
             disabled={isSubmitting || !captchaVerified}
-            className="bg-gradient-to-r from-orange-600 to-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-orange-700 hover:to-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="bg-gradient-to-r from-berry-600 to-berry-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-berry-700 hover:to-berry-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isSubmitting ? 'Envoi en cours...' : 'Proposer'}
           </button>
