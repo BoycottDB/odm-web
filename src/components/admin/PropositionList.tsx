@@ -81,7 +81,7 @@ export default function PropositionList({ propositions, onSelectProposition }: P
                         
                         {!isMarque && (
                           <div className="mt-1 text-sm text-gray-500">
-                            <span>{eventData?.categorieId || (eventData as any)?.categorie || 'Non spécifiée'}</span>
+                            <span>{eventData?.categorieId || (eventData as { categorie?: string })?.categorie || 'Non spécifiée'}</span>
                             {eventData?.date && <span> • {formatDate(eventData.date)}</span>}
                           </div>
                         )}
