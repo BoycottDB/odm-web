@@ -7,14 +7,16 @@ export async function GET() {
   try {
     const { data, error } = await supabase
       .from('Evenement')
-      .select('*, Marque(*)')
+      .select('*, Marque(*), Categorie(*)')
       .order('date', { ascending: false });
     if (error) throw error;
-    // Normalisation de la clé 'Marque' -> 'marque' pour compatibilité front
+    // Normalisation des clés pour compatibilité front
     const normalized = (data ?? []).map(ev => ({
       ...ev,
       marque: ev.Marque,
-      Marque: undefined
+      categorie: ev.Categorie,
+      Marque: undefined,
+      Categorie: undefined
     }));
     return NextResponse.json(normalized);
   } catch (error) {
@@ -62,7 +64,7 @@ export async function POST(req: NextRequest) {
           date: validation.data!.date // Assure-toi que c'est bien un format ISO ou Date compatible
         }
       ])
-      .select('*, Marque(*)')
+      .select('*, Marque(*), Categorie(*)')
       .single();
 
     if (eventError) {

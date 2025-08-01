@@ -1,0 +1,347 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { apiService } from '@/lib/services/api';
+import { validateHoneypot, validateSubmissionTime } from '@/lib/security/honeypot';
+import Captcha from '@/components/ui/Captcha';
+import HoneypotField from '@/components/ui/HoneypotField';
+import SimilarItems from './SimilarItems';
+import { Marque, Evenement, SimilarityScore } from '@/types';
+
+interface SimilarResults {
+  marques: Array<Marque & { score: SimilarityScore }>;
+  evenements: Array<Evenement & { score: SimilarityScore }>;
+}
+
+// Fonction helper pour extraire le nom du média à partir de l'URL
+function extractSourceFromUrl(url: string): string {
+  try {
+    const domain = new URL(url).hostname.replace('www.', '');
+    return domain.charAt(0).toUpperCase() + domain.slice(1);
+  } catch {
+    return 'Source';
+  }
+}
+
+export default function PropositionForm() {
+  // Plus de choix de type - seuls les événements sont autorisés
+  const type = 'evenement' as const;
+  const [formData, setFormData] = useState({
+    // Evenement fields seulement
+    marque_nom: '',
+    marque_id: undefined as number | undefined,
+    description: '',
+    date: new Date().toISOString().split('T')[0], // Date du jour par défaut
+    source_url: ''
+  });
+
+  // State management
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [startTime] = useState(Date.now());
+  
+  // Security
+  const [honeypotValue, setHoneypotValue] = useState('');
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+  
+  // Duplicate detection
+  const [similarResults, setSimilarResults] = useState<SimilarResults | null>(null);
+  const [showSimilar, setShowSimilar] = useState(false);
+  const [marquesSuggestions, setMarquesSuggestions] = useState<Marque[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+
+
+  // Recherche de marques pour auto-complétion
+  useEffect(() => {
+    if (type === 'evenement' && formData.marque_nom.length > 1) {
+      const searchMarques = async () => {
+        try {
+          const suggestions = await apiService.searchMarques(formData.marque_nom);
+          setMarquesSuggestions(suggestions);
+          setShowSuggestions(suggestions.length > 0);
+        } catch (error) {
+          console.error('Erreur lors de la recherche de marques:', error);
+        }
+      };
+
+      const timeoutId = setTimeout(searchMarques, 300);
+      return () => clearTimeout(timeoutId);
+    } else {
+      setShowSuggestions(false);
+    }
+  }, [formData.marque_nom, type]);
+
+  // Recherche de doublons  
+  useEffect(() => {
+    if (formData.marque_nom.length > 2 && formData.description.length > 10) {
+      checkForSimilar();
+    }
+  }, [formData.marque_nom, formData.description]);
+
+  const checkForSimilar = async () => {
+    try {
+      const query = {
+        type,
+        marque_nom: formData.marque_nom,
+        description: formData.description
+      };
+
+      const results = await apiService.searchSimilaire(query);
+      if (results.marques.length > 0 || results.evenements.length > 0) {
+        setSimilarResults(results);
+        setShowSimilar(true);
+      } else {
+        setShowSimilar(false);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la recherche de doublons:', error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    setErrors([]);
+    
+    // Validations de sécurité
+    if (!validateHoneypot(honeypotValue)) {
+      setErrors(['Détection de bot. Veuillez réessayer.']);
+      return;
+    }
+    
+    if (!validateSubmissionTime(startTime)) {
+      setErrors(['Soumission trop rapide. Veuillez attendre quelques secondes.']);
+      return;
+    }
+    
+    if (!captchaVerified) {
+      setErrors(['Veuillez compléter la vérification anti-robot.']);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const propositionData = {
+        type,
+        data: {
+          marque_nom: formData.marque_nom,
+          marque_id: formData.marque_id,
+          description: formData.description,
+          date: formData.date,
+          source: extractSourceFromUrl(formData.source_url),
+          source_url: formData.source_url
+        }
+      };
+
+      await apiService.createProposition(propositionData);
+      setIsSuccess(true);
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'response' in error) {
+        const responseError = error as { response?: { data?: { details?: string[] } } };
+        if (responseError.response?.data?.details) {
+          setErrors(responseError.response.data.details);
+        } else {
+          setErrors(['Une erreur est survenue lors de la soumission.']);
+        }
+      } else {
+        setErrors(['Une erreur est survenue lors de la soumission.']);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (isSuccess) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+        <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+          <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          Proposition soumise avec succès !
+        </h2>
+        
+        <p className="text-lg text-gray-700 mb-8">
+          Votre proposition a été transmise à notre équipe de modération. 
+          Elle sera examinée dans les plus brefs délais.
+        </p>
+        
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <p className="text-blue-800 text-sm">
+            <strong>Rappel :</strong> Toutes les décisions de modération sont rendues publiques 
+            de manière transparente sur notre page dédiée.
+          </p>
+        </div>
+        
+        <button
+          onClick={() => window.location.reload()}
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+        >
+          Faire une nouvelle proposition
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">Nouvelle proposition</h2>
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <HoneypotField onChange={setHoneypotValue} />
+        
+        {/* Information sur le type */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="text-sm font-medium text-blue-800 mb-2">
+            📢 Signaler un événement controversé
+          </h3>
+          <p className="text-sm text-blue-700">
+            Vous pouvez signaler un événement controversé lié à une marque pour informer les consommateurs.
+          </p>
+        </div>
+
+        {/* Champs pour l'événement */}
+            {/* Marque pour événement */}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Marque concernée *
+              </label>
+              <input
+                type="text"
+                value={formData.marque_nom}
+                onChange={(e) => setFormData({ ...formData, marque_nom: e.target.value, marque_id: undefined })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="Tapez le nom de la marque..."
+                required
+              />
+              
+              {/* Suggestions */}
+              {showSuggestions && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                  {marquesSuggestions.map((marque) => (
+                    <button
+                      key={marque.id}
+                      type="button"
+                      onClick={() => {
+                        setFormData({ ...formData, marque_nom: marque.nom, marque_id: marque.id });
+                        setShowSuggestions(false);
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg"
+                    >
+                      {marque.nom}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description de l&apos;événement *
+              </label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                rows={4}
+                placeholder="Décrivez l'événement ou les pratiques concernées..."
+                required
+                maxLength={1000}
+                minLength={10}
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                Minimum 10 caractères, maximum 1000 caractères
+              </p>
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Date *
+              </label>
+              <input
+                type="date"
+                value={formData.date}
+                max={new Date().toISOString().split('T')[0]} // Empêche les dates futures
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                required
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                Date de l'événement (ne peut pas être dans le futur)
+              </p>
+            </div>
+
+
+            {/* URL source (obligatoire) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                URL de la source *
+              </label>
+              <input
+                type="url"
+                value={formData.source_url}
+                onChange={(e) => setFormData({ ...formData, source_url: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="https://www.mediapart.fr/article-exemple"
+                required
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                URL d'un article ou d'une source fiable documentant l'événement
+              </p>
+            </div>
+
+        {/* Éléments similaires */}
+        {showSimilar && similarResults && (
+          <SimilarItems results={similarResults} />
+        )}
+
+        {/* Captcha */}
+        <Captcha onVerify={setCaptchaVerified} />
+
+        {/* Erreurs */}
+        {errors.length > 0 && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="flex items-center mb-2">
+              <svg className="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="text-red-800 font-medium">Erreurs détectées :</span>
+            </div>
+            <ul className="list-disc list-inside text-red-700 text-sm">
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Boutons */}
+        <div className="flex space-x-4 pt-4">
+          <button
+            type="submit"
+            disabled={isSubmitting || !captchaVerified}
+            className="bg-gradient-to-r from-orange-600 to-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-orange-700 hover:to-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          >
+            {isSubmitting ? 'Envoi en cours...' : 'Proposer'}
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors"
+          >
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
