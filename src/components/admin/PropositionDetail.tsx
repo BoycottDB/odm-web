@@ -119,7 +119,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
-                  <div className="text-gray-900">{eventData?.categorieId || (eventData as any)?.categorie || 'Non spécifiée'}</div>
+                  <div className="text-gray-900">{eventData?.categorieId || (eventData as { categorie?: string })?.categorie || 'Non spécifiée'}</div>
                 </div>
               </div>
               

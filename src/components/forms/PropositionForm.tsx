@@ -275,7 +275,7 @@ export default function PropositionForm() {
                 required
               />
               <p className="text-sm text-gray-500 mt-1">
-                Date de l'événement (ne peut pas être dans le futur)
+                Date de l&apos;événement (ne peut pas être dans le futur)
               </p>
             </div>
 
@@ -294,7 +294,7 @@ export default function PropositionForm() {
                 required
               />
               <p className="mt-1 text-xs text-gray-500">
-                URL d'un article ou d'une source fiable documentant l'événement
+                URL d&apos;un article ou d&apos;une source fiable documentant l&apos;événement
               </p>
             </div>
 

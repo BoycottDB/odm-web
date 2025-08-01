@@ -72,7 +72,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
       <div className="mt-4 pt-4 border-t border-blue-200">
         <div className="text-sm text-blue-800">
             <span className="font-medium">
-              💡 Des événements similaires existent déjà. Merci de vérifier qu'il ne s'agit pas d'un doublon avant de soumettre votre proposition.
+              💡 Des événements similaires existent déjà. Merci de vérifier qu&apos;il ne s&apos;agit pas d&apos;un doublon avant de soumettre votre proposition.
             </span>
         </div>
       </div>

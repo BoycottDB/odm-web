@@ -32,7 +32,7 @@ export default function Proposer() {
                 </svg>
               </div>
               <div className="flex-1">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">🎯 Types d'événements à dénoncer</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">🎯 Types d&apos;événements à dénoncer</h2>
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
                   <div className="flex items-start">
                     <span className="text-red-600 mr-2">⚖️</span>
