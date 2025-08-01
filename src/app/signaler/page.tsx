@@ -12,7 +12,7 @@ export default function Signaler() {
       {/* Section Hero */}
       <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-6xl md:text-7xl font-light text-gray-900 mb-8 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-tight">
             🤝 Signaler une controverse
           </h1>
           <p className="text-2xl text-gray-700 max-w-4xl mx-auto font-light leading-relaxed">
