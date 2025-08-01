@@ -15,7 +15,7 @@ export function EventCard({ event }: EventCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-lg border border-orange-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+    <div className="bg-white rounded-3xl p-8 shadow-lg border border-berry-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* En-tête avec badges */}
       <div className="flex flex-wrap gap-3 mb-6">
         {event.categorie?.nom && (
@@ -54,7 +54,7 @@ export function EventCard({ event }: EventCardProps) {
             href={event.source}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-lg font-medium text-orange-600 hover:text-orange-700 transition-colors duration-200"
+            className="inline-flex items-center text-lg font-medium text-berry-600 hover:text-berry-700 transition-colors duration-200"
           >
             <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

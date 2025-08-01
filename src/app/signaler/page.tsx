@@ -10,7 +10,7 @@ export default function Signaler() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 py-20 px-4">
+      <section className="bg-gradient-to-br from-berry-50 via-purple-50 to-indigo-50 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-tight">
             🤝 Signaler une controverse
@@ -47,11 +47,11 @@ export default function Signaler() {
                     <span className="text-gray-700">Conditions de travail inacceptables</span>
                   </div>
                   <div className="flex items-start">
-                    <span className="text-purple-600 mr-2">🔬</span>
+                    <span className="text-berry-600 mr-2">🔬</span>
                     <span className="text-gray-700">Tests sur animaux non nécessaires</span>
                   </div>
                   <div className="flex items-start">
-                    <span className="text-orange-600 mr-2">💰</span>
+                    <span className="text-berry-600 mr-2">💰</span>
                     <span className="text-gray-700">Évasion fiscale et corruption</span>
                   </div>
                   <div className="flex items-start">
@@ -80,8 +80,8 @@ export default function Signaler() {
           ) : (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
               <div className="max-w-2xl mx-auto">
-                <div className="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-berry-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-berry-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </div>
@@ -96,21 +96,21 @@ export default function Signaler() {
                   modération transparente avec sources documentées.
                 </p>
                 
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8">
+                <div className="bg-berry-50 border border-berry-200 rounded-lg p-4 mb-8">
                   <div className="flex items-center justify-center mb-2">
-                    <svg className="w-5 h-5 text-amber-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-berry-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>
-                    <span className="text-amber-800 font-medium">Important</span>
+                    <span className="text-berry-800 font-medium">Important</span>
                   </div>
-                  <p className="text-amber-800 text-sm">
+                  <p className="text-berry-800 text-sm">
                     Vos contributions restent entièrement anonymes. Aucune donnée personnelle n&apos;est stockée.
                   </p>
                 </div>
                 
                 <button
                   onClick={() => setShowForm(true)}
-                  className="bg-gradient-to-r from-orange-600 to-amber-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                  className="bg-gradient-to-r from-berry-600 to-berry-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-berry-700 hover:to-berry-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
                 >
                   Commencer mon signalement
                 </button>

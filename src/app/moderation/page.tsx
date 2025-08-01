@@ -4,7 +4,7 @@ export default function Moderation() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 py-20 px-4">
+      <section className="bg-gradient-to-br from-berry-50 via-purple-50 to-indigo-50 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-tight">
             Modération et validation
@@ -75,8 +75,8 @@ export default function Moderation() {
           {/* Historique des décisions */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
             <div className="flex items-start mb-6">
-              <div className="bg-purple-100 rounded-lg p-3 mr-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-berry-100 rounded-lg p-3 mr-4">
+                <svg className="w-6 h-6 text-berry-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
@@ -156,14 +156,14 @@ export default function Moderation() {
                 <p className="text-lg text-gray-700 mb-6">
                   Vous souhaitez signaler une controverse ? Utilisez notre formulaire de signalement pour contribuer à la base de données.
                 </p>
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-6">
+                <div className="bg-berry-50 border border-berry-200 rounded-lg p-6 mb-6">
                   <div className="flex items-start">
-                    <svg className="w-6 h-6 text-orange-600 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-berry-600 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>
                     <div>
-                      <h3 className="font-semibold text-orange-900 mb-2">Signaler une controverse</h3>
-                      <p className="text-orange-800 mb-4">
+                      <h3 className="font-semibold text-berry-900 mb-2">Signaler une controverse</h3>
+                      <p className="text-berry-800 mb-4">
                         Utilisez notre formulaire pour signaler des controverses liées aux marques. Tous les signalements sont vérifiés et modérés de manière transparente.
                       </p>
                     </div>
@@ -172,7 +172,7 @@ export default function Moderation() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link 
                     href="/signaler"
-                    className="inline-flex items-center gap-2 bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
+                    className="inline-flex items-center gap-2 bg-berry-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-berry-700 transition-colors"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

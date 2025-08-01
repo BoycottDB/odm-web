@@ -8,9 +8,9 @@ interface BadgeProps {
 
 export function Badge({ children, variant = 'category', className = '' }: BadgeProps) {
   const variantClasses = {
-    category: 'bg-orange-50 text-gray-800 border border-orange-100',
-    date: 'bg-amber-50 text-gray-800 border border-amber-100',
-    brand: 'bg-yellow-50 text-gray-800 border border-yellow-100'
+    category: 'bg-accent-category text-gray-800 border border-indigo-200',
+    date: 'bg-accent-date text-gray-800 border border-yellow-300',
+    brand: 'bg-berry-100 text-gray-800 border border-berry-200'
   };
 
   return (

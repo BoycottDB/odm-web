@@ -10,6 +10,29 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Palette Berry - Violet bordeaux avec déclinaisons */
+  --color-berry-50: #fdf2f8;
+  --color-berry-100: #fce7f3;
+  --color-berry-200: #fbcfe8;
+  --color-berry-300: #f9a8d4;
+  --color-berry-400: #f472b6;
+  --color-berry-500: #ec4899;
+  --color-berry-600: #db2777;
+  --color-berry-700: #9d174d;
+  --color-berry-800: #831843;
+  --color-berry-900: #701a75;
+  --color-berry-950: #4a044e;
+  
+  /* Couleurs sémantiques basées sur berry */
+  --color-primary: var(--color-berry-600);
+  --color-primary-hover: var(--color-berry-700);
+  --color-primary-light: var(--color-berry-100);
+  --color-primary-dark: var(--color-berry-800);
+  
+  /* Couleurs d'accent complémentaires */
+  --color-accent-category: #e0e7ff; /* jaune doux pour les catégories */
+  --color-accent-date: #fef3c7; /* bleu lavande pour les dates */
 }
 
 /* Désactivation du dark mode pour maintenir la cohérence du design */

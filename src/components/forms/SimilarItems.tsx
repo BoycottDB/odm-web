@@ -16,7 +16,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
 
   const getSimilarityLabel = (score: number) => {
     if (score >= 0.8) return { label: 'Très similaire', color: 'text-red-600 bg-red-50 border-red-200' };
-    if (score >= 0.6) return { label: 'Similaire', color: 'text-orange-600 bg-orange-50 border-orange-200' };
+    if (score >= 0.6) return { label: 'Similaire', color: 'text-berry-600 bg-berry-50 border-berry-200' };
     return { label: 'Possiblement similaire', color: 'text-yellow-600 bg-yellow-50 border-yellow-200' };
   };
 
