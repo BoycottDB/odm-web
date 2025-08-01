@@ -1,6 +1,7 @@
 'use client';
 import type { Metadata } from "next";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
 import { useState } from "react";
 import "./globals.css";
@@ -19,6 +20,16 @@ const geistMono = Geist_Mono({
 
 function MobileNav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  
+  const getLinkClass = (href: string) => {
+    const isActive = pathname === href;
+    return `text-lg font-medium px-4 py-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 ${
+      isActive 
+        ? 'text-orange-600 bg-orange-100' 
+        : 'text-gray-900 hover:bg-orange-50'
+    }`;
+  };
   return (
     <>
       <button
@@ -57,17 +68,17 @@ function MobileNav() {
   >
     <nav className="flex flex-col gap-4 p-8 mt-16 bg-white/95 rounded-2xl shadow-lg">
   {/* Contraste renforcé sur le menu mobile */}
-          <Link href="/" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
+          <Link href="/" className={getLinkClass('/')} onClick={() => setOpen(false)}>
             Accueil
           </Link>
-          <Link href="/about" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
+          <Link href="/about" className={getLinkClass('/about')} onClick={() => setOpen(false)}>
             À propos
           </Link>
-          <Link href="/moderation" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
+          <Link href="/moderation" className={getLinkClass('/moderation')} onClick={() => setOpen(false)}>
             Modération
           </Link>
-          <Link href="/signaler" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
-            Signaler
+          <Link href="/signaler" className={getLinkClass('/signaler')} onClick={() => setOpen(false)}>
+            Signaler!
           </Link>
         </nav>
       </div>
@@ -81,6 +92,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  
+  const getDesktopLinkClass = (href: string) => {
+    const isActive = pathname === href;
+    return `text-base font-medium px-3 py-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 ${
+      isActive 
+        ? 'text-orange-600 bg-orange-100' 
+        : 'text-gray-700 hover:text-orange-600 hover:bg-orange-50'
+    }`;
+  };
   return (
     <html lang="fr">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}>
@@ -91,17 +112,17 @@ export default function RootLayout({
             </Link>
             {/* Menu desktop */}
             <nav className="hidden md:flex gap-8 text-base font-medium">
-              <Link href="/" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
+              <Link href="/" className={getDesktopLinkClass('/')}>
                 Accueil
               </Link>
-              <Link href="/about" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
+              <Link href="/about" className={getDesktopLinkClass('/about')}>
                 À propos
               </Link>
-              <Link href="/moderation" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
+              <Link href="/moderation" className={getDesktopLinkClass('/moderation')}>
                 Modération
               </Link>
-              <Link href="/signaler" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                Signaler
+              <Link href="/signaler" className={getDesktopLinkClass('/signaler')}>
+                Signaler!
               </Link>
             </nav>
             {/* Menu mobile */}
