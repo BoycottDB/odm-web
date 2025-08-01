@@ -1,4 +1,16 @@
-import { Marque, Evenement, ApiResponse, MarqueCreateRequest, EvenementCreateRequest } from '@/types';
+import { 
+  Marque, 
+  Evenement, 
+  ApiResponse, 
+  MarqueCreateRequest, 
+  EvenementCreateRequest,
+  Proposition,
+  PropositionCreateRequest,
+  PropositionUpdateRequest,
+  DecisionPublique,
+  SimilarityScore,
+  Categorie
+} from '@/types';
 
 class ApiService {
   private baseUrl = '/api';
@@ -58,8 +70,63 @@ class ApiService {
     return allEvents.filter(event =>
       event.marque?.nom.toLowerCase().includes(query.toLowerCase()) ||
       event.description.toLowerCase().includes(query.toLowerCase()) ||
-      event.categorie.toLowerCase().includes(query.toLowerCase())
+      event.categorie?.nom.toLowerCase().includes(query.toLowerCase())
     );
+  }
+
+  // Propositions
+  async createProposition(data: PropositionCreateRequest): Promise<Proposition> {
+    return this.request<Proposition>('/propositions', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getPropositions(): Promise<Proposition[]> {
+    return this.request<Proposition[]>('/propositions');
+  }
+
+  async updateProposition(id: number, data: PropositionUpdateRequest): Promise<Proposition> {
+    return this.request<Proposition>(`/propositions/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  // Décisions publiques
+  async getDecisionsPubliques(): Promise<DecisionPublique[]> {
+    return this.request<DecisionPublique[]>('/decisions-publiques');
+  }
+
+  // Recherche de doublons
+  async searchSimilaire(query: {
+    type: 'marque' | 'evenement';
+    marque_nom?: string;
+    description?: string;
+  }): Promise<{ 
+    marques: Array<Marque & { score: SimilarityScore }>;
+    evenements: Array<Evenement & { score: SimilarityScore }>;
+  }> {
+    const params = new URLSearchParams();
+    params.append('type', query.type);
+    if (query.marque_nom) params.append('marque_nom', query.marque_nom);
+    if (query.description) params.append('description', query.description);
+
+    return this.request(`/search-similaire?${params.toString()}`);
+  }
+
+  // Recherche de marques pour auto-complétion
+  async searchMarques(query: string): Promise<Marque[]> {
+    const allMarques = await this.getMarques();
+    
+    return allMarques.filter(marque =>
+      marque.nom.toLowerCase().includes(query.toLowerCase())
+    ).slice(0, 5); // Limiter à 5 suggestions
+  }
+
+  // Catégories
+  async getCategories(): Promise<Categorie[]> {
+    return this.request('/categories');
   }
 }
 

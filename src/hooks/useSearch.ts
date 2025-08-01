@@ -91,7 +91,7 @@ export function useSearch() {
       const filtered = allEvenements.filter(event =>
         event.marque?.nom.toLowerCase().includes(normalizedQuery) ||
         event.description.toLowerCase().includes(normalizedQuery) ||
-        event.categorie.toLowerCase().includes(normalizedQuery)
+        event.categorie?.nom.toLowerCase().includes(normalizedQuery)
       );
 
       setSearchState(prev => ({
