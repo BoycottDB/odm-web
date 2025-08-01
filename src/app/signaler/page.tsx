@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import PropositionForm from '@/components/forms/PropositionForm';
+import SignalementForm from '@/components/forms/SignalementForm';
 
-export default function Proposer() {
+export default function Signaler() {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -13,7 +13,7 @@ export default function Proposer() {
       <section className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-6xl md:text-7xl font-light text-gray-900 mb-8 tracking-tight">
-            🤝 Proposer une nouvelle entrée
+            🤝 Signaler une controverse
           </h1>
           <p className="text-2xl text-gray-700 max-w-4xl mx-auto font-light leading-relaxed">
             Contribuez à l&apos;enrichissement collaboratif de notre base de données
@@ -32,7 +32,7 @@ export default function Proposer() {
                 </svg>
               </div>
               <div className="flex-1">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">🎯 Types d&apos;événements à dénoncer</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">🎯 Types de controverses à signaler</h2>
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
                   <div className="flex items-start">
                     <span className="text-red-600 mr-2">⚖️</span>
@@ -55,6 +55,10 @@ export default function Proposer() {
                     <span className="text-gray-700">Évasion fiscale et corruption</span>
                   </div>
                   <div className="flex items-start">
+                    <span className="text-red-500 mr-2">🚫</span>
+                    <span className="text-gray-700">Dirigeants ou actionnaires d&apos;extrême droite</span>
+                  </div>
+                  <div className="flex items-start">
                     <span className="text-gray-600 mr-2">📊</span>
                     <span className="text-gray-700">Autres controverses documentées</span>
                   </div>
@@ -72,7 +76,7 @@ export default function Proposer() {
 
           {/* Formulaire ou bouton */}
           {showForm ? (
-            <PropositionForm />
+            <SignalementForm />
           ) : (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
               <div className="max-w-2xl mx-auto">
@@ -87,8 +91,8 @@ export default function Proposer() {
                 </h2>
                 
                 <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-                  Signalez un événement controversé lié à une marque pour informer les consommateurs. 
-                  Toutes les propositions sont vérifiées et font l&apos;objet d&apos;une 
+                  Signalez une controverse liée à une marque pour informer les consommateurs. 
+                  Tous les signalements sont vérifiés et font l&apos;objet d&apos;une 
                   modération transparente avec sources documentées.
                 </p>
                 
@@ -108,7 +112,7 @@ export default function Proposer() {
                   onClick={() => setShowForm(true)}
                   className="bg-gradient-to-r from-orange-600 to-amber-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
                 >
-                  Commencer ma proposition
+                  Commencer mon signalement
                 </button>
               </div>
             </div>

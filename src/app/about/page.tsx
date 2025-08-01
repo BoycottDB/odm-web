@@ -32,8 +32,11 @@ export default function About() {
                 <p className="text-lg text-gray-700 leading-relaxed mb-4">
                   Nous ne vous empêcherons jamais de passer commande. Nous comprenons que pour de nombreuses raisons, notamment pour les produits de première nécessité, vous pouvez être amenés à acheter des produits de marques dont les pratiques ne sont pas parfaitement alignées avec vos valeurs.
                 </p>
-                <p className="text-lg text-gray-700 leading-relaxed">
+                <p className="text-lg text-gray-700 leading-relaxed mb-4">
                   Notre rôle est simplement de vous permettre d&apos;effectuer vos achats en pleine conscience, selon vos propres valeurs et votre seuil de tolérance personnel. Nous restons strictement neutres : vous avez toujours le choix, et notre engagement consiste uniquement à vous fournir les informations nécessaires pour décider librement.
+                </p>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  <strong>Nous croyons au pouvoir du boycott.</strong> En choisissant de ne plus financer certaines entreprises ou dirigeants dont les pratiques vont à l&apos;encontre de nos valeurs, nous pouvons collectivement réduire leur pouvoir économique et les inciter au changement. Le boycott est un acte démocratique puissant qui permet aux citoyens de faire entendre leur voix par leur portefeuille, en soutenant les entreprises responsables et en sanctionnant celles qui ne le sont pas.
                 </p>
               </div>
             </div>

@@ -66,13 +66,13 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             </button>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                Proposition #{proposition.id}
+                Signalement #{proposition.id}
               </h1>
               <div className="flex items-center space-x-2 mt-1">
                 <span className={`px-2 py-1 text-xs font-medium rounded ${
                   isMarque ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
                 }`}>
-                  {isMarque ? 'Marque' : 'Événement'}
+                  {isMarque ? 'Marque' : 'Controverse'}
                 </span>
                 <span className="text-sm text-gray-500">
                   Soumis le {formatDate(proposition.created_at)}
@@ -86,7 +86,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
       <div className="p-6">
         {/* Détails de la proposition */}
         <div className="bg-gray-50 rounded-lg p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Détails de la proposition</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Détails du signalement</h2>
           
           {isMarque ? (
             <div>

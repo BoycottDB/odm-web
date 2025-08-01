@@ -11,7 +11,7 @@ import PropositionList from '@/components/admin/PropositionList';
 export default function AdminModeration() {
   const [propositions, setPropositions] = useState<Proposition[]>([]);
   const [selectedProposition, setSelectedProposition] = useState<Proposition | null>(null);
-  // Plus besoin de filtre - il n'y a que des événements
+  // Plus besoin de filtre - il n'y a que des controverses
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -34,13 +34,13 @@ export default function AdminModeration() {
       });
       
       if (!response.ok) {
-        throw new Error('Erreur lors du chargement des propositions');
+        throw new Error('Erreur lors du chargement des signalements');
       }
       
       const data = await response.json();
       setPropositions(data);
     } catch (err) {
-      setError('Erreur lors du chargement des propositions');
+      setError('Erreur lors du chargement des signalements');
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -70,7 +70,7 @@ export default function AdminModeration() {
       setSelectedProposition(null);
     } catch (err) {
       console.error('Erreur lors de la mise à jour:', err);
-      alert('Erreur lors de la mise à jour de la proposition');
+      alert('Erreur lors de la mise à jour du signalement');
     }
   };
 
@@ -79,14 +79,14 @@ export default function AdminModeration() {
     router.push('/admin/login');
   };
 
-  const filteredPropositions = propositions.filter(p => p.statut === 'en_attente'); // Seulement les propositions en attente
+  const filteredPropositions = propositions.filter(p => p.statut === 'en_attente'); // Seulement les signalements en attente
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des propositions...</p>
+          <p className="text-gray-600">Chargement des signalements...</p>
         </div>
       </div>
     );
@@ -122,7 +122,7 @@ export default function AdminModeration() {
               </h1>
               <div className="ml-6 flex items-center space-x-4">
                 <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                  {filteredPropositions.length} événements en attente
+                  {filteredPropositions.length} controverses en attente
                 </span>
               </div>
             </div>
@@ -154,9 +154,9 @@ export default function AdminModeration() {
           />
         ) : (
           <div>
-            {/* Plus besoin de filtres - il n'y a que des événements */}
+            {/* Plus besoin de filtres - il n'y a que des controverses */}
 
-            {/* Liste des propositions */}
+            {/* Liste des signalements */}
             <PropositionList
               propositions={filteredPropositions}
               onSelectProposition={setSelectedProposition}

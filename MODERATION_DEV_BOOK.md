@@ -325,7 +325,7 @@ const SECURITY_RULES = {
     ]
   },
   source: {
-    requireHttps: true
+    requireHttps: false // ⚠️ MODIFIÉ : Plus de liste blanche - validation URL basique seulement
   }
 };
 ```
@@ -389,6 +389,57 @@ ADMIN_TOKEN=secure_random_token
 # Moderation
 SIMILARITY_THRESHOLD=0.6
 ```
+
+---
+
+## ✅ MISES À JOUR RÉCENTES (2024-08-01)
+
+### Changements Majeurs Implémentés
+
+#### 1. Simplification du Formulaire de Proposition
+- **❌ RETIRÉ** : Sélection de catégorie par l'utilisateur  
+- **✅ AJOUTÉ** : Date par défaut = aujourd'hui + empêche dates futures
+- **💡 RAISON** : L'admin assignera la catégorie plus tard - plus facile pour l'utilisateur
+
+#### 2. Amélioration UX Détection de Doublons
+- **❌ RETIRÉ** : Boutons "Revoir ma saisie" / "Continuer quand même" (trop forts)
+- **❌ RETIRÉ** : Comparaison avec marques similaires (pas utile)
+- **✅ AJOUTÉ** : Information simple et bienveillante sur les événements similaires
+- **💡 RAISON** : Pas de pression - juste informatif
+
+#### 3. Suppression Liste Blanche Sources
+- **❌ RETIRÉ** : Validation stricte domaines autorisés (`lemonde.fr`, etc.)
+- **✅ AJOUTÉ** : Validation URL basique seulement
+- **💡 RAISON** : Trop restrictif - l'admin peut juger de la fiabilité
+
+#### 4. Simplification Interface Admin
+- **❌ RETIRÉ** : Séparation "Tous" vs "Événements" 
+- **✅ AJOUTÉ** : Page `/admin` avec redirection intelligente (token → modération, sinon → login)
+- **💡 RAISON** : Il n'y a que des événements maintenant
+
+#### 5. Système de Catégories Refactorisé
+- **✅ AJOUTÉ** : Table `Categories` avec structure complète (emoji, couleur, ordre)
+- **✅ MIGRÉ** : Événements de `categorie` (string) vers `categorieId` (number + jointure)
+- **✅ CORRIGÉ** : API recherche similaire inclut maintenant les catégories
+- **💡 IMPACT** : Plus de "Non classé" - catégories s'affichent correctement
+
+### Fichiers Principaux Modifiés
+```
+src/components/forms/PropositionForm.tsx     # Formulaire simplifié
+src/components/forms/SimilarItems.tsx       # Détection doublons informative  
+src/lib/validation/schemas.ts               # Plus de liste blanche URLs
+src/app/admin/page.tsx                      # Redirection intelligente
+src/app/admin/moderation/page.tsx           # Plus de filtres séparés
+src/app/api/evenements/route.ts             # Jointure avec Categories
+src/app/api/search-similaire/route.ts       # Jointure avec Categories
+```
+
+### États Actuels
+- ✅ **Formulaire** : Simplifié, date par défaut, pas de catégorie utilisateur
+- ✅ **Détection doublons** : Informative, pas de boutons d'action
+- ✅ **Sources** : Toutes URLs acceptées (validation basique)
+- ✅ **Admin** : Interface unifiée, redirection automatique
+- ✅ **Catégories** : Système complet avec jointures fonctionnelles
 
 ---
 

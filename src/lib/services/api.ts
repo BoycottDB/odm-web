@@ -8,8 +8,7 @@ import {
   PropositionCreateRequest,
   PropositionUpdateRequest,
   DecisionPublique,
-  SimilarityScore,
-  Categorie
+  SimilarityScore
 } from '@/types';
 
 class ApiService {
@@ -51,7 +50,7 @@ class ApiService {
     });
   }
 
-  // Événements
+  // Controverses
   async getEvenements(): Promise<Evenement[]> {
     return this.request<Evenement[]>('/evenements');
   }
@@ -124,10 +123,10 @@ class ApiService {
     ).slice(0, 5); // Limiter à 5 suggestions
   }
 
-  // Catégories
-  async getCategories(): Promise<Categorie[]> {
-    return this.request('/categories');
-  }
+  // Catégories - ⚠️ Non utilisé depuis la simplification du formulaire
+  // async getCategories(): Promise<Categorie[]> {
+  //   return this.request('/categories');
+  // }
 }
 
 export const apiService = new ApiService();
