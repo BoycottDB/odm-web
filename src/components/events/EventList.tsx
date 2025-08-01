@@ -59,7 +59,7 @@ export function EventList({ events, loading, searching, notFound, hasSearched }:
         </div>
         <h3 className="text-2xl font-medium text-gray-900 mb-2">Commencez votre recherche</h3>
         <p className="text-lg font-light text-gray-600">
-          Tapez le nom d&apos;une marque pour découvrir les événements associés.
+          Tapez le nom d&apos;une marque pour découvrir les controverses associées.
         </p>
       </div>
     );
@@ -69,7 +69,7 @@ export function EventList({ events, loading, searching, notFound, hasSearched }:
   return (
     <div>
       <h2 className="text-4xl font-light text-gray-900 mb-8 text-center">
-        Événements liés à votre recherche
+        Controverses liées à votre recherche
       </h2>
       <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 max-w-4xl mx-auto px-2 sm:px-0">
         {events.map((event) => (

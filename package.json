@@ -1,6 +1,7 @@
 {
-  "name": "next-init",
+  "name": "observatoire-marques",
   "version": "0.1.0",
+  "description": "L'Observatoire des Marques - Plateforme collaborative pour documenter les controverses des marques",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

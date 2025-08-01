@@ -66,8 +66,8 @@ function MobileNav() {
           <Link href="/moderation" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
             Modération
           </Link>
-          <Link href="/proposer" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
-            Proposer
+          <Link href="/signaler" className="text-gray-900 text-lg font-medium px-4 py-3 rounded-full hover:bg-orange-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400" onClick={() => setOpen(false)}>
+            Signaler
           </Link>
         </nav>
       </div>
@@ -87,7 +87,7 @@ export default function RootLayout({
         <header className="w-full border-b border-orange-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
           <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <Link href="/" className="text-2xl font-light text-gray-900 hover:text-orange-600 transition-colors">
-              Répertoire Marques
+              Observatoire Marques
             </Link>
             {/* Menu desktop */}
             <nav className="hidden md:flex gap-8 text-base font-medium">
@@ -100,8 +100,8 @@ export default function RootLayout({
               <Link href="/moderation" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
                 Modération
               </Link>
-              <Link href="/proposer" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
-                Proposer
+              <Link href="/signaler" className="text-gray-700 hover:text-orange-600 transition-colors px-3 py-2 rounded-full hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-400">
+                Signaler
               </Link>
             </nav>
             {/* Menu mobile */}

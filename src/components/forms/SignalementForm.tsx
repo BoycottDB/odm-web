@@ -23,8 +23,8 @@ function extractSourceFromUrl(url: string): string {
   }
 }
 
-export default function PropositionForm() {
-  // Plus de choix de type - seuls les événements sont autorisés
+export default function SignalementForm() {
+  // Plus de choix de type - seules les controverses sont autorisées
   const type = 'evenement' as const;
   const [formData, setFormData] = useState({
     // Evenement fields seulement
@@ -199,15 +199,15 @@ export default function PropositionForm() {
         {/* Information sur le type */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <h3 className="text-sm font-medium text-blue-800 mb-2">
-            📢 Signaler un événement controversé
+            📢 Signaler une controverse
           </h3>
           <p className="text-sm text-blue-700">
-            Vous pouvez signaler un événement controversé lié à une marque pour informer les consommateurs.
+            Vous pouvez signaler une controverse liée à une marque pour informer les consommateurs.
           </p>
         </div>
 
-        {/* Champs pour l'événement */}
-            {/* Marque pour événement */}
+        {/* Champs pour la controverse */}
+            {/* Marque pour controverse */}
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Marque concernée *
@@ -244,14 +244,14 @@ export default function PropositionForm() {
             {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description de l&apos;événement *
+                Description de la controverse *
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 rows={4}
-                placeholder="Décrivez l'événement ou les pratiques concernées..."
+                placeholder="Décrivez la controverse ou les pratiques concernées..."
                 required
                 maxLength={1000}
                 minLength={10}
@@ -275,7 +275,7 @@ export default function PropositionForm() {
                 required
               />
               <p className="text-sm text-gray-500 mt-1">
-                Date de l&apos;événement (ne peut pas être dans le futur)
+                Date de la controverse (ne peut pas être dans le futur)
               </p>
             </div>
 
@@ -294,7 +294,7 @@ export default function PropositionForm() {
                 required
               />
               <p className="mt-1 text-xs text-gray-500">
-                URL d&apos;un article ou d&apos;une source fiable documentant l&apos;événement
+                URL d&apos;un article ou d&apos;une source fiable documentant la controverse
               </p>
             </div>
 

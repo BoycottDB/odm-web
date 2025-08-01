@@ -102,12 +102,12 @@ export default function Moderation() {
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center">
                         <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;REFUSÉ&quot;</span>
-                        <span className="font-semibold text-gray-900">&quot;Ajout de &quot;Nike&quot;&quot;</span>
+                        <span className="font-semibold text-gray-900">&quot;Controverse Nike - Conditions de travail&quot;</span>
                       </div>
                       <span className="text-sm text-gray-500">30 juillet 2025</span>
                     </div>
                     <p className="text-gray-700 mb-2">
-                      <strong>Justification :</strong> Source insuffisante - L&apos;article fourni ne contient pas de preuves suffisantes pour étayer les allégations. Une source plus fiable et détaillée est nécessaire.&quot;
+                      <strong>Justification :</strong> Source insuffisante - L&apos;article fourni ne contient pas de preuves suffisantes pour étayer les allégations concernant les conditions de travail. Une source plus fiable et détaillée est nécessaire.
                     </p>
                     <p className="text-sm text-gray-600">
                       <strong>Modérateur :</strong> @moderateur1 • <strong>Votes communauté :</strong> 3 pour, 7 contre
@@ -118,12 +118,12 @@ export default function Moderation() {
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center">
                         <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;VALIDÉ&quot;</span>
-                        <span className="font-semibold text-gray-900">&quot;Ajout de &quot;Nestlé&quot;&quot;</span>
+                        <span className="font-semibold text-gray-900">&quot;Controverse Nestlé - Gestion de l&apos;eau&quot;</span>
                       </div>
                       <span className="text-sm text-gray-500">29 juillet 2025</span>
                     </div>
                     <p className="text-gray-700 mb-2">
-                      <strong>Justification :</strong> Source vérifiée - Article de presse fiable avec citations officielles et dates précises. L&apos;information est factuelle et pertinente pour les consommateurs.&quot;
+                      <strong>Justification :</strong> Source vérifiée - Article de presse fiable avec citations officielles et dates précises concernant la gestion de l&apos;eau. L&apos;information est factuelle et pertinente pour les consommateurs.
                     </p>
                     <p className="text-sm text-gray-600">
                       <strong>Modérateur :</strong> @moderateur2 • <strong>Votes communauté :</strong> 8 pour, 1 contre
@@ -134,12 +134,12 @@ export default function Moderation() {
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center">
                         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;MODIFIÉ&quot;</span>
-                        <span className="font-semibold text-gray-900">&quot;Correction &quot;Amazon&quot;&quot;</span>
+                        <span className="font-semibold text-gray-900">&quot;Controverse Amazon - Évasion fiscale&quot;</span>
                       </div>
                       <span className="text-sm text-gray-500">28 juillet 2025</span>
                     </div>
                     <p className="text-gray-700 mb-2">
-                      <strong>Justification :</strong> Date corrigée - La date de l&apos;incident a été mise à jour suite à la vérification de sources complémentaires. Description également précisée pour plus de clarté.&quot;
+                      <strong>Justification :</strong> Date corrigée - La date de l&apos;incident d&apos;évasion fiscale a été mise à jour suite à la vérification de sources complémentaires. Description également précisée pour plus de clarté.
                     </p>
                     <p className="text-sm text-gray-600">
                       <strong>Modérateur :</strong> @moderateur1 • <strong>Votes communauté :</strong> 6 pour, 0 contre
@@ -159,7 +159,7 @@ export default function Moderation() {
                 </svg>
               </div>
               <div className="flex-1">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Comment contribuer à la modération</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Comment signaler</h2>
                 <p className="text-lg text-gray-700 mb-6">
                   La modération est un processus collaboratif. Voici comment vous pouvez participer :
                 </p>
@@ -167,15 +167,15 @@ export default function Moderation() {
                   <div className="flex items-start">
                     <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1">1</div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Proposer du contenu</h3>
-                      <p className="text-gray-700">Soumettez vos contributions via GitHub avec des sources fiables et des informations vérifiées.</p>
+                      <h3 className="font-semibold text-gray-900 mb-1">Signaler du contenu</h3>
+                      <p className="text-gray-700">Soumettez vos signalements via GitHub avec des sources fiables et des informations vérifiées.</p>
                     </div>
                   </div>
                   <div className="flex items-start">
                     <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1">2</div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Participer aux votes</h3>
-                      <p className="text-gray-700">Votez sur les propositions de la communauté en argumentant vos choix de manière constructive.</p>
+                      <p className="text-gray-700">Votez sur les signalements de la communauté en argumentant vos choix de manière constructive.</p>
                     </div>
                   </div>
                   <div className="flex items-start">

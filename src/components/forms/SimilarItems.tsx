@@ -28,14 +28,14 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
         </svg>
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-blue-900 mb-2">
-            ℹ️ Événements similaires trouvés
+            ℹ️ Controverses similaires trouvées
           </h3>
         </div>
       </div>
 
       <div className="space-y-4">
 
-        {/* Événements similaires */}
+        {/* Controverses similaires */}
         {results.evenements.length > 0 && (
           <div className="space-y-2">
             {results.evenements.map((evenement) => {
@@ -72,7 +72,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
       <div className="mt-4 pt-4 border-t border-blue-200">
         <div className="text-sm text-blue-800">
             <span className="font-medium">
-              💡 Des événements similaires existent déjà. Merci de vérifier qu&apos;il ne s&apos;agit pas d&apos;un doublon avant de soumettre votre proposition.
+              💡 Des controverses similaires existent déjà. Merci de vérifier qu&apos;il ne s&apos;agit pas d&apos;un doublon avant de soumettre votre signalement.
             </span>
         </div>
       </div>
