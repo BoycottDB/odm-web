@@ -44,7 +44,7 @@ export function EventCard({ event }: EventCardProps) {
 
       {/* Description */}
       <h3 className="text-2xl font-medium text-gray-900 mb-4 leading-relaxed">
-        {event.description}
+        {event.titre}
       </h3>
 
       {/* Source */}

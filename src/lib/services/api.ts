@@ -68,7 +68,7 @@ class ApiService {
     
     return allEvents.filter(event =>
       event.marque?.nom.toLowerCase().includes(query.toLowerCase()) ||
-      event.description.toLowerCase().includes(query.toLowerCase()) ||
+      event.titre.toLowerCase().includes(query.toLowerCase()) ||
       event.categorie?.nom.toLowerCase().includes(query.toLowerCase())
     );
   }

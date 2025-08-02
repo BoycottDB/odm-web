@@ -20,7 +20,7 @@ export interface Categorie {
 export interface Evenement {
   id: number;
   marque_id: number;
-  description: string;
+  titre: string; // Renommé de 'description' pour plus de clarté
   date: string;
   categorie_id: number;
   source_url: string;
@@ -67,7 +67,8 @@ export interface Proposition {
   id: number;
   marque_nom: string;
   marque_id?: number;
-  description: string;
+  description: string; // Message du contributeur aux modérateurs
+  titre_controverse?: string; // Titre public de la controverse (rempli par le modérateur)
   date: string;
   categorie_id?: number; // Optionnel - sera assigné par l'admin
   source_url: string;

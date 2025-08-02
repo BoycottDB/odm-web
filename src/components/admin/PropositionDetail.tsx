@@ -53,8 +53,10 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
         marque_nom: editedData.marque_nom,
       });
 
-      if (editedData.description) {
-        params.append('description', editedData.description);
+      // Utiliser titre_controverse si disponible, sinon description
+      const descriptionForSearch = editedData.titre_controverse?.trim() || editedData.description;
+      if (descriptionForSearch) {
+        params.append('description', descriptionForSearch);
       }
       if (editedData.date) {
         params.append('date', editedData.date);
@@ -84,7 +86,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
     } finally {
       setIsLoadingSimilar(false);
     }
-  }, [editedData?.marque_nom, editedData?.description, editedData?.date, editedData?.source_url]);
+  }, [editedData?.marque_nom, editedData?.description, editedData?.titre_controverse, editedData?.date, editedData?.source_url]);
 
   // Fonction pour lier automatiquement une marque basée sur le nom
   const autoLinkMarque = useCallback(async (marqueName: string) => {
@@ -303,6 +305,13 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
       errors.push('La source (URL) est obligatoire');
     } else if (!/^https?:\/\/.+/.test(editedData.source_url.trim())) {
       errors.push('La source doit être une URL valide (http:// ou https://)');
+    }
+    if (!editedData.titre_controverse?.trim()) {
+      errors.push('Le titre de la controverse est obligatoire');
+    } else if (editedData.titre_controverse.trim().length < 10) {
+      errors.push('Le titre de la controverse doit faire au moins 10 caractères');
+    } else if (editedData.titre_controverse.trim().length > 200) {
+      errors.push('Le titre de la controverse ne peut pas dépasser 200 caractères');
     }
     
     setValidationErrors(errors);
@@ -575,6 +584,26 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                 required
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Titre de la controverse *
+                <span className="text-xs text-gray-500 block mt-1">Ce titre apparaîtra publiquement sur le site</span>
+              </label>
+              <textarea
+                value={editedData?.titre_controverse || ''}
+                onChange={(e) => handleFieldChange('titre_controverse', e.target.value)}
+                className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                rows={3}
+                placeholder="Rédigez un titre clair et concis qui décrit la controverse..."
+                required
+                maxLength={200}
+                minLength={10}
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                {editedData?.titre_controverse?.length || 0}/200 caractères (minimum 10)
+              </p>
             </div>
           </div>
         </div>

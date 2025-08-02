@@ -226,7 +226,7 @@ export async function GET(req: NextRequest) {
             marque_nom, 
             evenement.marque?.nom || '',
             description || undefined,
-            evenement.description,
+            evenement.titre,
             dateParam || undefined,
             evenement.date,
             source_url || undefined,

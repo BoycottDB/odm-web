@@ -59,6 +59,10 @@ export async function convertPropositionToEvenement(proposition: Proposition): P
     throw new Error('Seules les propositions approuvées peuvent être converties');
   }
 
+  if (!proposition.titre_controverse?.trim()) {
+    throw new Error('Le titre de la controverse doit être renseigné avant la conversion');
+  }
+
   // Assurer que la marque existe
   const marqueId = await ensureMarqueExists(proposition.marque_nom, proposition.marque_id);
 
@@ -67,7 +71,7 @@ export async function convertPropositionToEvenement(proposition: Proposition): P
     .from('Evenement')
     .insert({
       marque_id: marqueId,
-      description: proposition.description,
+      titre: proposition.titre_controverse!, // Utilise le titre rédigé par le modérateur
       date: proposition.date,
       categorie_id: proposition.categorie_id!,
       source_url: proposition.source_url,
