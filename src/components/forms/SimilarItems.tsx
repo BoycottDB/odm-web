@@ -59,9 +59,9 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
                         </span>
                       </div>
                       <div className="text-sm text-gray-600 mt-1">
-                        {evenement.description.length > 100 
-                          ? `${new Date(evenement.date).toLocaleDateString('fr-FR') + " · " + evenement.description.substring(0, 100)}...`
-                          : `${new Date(evenement.date).toLocaleDateString('fr-FR') + " · " + evenement.description}`
+                        {evenement.titre.length > 100 
+                          ? `${new Date(evenement.date).toLocaleDateString('fr-FR') + " · " + evenement.titre.substring(0, 100)}...`
+                          : `${new Date(evenement.date).toLocaleDateString('fr-FR') + " · " + evenement.titre}`
                         }
                       </div>
                     </div>

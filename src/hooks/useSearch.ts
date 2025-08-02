@@ -90,7 +90,7 @@ export function useSearch() {
       const normalizedQuery = query.toLowerCase().trim();
       const filtered = allEvenements.filter(event =>
         event.marque?.nom.toLowerCase().includes(normalizedQuery) ||
-        event.description.toLowerCase().includes(normalizedQuery) ||
+        event.titre.toLowerCase().includes(normalizedQuery) ||
         event.categorie?.nom.toLowerCase().includes(normalizedQuery)
       );
 

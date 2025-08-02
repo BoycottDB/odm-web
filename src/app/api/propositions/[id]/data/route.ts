@@ -24,6 +24,7 @@ export async function PATCH(
       'marque_nom',
       'marque_id', 
       'description',
+      'titre_controverse',
       'date',
       'categorie_id',
       'source_url'
