@@ -1,13 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
 import { validateMarqueCreate } from '@/lib/validation/schemas';
 import { getErrorMessage } from '@/lib/utils/helpers';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const { data: marques, error } = await supabase
-      .from('Marque')
-      .select('*');
+    const { searchParams } = new URL(request.url);
+    const search = searchParams.get('search');
+    
+    let query = supabase.from('Marque').select('*');
+    
+    if (search) {
+      query = query.ilike('nom', `%${search}%`);
+    }
+    
+    const { data: marques, error } = await query;
     if (error) throw error;
     return NextResponse.json(marques);
   } catch (error) {
@@ -33,7 +40,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Vérifier si la marque existe déjà
-    const { data: existingMarque, error: findError } = await supabase
+    const { data: existingMarque, error: findError } = await supabaseAdmin
       .from('Marque')
       .select('*')
       .eq('nom', validation.data!.nom)
@@ -48,9 +55,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Créer la marque
-    const { data: marque, error: createError } = await supabase
+    const { data: marque, error: createError } = await supabaseAdmin
       .from('Marque')
       .insert([validation.data!])
+      .select()
       .single();
     if (createError) throw createError;
     return NextResponse.json(marque, { status: 201 });

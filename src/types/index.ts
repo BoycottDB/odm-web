@@ -19,11 +19,12 @@ export interface Categorie {
 
 export interface Evenement {
   id: number;
-  marqueId: number;
+  marque_id: number;
   description: string;
   date: string;
-  categorieId: number;
-  source: string;
+  categorie_id: number;
+  source_url: string;
+  proposition_source_id?: number;
   marque?: Marque;
   categorie?: Categorie;
 }
@@ -54,18 +55,22 @@ export interface MarqueCreateRequest {
 }
 
 export interface EvenementCreateRequest {
-  marqueId: number;
+  marque_id: number;
   description: string;
   date: string;
-  categorieId: number;
-  source: string;
+  categorie_id: number;
+  source_url: string;
 }
 
-// Types pour le système de modération
+// Types pour le système de modération (simplifié - seulement des controverses)
 export interface Proposition {
   id: number;
-  type: 'marque' | 'evenement';
-  data: MarqueProposition | EvenementProposition;
+  marque_nom: string;
+  marque_id?: number;
+  description: string;
+  date: string;
+  categorie_id?: number; // Optionnel - sera assigné par l'admin
+  source_url: string;
   statut: 'en_attente' | 'approuve' | 'rejete';
   commentaire_admin?: string;
   decision_publique: boolean;
@@ -73,23 +78,8 @@ export interface Proposition {
   updated_at: string;
 }
 
-export interface MarqueProposition {
-  nom: string;
-}
-
-export interface EvenementProposition {
-  marque_nom: string;
-  marque_id?: number;
-  description: string;
-  date: string;
-  categorieId?: number; // Optionnel - sera assigné par l'admin
-  source: string;
-  source_url?: string;
-}
-
 export interface DecisionPublique {
   id: number;
-  type: 'marque' | 'evenement';
   titre: string;
   statut: 'approuve' | 'rejete';
   commentaire_admin: string;
@@ -103,10 +93,12 @@ export interface SimilarityScore {
   overall: number;
 }
 
-
+// Interface pour créer une nouvelle proposition (formulaire public)
 export interface PropositionCreateRequest {
-  type: 'marque' | 'evenement';
-  data: MarqueProposition | EvenementProposition;
+  marque_nom: string;
+  description: string;
+  date: string;
+  source_url: string;
 }
 
 export interface PropositionUpdateRequest {

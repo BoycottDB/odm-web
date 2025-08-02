@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminAuth } from '@/lib/auth/admin';
-import { apiService } from '@/lib/services/api';
 import { Proposition } from '@/types';
 import PropositionDetail from '@/components/admin/PropositionDetail';
 import PropositionList from '@/components/admin/PropositionList';
@@ -122,18 +121,12 @@ export default function AdminModeration() {
               </h1>
               <div className="ml-6 flex items-center space-x-4">
                 <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                  {filteredPropositions.length} controverses en attente
+                  {filteredPropositions.length} signalements en attente
                 </span>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setSelectedProposition(null)}
-                className="text-gray-600 hover:text-gray-800"
-              >
-                Vue liste
-              </button>
               <button
                 onClick={handleLogout}
                 className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"

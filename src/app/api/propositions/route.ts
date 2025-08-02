@@ -41,8 +41,7 @@ export async function POST(req: NextRequest) {
 
     // Créer la proposition
     const propositionData = {
-      type: validation.data!.type,
-      data: validation.data!.data,
+      ...validation.data!,
       statut: 'en_attente',
       decision_publique: false
     };

@@ -48,10 +48,10 @@ export function EventCard({ event }: EventCardProps) {
       </h3>
 
       {/* Source */}
-      {event.source && (
+      {event.source_url && (
         <div className="pt-4 border-t border-gray-100">
           <a
-            href={event.source}
+            href={event.source_url}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-lg font-medium text-berry-600 hover:text-berry-700 transition-colors duration-200"
