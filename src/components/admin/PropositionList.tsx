@@ -42,21 +42,11 @@ export default function PropositionList({ propositions, onSelectProposition }: P
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3">
-                    {/* Icône du type */}
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-green-100 text-green-600">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    
                     {/* Contenu */}
                     <div className="flex-1">
                       <div className="flex items-center space-x-2">
                         <span className="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
-                          Controverse
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          #{proposition.id}
+                          Signalement #{proposition.id}
                         </span>
                       </div>
                       

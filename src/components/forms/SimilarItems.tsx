@@ -77,7 +77,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
           <div className="mt-4 pt-4 border-t border-blue-200">
             <div className="text-sm text-blue-800">
               <span className="font-medium">
-                Des controverses similaires existent déjà. Merci de vérifier qu&apos;il ne s&apos;agit pas d&apos;un doublon avant de soumettre votre signalement.
+                Des controverses similaires existent déjà.
               </span>
             </div>
           </div>
@@ -139,7 +139,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
         <div className="text-sm text-yellow-800">
           <span className="font-medium">
-            🔍 Merci de vérifier qu&apos;il ne s&apos;agit pas d&apos;un doublon avant de soumettre votre signalement.
+            🔍 Merci de vérifier qu&apos;il ne s&apos;agit pas d&apos;un doublon.
           </span>
         </div>
       </div>
