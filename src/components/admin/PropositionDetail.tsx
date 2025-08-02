@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Proposition, Categorie } from '@/types';
+import { Proposition, Categorie, Marque, Evenement, SimilarityScore } from '@/types';
 import { formatDate } from '@/lib/utils/helpers';
+import SimilarItems from '@/components/forms/SimilarItems';
 
 interface PropositionDetailProps {
   proposition: Proposition;
@@ -27,6 +28,92 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
   const [categorySearchResults, setCategorySearchResults] = useState<Categorie[]>([]);
   const [showCategoryResults, setShowCategoryResults] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  
+  // Détection de similarités
+  const [similarResults, setSimilarResults] = useState<{
+    marques: Array<Marque & { score: SimilarityScore }>;
+    evenements: Array<Evenement & { score: SimilarityScore }>;
+    propositions: Array<Proposition & { score: SimilarityScore }>;
+  } | null>(null);
+  const [showSimilar, setShowSimilar] = useState(false);
+  const [isLoadingSimilar, setIsLoadingSimilar] = useState(false);
+  const [isAutoLinked, setIsAutoLinked] = useState(false);
+
+  // Fonction pour rechercher les similarités
+  const checkForSimilar = useCallback(async () => {
+    if (!editedData?.marque_nom || editedData.marque_nom.length < 3) {
+      setShowSimilar(false);
+      return;
+    }
+
+    setIsLoadingSimilar(true);
+    try {
+      const params = new URLSearchParams({
+        type: 'evenement',
+        marque_nom: editedData.marque_nom,
+      });
+
+      if (editedData.description) {
+        params.append('description', editedData.description);
+      }
+      if (editedData.date) {
+        params.append('date', editedData.date);
+      }
+      if (editedData.source_url) {
+        params.append('source_url', editedData.source_url);
+      }
+
+      const response = await fetch(`/api/search-similaire?${params.toString()}`);
+      if (response.ok) {
+        const results = await response.json();
+        // On ne garde que les événements validés (pas les propositions en attente)
+        const filteredResults = {
+          ...results,
+          propositions: [] // Ne pas afficher les autres propositions en attente
+        };
+        
+        if (filteredResults.evenements.length > 0 || filteredResults.marques.length > 0) {
+          setSimilarResults(filteredResults);
+          setShowSimilar(true);
+        } else {
+          setShowSimilar(false);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la recherche de similarités:', error);
+    } finally {
+      setIsLoadingSimilar(false);
+    }
+  }, [editedData?.marque_nom, editedData?.description, editedData?.date, editedData?.source_url]);
+
+  // Fonction pour lier automatiquement une marque basée sur le nom
+  const autoLinkMarque = useCallback(async (marqueName: string) => {
+    if (!marqueName || marqueName.length < 2) return;
+    
+    try {
+      const response = await fetch(`/api/marques?search=${encodeURIComponent(marqueName)}`);
+      if (response.ok) {
+        const marques = await response.json();
+        
+        // Chercher une correspondance exacte (insensible à la casse)
+        const exactMatch = marques.find((m: { nom: string }) => 
+          m.nom.toLowerCase() === marqueName.toLowerCase()
+        );
+        
+        if (exactMatch && !editedData?.marque_id) {
+          // Lier automatiquement la marque si pas déjà lié
+          setEditedData(prev => ({
+            ...prev,
+            marque_id: exactMatch.id
+          }));
+          setIsAutoLinked(true);
+          console.log(`Auto-liaison : "${marqueName}" → Marque ID ${exactMatch.id}`);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'auto-liaison de marque:', error);
+    }
+  }, [editedData?.marque_id]);
 
   // Charger les catégories une seule fois au montage
   useEffect(() => {
@@ -37,8 +124,12 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
   useEffect(() => {
     if (editedData?.marque_nom) {
       setMarqueSearch(editedData.marque_nom);
+      // Tenter l'auto-liaison au chargement si pas déjà lié
+      if (!editedData.marque_id) {
+        autoLinkMarque(editedData.marque_nom);
+      }
     }
-  }, [editedData?.marque_nom]);
+  }, [editedData?.marque_nom, editedData?.marque_id, autoLinkMarque]);
 
   // Initialiser la recherche de catégorie quand les catégories sont chargées et qu'une catégorie est sélectionnée
   useEffect(() => {
@@ -49,6 +140,15 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
       }
     }
   }, [editedData?.categorie_id, categories]);
+
+  // Relancer la recherche de similarités quand les données changent
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      checkForSimilar();
+    }, 500); // Debounce de 500ms
+    
+    return () => clearTimeout(timeoutId);
+  }, [checkForSimilar]);
 
   // Fermer les résultats lors du clic en dehors
   useEffect(() => {
@@ -162,9 +262,10 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
     handleFieldChange('marque_nom', value);
     searchMarques(value);
     
-    // Reset marque_id si on change le nom
+    // Reset marque_id et le flag d'auto-liaison si on change le nom
     if (editedData?.marque_id) {
       handleFieldChange('marque_id', undefined);
+      setIsAutoLinked(false);
     }
   };
 
@@ -173,6 +274,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
     handleFieldChange('marque_nom', marque.nom);
     handleFieldChange('marque_id', marque.id);
     setShowMarqueResults(false);
+    setIsAutoLinked(false); // Sélection manuelle, pas auto-liaison
   };
 
   const handleFieldChange = (field: string, value: string | number | undefined) => {
@@ -281,9 +383,6 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 Signalement #{proposition.id}
               </h1>
               <div className="flex items-center space-x-2 mt-1">
-                <span className="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
-                  Controverse
-                </span>
                 <span className="text-sm text-gray-500">
                   Soumis le {formatDate(proposition.created_at)}
                 </span>
@@ -303,7 +402,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Message du contributeur <span className="text-xs text-gray-500">(non modifiable)</span>
               </label>
-              <div className="text-gray-900 bg-white p-3 rounded border border-gray-200">
+              <div className="text-gray-900 p-3 rounded border border-gray-200">
                 {editedData?.description}
               </div>
             </div>
@@ -329,12 +428,16 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                   }
                 }}
                 placeholder="Rechercher ou saisir le nom de la marque"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                 required
               />
               
               {editedData?.marque_id && (
-                <p className="text-sm text-green-600 mt-1">✅ Marque existante (ID: {editedData.marque_id})</p>
+                <div className="mt-1">
+                  {isAutoLinked && (
+                    <p className="text-sm text-blue-600">🔗 Marque liée automatiquement</p>  
+                  )}
+                </div>
               )}
               
               {/* Résultats de recherche */}
@@ -359,7 +462,6 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                       className="w-full px-3 py-2 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 cursor-pointer focus:bg-gray-50 focus:outline-none"
                     >
                       <div className="font-medium text-gray-900">{marque.nom}</div>
-                      <div className="text-sm text-gray-500">ID: {marque.id}</div>
                     </div>
                   ))}
                 </div>
@@ -380,7 +482,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                   type="date"
                   value={editedData?.date || ''}
                   onChange={(e) => handleFieldChange('date', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                  className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                   required
                 />
               </div>
@@ -406,13 +508,9 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                     }
                   }}
                   placeholder="Rechercher ou créer une catégorie"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                  className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                   required
                 />
-                
-                {editedData?.categorie_id && (
-                  <p className="text-sm text-green-600 mt-1">✅ Catégorie sélectionnée (ID: {editedData.categorie_id})</p>
-                )}
                 
                 {/* Résultats de recherche catégories */}
                 {showCategoryResults && categorySearchResults.length > 0 && (
@@ -436,7 +534,6 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                         className="w-full px-3 py-2 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 cursor-pointer focus:bg-gray-50 focus:outline-none"
                       >
                         <div className="font-medium text-gray-900">{category.nom}</div>
-                        <div className="text-sm text-gray-500">ID: {category.id}</div>
                       </div>
                     ))}
                     {/* Option créer nouvelle catégorie */}
@@ -475,12 +572,29 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 value={editedData?.source_url || ''}
                 onChange={(e) => handleFieldChange('source_url', e.target.value)}
                 placeholder="https://exemple.com/article"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                 required
               />
             </div>
           </div>
         </div>
+
+        {/* Recherche de similarités */}
+        {isLoadingSimilar && (
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-center">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-3"></div>
+              <span className="text-blue-800 text-sm font-medium">Recherche de controverses similaires...</span>
+            </div>
+          </div>
+        )}
+
+        {/* Affichage des similarités */}
+        {showSimilar && similarResults && !isLoadingSimilar && (
+          <div className="mb-6">
+            <SimilarItems results={similarResults} />
+          </div>
+        )}
 
         {/* Erreurs de validation */}
         {validationErrors.length > 0 && (
