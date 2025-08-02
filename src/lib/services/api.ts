@@ -102,14 +102,19 @@ class ApiService {
     type: 'marque' | 'evenement';
     marque_nom?: string;
     description?: string;
+    date?: string;
+    source_url?: string;
   }): Promise<{ 
     marques: Array<Marque & { score: SimilarityScore }>;
     evenements: Array<Evenement & { score: SimilarityScore }>;
+    propositions: Array<Proposition & { score: SimilarityScore }>;
   }> {
     const params = new URLSearchParams();
     params.append('type', query.type);
     if (query.marque_nom) params.append('marque_nom', query.marque_nom);
     if (query.description) params.append('description', query.description);
+    if (query.date) params.append('date', query.date);
+    if (query.source_url) params.append('source_url', query.source_url);
 
     return this.request(`/search-similaire?${params.toString()}`);
   }

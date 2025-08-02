@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/lib/supabaseClient';
 import { validatePropositionUpdate } from '@/lib/validation/schemas';
 import { getErrorMessage } from '@/lib/utils/helpers';
 import { requireAdmin } from '@/lib/auth/admin';
+import { convertApprovedProposition } from '@/lib/services/moderation';
 
 export async function PATCH(
   req: NextRequest,
@@ -61,6 +62,30 @@ export async function PATCH(
       .single();
     
     if (updateError) throw updateError;
+
+    // Si la proposition vient d'être approuvée, la convertir automatiquement
+    const wasApproved = existingProposition.statut !== 'approuve' && proposition.statut === 'approuve';
+    
+    if (wasApproved) {
+      try {
+        const conversionResult = await convertApprovedProposition(proposition);
+        console.log(`✅ Proposition ${id} convertie automatiquement:`, conversionResult.type);
+        
+        // Retourner les infos de la proposition + le résultat de la conversion
+        return NextResponse.json({
+          proposition,
+          conversion: conversionResult
+        });
+      } catch (conversionError) {
+        console.error('❌ Erreur lors de la conversion automatique:', conversionError);
+        // Ne pas faire échouer la mise à jour si la conversion échoue
+        // La proposition reste approuvée mais pourra être convertie manuellement plus tard
+        return NextResponse.json({
+          proposition,
+          conversion_error: getErrorMessage(conversionError)
+        });
+      }
+    }
     
     return NextResponse.json(proposition);
   } catch (error) {

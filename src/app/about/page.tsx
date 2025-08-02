@@ -86,21 +86,21 @@ export default function About() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Comment ça fonctionne</h2>
                 <div className="space-y-4">
                   <div className="flex items-start">
-                    <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1">1</div>
+                    <div className="bg-blue-500 text-white rounded-full w-8 h-6 flex items-center justify-center text-sm font-bold mr-4 mt-1">1</div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Base de données collaborative</h3>
                       <p className="text-gray-700">Stockée dans un dépôt Git public (GitHub/GitLab). Contributions via merge requests, modération transparente, historique clair et accessible.</p>
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1">2</div>
+                    <div className="bg-blue-500 text-white rounded-full w-8 h-6 flex items-center justify-center text-sm font-bold mr-4 mt-1">2</div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Workflow de contribution</h3>
                       <p className="text-gray-700">Fork du dépôt → Création d&apos;une merge request → Validation (ou refus justifié) par la communauté → Historique public et argumenté.</p>
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1">3</div>
+                    <div className="bg-blue-500 text-white rounded-full w-8 h-6 flex items-center justify-center text-sm font-bold mr-4 mt-1">3</div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Modération transparente</h3>
                       <p className="text-gray-700">Chaque validation ou refus est justifié publiquement dans un onglet dédié. Les débats et contributions doivent rester courtois et argumentés.</p>

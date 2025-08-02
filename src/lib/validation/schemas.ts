@@ -1,5 +1,5 @@
 // Schémas de validation pour les API
-import type { PropositionCreateRequest, MarqueProposition, EvenementProposition, PropositionUpdateRequest } from '@/types';
+import type { PropositionCreateRequest, PropositionUpdateRequest } from '@/types';
 export interface ValidationResult<T> {
   success: boolean;
   data?: T;
@@ -38,11 +38,11 @@ export function validateMarqueCreate(data: unknown): ValidationResult<{ nom: str
 }
 
 export function validateEvenementCreate(data: unknown): ValidationResult<{
-  marqueId: number;
+  marque_id: number;
   description: string;
   date: string;
-  categorieId: number;
-  source: string;
+  categorie_id: number;
+  source_url: string;
 }> {
   const errors: string[] = [];
 
@@ -52,23 +52,23 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
   }
 
   const {
-    marqueId,
+    marque_id,
     description,
     date,
-    categorieId,
-    source
+    categorie_id,
+    source_url
   } = data as {
-    marqueId?: unknown;
+    marque_id?: unknown;
     description?: unknown;
     date?: unknown;
-    categorieId?: unknown;
-    source?: unknown;
+    categorie_id?: unknown;
+    source_url?: unknown;
   };
 
-  // Validation marqueId
-  if (marqueId === undefined || marqueId === null) {
+  // Validation marque_id
+  if (marque_id === undefined || marque_id === null) {
     errors.push('L\'ID de la marque est requis');
-  } else if (typeof marqueId !== 'number' || !Number.isInteger(marqueId)) {
+  } else if (typeof marque_id !== 'number' || !Number.isInteger(marque_id)) {
     errors.push('L\'ID de la marque doit être un nombre entier');
   }
 
@@ -89,14 +89,14 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
     errors.push('La date est requise');
   }
 
-  // Validation categorieId
-  if (typeof categorieId !== 'number' || categorieId <= 0) {
+  // Validation categorie_id
+  if (typeof categorie_id !== 'number' || categorie_id <= 0) {
     errors.push('La catégorie est requise');
   }
 
-  // Validation source
-  if (typeof source !== 'string' || !source.trim()) {
-    errors.push('La source est requise');
+  // Validation source_url
+  if (typeof source_url !== 'string' || !source_url.trim()) {
+    errors.push('L\'URL de la source est requise');
   }
 
   // Validation date (format)
@@ -111,11 +111,11 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
   return {
     success: true,
     data: {
-      marqueId: Number(marqueId),
+      marque_id: Number(marque_id),
       description: typeof description === 'string' ? description.trim() : '',
       date: typeof date === 'string' ? date : '',
-      categorieId: typeof categorieId === 'number' ? categorieId : 0,
-      source: typeof source === 'string' ? source.trim() : ''
+      categorie_id: typeof categorie_id === 'number' ? categorie_id : 0,
+      source_url: typeof source_url === 'string' ? source_url.trim() : ''
     }
   };
 }
@@ -170,127 +170,9 @@ function validateSecureText(text: string, field: 'description' | 'source'): stri
   return errors;
 }
 
-export function validateMarqueProposition(data: unknown): ValidationResult<MarqueProposition> {
-  const errors: string[] = [];
+// Function removed - no longer needed with simplified architecture
 
-  if (typeof data !== 'object' || data === null || !('nom' in data)) {
-    errors.push('Le nom de la marque est requis');
-    return { success: false, errors };
-  }
-
-  const nom = (data as { nom: unknown }).nom;
-
-  if (typeof nom !== 'string') {
-    errors.push('Le nom de la marque doit être une chaîne de caractères');
-  } else {
-    if (nom.trim().length < 2) {
-      errors.push('Le nom de la marque doit contenir au moins 2 caractères');
-    }
-    if (nom.trim().length > 100) {
-      errors.push('Le nom de la marque ne peut pas dépasser 100 caractères');
-    }
-  }
-
-  if (errors.length > 0) {
-    return { success: false, errors };
-  }
-
-  return {
-    success: true,
-    data: { nom: (nom as string).trim() }
-  };
-}
-
-export function validateEvenementProposition(data: unknown): ValidationResult<EvenementProposition> {
-  const errors: string[] = [];
-
-  if (typeof data !== 'object' || data === null) {
-    errors.push('Les données de l\'événement sont invalides');
-    return { success: false, errors };
-  }
-
-  const {
-    marque_nom,
-    marque_id,
-    description,
-    date,
-    categorieId,
-    source,
-    source_url
-  } = data as {
-    marque_nom?: unknown;
-    marque_id?: unknown;
-    description?: unknown;
-    date?: unknown;
-    categorieId?: unknown;
-    source?: unknown;
-    source_url?: unknown;
-  };
-
-  // Validation marque_nom
-  if (typeof marque_nom !== 'string' || !marque_nom.trim()) {
-    errors.push('Le nom de la marque est requis');
-  } else {
-    if (marque_nom.trim().length < 2) {
-      errors.push('Le nom de la marque doit contenir au moins 2 caractères');
-    }
-    if (marque_nom.trim().length > 100) {
-      errors.push('Le nom de la marque ne peut pas dépasser 100 caractères');
-    }
-  }
-
-  // Validation marque_id (optionnel)
-  if (marque_id !== undefined && marque_id !== null) {
-    if (typeof marque_id !== 'number' || !Number.isInteger(marque_id)) {
-      errors.push('L\'ID de la marque doit être un nombre entier');
-    }
-  }
-
-  // Validation description avec sécurité
-  if (typeof description !== 'string' || !description.trim()) {
-    errors.push('La description est requise');
-  } else {
-    const securityErrors = validateSecureText(description.trim(), 'description');
-    errors.push(...securityErrors);
-  }
-
-  // Validation date
-  if (typeof date !== 'string' || !date.trim()) {
-    errors.push('La date est requise');
-  } else if (isNaN(Date.parse(date))) {
-    errors.push('La date doit être au format valide');
-  }
-
-  // categorieId sera assigné par l'admin plus tard
-  // Pas de validation côté utilisateur
-
-  // Validation source
-  if (typeof source !== 'string' || !source.trim()) {
-    errors.push('La source est requise');
-  }
-
-  // Validation source_url avec sécurité
-  if (source_url && typeof source_url === 'string' && source_url.trim()) {
-    const securityErrors = validateSecureText(source_url.trim(), 'source');
-    errors.push(...securityErrors);
-  }
-
-  if (errors.length > 0) {
-    return { success: false, errors };
-  }
-
-  return {
-    success: true,
-    data: {
-      marque_nom: typeof marque_nom === 'string' ? marque_nom.trim() : '',
-      marque_id: typeof marque_id === 'number' ? marque_id : undefined,
-      description: typeof description === 'string' ? description.trim() : '',
-      date: typeof date === 'string' ? date : '',
-      source: typeof source === 'string' ? source.trim() : '',
-      source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : undefined
-    }
-  };
-}
+// Function removed - no longer needed with simplified architecture
 
 export function validatePropositionCreate(data: unknown): ValidationResult<PropositionCreateRequest> {
   const errors: string[] = [];
@@ -300,41 +182,51 @@ export function validatePropositionCreate(data: unknown): ValidationResult<Propo
     return { success: false, errors };
   }
 
-  const { type, data: propositionData } = data as {
-    type?: unknown;
-    data?: unknown;
+  const { marque_nom, description, date, source_url } = data as {
+    marque_nom?: unknown;
+    description?: unknown;
+    date?: unknown;
+    source_url?: unknown;
   };
 
-  // Validation type
-  if (type !== 'marque' && type !== 'evenement') {
-    errors.push('Le type de proposition doit être "marque" ou "evenement"');
-    return { success: false, errors };
+  // Validation des champs obligatoires
+  if (typeof marque_nom !== 'string' || !marque_nom.trim()) {
+    errors.push('Le nom de la marque est obligatoire');
   }
 
-  // Validation des données selon le type
-  let validatedData: MarqueProposition | EvenementProposition;
+  if (typeof description !== 'string' || !description.trim()) {
+    errors.push('La description est obligatoire');
+  }
 
-  if (type === 'marque') {
-    const validation = validateMarqueProposition(propositionData);
-    if (!validation.success) {
-      errors.push(...(validation.errors || []));
-      return { success: false, errors };
-    }
-    validatedData = validation.data!;
+  if (typeof date !== 'string' || !date.trim()) {
+    errors.push('La date est obligatoire');
   } else {
-    const validation = validateEvenementProposition(propositionData);
-    if (!validation.success) {
-      errors.push(...(validation.errors || []));
-      return { success: false, errors };
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(date)) {
+      errors.push('La date doit être au format YYYY-MM-DD');
     }
-    validatedData = validation.data!;
+  }
+
+  if (typeof source_url !== 'string' || !source_url.trim()) {
+    errors.push('La source (URL) est obligatoire');
+  } else {
+    const urlRegex = /^https?:\/\/.+/;
+    if (!urlRegex.test(source_url.trim())) {
+      errors.push('La source doit être une URL valide (http:// ou https://)');
+    }
+  }
+
+  if (errors.length > 0) {
+    return { success: false, errors };
   }
 
   return {
     success: true,
     data: {
-      type,
-      data: validatedData
+      marque_nom: (marque_nom as string).trim(),
+      description: (description as string).trim(),
+      date: (date as string).trim(),
+      source_url: (source_url as string).trim()
     }
   };
 }

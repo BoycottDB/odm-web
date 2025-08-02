@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const { data, error } = await supabase
       .from('Evenement')
-      .select('*, Marque(*), Categorie(*)')
+      .select('*, Marque(*), Categorie!Evenement_categorie_id_fkey(*)')
       .order('date', { ascending: false });
     if (error) throw error;
     // Normalisation des clés pour compatibilité front
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const { data: marque, error: marqueError } = await supabase
       .from('Marque')
       .select('*')
-      .eq('id', validation.data!.marqueId)
+      .eq('id', validation.data!.marque_id)
       .single();
 
     if (marqueError || !marque) {
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
           date: validation.data!.date // Assure-toi que c'est bien un format ISO ou Date compatible
         }
       ])
-      .select('*, Marque(*), Categorie(*)')
+      .select('*, Marque(*), Categorie!Evenement_categorie_id_fkey(*)')
       .single();
 
     if (eventError) {

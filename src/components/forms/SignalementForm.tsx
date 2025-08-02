@@ -6,22 +6,14 @@ import { validateHoneypot, validateSubmissionTime } from '@/lib/security/honeypo
 import Captcha from '@/components/ui/Captcha';
 import HoneypotField from '@/components/ui/HoneypotField';
 import SimilarItems from './SimilarItems';
-import { Marque, Evenement, SimilarityScore } from '@/types';
+import { Marque, Evenement, Proposition, SimilarityScore } from '@/types';
 
 interface SimilarResults {
   marques: Array<Marque & { score: SimilarityScore }>;
   evenements: Array<Evenement & { score: SimilarityScore }>;
+  propositions: Array<Proposition & { score: SimilarityScore }>;
 }
 
-// Fonction helper pour extraire le nom du média à partir de l'URL
-function extractSourceFromUrl(url: string): string {
-  try {
-    const domain = new URL(url).hostname.replace('www.', '');
-    return domain.charAt(0).toUpperCase() + domain.slice(1);
-  } catch {
-    return 'Source';
-  }
-}
 
 export default function SignalementForm() {
   // Plus de choix de type - seules les controverses sont autorisées
@@ -75,21 +67,25 @@ export default function SignalementForm() {
 
   // Recherche de doublons  
   useEffect(() => {
-    if (formData.marque_nom.length > 2 && formData.description.length > 10) {
+    if (formData.marque_nom.length > 2) {
       checkForSimilar();
+    } else {
+      setShowSimilar(false);
     }
-  }, [formData.marque_nom, formData.description]);
+  }, [formData.marque_nom, formData.description, formData.date, formData.source_url]);
 
   const checkForSimilar = async () => {
     try {
       const query = {
         type,
         marque_nom: formData.marque_nom,
-        description: formData.description
+        description: formData.description.length > 0 ? formData.description : undefined,
+        date: formData.date ? formData.date : undefined,
+        source_url: formData.source_url.length > 0 ? formData.source_url : undefined
       };
 
       const results = await apiService.searchSimilaire(query);
-      if (results.marques.length > 0 || results.evenements.length > 0) {
+      if (results.marques.length > 0 || results.evenements.length > 0 || results.propositions.length > 0) {
         setSimilarResults(results);
         setShowSimilar(true);
       } else {
@@ -125,15 +121,10 @@ export default function SignalementForm() {
 
     try {
       const propositionData = {
-        type,
-        data: {
-          marque_nom: formData.marque_nom,
-          marque_id: formData.marque_id,
-          description: formData.description,
-          date: formData.date,
-          source: extractSourceFromUrl(formData.source_url),
-          source_url: formData.source_url
-        }
+        marque_nom: formData.marque_nom,
+        description: formData.description,
+        date: formData.date,
+        source_url: formData.source_url
       };
 
       await apiService.createProposition(propositionData);
@@ -231,6 +222,7 @@ export default function SignalementForm() {
                       onClick={() => {
                         setFormData({ ...formData, marque_nom: marque.nom, marque_id: marque.id });
                         setShowSuggestions(false);
+                        setMarquesSuggestions([]);
                       }}
                       className="w-full text-left px-3 py-2 hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg"
                     >
@@ -239,26 +231,6 @@ export default function SignalementForm() {
                   ))}
                 </div>
               )}
-            </div>
-
-            {/* Description */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description de la controverse *
-              </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
-                rows={4}
-                placeholder="Décrivez la controverse ou les pratiques concernées..."
-                required
-                maxLength={1000}
-                minLength={10}
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Minimum 10 caractères, maximum 1000 caractères
-              </p>
             </div>
 
             {/* Date */}
@@ -293,10 +265,30 @@ export default function SignalementForm() {
                 placeholder="https://www.mediapart.fr/article-exemple"
                 required
               />
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-sm text-gray-500">
                 URL d&apos;un article ou d&apos;une source fiable documentant la controverse
               </p>
             </div>
+
+        {/* Message aux modérateurs */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Message aux modérateurs *
+          </label>
+          <textarea
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+            rows={4}
+            placeholder="Expliquez pourquoi vous signalez cette marque, les pratiques concernées, les sources d'information..."
+            required
+            maxLength={1000}
+            minLength={10}
+          />
+          <p className="text-sm text-gray-500 mt-1">
+            Minimum 10 caractères, maximum 1000 caractères
+          </p>
+        </div>
 
         {/* Éléments similaires */}
         {showSimilar && similarResults && (
