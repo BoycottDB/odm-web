@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
-import { MarqueDirigeantCreateRequest, DirigeantWithMarques } from '@/types';
+import { MarqueDirigeantCreateRequest, DirigeantWithMarques, Marque } from '@/types';
 
 export async function GET() {
   try {
@@ -32,7 +32,7 @@ export async function GET() {
         lien_financier: item.lien_financier,
         impact_description: item.impact_description,
         liaison_id: item.id // ID de la liaison marque_dirigeant
-      } as any);
+      } as Marque & { lien_financier: string; impact_description: string; liaison_id: number });
     });
     
     return NextResponse.json(Object.values(grouped));
@@ -169,7 +169,7 @@ export async function PUT(request: NextRequest) {
         acc[key] = updateData[key];
       }
       return acc;
-    }, {} as any);
+    }, {} as Record<string, unknown>);
     
     const { data: dirigeant, error } = await supabaseAdmin
       .from('marque_dirigeant')

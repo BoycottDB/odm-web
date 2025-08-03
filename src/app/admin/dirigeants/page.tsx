@@ -114,7 +114,7 @@ export default function DirigeantListPage() {
           
           {filteredDirigeants.length === 0 && searchTerm && (
             <div className="col-span-2 text-center py-12">
-              <div className="text-gray-500">Aucun dirigeant trouvé pour "{searchTerm}"</div>
+              <div className="text-gray-500">Aucun dirigeant trouvé pour &quot;{searchTerm}&quot;</div>
             </div>
           )}
           </div>

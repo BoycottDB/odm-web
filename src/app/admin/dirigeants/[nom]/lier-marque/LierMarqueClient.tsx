@@ -22,7 +22,7 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
 
   useEffect(() => {
     loadData();
-  }, [dirigeantNom]);
+  }, [dirigeantNom]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadData = async () => {
     try {
@@ -40,7 +40,7 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
           setDirigeant(foundDirigent);
 
           // Marques disponibles = toutes les marques - celles déjà liées à ce dirigeant
-          const linkedMarqueIds = foundDirigent.marques.map((m: any) => m.id);
+          const linkedMarqueIds = foundDirigent.marques.map((m: Marque & { liaison_id?: number }) => m.id);
           const available = marques.filter((m: Marque) => 
             !linkedMarqueIds.includes(m.id) && !m.dirigeant_controverse
           );
@@ -234,7 +234,7 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Impact de l'achat *
+                  Impact de l&apos;achat *
                 </label>
                 <input
                   type="text"
@@ -253,7 +253,7 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
                 <div className="text-sm text-berry-800 font-medium">{dirigeant.nom}</div>
                 <div className="text-xs text-berry-700 mt-1 line-clamp-2">
                   {dirigeant.controverses.length > 150 
-                    ? `${dirigeant.controverses.substring(0, 150)}...`
+                    ? `${dirigeant.controverses.substring(0, 150)}…`
                     : dirigeant.controverses
                   }
                 </div>

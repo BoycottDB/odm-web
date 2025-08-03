@@ -6,10 +6,24 @@ import { Marque, MarqueDirigeantCreateRequest } from '@/types';
 import DirigentForm from '@/components/admin/DirigentForm';
 
 interface MarqueEditPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default function MarqueEditPage({ params }: MarqueEditPageProps) {
+  const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null);
+  
+  useEffect(() => {
+    params.then(setResolvedParams);
+  }, [params]);
+  
+  if (!resolvedParams) {
+    return <div>Loading...</div>;
+  }
+  
+  return <MarqueEditContent params={resolvedParams} />;
+}
+
+function MarqueEditContent({ params }: { params: { id: string } }) {
   const [marque, setMarque] = useState<Marque | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

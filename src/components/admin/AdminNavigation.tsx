@@ -46,9 +46,10 @@ export default function AdminNavigation() {
             <button
               onClick={() => {
                 if (typeof window !== 'undefined') {
-                  const { adminAuth } = require('@/lib/auth/admin');
-                  adminAuth.removeToken();
-                  router.push('/admin/login');
+                  import('@/lib/auth/admin').then(({ adminAuth }) => {
+                    adminAuth.removeToken();
+                    router.push('/admin/login');
+                  });
                 }
               }}
               className="text-sm text-red-600 hover:text-red-700 flex items-center space-x-1"

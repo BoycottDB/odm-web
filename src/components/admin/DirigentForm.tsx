@@ -162,7 +162,7 @@ export default function DirigentForm({
       
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Impact de l'achat *
+          Impact de l&apos;achat *
         </label>
         <input
           type="text"

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { DirigeantWithMarques, Marque, MarqueDirigeantCreateRequest } from '@/types';
+import { DirigeantWithMarques, Marque } from '@/types';
 
 interface DirigeantDetailClientProps {
   dirigeantNom: string;
@@ -24,7 +24,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
   
   useEffect(() => {
     loadData();
-  }, [dirigeantNom]);
+  }, [dirigeantNom]); // eslint-disable-line react-hooks/exhaustive-deps
   
   const loadData = async () => {
     try {
@@ -50,7 +50,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
           });
           
           // Marques disponibles = toutes les marques - celles déjà liées à ce dirigeant
-          const linkedMarqueIds = foundDirigent.marques.map((m: any) => m.id);
+          const linkedMarqueIds = foundDirigent.marques.map((m: Marque & { liaison_id?: number }) => m.id);
           const available = marques.filter((m: Marque) => 
             !linkedMarqueIds.includes(m.id) && !m.dirigeant_controverse
           );
@@ -77,11 +77,11 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
       // Trouver l'ID de la liaison depuis les données du dirigeant
       const marqueToUnlink = dirigeant?.marques.find(m => m.id === marqueId);
       
-      if (!marqueToUnlink || !(marqueToUnlink as any).liaison_id) {
+      if (!marqueToUnlink || !('liaison_id' in marqueToUnlink) || !(marqueToUnlink as { liaison_id?: number }).liaison_id) {
         throw new Error('ID de liaison introuvable');
       }
       
-      const deleteResponse = await fetch(`/api/dirigeants?id=${(marqueToUnlink as any).liaison_id}`, {
+      const deleteResponse = await fetch(`/api/dirigeants?id=${(marqueToUnlink as { liaison_id: number }).liaison_id}`, {
         method: 'DELETE'
       });
       
@@ -140,12 +140,12 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
     try {
       // Trouver l'ID d'une liaison existante pour cet update
       const marqueWithLiaison = dirigeant.marques[0];
-      if (!marqueWithLiaison || !(marqueWithLiaison as any).liaison_id) {
+      if (!marqueWithLiaison || !('liaison_id' in marqueWithLiaison) || !(marqueWithLiaison as { liaison_id?: number }).liaison_id) {
         throw new Error('Impossible de trouver l\'ID de liaison pour la mise à jour');
       }
 
       const updateData = {
-        id: (marqueWithLiaison as any).liaison_id,
+        id: (marqueWithLiaison as { liaison_id: number }).liaison_id,
         dirigeant_nom: editForm.nom.trim(),
         controverses: editForm.controverses.trim(),
         sources: editForm.sources.filter(s => s.trim())

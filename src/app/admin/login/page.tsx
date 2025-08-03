@@ -29,7 +29,7 @@ export default function AdminLogin() {
       } else {
         setError('Token invalide');
       }
-    } catch (err) {
+    } catch {
       setError('Erreur de connexion');
     } finally {
       setIsLoading(false);

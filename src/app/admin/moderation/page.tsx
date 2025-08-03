@@ -74,10 +74,10 @@ export default function AdminModeration() {
     }
   };
 
-  const handleLogout = () => {
-    adminAuth.removeToken();
-    router.push('/admin/login');
-  };
+  // const handleLogout = () => {
+  //   adminAuth.removeToken();
+  //   router.push('/admin/login');
+  // };
 
   const filteredPropositions = propositions.filter(p => p.statut === 'en_attente'); // Seulement les signalements en attente
 
