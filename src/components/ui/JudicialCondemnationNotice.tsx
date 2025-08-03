@@ -17,7 +17,7 @@ export function JudicialCondemnationNotice({ className = '' }: JudicialCondemnat
               />
             </g>
           </svg>
-          <span className="text-xs font-bold tracking-wider">
+          <span className="body-xs font-bold tracking-wider">
             Condamnation judiciaire
           </span>
         </div>

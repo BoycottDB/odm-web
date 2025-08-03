@@ -154,17 +154,17 @@ export default function SignalementForm() {
           </svg>
         </div>
         
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        <h2 className="heading-main font-bold text-gray-900 mb-4">
           Proposition soumise avec succès !
         </h2>
         
-        <p className="text-lg text-gray-700 mb-8">
+        <p className="body-large text-gray-700 mb-8">
           Votre proposition a été transmise à notre équipe de modération. 
           Elle sera examinée dans les plus brefs délais.
         </p>
         
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <p className="text-blue-800 text-sm">
+          <p className="text-blue-800 body-small">
             <strong>Rappel :</strong> Toutes les décisions de modération sont rendues publiques 
             de manière transparente sur notre page dédiée.
           </p>
@@ -182,17 +182,17 @@ export default function SignalementForm() {
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Nouvelle proposition</h2>
+      <h2 className="heading-main font-bold text-gray-900 mb-6">Nouvelle proposition</h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <HoneypotField onChange={setHoneypotValue} />
         
         {/* Information sur le type */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="text-sm font-medium text-blue-800 mb-2">
+          <h3 className="body-small font-medium text-blue-800 mb-2">
             📢 Signaler une controverse
           </h3>
-          <p className="text-sm text-blue-700">
+          <p className="body-small text-blue-700">
             Vous pouvez signaler une controverse liée à une marque pour informer les consommateurs.
           </p>
         </div>
@@ -200,7 +200,7 @@ export default function SignalementForm() {
         {/* Champs pour la controverse */}
             {/* Marque pour controverse */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-gray-700 mb-2">
                 Marque concernée *
               </label>
               <input
@@ -235,7 +235,7 @@ export default function SignalementForm() {
 
             {/* Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-gray-700 mb-2">
                 Date *
               </label>
               <input
@@ -246,7 +246,7 @@ export default function SignalementForm() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
                 required
               />
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="body-small text-gray-500 mt-1">
                 Date de la controverse (ne peut pas être dans le futur)
               </p>
             </div>
@@ -254,7 +254,7 @@ export default function SignalementForm() {
 
             {/* URL source (obligatoire) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-gray-700 mb-2">
                 URL de la source *
               </label>
               <input
@@ -265,14 +265,14 @@ export default function SignalementForm() {
                 placeholder="https://www.mediapart.fr/article-exemple"
                 required
               />
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 body-small text-gray-500">
                 URL d&apos;un article ou d&apos;une source fiable documentant la controverse
               </p>
             </div>
 
         {/* Message aux modérateurs */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block body-small font-medium text-gray-700 mb-2">
             Message aux modérateurs *
           </label>
           <textarea
@@ -285,7 +285,7 @@ export default function SignalementForm() {
             maxLength={1000}
             minLength={10}
           />
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="body-small text-gray-500 mt-1">
             Minimum 10 caractères, maximum 1000 caractères
           </p>
         </div>
@@ -307,7 +307,7 @@ export default function SignalementForm() {
               </svg>
               <span className="text-red-800 font-medium">Erreurs détectées :</span>
             </div>
-            <ul className="list-disc list-inside text-red-700 text-sm">
+            <ul className="list-disc list-inside text-red-700 body-small">
               {errors.map((error, index) => (
                 <li key={index}>{error}</li>
               ))}

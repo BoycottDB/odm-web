@@ -200,7 +200,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Dirigeant non trouvé</h1>
+          <h1 className="heading-hero font-bold text-gray-900 mb-4">Dirigeant non trouvé</h1>
           <button
             onClick={() => router.push('/admin/dirigeants')}
             className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
@@ -228,7 +228,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
             type="text"
             value={editForm.nom}
             onChange={(e) => updateEditForm('nom', e.target.value)}
-            className="text-3xl font-bold text-gray-900 bg-transparent border-2 border-transparent hover:border-gray-300 focus:border-berry-500 focus:outline-none rounded px-2 py-1 w-full"
+            className="heading-hero font-bold text-gray-900 bg-transparent border-2 border-transparent hover:border-gray-300 focus:border-berry-500 focus:outline-none rounded px-2 py-1 w-full"
             maxLength={255}
             disabled={saving}
           />
@@ -261,11 +261,11 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Informations dirigeant - Éditables */}
         <div className="bg-berry-50 rounded-lg border border-berry-200 p-6">
-          <h2 className="text-xl font-semibold text-berry-900 mb-4">Informations dirigeant</h2>
+          <h2 className="heading-main font-semibold text-berry-900 mb-4">Informations dirigeant</h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-berry-800 mb-2">
+              <label className="block body-small font-medium text-berry-800 mb-2">
                 Controverses documentées *
               </label>
               <textarea
@@ -277,13 +277,13 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
                 disabled={saving}
                 placeholder="Décrivez les controverses documentées..."
               />
-              <p className="text-xs text-berry-600 mt-1">
+              <p className="body-xs text-berry-600 mt-1">
                 {editForm.controverses.length}/2000 caractères (minimum 20)
               </p>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-berry-800 mb-2">
+              <label className="block body-small font-medium text-berry-800 mb-2">
                 Sources (une par ligne) *
               </label>
               <textarea
@@ -294,17 +294,17 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
                 disabled={saving}
                 placeholder="https://exemple1.com&#10;https://exemple2.com"
               />
-              <p className="text-xs text-berry-600 mt-1">
+              <p className="body-xs text-berry-600 mt-1">
                 {editForm.sources.filter(s => s.trim()).length} source(s)
               </p>
               
               {/* Aperçu des sources */}
               {editForm.sources.filter(s => s.trim()).length > 0 && (
                 <div className="mt-2">
-                  <div className="text-xs font-medium text-berry-700 mb-1">Aperçu des sources :</div>
+                  <div className="body-xs font-medium text-berry-700 mb-1">Aperçu des sources :</div>
                   <div className="space-y-1">
                     {editForm.sources.filter(s => s.trim()).map((source, index) => (
-                      <div key={index} className="text-xs">
+                      <div key={index} className="body-xs">
                         <a 
                           href={source} 
                           target="_blank" 
@@ -325,12 +325,12 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
         {/* Marques liées */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="heading-main font-semibold text-gray-900">
               Marques liées ({dirigeant.marques.length})
             </h2>
             <button
               onClick={() => router.push(`/admin/dirigeants/${encodeURIComponent(dirigeant.nom)}/lier-marque`)}
-              className="bg-berry-600 text-white px-3 py-1.5 rounded text-sm hover:bg-berry-700"
+              className="bg-berry-600 text-white px-3 py-1.5 rounded body-small hover:bg-berry-700"
               disabled={availableMarques.length === 0}
             >
               + Lier marque
@@ -343,7 +343,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               <p>Aucune marque liée</p>
-              <p className="text-sm mt-1">Commencez par lier une marque à ce dirigeant</p>
+              <p className="body-small mt-1">Commencez par lier une marque à ce dirigeant</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -362,10 +362,10 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
                       </svg>
                     </button>
                   </div>
-                  <div className="text-sm text-gray-600 mb-1">
+                  <div className="body-small text-gray-600 mb-1">
                     <strong>Lien :</strong> {marque.lien_financier}
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="body-small text-gray-600">
                     <strong>Impact :</strong> {marque.impact_description}
                   </div>
                 </div>

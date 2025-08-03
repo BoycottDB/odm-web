@@ -50,7 +50,7 @@ export function SearchBar({
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
-            className="w-full pl-12 pr-4 py-4 text-lg font-light border-2 border-berry-200 rounded-2xl focus:outline-none focus:border-berry-400 focus:ring-4 focus:ring-berry-100 transition-all duration-300 bg-white shadow-lg"
+            className="w-full pl-12 pr-4 py-4 body-large font-light border-2 border-berry-200 rounded-2xl focus:outline-none focus:border-berry-400 focus:ring-4 focus:ring-berry-100 transition-all duration-300 bg-white shadow-lg"
           />
         </div>
       </form>
@@ -69,7 +69,7 @@ export function SearchBar({
                 index === suggestions.items.length - 1 ? 'rounded-b-2xl' : ''
               }`}
             >
-              <span className="text-lg font-medium text-gray-900">{marque.nom}</span>
+              <span className="body-large font-medium text-gray-900">{marque.nom}</span>
             </button>
           ))}
         </div>

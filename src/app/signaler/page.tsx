@@ -12,10 +12,10 @@ export default function Signaler() {
       {/* Section Hero */}
       <section className="bg-gradient-to-br from-berry-50 via-purple-50 to-indigo-50 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-tight">
-            🤝 Signaler une controverse
+          <h1 className="heading-hero md:heading-hero font-light text-gray-900 mb-8 tracking-tight">
+            Signaler une controverse
           </h1>
-          <p className="text-2xl text-gray-700 max-w-4xl mx-auto font-light leading-relaxed">
+          <p className="heading-sub text-gray-700 max-w-4xl mx-auto font-light leading-relaxed">
             Contribuez à l&apos;enrichissement collaboratif de notre base de données
           </p>
         </div>
@@ -32,7 +32,7 @@ export default function Signaler() {
                 </svg>
               </div>
               <div className="flex-1">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">🎯 Types de controverses à signaler</h2>
+                <h2 className="heading-main font-bold text-gray-900 mb-4">🎯 Types de controverses à signaler</h2>
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
                   <div className="flex items-start">
                     <span className="text-red-600 mr-2">⚖️</span>
@@ -86,11 +86,11 @@ export default function Signaler() {
                   </svg>
                 </div>
                 
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                <h2 className="heading-main font-bold text-gray-900 mb-4">
                   Prêt à contribuer ?
                 </h2>
                 
-                <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+                <p className="body-large text-gray-700 mb-8 leading-relaxed">
                   Signalez une controverse liée à une marque pour informer les consommateurs. 
                   Tous les signalements sont vérifiés et font l&apos;objet d&apos;une 
                   modération transparente avec sources documentées.
@@ -103,14 +103,14 @@ export default function Signaler() {
                     </svg>
                     <span className="text-berry-800 font-medium">Important</span>
                   </div>
-                  <p className="text-berry-800 text-sm">
+                  <p className="text-berry-800 body-small">
                     Vos contributions restent entièrement anonymes. Aucune donnée personnelle n&apos;est stockée.
                   </p>
                 </div>
                 
                 <button
                   onClick={() => setShowForm(true)}
-                  className="bg-gradient-to-r from-berry-600 to-berry-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-berry-700 hover:to-berry-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                  className="bg-gradient-to-r from-berry-600 to-berry-600 text-white px-8 py-4 rounded-lg font-semibold body-large hover:from-berry-700 hover:to-berry-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
                 >
                   Commencer mon signalement
                 </button>

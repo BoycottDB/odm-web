@@ -24,7 +24,7 @@ function MobileNav() {
   
   const getLinkClass = (href: string) => {
     const isActive = pathname === href;
-    return `text-lg font-medium px-4 py-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-berry-400 ${
+    return `body-large font-medium px-4 py-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-berry-400 ${
       isActive 
         ? 'text-berry-600 bg-berry-100' 
         : 'text-gray-900 hover:bg-berry-50'
@@ -96,7 +96,7 @@ export default function RootLayout({
   
   const getDesktopLinkClass = (href: string) => {
     const isActive = pathname === href;
-    return `text-base font-medium px-3 py-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-berry-400 ${
+    return `body-base font-medium px-3 py-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-berry-400 ${
       isActive 
         ? 'text-berry-600 bg-berry-100' 
         : 'text-gray-700 hover:text-berry-600 hover:bg-berry-50'
@@ -107,11 +107,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}>
         <header className="w-full border-b border-berry-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
           <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <Link href="/" className="text-2xl font-light text-gray-900 hover:text-berry-600 transition-colors">
+            <Link href="/" className="heading-main font-light text-gray-900 hover:text-berry-600 transition-colors">
               Observatoire Marques
             </Link>
             {/* Menu desktop */}
-            <nav className="hidden md:flex gap-8 text-base font-medium">
+            <nav className="hidden md:flex gap-8 body-base font-medium">
               <Link href="/" className={getDesktopLinkClass('/')}>
                 Accueil
               </Link>

@@ -103,8 +103,8 @@ export default function DirigentForm({
       {/* Erreurs */}
       {errors.length > 0 && (
         <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <div className="text-sm font-medium text-red-800 mb-1">Erreurs :</div>
-          <ul className="text-sm text-red-700 list-disc list-inside">
+          <div className="body-small font-medium text-red-800 mb-1">Erreurs :</div>
+          <ul className="body-small text-red-700 list-disc list-inside">
             {errors.map((error, index) => (
               <li key={index}>{error}</li>
             ))}
@@ -113,7 +113,7 @@ export default function DirigentForm({
       )}
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-gray-700 mb-2">
           Nom du dirigeant *
         </label>
         <input
@@ -128,7 +128,7 @@ export default function DirigentForm({
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-gray-700 mb-2">
           Controverses documentées *
         </label>
         <textarea
@@ -140,13 +140,13 @@ export default function DirigentForm({
           maxLength={2000}
           disabled={isLoading}
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="body-xs text-gray-500 mt-1">
           {data.controverses.length}/2000 caractères (minimum 20)
         </p>
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-gray-700 mb-2">
           Lien financier avec la marque *
         </label>
         <input
@@ -161,7 +161,7 @@ export default function DirigentForm({
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-gray-700 mb-2">
           Impact de l&apos;achat *
         </label>
         <input
@@ -176,7 +176,7 @@ export default function DirigentForm({
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-gray-700 mb-2">
           Sources (une par ligne) *
         </label>
         <textarea
@@ -187,7 +187,7 @@ export default function DirigentForm({
           rows={3}
           disabled={isLoading}
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="body-xs text-gray-500 mt-1">
           {data.sources.filter(s => s.trim()).length} source(s)
         </p>
       </div>
@@ -195,8 +195,8 @@ export default function DirigentForm({
       {/* Aperçu en temps réel */}
       {showPreview && data.nom && data.controverses && (
         <div className="mt-6 p-4 bg-white border border-berry-300 rounded-lg">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">Aperçu public :</h4>
-          <div className="text-sm">
+          <h4 className="body-small font-medium text-gray-700 mb-2">Aperçu public :</h4>
+          <div className="body-small">
             <div className="font-semibold text-berry-800 mb-2">⚠️ DIRIGEANT CONTROVERSÉ</div>
             <div className="font-medium text-berry-900 mb-1">{data.nom}</div>
             <div className="text-berry-700 mb-2">
@@ -205,7 +205,7 @@ export default function DirigentForm({
             <div className="text-berry-700 mb-2">
               {data.impact && <span><strong>Impact :</strong> {data.impact}</span>}
             </div>
-            <div className="text-berry-700 text-xs">
+            <div className="text-berry-700 body-xs">
               {data.controverses.substring(0, 150)}...
             </div>
           </div>

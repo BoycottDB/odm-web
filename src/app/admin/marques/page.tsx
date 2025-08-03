@@ -49,7 +49,7 @@ export default function MarquesListPage() {
       <AdminNavigation />
       <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Gestion des marques</h1>
+        <h1 className="heading-hero font-bold text-gray-900">Gestion des marques</h1>
         <button
           onClick={() => router.push('/admin/marques/create')}
           className="bg-berry-600 text-white px-4 py-2 rounded-lg hover:bg-berry-700"
@@ -72,21 +72,21 @@ export default function MarquesListPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="text-2xl font-bold text-gray-900">{marques.length}</div>
-          <div className="text-sm text-gray-600">Marques total</div>
+          <div className="heading-main font-bold text-gray-900">{marques.length}</div>
+          <div className="body-small text-gray-600">Marques total</div>
         </div>
         <div className="bg-berry-50 p-4 rounded-lg border border-berry-200">
-          <div className="text-2xl font-bold text-berry-900">
+          <div className="heading-main font-bold text-berry-900">
             {marques.filter(m => m.dirigeant_controverse).length}
           </div>
-          <div className="text-sm text-berry-700">Avec dirigeant controversé</div>
+          <div className="body-small text-berry-700">Avec dirigeant controversé</div>
         </div>
       </div>
       
       {/* Liste des marques */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-medium text-gray-900">
+          <h2 className="body-large font-medium text-gray-900">
             {filteredMarques.length} marque(s)
           </h2>
         </div>
@@ -102,22 +102,22 @@ export default function MarquesListPage() {
                 <div className="flex-1">
                   <div className="flex items-center space-x-3">
                     <div className="flex-1">
-                      <h3 className="text-lg font-medium text-gray-900">
+                      <h3 className="body-large font-medium text-gray-900">
                         {marque.nom}
                       </h3>
                       
                       {marque.dirigeant_controverse ? (
                         <div className="mt-1 flex items-center space-x-2">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-berry-100 text-berry-800">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-berry-100 text-berry-800">
                             ⚠️ Dirigeant controversé
                           </span>
-                          <span className="text-sm text-gray-600">
+                          <span className="body-small text-gray-600">
                             {marque.dirigeant_controverse.dirigeant_nom}
                           </span>
                         </div>
                       ) : (
                         <div className="mt-1">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-gray-100 text-gray-800">
                             Aucun dirigeant controversé
                           </span>
                         </div>
