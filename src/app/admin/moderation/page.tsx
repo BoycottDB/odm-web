@@ -6,6 +6,7 @@ import { adminAuth } from '@/lib/auth/admin';
 import { Proposition } from '@/types';
 import PropositionDetail from '@/components/admin/PropositionDetail';
 import PropositionList from '@/components/admin/PropositionList';
+import AdminNavigation from '@/components/admin/AdminNavigation';
 
 export default function AdminModeration() {
   const [propositions, setPropositions] = useState<Proposition[]>([]);
@@ -111,34 +112,22 @@ export default function AdminModeration() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-gray-900">
-                Dashboard de Modération
-              </h1>
-              <div className="ml-6 flex items-center space-x-4">
-                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                  {filteredPropositions.length} signalements en attente
-                </span>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-              >
-                Déconnexion
-              </button>
+      <AdminNavigation />
+      
+      <div className="max-w-6xl mx-auto p-6">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Modération des signalements
+            </h1>
+            <div className="ml-6 flex items-center space-x-4">
+              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                {filteredPropositions.length} signalements en attente
+              </span>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {selectedProposition ? (
           <PropositionDetail
             proposition={selectedProposition}

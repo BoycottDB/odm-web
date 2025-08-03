@@ -7,17 +7,26 @@ export async function GET() {
   try {
     const { data, error } = await supabase
       .from('Evenement')
-      .select('*, Marque(*), Categorie!Evenement_categorie_id_fkey(*)')
+      .select(`
+        *, 
+        Marque(*, marque_dirigeant(*)), 
+        Categorie!Evenement_categorie_id_fkey(*)
+      `)
       .order('date', { ascending: false });
     if (error) throw error;
+    
     // Normalisation des clés pour compatibilité front
     const normalized = (data ?? []).map(ev => ({
       ...ev,
-      marque: ev.Marque,
+      marque: ev.Marque ? {
+        ...ev.Marque,
+        dirigeant_controverse: ev.Marque.marque_dirigeant || null
+      } : null,
       categorie: ev.Categorie,
       Marque: undefined,
       Categorie: undefined
     }));
+    
     return NextResponse.json(normalized);
   } catch (error) {
     console.error('Erreur lors de la récupération des événements:', error);

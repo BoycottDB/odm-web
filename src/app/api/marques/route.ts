@@ -8,7 +8,21 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search');
     
-    let query = supabase.from('Marque').select('*');
+    let query = supabase
+      .from('Marque')
+      .select(`
+        *,
+        marque_dirigeant!marque_id (
+          id,
+          dirigeant_nom,
+          controverses,
+          lien_financier,
+          impact_description,
+          sources,
+          created_at,
+          updated_at
+        )
+      `);
     
     if (search) {
       query = query.ilike('nom', `%${search}%`);
@@ -16,7 +30,14 @@ export async function GET(request: NextRequest) {
     
     const { data: marques, error } = await query;
     if (error) throw error;
-    return NextResponse.json(marques);
+    
+    // Transformation pour adapter aux types frontend
+    const marquesWithDirigent = marques.map(marque => ({
+      ...marque,
+      dirigeant_controverse: marque.marque_dirigeant || null
+    }));
+    
+    return NextResponse.json(marquesWithDirigent);
   } catch (error) {
     console.error('Erreur lors de la récupération des marques:', error);
     return NextResponse.json(

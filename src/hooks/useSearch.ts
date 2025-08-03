@@ -1,16 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Evenement, SearchState } from '@/types';
+import { Evenement, SearchState, Marque, DirigeantResult } from '@/types';
 
 export function useSearch() {
   const [searchState, setSearchState] = useState<SearchState>({
     query: '',
     isSearching: false,
     results: [],
+    dirigeantResults: [],
     notFound: false,
     loading: true
   });
 
-  // Fonction helper pour charger les événements
+  // Fonction helper pour charger les événements (sans dirigeants pour l'affichage initial)
   const loadEvents = useCallback(async (limit: number = 10) => {
     try {
       const response = await fetch('/api/evenements', { cache: 'no-store' });
@@ -35,13 +36,15 @@ export function useSearch() {
         setSearchState(prev => ({
           ...prev,
           results: events,
+          dirigeantResults: [],
           loading: false
         }));
       } catch (error) {
         setSearchState(prev => ({
           ...prev,
           loading: false,
-          notFound: true
+          notFound: true,
+          dirigeantResults: []
         }));
       }
     };
@@ -62,6 +65,7 @@ export function useSearch() {
         setSearchState(prev => ({
           ...prev,
           results: events,
+          dirigeantResults: [],
           notFound: false,
           isSearching: false
         }));
@@ -69,6 +73,7 @@ export function useSearch() {
         setSearchState(prev => ({
           ...prev,
           results: [],
+          dirigeantResults: [],
           notFound: true,
           isSearching: false
         }));
@@ -79,25 +84,48 @@ export function useSearch() {
     setSearchState(prev => ({ ...prev, isSearching: true, notFound: false }));
 
     try {
-      const response = await fetch('/api/evenements', { cache: 'no-store' });
+      const [evenementsResponse, marquesResponse] = await Promise.all([
+        fetch('/api/evenements', { cache: 'no-store' }),
+        fetch('/api/marques', { cache: 'no-store' })
+      ]);
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!evenementsResponse.ok || !marquesResponse.ok) {
+        throw new Error('Erreur lors du chargement des données');
       }
       
-      const allEvenements: Evenement[] = await response.json();
+      const allEvenements: Evenement[] = await evenementsResponse.json();
+      const allMarques: Marque[] = await marquesResponse.json();
       
       const normalizedQuery = query.toLowerCase().trim();
-      const filtered = allEvenements.filter(event =>
+      
+      // Filtrer les événements existants
+      const filteredEvents = allEvenements.filter(event =>
         event.marque?.nom.toLowerCase().includes(normalizedQuery) ||
         event.titre.toLowerCase().includes(normalizedQuery) ||
         event.categorie?.nom.toLowerCase().includes(normalizedQuery)
       );
+      
+      // Trouver les marques avec dirigeants controversés qui correspondent à la recherche
+      const marquesWithDirigeants = allMarques.filter((marque: Marque) => 
+        marque.nom.toLowerCase().includes(normalizedQuery) &&
+        marque.dirigeant_controverse
+      );
+      
+      // Créer des résultats spécifiques pour les dirigeants
+      const dirigeantResults: DirigeantResult[] = marquesWithDirigeants.map((marque: Marque) => ({
+        id: `dirigeant-${marque.id}`,
+        type: 'dirigeant' as const,
+        marque: marque,
+        dirigeant: marque.dirigeant_controverse!
+      }));
+
+      const hasResults = filteredEvents.length > 0 || dirigeantResults.length > 0;
 
       setSearchState(prev => ({
         ...prev,
-        results: filtered,
-        notFound: filtered.length === 0,
+        results: filteredEvents,
+        dirigeantResults: dirigeantResults,
+        notFound: !hasResults,
         isSearching: false,
         loading: false
       }));
@@ -108,7 +136,8 @@ export function useSearch() {
         isSearching: false,
         notFound: true,
         loading: false,
-        results: []
+        results: [],
+        dirigeantResults: []
       }));
     }
   }, []);
@@ -118,6 +147,7 @@ export function useSearch() {
       query: '',
       isSearching: false,
       results: [],
+      dirigeantResults: [],
       notFound: false,
       loading: false
     });

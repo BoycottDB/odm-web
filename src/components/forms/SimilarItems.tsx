@@ -86,13 +86,13 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
 
       {/* Section 2: Signalements en attente */}
       {hasPendingPropositions && (
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+        <div className="bg-berry-50 border border-berry-200 rounded-lg p-6">
           <div className="flex items-start mb-4">
-            <svg className="w-6 h-6 text-orange-600 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-berry-600 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-orange-900 mb-2">Signalements en attente de modération</h3>
+              <h3 className="text-lg font-semibold text-berry-900 mb-2">Signalements en attente de modération</h3>
             </div>
           </div>
 
@@ -125,8 +125,8 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
             })}
           </div>
 
-          <div className="mt-4 pt-4 border-t border-orange-200">
-            <div className="text-sm text-orange-800">
+          <div className="mt-4 pt-4 border-t border-berry-200">
+            <div className="text-sm text-berry-800">
               <span className="font-medium">
                 ⚠️ Ces signalements similaires sont en cours d&apos;examen par notre équipe.
               </span>
