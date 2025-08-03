@@ -118,11 +118,11 @@ export default function AdminModeration() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="heading-hero font-bold text-gray-900">
               Modération des signalements
             </h1>
             <div className="ml-6 flex items-center space-x-4">
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full body-small font-medium">
                 {filteredPropositions.length} signalements en attente
               </span>
             </div>

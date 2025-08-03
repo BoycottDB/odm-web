@@ -66,12 +66,12 @@ export default function Captcha({ onVerify, className = '' }: CaptchaProps) {
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block body-small font-medium text-gray-700">
         Vérification anti-robot
       </label>
       <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-2 bg-gray-50 px-3 py-2 rounded-lg">
-          <span className="text-lg font-mono">{question} =</span>
+          <span className="body-large font-mono">{question} =</span>
           <input
             type="text"
             value={userAnswer}
@@ -85,21 +85,21 @@ export default function Captcha({ onVerify, className = '' }: CaptchaProps) {
         <button
           type="button"
           onClick={generateQuestion}
-          className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50"
+          className="px-3 py-1 body-small text-gray-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50"
           aria-label="Générer une nouvelle question"
         >
           🔄
         </button>
         
         {isVerified && (
-          <span className="text-green-600 text-sm flex items-center">
+          <span className="text-green-600 body-small flex items-center">
             ✅ Vérifié
           </span>
         )}
       </div>
       
       {error && (
-        <p className="text-red-600 text-sm">{error}</p>
+        <p className="text-red-600 body-small">{error}</p>
       )}
     </div>
   );

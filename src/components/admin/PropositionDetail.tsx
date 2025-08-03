@@ -388,11 +388,11 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               </svg>
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="heading-hero font-bold text-gray-900">
                 Signalement #{proposition.id}
               </h1>
               <div className="flex items-center space-x-2 mt-1">
-                <span className="text-sm text-gray-500">
+                <span className="body-small text-gray-500">
                   Soumis le {formatDate(proposition.created_at)}
                 </span>
               </div>
@@ -404,12 +404,12 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
       <div className="p-6">
         {/* Détails de la proposition */}
         <div className="bg-gray-50 rounded-lg p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Détails du signalement</h2>
+          <h2 className="heading-main font-semibold text-gray-900 mb-4">Détails du signalement</h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Message du contributeur <span className="text-xs text-gray-500">(non modifiable)</span>
+              <label className="block body-small font-medium text-gray-700 mb-1">
+                Message du contributeur <span className="body-xs text-gray-500">(non modifiable)</span>
               </label>
               <div className="text-gray-900 p-3 rounded border border-gray-200">
                 {editedData?.description}
@@ -417,7 +417,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             </div>
             
             <div className="relative marque-search-container">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Marque concernée *</label>
+              <label className="block body-small font-medium text-gray-700 mb-1">Marque concernée *</label>
               <input
                 type="text"
                 value={marqueSearch}
@@ -444,7 +444,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               {editedData?.marque_id && (
                 <div className="mt-1">
                   {isAutoLinked && (
-                    <p className="text-sm text-blue-600">🔗 Marque liée automatiquement</p>  
+                    <p className="body-small text-blue-600">🔗 Marque liée automatiquement</p>  
                   )}
                 </div>
               )}
@@ -478,15 +478,15 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               
               {!editedData?.marque_id && marqueSearch.trim() && (
                 <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800 font-medium">ℹ️ Nouvelle marque</p>
-                  <p className="text-xs text-blue-700">Cette marque sera créée automatiquement lors de l&apos;approbation.</p>
+                  <p className="body-small text-blue-800 font-medium">ℹ️ Nouvelle marque</p>
+                  <p className="body-xs text-blue-700">Cette marque sera créée automatiquement lors de l&apos;approbation.</p>
                 </div>
               )}
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                <label className="block body-small font-medium text-gray-700 mb-1">Date *</label>
                 <input
                   type="date"
                   value={editedData?.date || ''}
@@ -496,7 +496,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 />
               </div>
               <div className="relative category-search-container">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie *</label>
+                <label className="block body-small font-medium text-gray-700 mb-1">Catégorie *</label>
                 <input
                   type="text"
                   value={categorySearch}
@@ -566,7 +566,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                         className="w-full px-3 py-2 text-left hover:bg-green-50 border-t border-green-200 cursor-pointer focus:bg-green-50 focus:outline-none bg-green-25"
                       >
                         <div className="font-medium text-green-700">+ Créer &quot;{categorySearch.trim()}&quot;</div>
-                        <div className="text-sm text-green-600">Nouvelle catégorie</div>
+                        <div className="body-small text-green-600">Nouvelle catégorie</div>
                       </div>
                     )}
                   </div>
@@ -575,7 +575,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Source (URL) *</label>
+              <label className="block body-small font-medium text-gray-700 mb-1">Source (URL) *</label>
               <input
                 type="url"
                 value={editedData?.source_url || ''}
@@ -587,9 +587,9 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-gray-700 mb-2">
                 Titre de la controverse *
-                <span className="text-xs text-gray-500 block mt-1">Ce titre apparaîtra publiquement sur le site</span>
+                <span className="body-xs text-gray-500 block mt-1">Ce titre apparaîtra publiquement sur le site</span>
               </label>
               <textarea
                 value={editedData?.titre_controverse || ''}
@@ -601,7 +601,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 maxLength={200}
                 minLength={10}
               />
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="body-small text-gray-500 mt-1">
                 {editedData?.titre_controverse?.length || 0}/200 caractères (minimum 10)
               </p>
             </div>
@@ -613,7 +613,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="flex items-center">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-3"></div>
-              <span className="text-blue-800 text-sm font-medium">Recherche de controverses similaires...</span>
+              <span className="text-blue-800 body-small font-medium">Recherche de controverses similaires...</span>
             </div>
           </div>
         )}
@@ -628,8 +628,8 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
         {/* Erreurs de validation */}
         {validationErrors.length > 0 && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <h3 className="text-sm font-medium text-red-800 mb-2">❌ Erreurs de validation :</h3>
-            <ul className="text-sm text-red-700 list-disc list-inside space-y-1">
+            <h3 className="body-small font-medium text-red-800 mb-2">❌ Erreurs de validation :</h3>
+            <ul className="body-small text-red-700 list-disc list-inside space-y-1">
               {validationErrors.map((error, index) => (
                 <li key={index}>{error}</li>
               ))}
@@ -639,11 +639,11 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
 
         {/* Formulaire de décision */}
         <div className="border-t border-gray-200 pt-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Décision de modération</h2>
+          <h2 className="heading-main font-semibold text-gray-900 mb-4">Décision de modération</h2>
           
           {/* Commentaire admin */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block body-small font-medium text-gray-700 mb-2">
               Commentaire administrateur (optionnel)
             </label>
             <textarea
@@ -656,14 +656,14 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             
             {/* Templates de commentaires */}
             <div className="mt-2">
-              <p className="text-sm text-gray-600 mb-2">Templates courants :</p>
+              <p className="body-small text-gray-600 mb-2">Templates courants :</p>
               <div className="flex flex-wrap gap-2">
                 {commentaireTemplates.map((template, index) => (
                   <button
                     key={index}
                     type="button"
                     onClick={() => setCommentaire(template)}
-                    className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200"
+                    className="body-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200"
                   >
                     {template}
                   </button>
@@ -681,11 +681,11 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 onChange={(e) => setDecisionPublique(e.target.checked)}
                 className="mr-2"
               />
-              <span className="text-sm font-medium text-gray-700">
+              <span className="body-small font-medium text-gray-700">
                 Rendre cette décision publique
               </span>
             </label>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="body-xs text-gray-500 mt-1">
               La décision apparaîtra dans la page de modération publique avec le commentaire
             </p>
           </div>

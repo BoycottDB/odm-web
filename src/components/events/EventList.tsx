@@ -18,7 +18,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
     return (
       <div className="text-center py-16">
         <LoadingSpinner size="lg" className="mx-auto mb-4" />
-        <p className="text-lg font-light text-gray-600">Chargement des données...</p>
+        <p className="body-large font-light text-gray-600">Chargement des données...</p>
       </div>
     );
   }
@@ -28,7 +28,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
     return (
       <div className="text-center py-16">
         <LoadingSpinner size="lg" className="mx-auto mb-4" />
-        <p className="text-lg font-light text-gray-600">Recherche en cours...</p>
+        <p className="body-large font-light text-gray-600">Recherche en cours...</p>
       </div>
     );
   }
@@ -42,8 +42,8 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <h3 className="text-2xl font-medium text-gray-900 mb-2">Aucun résultat trouvé</h3>
-        <p className="text-lg font-light text-gray-600">
+        <h3 className="heading-sub font-medium text-gray-900 mb-2">Aucun résultat trouvé</h3>
+        <p className="body-large font-light text-gray-600">
           Essayez avec un autre terme de recherche ou vérifiez l&apos;orthographe.
         </p>
       </div>
@@ -59,8 +59,8 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <h3 className="text-2xl font-medium text-gray-900 mb-2">Commencez votre recherche</h3>
-        <p className="text-lg font-light text-gray-600">
+        <h3 className="heading-sub font-medium text-gray-900 mb-2">Commencez votre recherche</h3>
+        <p className="body-large font-light text-gray-600">
           Tapez le nom d&apos;une marque pour découvrir les controverses associées.
         </p>
       </div>
@@ -74,7 +74,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
 
   return (
     <div>
-      <h2 className="text-4xl font-light text-gray-900 mb-8 text-center">
+      <h2 className="heading-main font-light text-gray-900 mb-8 text-center">
         {isSearchResults ? 'Résultats de recherche' : 'Derniers signalements'}
       </h2>
       
@@ -82,7 +82,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
         {/* Dirigeants controversés (seulement lors de recherche) */}
         {hasDirigeants && (
           <div>
-            <h3 className="text-2xl font-medium text-gray-900 mb-6 text-center">
+            <h3 className="heading-sub font-medium text-gray-900 mb-6 text-center">
               Dirigeants controversés associés
             </h3>
             <div className="grid gap-10 sm:gap-12 grid-cols-1 lg:grid-cols-1">
@@ -97,7 +97,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
         {hasEvents && (
           <div>
             {hasDirigeants && (
-              <h3 className="text-2xl font-medium text-gray-900 mb-6 text-center">
+              <h3 className="heading-sub font-medium text-gray-900 mb-6 text-center">
                 Controverses documentées
               </h3>
             )}

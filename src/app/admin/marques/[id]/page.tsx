@@ -159,7 +159,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Marque non trouvée</h1>
+          <h1 className="heading-hero font-bold text-gray-900 mb-4">Marque non trouvée</h1>
           <button
             onClick={() => router.push('/admin/marques')}
             className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
@@ -182,7 +182,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="heading-hero font-bold text-gray-900">
           Édition marque : {marque.nom}
         </h1>
       </div>
@@ -200,10 +200,10 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       
       {/* Informations générales marque */}
       <div className="mb-8 p-6 bg-white rounded-lg border border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Informations générales</h2>
+        <h2 className="heading-main font-semibold text-gray-900 mb-4">Informations générales</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block body-small font-medium text-gray-700 mb-1">
               Nom de la marque
             </label>
             <input
@@ -214,7 +214,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block body-small font-medium text-gray-700 mb-1">
               ID
             </label>
             <input
@@ -230,7 +230,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       {/* Section dirigeant controversé */}
       <div className="p-6 bg-berry-50 rounded-lg border border-berry-200">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="heading-main font-semibold text-gray-900">
             ⚠️ Dirigeant controversé
           </h2>
           
@@ -238,7 +238,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             <button
               onClick={deleteDirigeant}
               disabled={saving}
-              className="text-sm text-red-600 hover:text-red-800 underline disabled:opacity-50"
+              className="body-small text-red-600 hover:text-red-800 underline disabled:opacity-50"
             >
               Supprimer
             </button>
@@ -251,11 +251,11 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
               <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <p className="text-sm text-green-800 font-medium">
+              <p className="body-small text-green-800 font-medium">
                 Dirigeant configuré : <strong>{marque.dirigeant_controverse.dirigeant_nom}</strong>
               </p>
             </div>
-            <p className="text-xs text-green-700 mt-1">
+            <p className="body-xs text-green-700 mt-1">
               Le badge apparaît sur la fiche publique de la marque
             </p>
           </div>

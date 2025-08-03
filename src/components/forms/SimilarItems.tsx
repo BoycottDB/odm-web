@@ -41,7 +41,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-blue-900 mb-2">Controverses similaires trouvées</h3>
+              <h3 className="body-large font-semibold text-blue-900 mb-2">Controverses similaires trouvées</h3>
             </div>
           </div>
 
@@ -54,18 +54,18 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
                     <div className="flex-1">
                       <div className="font-medium text-gray-900 items-center inline-flex">
                         {evenement.marque?.nom || 'Marque inconnue'}
-                        <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-medium bg-accent-category text-gray-800 border border-indigo-200`}>
+                        <span className={`ml-2 px-2 py-0.5 rounded-full body-xs font-medium bg-accent-category text-gray-800 border border-indigo-200`}>
                           {evenement.categorie?.nom}
                         </span>
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">
+                      <div className="body-small text-gray-600 mt-1">
                         {evenement.titre.length > 100 
                           ? `${new Date(evenement.date).toLocaleDateString('fr-FR') + " · " + evenement.titre.substring(0, 100)}...`
                           : `${new Date(evenement.date).toLocaleDateString('fr-FR') + " · " + evenement.titre}`
                         }
                       </div>
                     </div>
-                    <div className={`px-2 py-1 rounded text-xs font-medium border ${similarity.color} ml-3`}>
+                    <div className={`px-2 py-1 rounded body-xs font-medium border ${similarity.color} ml-3`}>
                       {similarity.label}
                     </div>
                   </div>
@@ -75,7 +75,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
           </div>
 
           <div className="mt-4 pt-4 border-t border-blue-200">
-            <div className="text-sm text-blue-800">
+            <div className="body-small text-blue-800">
               <span className="font-medium">
                 Des controverses similaires existent déjà.
               </span>
@@ -92,7 +92,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-berry-900 mb-2">Signalements en attente de modération</h3>
+              <h3 className="body-large font-semibold text-berry-900 mb-2">Signalements en attente de modération</h3>
             </div>
           </div>
 
@@ -106,17 +106,17 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
                       <div className="font-medium text-gray-900">
                         {proposition.marque_nom}
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">
+                      <div className="body-small text-gray-600 mt-1">
                         {proposition.description.length > 100 
                           ? `${new Date(proposition.date).toLocaleDateString('fr-FR') + " · " + proposition.description.substring(0, 100)}...`
                           : `${new Date(proposition.date).toLocaleDateString('fr-FR') + " · " + proposition.description}`
                         }
                       </div>
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="body-xs text-gray-500 mt-1">
                         Signalé le {new Date(proposition.created_at).toLocaleDateString('fr-FR')}
                       </div>
                     </div>
-                    <div className={`px-2 py-1 rounded text-xs font-medium border ${similarity.color} ml-3`}>
+                    <div className={`px-2 py-1 rounded body-xs font-medium border ${similarity.color} ml-3`}>
                       {similarity.label}
                     </div>
                   </div>
@@ -126,7 +126,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
           </div>
 
           <div className="mt-4 pt-4 border-t border-berry-200">
-            <div className="text-sm text-berry-800">
+            <div className="body-small text-berry-800">
               <span className="font-medium">
                 ⚠️ Ces signalements similaires sont en cours d&apos;examen par notre équipe.
               </span>
@@ -137,7 +137,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
 
       {/* Message global */}
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <div className="text-sm text-yellow-800">
+        <div className="body-small text-yellow-800">
           <span className="font-medium">
             🔍 Merci de vérifier qu&apos;il ne s&apos;agit pas d&apos;un doublon.
           </span>

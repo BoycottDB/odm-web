@@ -52,7 +52,7 @@ export default function DirigeantListPage() {
       <AdminNavigation />
       <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Dirigeants controversés</h1>
+        <h1 className="heading-hero font-bold text-gray-900">Dirigeants controversés</h1>
         <button
           onClick={() => router.push('/admin/dirigeants/create')}
           className="bg-berry-600 text-white px-4 py-2 rounded-lg hover:bg-berry-700"
@@ -75,14 +75,14 @@ export default function DirigeantListPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-berry-50 p-4 rounded-lg border border-berry-200">
-          <div className="text-2xl font-bold text-berry-900">{dirigeants.length}</div>
-          <div className="text-sm text-berry-700">Dirigeants controversés</div>
+          <div className="heading-main font-bold text-berry-900">{dirigeants.length}</div>
+          <div className="body-small text-berry-700">Dirigeants controversés</div>
         </div>
         <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="text-2xl font-bold text-gray-900">
+          <div className="heading-main font-bold text-gray-900">
             {dirigeants.reduce((sum, d) => sum + d.marques.length, 0)}
           </div>
-          <div className="text-sm text-gray-600">Marques liées</div>
+          <div className="body-small text-gray-600">Marques liées</div>
         </div>
       </div>
       
@@ -93,7 +93,7 @@ export default function DirigeantListPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun dirigeant controversé</h3>
+          <h3 className="body-large font-medium text-gray-900 mb-2">Aucun dirigeant controversé</h3>
           <p className="text-gray-600 mb-6">Commencez par ajouter un dirigeant controversé pour traquer les marques liées.</p>
           <button
             onClick={() => router.push('/admin/dirigeants/create')}
@@ -136,7 +136,7 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
       onClick={onEdit}
     >
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-semibold text-gray-900">{dirigeant.nom}</h3>
+        <h3 className="heading-sub font-semibold text-gray-900">{dirigeant.nom}</h3>
         <div className="flex space-x-2">
           <div className="text-blue-600 p-1 rounded" title="Gérer">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +146,7 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
         </div>
       </div>
       
-      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+      <p className="body-small text-gray-600 mb-4 line-clamp-3">
         {dirigeant.controverses.length > 200 
           ? `${dirigeant.controverses.substring(0, 200)}...`
           : dirigeant.controverses
@@ -154,27 +154,27 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
       </p>
       
       <div className="mb-4">
-        <div className="text-sm font-medium text-gray-700 mb-2">
+        <div className="body-small font-medium text-gray-700 mb-2">
           Marques liées ({dirigeant.marques.length}) :
         </div>
         <div className="flex flex-wrap gap-2">
           {dirigeant.marques.slice(0, 6).map((marque) => (
             <span 
               key={marque.id} 
-              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-berry-100 text-berry-800"
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-berry-100 text-berry-800"
             >
               {marque.nom}
             </span>
           ))}
           {dirigeant.marques.length > 6 && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-gray-100 text-gray-800">
               +{dirigeant.marques.length - 6} autres
             </span>
           )}
         </div>
       </div>
       
-      <div className="text-xs text-gray-500">
+      <div className="body-xs text-gray-500">
         {dirigeant.sources.length} source(s) documentée(s)
       </div>
     </div>
