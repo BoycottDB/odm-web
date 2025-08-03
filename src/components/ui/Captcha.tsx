@@ -66,17 +66,17 @@ export default function Captcha({ onVerify, className = '' }: CaptchaProps) {
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <label className="block body-small font-medium text-gray-700">
+      <label className="block body-small font-medium text-neutral-700">
         Vérification anti-robot
       </label>
       <div className="flex items-center space-x-3">
-        <div className="flex items-center space-x-2 bg-gray-50 px-3 py-2 rounded-lg">
+        <div className="flex items-center space-x-2 bg-neutral-50 px-3 py-2 rounded-lg">
           <span className="body-large font-mono">{question} =</span>
           <input
             type="text"
             value={userAnswer}
             onChange={(e) => handleVerification(e.target.value)}
-            className="w-16 px-2 py-1 text-center border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-berry-500"
+            className="w-16 px-2 py-1 text-center border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="?"
             aria-label="Réponse au calcul"
           />
@@ -85,21 +85,21 @@ export default function Captcha({ onVerify, className = '' }: CaptchaProps) {
         <button
           type="button"
           onClick={generateQuestion}
-          className="px-3 py-1 body-small text-gray-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50"
+          className="px-3 py-1 body-small text-neutral-600 hover:text-neutral-800 border border-neutral rounded hover:bg-neutral-50"
           aria-label="Générer une nouvelle question"
         >
           🔄
         </button>
         
         {isVerified && (
-          <span className="text-green-600 body-small flex items-center">
+          <span className="text-success body-small flex items-center">
             ✅ Vérifié
           </span>
         )}
       </div>
       
       {error && (
-        <p className="text-red-600 body-small">{error}</p>
+        <p className="text-error body-small">{error}</p>
       )}
     </div>
   );

@@ -111,8 +111,8 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
         <AdminNavigation />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-berry-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Chargement...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-neutral-600">Chargement...</p>
           </div>
         </div>
       </div>
@@ -125,10 +125,10 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
         <AdminNavigation />
         <div className="max-w-4xl mx-auto p-6">
           <div className="text-center">
-            <h1 className="heading-hero font-bold text-gray-900 mb-4">Dirigeant non trouvé</h1>
+            <h2 className="heading-main font-bold text-neutral-900 mb-4">Dirigeant non trouvé</h2>
             <button
               onClick={() => router.push('/admin/dirigeants')}
-              className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+              className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
             >
               Retour à la liste
             </button>
@@ -145,62 +145,62 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
         <div className="flex items-center space-x-4 mb-6">
           <button
             onClick={() => router.push(`/admin/dirigeants/${encodeURIComponent(dirigeant.nom)}`)}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-neutral-400 hover:text-neutral-600"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="heading-hero font-bold text-gray-900">
+          <h2 className="heading-sub font-bold text-neutral-900">
             Lier une marque à {dirigeant.nom}
-          </h1>
+          </h2>
         </div>
 
         {message && (
           <div className={`mb-6 p-4 rounded-lg ${
             message.type === 'success' 
-              ? 'bg-green-50 border border-green-200 text-green-800' 
-              : 'bg-red-50 border border-red-200 text-red-800'
+              ? 'bg-success-light border border-success text-success' 
+              : 'bg-error-light border border-error text-error'
           }`}>
             {message.text}
           </div>
         )}
 
         {availableMarques.length === 0 ? (
-          <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-            <div className="text-gray-500 mb-4">
-              <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white rounded-lg border border-neutral p-12 text-center">
+            <div className="text-neutral-500 mb-4">
+              <svg className="w-16 h-16 mx-auto mb-4 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
-            <h3 className="body-large font-medium text-gray-900 mb-2">Aucune marque disponible</h3>
-            <p className="text-gray-600 mb-6">Toutes les marques sont déjà liées à des dirigeants controversés.</p>
+            <h3 className="body-large font-medium text-neutral-900 mb-2">Aucune marque disponible</h3>
+            <p className="text-neutral-600 mb-6">Toutes les marques sont déjà liées à des dirigeants controversés.</p>
             <div className="space-x-4">
               <button
                 onClick={() => router.push('/admin/marques/create')}
-                className="bg-berry-600 text-white px-4 py-2 rounded-lg hover:bg-berry-700"
+                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
               >
                 Créer une nouvelle marque
               </button>
               <button
                 onClick={() => router.push(`/admin/dirigeants/${encodeURIComponent(dirigeant.nom)}`)}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+                className="bg-neutral-300 text-neutral-700 px-4 py-2 rounded-lg hover:bg-neutral-400"
               >
                 Retour
               </button>
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-neutral p-6">
             <form onSubmit={linkMarque} className="space-y-6">
               <div>
-                <label className="block body-small font-medium text-gray-700 mb-2">
+                <label className="block body-small font-medium text-neutral-700 mb-2">
                   Marque à lier *
                 </label>
                 <select
                   value={selectedMarque || ''}
                   onChange={(e) => setSelectedMarque(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                  className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                   disabled={saving}
                 >
@@ -211,13 +211,13 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
                     </option>
                   ))}
                 </select>
-                <p className="body-xs text-gray-500 mt-1">
+                <p className="body-xs text-neutral-500 mt-1">
                   {availableMarques.length} marque(s) disponible(s)
                 </p>
               </div>
 
               <div>
-                <label className="block body-small font-medium text-gray-700 mb-2">
+                <label className="block body-small font-medium text-neutral-700 mb-2">
                   Lien financier avec la marque *
                 </label>
                 <input
@@ -225,7 +225,7 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
                   placeholder="Co-fondateur et actionnaire via Otium Capital (100%)"
                   value={lienFinancier}
                   onChange={(e) => setLienFinancier(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                  className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   maxLength={500}
                   required
                   disabled={saving}
@@ -233,7 +233,7 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
               </div>
 
               <div>
-                <label className="block body-small font-medium text-gray-700 mb-2">
+                <label className="block body-small font-medium text-neutral-700 mb-2">
                   Impact de l&apos;achat *
                 </label>
                 <input
@@ -241,23 +241,23 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
                   placeholder="100% de vos achats contribuent au financement du projet Périclès"
                   value={impact}
                   onChange={(e) => setImpact(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                  className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   maxLength={500}
                   required
                   disabled={saving}
                 />
               </div>
 
-              <div className="bg-berry-50 rounded-lg border border-berry-200 p-4">
-                <h3 className="body-small font-medium text-berry-900 mb-2">Aperçu du dirigeant</h3>
-                <div className="body-small text-berry-800 font-medium">{dirigeant.nom}</div>
-                <div className="body-xs text-berry-700 mt-1 line-clamp-2">
+              <div className="bg-primary-light rounded-lg border border-primary p-4">
+                <h3 className="body-small font-medium text-primary mb-2">Aperçu du dirigeant</h3>
+                <div className="body-small text-primary font-medium">{dirigeant.nom}</div>
+                <div className="body-xs text-primary mt-1 line-clamp-2">
                   {dirigeant.controverses.length > 150 
                     ? `${dirigeant.controverses.substring(0, 150)}…`
                     : dirigeant.controverses
                   }
                 </div>
-                <div className="body-xs text-berry-600 mt-1">
+                <div className="body-xs text-primary mt-1">
                   {dirigeant.sources.length} source(s) documentée(s)
                 </div>
               </div>
@@ -266,14 +266,14 @@ export function LierMarqueClient({ dirigeantNom }: LierMarqueClientProps) {
                 <button
                   type="submit"
                   disabled={saving || !selectedMarque || !lienFinancier.trim() || !impact.trim()}
-                  className="flex-1 bg-berry-600 text-white px-4 py-2 rounded-lg hover:bg-berry-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {saving ? 'Liaison en cours...' : 'Lier la marque'}
                 </button>
                 <button
                   type="button"
                   onClick={() => router.push(`/admin/dirigeants/${encodeURIComponent(dirigeant.nom)}`)}
-                  className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+                  className="flex-1 bg-neutral-300 text-neutral-700 px-4 py-2 rounded-lg hover:bg-neutral-400"
                 >
                   Annuler
                 </button>

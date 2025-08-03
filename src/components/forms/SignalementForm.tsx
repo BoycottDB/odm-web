@@ -147,24 +147,24 @@ export default function SignalementForm() {
 
   if (isSuccess) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-        <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
-          <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 text-center">
+        <div className="bg-success-light rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+          <svg className="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
         
-        <h2 className="heading-main font-bold text-gray-900 mb-4">
+        <h2 className="heading-main font-bold text-neutral-900 mb-4">
           Proposition soumise avec succès !
         </h2>
         
-        <p className="body-large text-gray-700 mb-8">
+        <p className="body-large text-neutral-700 mb-8">
           Votre proposition a été transmise à notre équipe de modération. 
           Elle sera examinée dans les plus brefs délais.
         </p>
         
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <p className="text-blue-800 body-small">
+        <div className="bg-info-light border border-info rounded-lg p-4 mb-6">
+          <p className="text-info body-small">
             <strong>Rappel :</strong> Toutes les décisions de modération sont rendues publiques 
             de manière transparente sur notre page dédiée.
           </p>
@@ -172,7 +172,7 @@ export default function SignalementForm() {
         
         <button
           onClick={() => window.location.reload()}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+          className="bg-info text-white px-6 py-3 rounded-lg font-semibold hover:bg-info transition-colors"
         >
           Faire une nouvelle proposition
         </button>
@@ -181,18 +181,18 @@ export default function SignalementForm() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-      <h2 className="heading-main font-bold text-gray-900 mb-6">Nouvelle proposition</h2>
+    <div className="bg-white rounded-lg shadow-sm border border-neutral p-8">
+      <h2 className="heading-main font-bold text-neutral-900 mb-6">Nouvelle proposition</h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <HoneypotField onChange={setHoneypotValue} />
         
         {/* Information sur le type */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="body-small font-medium text-blue-800 mb-2">
+        <div className="bg-info-light border border-info rounded-lg p-4">
+          <h3 className="body-small font-medium text-info mb-2">
             📢 Signaler une controverse
           </h3>
-          <p className="body-small text-blue-700">
+          <p className="body-small text-info">
             Vous pouvez signaler une controverse liée à une marque pour informer les consommateurs.
           </p>
         </div>
@@ -200,21 +200,21 @@ export default function SignalementForm() {
         {/* Champs pour la controverse */}
             {/* Marque pour controverse */}
             <div className="relative">
-              <label className="block body-small font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-neutral-700 mb-2">
                 Marque concernée *
               </label>
               <input
                 type="text"
                 value={formData.marque_nom}
                 onChange={(e) => setFormData({ ...formData, marque_nom: e.target.value, marque_id: undefined })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Tapez le nom de la marque..."
                 required
               />
               
               {/* Suggestions */}
               {showSuggestions && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+                <div className="absolute z-10 w-full mt-1 bg-white border border-neutral rounded-lg shadow-lg">
                   {marquesSuggestions.map((marque) => (
                     <button
                       key={marque.id}
@@ -224,7 +224,7 @@ export default function SignalementForm() {
                         setShowSuggestions(false);
                         setMarquesSuggestions([]);
                       }}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg"
+                      className="w-full text-left px-3 py-2 hover:bg-neutral first:rounded-t-lg last:rounded-b-lg"
                     >
                       {marque.nom}
                     </button>
@@ -235,7 +235,7 @@ export default function SignalementForm() {
 
             {/* Date */}
             <div>
-              <label className="block body-small font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-neutral-700 mb-2">
                 Date *
               </label>
               <input
@@ -243,10 +243,10 @@ export default function SignalementForm() {
                 value={formData.date}
                 max={new Date().toISOString().split('T')[0]} // Empêche les dates futures
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
-              <p className="body-small text-gray-500 mt-1">
+              <p className="body-small text-neutral-500 mt-1">
                 Date de la controverse (ne peut pas être dans le futur)
               </p>
             </div>
@@ -254,38 +254,38 @@ export default function SignalementForm() {
 
             {/* URL source (obligatoire) */}
             <div>
-              <label className="block body-small font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-neutral-700 mb-2">
                 URL de la source *
               </label>
               <input
                 type="url"
                 value={formData.source_url}
                 onChange={(e) => setFormData({ ...formData, source_url: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="https://www.mediapart.fr/article-exemple"
                 required
               />
-              <p className="mt-1 body-small text-gray-500">
+              <p className="mt-1 body-small text-neutral-500">
                 URL d&apos;un article ou d&apos;une source fiable documentant la controverse
               </p>
             </div>
 
         {/* Message aux modérateurs */}
         <div>
-          <label className="block body-small font-medium text-gray-700 mb-2">
+          <label className="block body-small font-medium text-neutral-700 mb-2">
             Message aux modérateurs *
           </label>
           <textarea
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+            className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             rows={4}
             placeholder="Expliquez pourquoi vous signalez cette marque, les pratiques concernées, les sources d'information..."
             required
             maxLength={1000}
             minLength={10}
           />
-          <p className="body-small text-gray-500 mt-1">
+          <p className="body-small text-neutral-500 mt-1">
             Minimum 10 caractères, maximum 1000 caractères
           </p>
         </div>
@@ -300,14 +300,14 @@ export default function SignalementForm() {
 
         {/* Erreurs */}
         {errors.length > 0 && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="bg-error-light border border-error rounded-lg p-4">
             <div className="flex items-center mb-2">
-              <svg className="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-error mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="text-red-800 font-medium">Erreurs détectées :</span>
+              <span className="text-error font-medium">Erreurs détectées :</span>
             </div>
-            <ul className="list-disc list-inside text-red-700 body-small">
+            <ul className="list-disc list-inside text-error body-small">
               {errors.map((error, index) => (
                 <li key={index}>{error}</li>
               ))}
@@ -320,7 +320,7 @@ export default function SignalementForm() {
           <button
             type="submit"
             disabled={isSubmitting || !captchaVerified}
-            className="bg-gradient-to-r from-berry-600 to-berry-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-berry-700 hover:to-berry-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="bg-gradient-to-r from-primary to-primary text-white px-6 py-3 rounded-lg font-semibold hover:from-primary-hover hover:to-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isSubmitting ? 'Envoi en cours...' : 'Proposer'}
           </button>
@@ -328,7 +328,7 @@ export default function SignalementForm() {
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors"
+            className="bg-neutral-100 text-neutral-700 px-6 py-3 rounded-lg font-semibold hover:bg-neutral transition-colors"
           >
             Annuler
           </button>

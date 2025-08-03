@@ -376,23 +376,23 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
+      <div className="px-6 py-4 border-b border-neutral">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
               onClick={onBack}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-neutral-400 hover:text-neutral-600"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <div>
-              <h1 className="heading-hero font-bold text-gray-900">
+              <h1 className="heading-hero font-bold text-neutral-900">
                 Signalement #{proposition.id}
               </h1>
               <div className="flex items-center space-x-2 mt-1">
-                <span className="body-small text-gray-500">
+                <span className="body-small text-neutral-500">
                   Soumis le {formatDate(proposition.created_at)}
                 </span>
               </div>
@@ -403,21 +403,21 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
 
       <div className="p-6">
         {/* Détails de la proposition */}
-        <div className="bg-gray-50 rounded-lg p-6 mb-6">
-          <h2 className="heading-main font-semibold text-gray-900 mb-4">Détails du signalement</h2>
+        <div className="bg-neutral-50 rounded-lg p-6 mb-6">
+          <h2 className="heading-main font-semibold text-neutral-900 mb-4">Détails du signalement</h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block body-small font-medium text-gray-700 mb-1">
-                Message du contributeur <span className="body-xs text-gray-500">(non modifiable)</span>
+              <label className="block body-small font-medium text-neutral-700 mb-1">
+                Message du contributeur <span className="body-xs text-neutral-500">(non modifiable)</span>
               </label>
-              <div className="text-gray-900 p-3 rounded border border-gray-200">
+              <div className="text-neutral-900 p-3 rounded border border-neutral">
                 {editedData?.description}
               </div>
             </div>
             
             <div className="relative marque-search-container">
-              <label className="block body-small font-medium text-gray-700 mb-1">Marque concernée *</label>
+              <label className="block body-small font-medium text-neutral-700 mb-1">Marque concernée *</label>
               <input
                 type="text"
                 value={marqueSearch}
@@ -437,21 +437,21 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                   }
                 }}
                 placeholder="Rechercher ou saisir le nom de la marque"
-                className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
               
               {editedData?.marque_id && (
                 <div className="mt-1">
                   {isAutoLinked && (
-                    <p className="body-small text-blue-600">🔗 Marque liée automatiquement</p>  
+                    <p className="body-small text-info">🔗 Marque liée automatiquement</p>  
                   )}
                 </div>
               )}
               
               {/* Résultats de recherche */}
               {showMarqueResults && marqueSearchResults.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-1 bg-white border border-neutral rounded-lg shadow-lg max-h-48 overflow-y-auto">
                   {marqueSearchResults.map((marque) => (
                     <div
                       key={marque.id}
@@ -468,35 +468,35 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                           selectMarque(marque);
                         }
                       }}
-                      className="w-full px-3 py-2 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 cursor-pointer focus:bg-gray-50 focus:outline-none"
+                      className="w-full px-3 py-2 text-left hover:bg-neutral border-b border-neutral last:border-b-0 cursor-pointer focus:bg-neutral focus:outline-none"
                     >
-                      <div className="font-medium text-gray-900">{marque.nom}</div>
+                      <div className="font-medium text-neutral-900">{marque.nom}</div>
                     </div>
                   ))}
                 </div>
               )}
               
               {!editedData?.marque_id && marqueSearch.trim() && (
-                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="body-small text-blue-800 font-medium">ℹ️ Nouvelle marque</p>
-                  <p className="body-xs text-blue-700">Cette marque sera créée automatiquement lors de l&apos;approbation.</p>
+                <div className="mt-2 p-3 bg-info-light border border-info rounded-lg">
+                  <p className="body-small text-info font-medium">ℹ️ Nouvelle marque</p>
+                  <p className="body-xs text-info">Cette marque sera créée automatiquement lors de l&apos;approbation.</p>
                 </div>
               )}
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block body-small font-medium text-gray-700 mb-1">Date *</label>
+                <label className="block body-small font-medium text-neutral-700 mb-1">Date *</label>
                 <input
                   type="date"
                   value={editedData?.date || ''}
                   onChange={(e) => handleFieldChange('date', e.target.value)}
-                  className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                  className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
               <div className="relative category-search-container">
-                <label className="block body-small font-medium text-gray-700 mb-1">Catégorie *</label>
+                <label className="block body-small font-medium text-neutral-700 mb-1">Catégorie *</label>
                 <input
                   type="text"
                   value={categorySearch}
@@ -517,13 +517,13 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                     }
                   }}
                   placeholder="Rechercher ou créer une catégorie"
-                  className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                  className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
                 
                 {/* Résultats de recherche catégories */}
                 {showCategoryResults && categorySearchResults.length > 0 && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-neutral rounded-lg shadow-lg max-h-48 overflow-y-auto">
                     {categorySearchResults.map((category) => (
                       <div
                         key={category.id}
@@ -540,9 +540,9 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                             selectCategory(category);
                           }
                         }}
-                        className="w-full px-3 py-2 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 cursor-pointer focus:bg-gray-50 focus:outline-none"
+                        className="w-full px-3 py-2 text-left hover:bg-neutral border-b border-neutral last:border-b-0 cursor-pointer focus:bg-neutral focus:outline-none"
                       >
-                        <div className="font-medium text-gray-900">{category.nom}</div>
+                        <div className="font-medium text-neutral-900">{category.nom}</div>
                       </div>
                     ))}
                     {/* Option créer nouvelle catégorie */}
@@ -563,10 +563,10 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                             createCategoryFromSearch(categorySearch.trim());
                           }
                         }}
-                        className="w-full px-3 py-2 text-left hover:bg-green-50 border-t border-green-200 cursor-pointer focus:bg-green-50 focus:outline-none bg-green-25"
+                        className="w-full px-3 py-2 text-left hover:bg-success-light border-t border-success cursor-pointer focus:bg-success-light focus:outline-none bg-success-light"
                       >
-                        <div className="font-medium text-green-700">+ Créer &quot;{categorySearch.trim()}&quot;</div>
-                        <div className="body-small text-green-600">Nouvelle catégorie</div>
+                        <div className="font-medium text-success">+ Créer &quot;{categorySearch.trim()}&quot;</div>
+                        <div className="body-small text-success">Nouvelle catégorie</div>
                       </div>
                     )}
                   </div>
@@ -575,33 +575,33 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             </div>
             
             <div>
-              <label className="block body-small font-medium text-gray-700 mb-1">Source (URL) *</label>
+              <label className="block body-small font-medium text-neutral-700 mb-1">Source (URL) *</label>
               <input
                 type="url"
                 value={editedData?.source_url || ''}
                 onChange={(e) => handleFieldChange('source_url', e.target.value)}
                 placeholder="https://exemple.com/article"
-                className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
             </div>
 
             <div>
-              <label className="block body-small font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-neutral-700 mb-2">
                 Titre de la controverse *
-                <span className="body-xs text-gray-500 block mt-1">Ce titre apparaîtra publiquement sur le site</span>
+                <span className="body-xs text-neutral-500 block mt-1">Ce titre apparaîtra publiquement sur le site</span>
               </label>
               <textarea
                 value={editedData?.titre_controverse || ''}
                 onChange={(e) => handleFieldChange('titre_controverse', e.target.value)}
-                className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 rows={3}
                 placeholder="Rédigez un titre clair et concis qui décrit la controverse..."
                 required
                 maxLength={200}
                 minLength={10}
               />
-              <p className="body-small text-gray-500 mt-1">
+              <p className="body-small text-neutral-500 mt-1">
                 {editedData?.titre_controverse?.length || 0}/200 caractères (minimum 10)
               </p>
             </div>
@@ -610,10 +610,10 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
 
         {/* Recherche de similarités */}
         {isLoadingSimilar && (
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="mb-6 p-4 bg-info-light border border-info rounded-lg">
             <div className="flex items-center">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-3"></div>
-              <span className="text-blue-800 body-small font-medium">Recherche de controverses similaires...</span>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-info mr-3"></div>
+              <span className="text-info body-small font-medium">Recherche de controverses similaires...</span>
             </div>
           </div>
         )}
@@ -627,9 +627,9 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
 
         {/* Erreurs de validation */}
         {validationErrors.length > 0 && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <h3 className="body-small font-medium text-red-800 mb-2">❌ Erreurs de validation :</h3>
-            <ul className="body-small text-red-700 list-disc list-inside space-y-1">
+          <div className="mb-6 p-4 bg-error-light border border-error rounded-lg">
+            <h3 className="body-small font-medium text-error mb-2">❌ Erreurs de validation :</h3>
+            <ul className="body-small text-error list-disc list-inside space-y-1">
               {validationErrors.map((error, index) => (
                 <li key={index}>{error}</li>
               ))}
@@ -638,32 +638,32 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
         )}
 
         {/* Formulaire de décision */}
-        <div className="border-t border-gray-200 pt-6">
-          <h2 className="heading-main font-semibold text-gray-900 mb-4">Décision de modération</h2>
+        <div className="border-t border-neutral pt-6">
+          <h2 className="heading-main font-semibold text-neutral-900 mb-4">Décision de modération</h2>
           
           {/* Commentaire admin */}
           <div className="mb-6">
-            <label className="block body-small font-medium text-gray-700 mb-2">
+            <label className="block body-small font-medium text-neutral-700 mb-2">
               Commentaire administrateur (optionnel)
             </label>
             <textarea
               value={commentaire}
               onChange={(e) => setCommentaire(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+              className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               rows={3}
               placeholder="Justification de la décision (optionnel)..."
             />
             
             {/* Templates de commentaires */}
             <div className="mt-2">
-              <p className="body-small text-gray-600 mb-2">Templates courants :</p>
+              <p className="body-small text-neutral-600 mb-2">Templates courants :</p>
               <div className="flex flex-wrap gap-2">
                 {commentaireTemplates.map((template, index) => (
                   <button
                     key={index}
                     type="button"
                     onClick={() => setCommentaire(template)}
-                    className="body-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200"
+                    className="body-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded hover:bg-neutral"
                   >
                     {template}
                   </button>
@@ -681,11 +681,11 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 onChange={(e) => setDecisionPublique(e.target.checked)}
                 className="mr-2"
               />
-              <span className="body-small font-medium text-gray-700">
+              <span className="body-small font-medium text-neutral-700">
                 Rendre cette décision publique
               </span>
             </label>
-            <p className="body-xs text-gray-500 mt-1">
+            <p className="body-xs text-neutral-500 mt-1">
               La décision apparaîtra dans la page de modération publique avec le commentaire
             </p>
           </div>
@@ -695,7 +695,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             <button
               onClick={() => handleDecision('approuve')}
               disabled={isSubmitting}
-              className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              className="bg-success text-white px-6 py-3 rounded-lg font-semibold hover:bg-success disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -706,7 +706,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             <button
               onClick={() => handleDecision('rejete')}
               disabled={isSubmitting}
-              className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              className="bg-error text-white px-6 py-3 rounded-lg font-semibold hover:bg-error disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

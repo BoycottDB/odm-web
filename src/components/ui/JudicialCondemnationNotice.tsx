@@ -5,7 +5,7 @@ interface JudicialCondemnationNoticeProps {
 export function JudicialCondemnationNotice({ className = '' }: JudicialCondemnationNoticeProps) {
   return (
     <div className={`absolute -top-7 left-3 right-3 z-0 ${className}`}>
-      <div className="bg-gradient-to-r from-berry-700 to-berry-800 text-white px-3 py-1.5 rounded-t-2xl shadow-lg border border-berry-900">
+      <div className="bg-gradient-to-r from-primary to-primary-hover text-white px-3 py-1.5 rounded-t-2xl shadow-lg border border-primary">
         <div className="flex items-center justify-center gap-2">
           <svg className="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 850 792">
             <g transform="translate(-1.99,1.8)">

@@ -83,10 +83,10 @@ export default function AdminModeration() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-berry-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des signalements...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-neutral-600">Chargement des signalements...</p>
         </div>
       </div>
     );
@@ -94,14 +94,14 @@ export default function AdminModeration() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-error-light border border-error text-error px-4 py-3 rounded mb-4">
             {error}
           </div>
           <button
             onClick={loadPropositions}
-            className="bg-berry-600 text-white px-4 py-2 rounded hover:bg-berry-700"
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover"
           >
             Réessayer
           </button>
@@ -111,18 +111,18 @@ export default function AdminModeration() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-50">
       <AdminNavigation />
       
       <div className="max-w-6xl mx-auto p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
-            <h1 className="heading-hero font-bold text-gray-900">
+            <h2 className="heading-main font-bold text-neutral-900">
               Modération des signalements
-            </h1>
+            </h2>
             <div className="ml-6 flex items-center space-x-4">
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full body-small font-medium">
+              <span className="bg-info-light text-info px-3 py-1 rounded-full body-small font-medium">
                 {filteredPropositions.length} signalements en attente
               </span>
             </div>

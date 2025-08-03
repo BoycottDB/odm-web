@@ -33,8 +33,8 @@ export default function AdminPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-berry-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Vérification de l&apos;authentification...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-neutral-600">Vérification de l&apos;authentification...</p>
         </div>
       </div>
     );
@@ -44,7 +44,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
-        <p className="text-gray-600">Redirection en cours...</p>
+        <p className="text-neutral-600">Redirection en cours...</p>
       </div>
     </div>
   );
