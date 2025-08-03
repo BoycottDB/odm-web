@@ -16,20 +16,17 @@ export function DirigeantCard({ dirigeantResult }: DirigeantCardProps) {
         <div className="w-12 h-12 bg-berry-100 rounded-full flex items-center justify-center mr-4">
           <span className="text-2xl">⚠️</span>
         </div>
-        <div>
-          <div className="font-bold text-berry-800 text-lg mb-1">
-            DIRIGEANT CONTROVERSÉ
-          </div>
+        <div>         
+          {/* Nom du dirigeant */}
+          <h3 className="text-2xl font-bold text-gray-900 ">
+            {dirigeant.dirigeant_nom}
+          </h3>
           <div className="text-berry-600 text-sm">
-            Associé à la marque {marque.nom}
+            Un dirigeant controversé est associé à la marque {marque.nom}
           </div>
         </div>
       </div>
 
-      {/* Nom du dirigeant */}
-      <h3 className="text-2xl font-bold text-gray-900 mb-4">
-        {dirigeant.dirigeant_nom}
-      </h3>
 
       {/* Informations financières */}
       <div className="space-y-3 mb-6">

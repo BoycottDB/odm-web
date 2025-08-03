@@ -32,6 +32,7 @@ export interface Evenement {
   source_url: string;
   proposition_source_id?: number;
   moderation_status?: string;
+  condamnation_judiciaire?: boolean; // Indique si la controverse a fait l'objet d'une condamnation judiciaire
   created_at?: string;
   updated_at?: string;
   marque?: Marque;
@@ -77,6 +78,7 @@ export interface EvenementCreateRequest {
   date: string;
   categorie_id: number;
   source_url: string;
+  condamnation_judiciaire?: boolean;
 }
 
 // Types pour le système de modération (simplifié - seulement des controverses)
