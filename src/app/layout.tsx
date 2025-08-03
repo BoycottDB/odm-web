@@ -24,16 +24,16 @@ function MobileNav() {
   
   const getLinkClass = (href: string) => {
     const isActive = pathname === href;
-    return `body-large font-medium px-4 py-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-berry-400 ${
+    return `body-large font-medium px-4 py-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
       isActive 
-        ? 'text-berry-600 bg-berry-100' 
-        : 'text-gray-900 hover:bg-berry-50'
+        ? 'text-primary bg-primary-light' 
+        : 'text-neutral-900 hover:bg-primary-light'
     }`;
   };
   return (
     <>
       <button
-        className="md:hidden flex items-center justify-center w-10 h-10 rounded-full border border-berry-200 bg-white shadow hover:bg-berry-50 transition-all focus:outline-none focus:ring-2 focus:ring-berry-400"
+        className="md:hidden flex items-center justify-center w-10 h-10 rounded-full border border-primary bg-white shadow hover:bg-primary-light transition-all focus:outline-none focus:ring-2 focus:ring-primary"
         aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
         aria-expanded={open}
         aria-controls="mobile-menu"
@@ -41,7 +41,7 @@ function MobileNav() {
       >
         <span className="sr-only">Menu</span>
         <svg
-          className="w-6 h-6 text-berry-600"
+          className="w-6 h-6 text-primary"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -61,7 +61,7 @@ function MobileNav() {
       {open && (
   <div
     id="mobile-menu"
-    className="fixed top-0 right-0 z-50 w-64 h-full bg-white/95 shadow-2xl border-l border-berry-100 backdrop-blur-lg md:hidden animate-in fade-in"
+    className="fixed top-0 right-0 z-50 w-64 h-full bg-white/95 shadow-2xl border-l border-primary backdrop-blur-lg md:hidden animate-in fade-in"
     tabIndex={-1}
     aria-modal="true"
     role="dialog"
@@ -96,18 +96,18 @@ export default function RootLayout({
   
   const getDesktopLinkClass = (href: string) => {
     const isActive = pathname === href;
-    return `body-base font-medium px-3 py-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-berry-400 ${
+    return `body-base font-medium px-3 py-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
       isActive 
-        ? 'text-berry-600 bg-berry-100' 
-        : 'text-gray-700 hover:text-berry-600 hover:bg-berry-50'
+        ? 'text-primary bg-primary-light' 
+        : 'text-neutral-700 hover:text-primary hover:bg-primary-light'
     }`;
   };
   return (
     <html lang="fr">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}>
-        <header className="w-full border-b border-berry-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50 text-neutral-900`}>
+        <header className="w-full border-b border-primary bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
           <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <Link href="/" className="heading-main font-light text-gray-900 hover:text-berry-600 transition-colors">
+            <Link href="/" className="heading-main font-light text-neutral-900 hover:text-primary transition-colors">
               Observatoire Marques
             </Link>
             {/* Menu desktop */}

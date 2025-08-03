@@ -27,7 +27,7 @@ export function EventCard({ event }: EventCardProps) {
     <div className="relative">
       {/* Notification de condamnation judiciaire */}
       {event.condamnation_judiciaire && <JudicialCondemnationNotice />}
-      <div className="relative z-10 bg-white rounded-3xl card-padding shadow-lg border border-berry-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+      <div className="relative z-10 bg-white rounded-3xl card-padding shadow-lg border border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* En-tête principal : Marque et Date */}
       <div className="flex flex-col gap-3 mb-4">
           {/* Badges et date alignés sur mobile */}
@@ -45,7 +45,7 @@ export function EventCard({ event }: EventCardProps) {
               )} 
             </div>
             {/* Date alignée à droite sur mobile */}
-            <span className="body-small sm:body-base text-gray-600 font-medium shrink-0 sm:order-2">
+            <span className="body-small sm:body-base text-neutral-600 font-medium shrink-0 sm:order-2">
               <span className="sm:hidden">{formatDateCompact(event.date)}</span>
               <span className="hidden sm:inline">{formatDate(event.date)}</span>
             </span>
@@ -53,23 +53,23 @@ export function EventCard({ event }: EventCardProps) {
       </div>
         
         {/* Nom de la marque en dessous sur mobile, intégré dans la ligne sur desktop */}
-        <h3 className="heading-sub font-bold text-gray-900 mt-2">
+        <h3 className="heading-sub font-bold text-neutral-900 mt-2">
           {event.marque?.nom}
         </h3>
 
       {/* Description */}
-      <h4 className="heading-sub font-medium text-gray-900 mb-4 leading-relaxed">
+      <h4 className="heading-sub font-medium text-neutral-900 mb-4 leading-relaxed">
         {event.titre}
       </h4>
 
       {/* Source */}
       {event.source_url && (
-        <div className="pt-4 border-t border-gray-100">
+        <div className="pt-4 border-t border-neutral">
           <a
             href={event.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center body-base font-medium text-berry-600 hover:text-berry-700 transition-colors duration-200"
+            className="inline-flex items-center body-base font-medium text-primary hover:text-primary transition-colors duration-200"
           >
             <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -86,7 +86,7 @@ export function EventCard({ event }: EventCardProps) {
             href={event.reponse}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center body-small font-medium text-berry-600 hover:text-berry-600 transition-colors duration-200"
+            className="inline-flex items-center body-small font-medium text-primary hover:text-primary transition-colors duration-200"
           >
             <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -94,7 +94,7 @@ export function EventCard({ event }: EventCardProps) {
             Réponse officielle de la marque
           </a>
         ) : (
-          <p className="body-small text-gray-500 italic">
+          <p className="body-small text-neutral-500 italic">
             Aucune réponse officielle de la marque
           </p>
         )}

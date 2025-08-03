@@ -59,29 +59,29 @@ export default function CreateMarquePage() {
         <div className="flex items-center space-x-4 mb-6">
           <button
             onClick={() => router.push('/admin/marques')}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-neutral-400 hover:text-neutral-600"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="heading-hero font-bold text-gray-900">Nouvelle marque</h1>
+          <h2 className="heading-main font-bold text-neutral-900">Nouvelle marque</h2>
         </div>
 
         {message && (
           <div className={`mb-6 p-4 rounded-lg ${
             message.type === 'success' 
-              ? 'bg-green-50 border border-green-200 text-green-800' 
-              : 'bg-red-50 border border-red-200 text-red-800'
+              ? 'bg-success-light border border-success text-success' 
+              : 'bg-error-light border border-error text-error'
           }`}>
             {message.text}
           </div>
         )}
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-neutral p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block body-small font-medium text-gray-700 mb-2">
+              <label className="block body-small font-medium text-neutral-700 mb-2">
                 Nom de la marque *
               </label>
               <input
@@ -89,7 +89,7 @@ export default function CreateMarquePage() {
                 placeholder="Ex: Tesla, Apple, Nestlé..."
                 value={nom}
                 onChange={(e) => setNom(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 maxLength={255}
                 disabled={loading}
                 required
@@ -100,14 +100,14 @@ export default function CreateMarquePage() {
               <button
                 type="submit"
                 disabled={loading || !nom.trim()}
-                className="flex-1 bg-berry-600 text-white px-4 py-2 rounded-lg hover:bg-berry-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Création...' : 'Créer la marque'}
               </button>
               <button
                 type="button"
                 onClick={() => router.push('/admin/marques')}
-                className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+                className="flex-1 bg-neutral-300 text-neutral-700 px-4 py-2 rounded-lg hover:bg-neutral-400"
               >
                 Annuler
               </button>

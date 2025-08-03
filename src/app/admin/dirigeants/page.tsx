@@ -40,8 +40,8 @@ export default function DirigeantListPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-berry-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des dirigeants...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-neutral-600">Chargement des dirigeants...</p>
         </div>
       </div>
     );
@@ -52,10 +52,10 @@ export default function DirigeantListPage() {
       <AdminNavigation />
       <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="heading-hero font-bold text-gray-900">Dirigeants controversés</h1>
+        <h2 className="heading-main font-bold text-neutral-900">Dirigeants controversés</h2>
         <button
           onClick={() => router.push('/admin/dirigeants/create')}
-          className="bg-berry-600 text-white px-4 py-2 rounded-lg hover:bg-berry-700"
+          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
         >
           + Nouveau dirigeant
         </button>
@@ -68,36 +68,36 @@ export default function DirigeantListPage() {
           placeholder="Rechercher un dirigeant ou une marque..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+          className="w-full px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
       
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="bg-berry-50 p-4 rounded-lg border border-berry-200">
-          <div className="heading-main font-bold text-berry-900">{dirigeants.length}</div>
-          <div className="body-small text-berry-700">Dirigeants controversés</div>
+        <div className="bg-primary-light p-4 rounded-lg border border-primary">
+          <div className="heading-main font-bold text-primary">{dirigeants.length}</div>
+          <div className="body-small text-primary">Dirigeants controversés</div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="heading-main font-bold text-gray-900">
+        <div className="bg-white p-4 rounded-lg border border-neutral">
+          <div className="heading-main font-bold text-neutral-900">
             {dirigeants.reduce((sum, d) => sum + d.marques.length, 0)}
           </div>
-          <div className="body-small text-gray-600">Marques liées</div>
+          <div className="body-small text-neutral-600">Marques liées</div>
         </div>
       </div>
       
       {dirigeants.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-          <div className="text-gray-500 mb-4">
-            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-white rounded-lg shadow-sm border border-neutral p-12 text-center">
+          <div className="text-neutral-500 mb-4">
+            <svg className="w-16 h-16 mx-auto mb-4 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
             </svg>
           </div>
-          <h3 className="body-large font-medium text-gray-900 mb-2">Aucun dirigeant controversé</h3>
-          <p className="text-gray-600 mb-6">Commencez par ajouter un dirigeant controversé pour traquer les marques liées.</p>
+          <h3 className="body-large font-medium text-neutral-900 mb-2">Aucun dirigeant controversé</h3>
+          <p className="text-neutral-600 mb-6">Commencez par ajouter un dirigeant controversé pour traquer les marques liées.</p>
           <button
             onClick={() => router.push('/admin/dirigeants/create')}
-            className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700"
+            className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-hover"
           >
             Ajouter le premier dirigeant
           </button>
@@ -114,7 +114,7 @@ export default function DirigeantListPage() {
           
           {filteredDirigeants.length === 0 && searchTerm && (
             <div className="col-span-2 text-center py-12">
-              <div className="text-gray-500">Aucun dirigeant trouvé pour &quot;{searchTerm}&quot;</div>
+              <div className="text-neutral-500">Aucun dirigeant trouvé pour &quot;{searchTerm}&quot;</div>
             </div>
           )}
           </div>
@@ -136,9 +136,9 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
       onClick={onEdit}
     >
       <div className="flex justify-between items-start mb-4">
-        <h3 className="heading-sub font-semibold text-gray-900">{dirigeant.nom}</h3>
+        <h3 className="heading-sub font-semibold text-neutral-900">{dirigeant.nom}</h3>
         <div className="flex space-x-2">
-          <div className="text-blue-600 p-1 rounded" title="Gérer">
+          <div className="text-info p-1 rounded" title="Gérer">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
@@ -146,7 +146,7 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
         </div>
       </div>
       
-      <p className="body-small text-gray-600 mb-4 line-clamp-3">
+      <p className="body-small text-neutral-600 mb-4 line-clamp-3">
         {dirigeant.controverses.length > 200 
           ? `${dirigeant.controverses.substring(0, 200)}...`
           : dirigeant.controverses
@@ -154,27 +154,27 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
       </p>
       
       <div className="mb-4">
-        <div className="body-small font-medium text-gray-700 mb-2">
+        <div className="body-small font-medium text-neutral-700 mb-2">
           Marques liées ({dirigeant.marques.length}) :
         </div>
         <div className="flex flex-wrap gap-2">
           {dirigeant.marques.slice(0, 6).map((marque) => (
             <span 
               key={marque.id} 
-              className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-berry-100 text-berry-800"
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary"
             >
               {marque.nom}
             </span>
           ))}
           {dirigeant.marques.length > 6 && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-gray-100 text-gray-800">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-neutral-100 text-neutral-800">
               +{dirigeant.marques.length - 6} autres
             </span>
           )}
         </div>
       </div>
       
-      <div className="body-xs text-gray-500">
+      <div className="body-xs text-neutral-500">
         {dirigeant.sources.length} source(s) documentée(s)
       </div>
     </div>

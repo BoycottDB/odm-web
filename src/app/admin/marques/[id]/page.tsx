@@ -148,8 +148,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-berry-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement de la marque...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-neutral-600">Chargement de la marque...</p>
         </div>
       </div>
     );
@@ -159,10 +159,10 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="text-center">
-          <h1 className="heading-hero font-bold text-gray-900 mb-4">Marque non trouvée</h1>
+          <h3 className="heading-sub font-bold text-neutral-900 mb-4">Marque non trouvée</h3>
           <button
             onClick={() => router.push('/admin/marques')}
-            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+            className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
           >
             Retour à la liste
           </button>
@@ -176,51 +176,51 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       <div className="flex items-center space-x-4 mb-6">
         <button
           onClick={() => router.push('/admin/marques')}
-          className="text-gray-400 hover:text-gray-600"
+          className="text-neutral-400 hover:text-neutral-600"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="heading-hero font-bold text-gray-900">
+        <h2 className="heading-main font-bold text-neutral-900">
           Édition marque : {marque.nom}
-        </h1>
+        </h2>
       </div>
       
       {/* Messages */}
       {message && (
         <div className={`mb-6 p-4 rounded-lg ${
           message.type === 'success' 
-            ? 'bg-green-50 border border-green-200 text-green-800' 
-            : 'bg-red-50 border border-red-200 text-red-800'
+            ? 'bg-success-light border border-success text-success' 
+            : 'bg-error-light border border-error text-error'
         }`}>
           {message.text}
         </div>
       )}
       
       {/* Informations générales marque */}
-      <div className="mb-8 p-6 bg-white rounded-lg border border-gray-200">
-        <h2 className="heading-main font-semibold text-gray-900 mb-4">Informations générales</h2>
+      <div className="mb-8 p-6 bg-white rounded-lg border border-neutral">
+        <h3 className="heading-sub font-semibold text-neutral-900 mb-4">Informations générales</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block body-small font-medium text-gray-700 mb-1">
+            <label className="block body-small font-medium text-neutral-700 mb-1">
               Nom de la marque
             </label>
             <input
               type="text"
               value={marque.nom}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50"
+              className="w-full px-3 py-2 border border-neutral rounded-lg bg-neutral-50"
               disabled
             />
           </div>
           <div>
-            <label className="block body-small font-medium text-gray-700 mb-1">
+            <label className="block body-small font-medium text-neutral-700 mb-1">
               ID
             </label>
             <input
               type="text"
               value={marque.id}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50"
+              className="w-full px-3 py-2 border border-neutral rounded-lg bg-neutral-50"
               disabled
             />
           </div>
@@ -228,17 +228,17 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       </div>
       
       {/* Section dirigeant controversé */}
-      <div className="p-6 bg-berry-50 rounded-lg border border-berry-200">
+      <div className="p-6 bg-primary-light rounded-lg border border-primary">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="heading-main font-semibold text-gray-900">
+          <h3 className="heading-sub font-semibold text-neutral-900">
             ⚠️ Dirigeant controversé
-          </h2>
+          </h3>
           
           {marque.dirigeant_controverse && (
             <button
               onClick={deleteDirigeant}
               disabled={saving}
-              className="body-small text-red-600 hover:text-red-800 underline disabled:opacity-50"
+              className="body-small text-error hover:text-error underline disabled:opacity-50"
             >
               Supprimer
             </button>
@@ -246,16 +246,16 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
         </div>
         
         {marque.dirigeant_controverse && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mb-6 p-4 bg-success-light border border-success rounded-lg">
             <div className="flex items-center space-x-2">
-              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <p className="body-small text-green-800 font-medium">
+              <p className="body-small text-success font-medium">
                 Dirigeant configuré : <strong>{marque.dirigeant_controverse.dirigeant_nom}</strong>
               </p>
             </div>
-            <p className="body-xs text-green-700 mt-1">
+            <p className="body-xs text-success mt-1">
               Le badge apparaît sur la fiche publique de la marque
             </p>
           </div>

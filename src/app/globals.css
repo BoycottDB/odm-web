@@ -80,6 +80,66 @@ body {
   font-size: 0.75rem;
 }
 
+/* Classes de couleurs sémantiques centralisées */
+
+/* Couleurs de texte principales */
+.text-primary { color: var(--color-berry-600); }
+.text-primary-light { color: var(--color-berry-500); }
+.text-primary-dark { color: var(--color-berry-700); }
+
+/* Couleurs de texte neutres */
+.text-neutral-900 { color: #111827; } /* Titres principaux */
+.text-neutral-800 { color: #1f2937; } /* Texte fort */
+.text-neutral-700 { color: #374151; } /* Texte standard */
+.text-neutral-600 { color: #4b5563; } /* Texte secondaire */
+.text-neutral-500 { color: #6b7280; } /* Texte faible */
+.text-neutral-400 { color: #9ca3af; } /* Placeholder */
+
+/* Couleurs d'état */
+.text-success { color: #059669; }
+.text-success-dark { color: #047857; }
+.text-error { color: #dc2626; }
+.text-error-dark { color: #b91c1c; }
+.text-warning { color: #d97706; }
+.text-info { color: #2563eb; }
+.text-info-dark { color: #1d4ed8; }
+
+/* Couleurs de fond principales */
+.bg-primary { background-color: var(--color-berry-600); }
+.bg-primary-hover { background-color: var(--color-berry-700); }
+.bg-primary-light { background-color: var(--color-berry-50); }
+.bg-primary-medium { background-color: var(--color-berry-100); }
+
+/* Couleurs de fond neutres */
+.bg-neutral-50 { background-color: #f9fafb; }
+.bg-neutral-100 { background-color: #f3f4f6; }
+.bg-neutral-200 { background-color: #e5e7eb; }
+
+/* Couleurs d'état - fonds */
+.bg-success { background-color: #059669; }
+.bg-success-light { background-color: #ecfdf5; }
+.bg-success-hover { background-color: #047857; }
+.bg-error { background-color: #dc2626; }
+.bg-error-light { background-color: #fef2f2; }
+.bg-error-hover { background-color: #b91c1c; }
+.bg-warning-light { background-color: #fffbed; }
+.bg-info-light { background-color: #eff6ff; }
+
+/* Couleurs de bordure */
+.border-primary { border-color: var(--color-berry-200); }
+.border-primary-medium { border-color: var(--color-berry-300); }
+.border-neutral { border-color: #e5e7eb; }
+.border-neutral-light { border-color: #f3f4f6; }
+.border-success { border-color: #10b981; }
+.border-error { border-color: #f87171; }
+.border-info { border-color: #60a5fa; }
+.border-warning { border-color: #f59e0b; }
+
+/* Couleurs pour les états hover */
+.hover\:text-primary:hover { color: var(--color-berry-700); }
+.hover\:bg-primary:hover { background-color: var(--color-berry-700); }
+.hover\:bg-neutral:hover { background-color: #f3f4f6; }
+
 /* Espacement responsive pour les cards */
 .card-padding {
   padding: 1rem;

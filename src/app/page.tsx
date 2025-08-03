@@ -72,14 +72,14 @@ export default function Home() {
   const hasSearched = searchState.query.length > 0 || (!searchState.loading && searchState.results.length > 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-berry-50">
+    <div className="min-h-screen bg-gradient-to-br from-white to-primary-light">
       {/* Section Hero */}
-      <section className="relative bg-gradient-to-r from-berry-50 via-purple-50 to-indigo-50 section-padding">
+      <section className="relative bg-gradient-to-r from-primary-light via-purple-50 to-indigo-50 section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="heading-hero font-light text-gray-900 mb-6 leading-tight">
+          <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
             L&apos;Observatoire des Marques
           </h1>
-          <p className="heading-sub font-light text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="heading-sub font-light text-neutral-700 mb-8 max-w-3xl mx-auto leading-relaxed">
             Une plateforme collaborative et transparente pour documenter les controverses des marques et encourager une consommation éthique et responsable.
           </p>
 
@@ -98,7 +98,7 @@ export default function Home() {
       </section>
 
       {/* Section Résultats */}
-      <section className="section-padding bg-gradient-to-b from-white to-berry-50">
+      <section className="section-padding bg-gradient-to-b from-white to-primary-light">
         <div className="max-w-6xl mx-auto px-6">
           <EventList
             events={searchState.results}

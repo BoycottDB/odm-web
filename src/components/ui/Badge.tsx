@@ -8,8 +8,8 @@ interface BadgeProps {
 
 export function Badge({ children, variant = 'category', className = '' }: BadgeProps) {
   const variantClasses = {
-    category: 'bg-accent-category text-gray-800 border border-indigo-200',
-    condamnation: 'bg-red-100 text-red-800 border border-red-300 font-semibold'
+    category: 'bg-accent-category text-neutral-800 border border-info',
+    condamnation: 'bg-error-light text-error border border-error font-semibold'
   };
 
   return (

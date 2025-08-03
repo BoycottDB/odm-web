@@ -102,9 +102,9 @@ export default function DirigentForm({
     <div className="space-y-4">
       {/* Erreurs */}
       {errors.length > 0 && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <div className="body-small font-medium text-red-800 mb-1">Erreurs :</div>
-          <ul className="body-small text-red-700 list-disc list-inside">
+        <div className="p-3 bg-error-light border border-error rounded-lg">
+          <div className="body-small font-medium text-error mb-1">Erreurs :</div>
+          <ul className="body-small text-error list-disc list-inside">
             {errors.map((error, index) => (
               <li key={index}>{error}</li>
             ))}
@@ -113,7 +113,7 @@ export default function DirigentForm({
       )}
       
       <div>
-        <label className="block body-small font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-neutral-700 mb-2">
           Nom du dirigeant *
         </label>
         <input
@@ -121,32 +121,32 @@ export default function DirigentForm({
           placeholder="Pierre-Edouard Stérin"
           value={data.nom}
           onChange={(e) => setData({ ...data, nom: e.target.value })}
-          className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+          className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           maxLength={255}
           disabled={isLoading}
         />
       </div>
       
       <div>
-        <label className="block body-small font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-neutral-700 mb-2">
           Controverses documentées *
         </label>
         <textarea
           placeholder="Projet Périclès : plan de financement de l'extrême droite française avec 150 millions d'euros sur 10 ans..."
           value={data.controverses}
           onChange={(e) => setData({ ...data, controverses: e.target.value })}
-          className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+          className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           rows={4}
           maxLength={2000}
           disabled={isLoading}
         />
-        <p className="body-xs text-gray-500 mt-1">
+        <p className="body-xs text-neutral-500 mt-1">
           {data.controverses.length}/2000 caractères (minimum 20)
         </p>
       </div>
       
       <div>
-        <label className="block body-small font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-neutral-700 mb-2">
           Lien financier avec la marque *
         </label>
         <input
@@ -154,14 +154,14 @@ export default function DirigentForm({
           placeholder="Co-fondateur et actionnaire via Otium Capital (100%)"
           value={data.lienFinancier}
           onChange={(e) => setData({ ...data, lienFinancier: e.target.value })}
-          className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+          className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           maxLength={500}
           disabled={isLoading}
         />
       </div>
       
       <div>
-        <label className="block body-small font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-neutral-700 mb-2">
           Impact de l&apos;achat *
         </label>
         <input
@@ -169,43 +169,43 @@ export default function DirigentForm({
           placeholder="100% de vos achats contribuent au financement du projet Périclès"
           value={data.impact}
           onChange={(e) => setData({ ...data, impact: e.target.value })}
-          className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+          className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           maxLength={500}
           disabled={isLoading}
         />
       </div>
       
       <div>
-        <label className="block body-small font-medium text-gray-700 mb-2">
+        <label className="block body-small font-medium text-neutral-700 mb-2">
           Sources (une par ligne) *
         </label>
         <textarea
           placeholder="https://www.franceinfo.fr/...&#10;https://en.wikipedia.org/wiki/Pierre-Édouard_Stérin"
           value={data.sources.join('\n')}
           onChange={(e) => updateSources(e.target.value)}
-          className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500"
+          className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           rows={3}
           disabled={isLoading}
         />
-        <p className="body-xs text-gray-500 mt-1">
+        <p className="body-xs text-neutral-500 mt-1">
           {data.sources.filter(s => s.trim()).length} source(s)
         </p>
       </div>
       
       {/* Aperçu en temps réel */}
       {showPreview && data.nom && data.controverses && (
-        <div className="mt-6 p-4 bg-white border border-berry-300 rounded-lg">
-          <h4 className="body-small font-medium text-gray-700 mb-2">Aperçu public :</h4>
+        <div className="mt-6 p-4 bg-white border border-primary rounded-lg">
+          <h4 className="body-small font-medium text-neutral-700 mb-2">Aperçu public :</h4>
           <div className="body-small">
-            <div className="font-semibold text-berry-800 mb-2">⚠️ DIRIGEANT CONTROVERSÉ</div>
-            <div className="font-medium text-berry-900 mb-1">{data.nom}</div>
-            <div className="text-berry-700 mb-2">
+            <div className="font-semibold text-primary mb-2">⚠️ DIRIGEANT CONTROVERSÉ</div>
+            <div className="font-medium text-primary mb-1">{data.nom}</div>
+            <div className="text-primary mb-2">
               {data.lienFinancier && <span><strong>Lien :</strong> {data.lienFinancier}</span>}
             </div>
-            <div className="text-berry-700 mb-2">
+            <div className="text-primary mb-2">
               {data.impact && <span><strong>Impact :</strong> {data.impact}</span>}
             </div>
-            <div className="text-berry-700 body-xs">
+            <div className="text-primary body-xs">
               {data.controverses.substring(0, 150)}...
             </div>
           </div>
@@ -215,7 +215,7 @@ export default function DirigentForm({
       <button
         onClick={handleSave}
         disabled={isLoading}
-        className="bg-berry-600 text-white px-4 py-2 rounded-lg hover:bg-berry-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? 'Sauvegarde...' : 'Sauvegarder dirigeant'}
       </button>

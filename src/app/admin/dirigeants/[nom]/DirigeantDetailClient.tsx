@@ -189,8 +189,8 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-berry-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement du dirigeant...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-neutral-600">Chargement du dirigeant...</p>
         </div>
       </div>
     );
@@ -200,10 +200,10 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="text-center">
-          <h1 className="heading-hero font-bold text-gray-900 mb-4">Dirigeant non trouvé</h1>
+          <h2 className="heading-main font-bold text-neutral-900 mb-4">Dirigeant non trouvé</h2>
           <button
             onClick={() => router.push('/admin/dirigeants')}
-            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+            className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
           >
             Retour à la liste
           </button>
@@ -217,7 +217,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
       <div className="flex items-center space-x-4 mb-6">
         <button
           onClick={() => router.push('/admin/dirigeants')}
-          className="text-gray-400 hover:text-gray-600"
+          className="text-neutral-400 hover:text-neutral-600"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -228,7 +228,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
             type="text"
             value={editForm.nom}
             onChange={(e) => updateEditForm('nom', e.target.value)}
-            className="heading-hero font-bold text-gray-900 bg-transparent border-2 border-transparent hover:border-gray-300 focus:border-berry-500 focus:outline-none rounded px-2 py-1 w-full"
+            className="heading-main font-bold text-neutral-900 bg-transparent border-2 border-transparent hover:border-neutral focus:border-primary focus:outline-none rounded px-2 py-1 w-full"
             maxLength={255}
             disabled={saving}
           />
@@ -237,7 +237,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
           <button
             onClick={saveDirigeantEdit}
             disabled={saving || !editForm.nom.trim() || !editForm.controverses.trim() || editForm.sources.length === 0}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center space-x-2"
+            className="bg-success text-white px-4 py-2 rounded-lg hover:bg-success disabled:opacity-50 flex items-center space-x-2"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -251,8 +251,8 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
       {message && (
         <div className={`mb-6 p-4 rounded-lg ${
           message.type === 'success' 
-            ? 'bg-green-50 border border-green-200 text-green-800' 
-            : 'bg-red-50 border border-red-200 text-red-800'
+            ? 'bg-success-light border border-success text-success' 
+            : 'bg-error-light border border-error text-error'
         }`}>
           {message.text}
         </div>
@@ -260,48 +260,48 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Informations dirigeant - Éditables */}
-        <div className="bg-berry-50 rounded-lg border border-berry-200 p-6">
-          <h2 className="heading-main font-semibold text-berry-900 mb-4">Informations dirigeant</h2>
+        <div className="bg-primary-light rounded-lg border border-primary p-6">
+          <h3 className="heading-sub font-semibold text-primary mb-4">Informations dirigeant</h3>
           
           <div className="space-y-4">
             <div>
-              <label className="block body-small font-medium text-berry-800 mb-2">
+              <label className="block body-small font-medium text-primary mb-2">
                 Controverses documentées *
               </label>
               <textarea
                 value={editForm.controverses}
                 onChange={(e) => updateEditForm('controverses', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500 bg-white"
+                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white"
                 rows={6}
                 maxLength={2000}
                 disabled={saving}
                 placeholder="Décrivez les controverses documentées..."
               />
-              <p className="body-xs text-berry-600 mt-1">
+              <p className="body-xs text-primary mt-1">
                 {editForm.controverses.length}/2000 caractères (minimum 20)
               </p>
             </div>
             
             <div>
-              <label className="block body-small font-medium text-berry-800 mb-2">
+              <label className="block body-small font-medium text-primary mb-2">
                 Sources (une par ligne) *
               </label>
               <textarea
                 value={editForm.sources.join('\n')}
                 onChange={(e) => updateSources(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-berry-500 bg-white"
+                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white"
                 rows={4}
                 disabled={saving}
                 placeholder="https://exemple1.com&#10;https://exemple2.com"
               />
-              <p className="body-xs text-berry-600 mt-1">
+              <p className="body-xs text-primary mt-1">
                 {editForm.sources.filter(s => s.trim()).length} source(s)
               </p>
               
               {/* Aperçu des sources */}
               {editForm.sources.filter(s => s.trim()).length > 0 && (
                 <div className="mt-2">
-                  <div className="body-xs font-medium text-berry-700 mb-1">Aperçu des sources :</div>
+                  <div className="body-xs font-medium text-primary mb-1">Aperçu des sources :</div>
                   <div className="space-y-1">
                     {editForm.sources.filter(s => s.trim()).map((source, index) => (
                       <div key={index} className="body-xs">
@@ -309,7 +309,7 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
                           href={source} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 underline"
+                          className="text-info hover:text-info underline"
                         >
                           {source.includes('://') ? new URL(source).hostname : source}
                         </a>
@@ -323,14 +323,14 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
         </div>
         
         {/* Marques liées */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-neutral p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="heading-main font-semibold text-gray-900">
+            <h3 className="heading-sub font-semibold text-neutral-900">
               Marques liées ({dirigeant.marques.length})
-            </h2>
+            </h3>
             <button
               onClick={() => router.push(`/admin/dirigeants/${encodeURIComponent(dirigeant.nom)}/lier-marque`)}
-              className="bg-berry-600 text-white px-3 py-1.5 rounded body-small hover:bg-berry-700"
+              className="bg-primary text-white px-3 py-1.5 rounded body-small hover:bg-primary-hover"
               disabled={availableMarques.length === 0}
             >
               + Lier marque
@@ -338,8 +338,8 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
           </div>
           
           {dirigeant.marques.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-8 text-neutral-500">
+              <svg className="w-12 h-12 mx-auto mb-3 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               <p>Aucune marque liée</p>
@@ -348,13 +348,13 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
           ) : (
             <div className="space-y-3">
               {dirigeant.marques.map((marque) => (
-                <div key={marque.id} className="border border-gray-200 rounded-lg p-4">
+                <div key={marque.id} className="border border-neutral rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-medium text-gray-900">{marque.nom}</h3>
+                    <h3 className="font-medium text-neutral-900">{marque.nom}</h3>
                     <button
                       onClick={() => unlinkMarque(marque.id, marque.nom)}
                       disabled={saving}
-                      className="text-red-600 hover:text-red-800 p-1 rounded disabled:opacity-50"
+                      className="text-error text-error p-1 rounded disabled:opacity-50"
                       title="Supprimer la liaison"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -362,10 +362,10 @@ export function DirigeantDetailClient({ dirigeantNom }: DirigeantDetailClientPro
                       </svg>
                     </button>
                   </div>
-                  <div className="body-small text-gray-600 mb-1">
+                  <div className="body-small text-neutral-600 mb-1">
                     <strong>Lien :</strong> {marque.lien_financier}
                   </div>
-                  <div className="body-small text-gray-600">
+                  <div className="body-small text-neutral-600">
                     <strong>Impact :</strong> {marque.impact_description}
                   </div>
                 </div>
