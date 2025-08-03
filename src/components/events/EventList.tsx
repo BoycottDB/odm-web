@@ -85,7 +85,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
             <h3 className="text-2xl font-medium text-gray-900 mb-6 text-center">
               Dirigeants controversés associés
             </h3>
-            <div className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-1">
+            <div className="grid gap-10 sm:gap-12 grid-cols-1 lg:grid-cols-1">
               {dirigeantResults.map((dirigeantResult) => (
                 <DirigeantCard key={dirigeantResult.id} dirigeantResult={dirigeantResult} />
               ))}
@@ -101,7 +101,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
                 Controverses documentées
               </h3>
             )}
-            <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
+            <div className="grid gap-10 sm:gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
               {events.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}
