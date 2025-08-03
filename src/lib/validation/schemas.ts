@@ -43,6 +43,7 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
   date: string;
   categorie_id: number;
   source_url: string;
+  condamnation_judiciaire?: boolean;
 }> {
   const errors: string[] = [];
 
@@ -56,13 +57,15 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
     description,
     date,
     categorie_id,
-    source_url
+    source_url,
+    condamnation_judiciaire
   } = data as {
     marque_id?: unknown;
     description?: unknown;
     date?: unknown;
     categorie_id?: unknown;
     source_url?: unknown;
+    condamnation_judiciaire?: unknown;
   };
 
   // Validation marque_id
@@ -104,6 +107,11 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
     errors.push('La date doit être au format valide');
   }
 
+  // Validation condamnation_judiciaire (optionnel)
+  if (condamnation_judiciaire !== undefined && typeof condamnation_judiciaire !== 'boolean') {
+    errors.push('Le champ condamnation judiciaire doit être un booléen');
+  }
+
   if (errors.length > 0) {
     return { success: false, errors };
   }
@@ -115,7 +123,8 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
       description: typeof description === 'string' ? description.trim() : '',
       date: typeof date === 'string' ? date : '',
       categorie_id: typeof categorie_id === 'number' ? categorie_id : 0,
-      source_url: typeof source_url === 'string' ? source_url.trim() : ''
+      source_url: typeof source_url === 'string' ? source_url.trim() : '',
+      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined
     }
   };
 }
