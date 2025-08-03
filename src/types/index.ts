@@ -30,6 +30,7 @@ export interface Evenement {
   date: string;
   categorie_id: number | null;
   source_url: string;
+  reponse?: string; // URL de la réponse officielle de la marque à la controverse
   proposition_source_id?: number;
   moderation_status?: string;
   condamnation_judiciaire?: boolean; // Indique si la controverse a fait l'objet d'une condamnation judiciaire

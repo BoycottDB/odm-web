@@ -76,6 +76,27 @@ export function EventCard({ event }: EventCardProps) {
           </a>
         </div>
       )}
+
+      {/* Réponse de la marque */}
+      <div className="pt-3">
+        {event.reponse ? (
+          <a
+            href={event.reponse}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-sm font-medium text-berry-600 hover:text-berry-600 transition-colors duration-200"
+          >
+            <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            Réponse officielle de la marque
+          </a>
+        ) : (
+          <p className="text-sm text-gray-500 italic">
+            Aucune réponse officielle de la marque
+          </p>
+        )}
+      </div>
     </div>
   );
 }
