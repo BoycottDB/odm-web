@@ -3,6 +3,11 @@ export interface Marque {
   id: number;
   nom: string;
   evenements?: Evenement[];
+  dirigeant_controverse?: MarqueDirigeant;
+  // Champs spécifiques au contexte dirigeant-marque
+  lien_financier?: string;
+  impact_description?: string;
+  liaison_id?: number;
 }
 
 export interface Categorie {
@@ -18,21 +23,33 @@ export interface Categorie {
 }
 
 export interface Evenement {
-  id: number;
+  id: number | string; // Peut être virtuel (string) ou réel (number)
   marque_id: number;
   titre: string; // Renommé de 'description' pour plus de clarté
+  description?: string; // Description détaillée si nécessaire
   date: string;
-  categorie_id: number;
+  categorie_id: number | null;
   source_url: string;
   proposition_source_id?: number;
+  moderation_status?: string;
+  created_at?: string;
+  updated_at?: string;
   marque?: Marque;
-  categorie?: Categorie;
+  categorie?: Categorie | null;
+}
+
+export interface DirigeantResult {
+  id: string;
+  type: 'dirigeant';
+  marque: Marque;
+  dirigeant: MarqueDirigeant;
 }
 
 export interface SearchState {
   query: string;
   isSearching: boolean;
   results: Evenement[];
+  dirigeantResults: DirigeantResult[];
   notFound: boolean;
   loading: boolean;
 }
@@ -106,4 +123,49 @@ export interface PropositionUpdateRequest {
   statut: 'approuve' | 'rejete';
   commentaire_admin?: string;
   decision_publique: boolean;
+}
+
+// Types pour la gestion des dirigeants controversés
+export interface MarqueDirigeant {
+  id: number;
+  marque_id: number;
+  dirigeant_nom: string;
+  controverses: string;
+  lien_financier: string;
+  impact_description: string;
+  sources: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+// Interface pour la vue dirigeant-centrique
+export interface DirigeantWithMarques {
+  nom: string;
+  controverses: string;
+  sources: string[];
+  marques: Array<{
+    id: number;
+    nom: string;
+    lien_financier: string;
+    impact_description: string;
+  }>;
+}
+
+// Requests pour l'API dirigeants
+export interface MarqueDirigeantCreateRequest {
+  marque_id: number;
+  dirigeant_nom: string;
+  controverses: string;
+  lien_financier: string;
+  impact_description: string;
+  sources: string[];
+}
+
+export interface MarqueDirigeantUpdateRequest {
+  id: number;
+  dirigeant_nom?: string;
+  controverses?: string;
+  lien_financier?: string;
+  impact_description?: string;
+  sources?: string[];
 }

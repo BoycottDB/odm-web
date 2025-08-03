@@ -1,16 +1,18 @@
-import { Evenement } from '@/types';
+import { Evenement, DirigeantResult } from '@/types';
 import { EventCard } from './EventCard';
+import { DirigeantCard } from './DirigeantCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 interface EventListProps {
   events: Evenement[];
+  dirigeantResults: DirigeantResult[];
   loading: boolean;
   searching: boolean;
   notFound: boolean;
   hasSearched: boolean;
 }
 
-export function EventList({ events, loading, searching, notFound, hasSearched }: EventListProps) {
+export function EventList({ events, dirigeantResults, loading, searching, notFound, hasSearched }: EventListProps) {
   // État de chargement initial
   if (loading && !hasSearched) {
     return (
@@ -66,15 +68,46 @@ export function EventList({ events, loading, searching, notFound, hasSearched }:
   }
 
   // Affichage des résultats
+  const hasEvents = events.length > 0;
+  const hasDirigeants = dirigeantResults.length > 0;
+  const isSearchResults = hasSearched && (hasEvents || hasDirigeants);
+
   return (
     <div>
       <h2 className="text-4xl font-light text-gray-900 mb-8 text-center">
-        Derniers signalements
+        {isSearchResults ? 'Résultats de recherche' : 'Derniers signalements'}
       </h2>
-      <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 max-w-4xl mx-auto px-2 sm:px-0">
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
+      
+      <div className="max-w-4xl mx-auto px-2 sm:px-0 space-y-8">
+        {/* Dirigeants controversés (seulement lors de recherche) */}
+        {hasDirigeants && (
+          <div>
+            <h3 className="text-2xl font-medium text-gray-900 mb-6 text-center">
+              Dirigeants controversés associés
+            </h3>
+            <div className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-1">
+              {dirigeantResults.map((dirigeantResult) => (
+                <DirigeantCard key={dirigeantResult.id} dirigeantResult={dirigeantResult} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Événements */}
+        {hasEvents && (
+          <div>
+            {hasDirigeants && (
+              <h3 className="text-2xl font-medium text-gray-900 mb-6 text-center">
+                Controverses documentées
+              </h3>
+            )}
+            <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
+              {events.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -130,6 +130,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <EventList
             events={searchState.results}
+            dirigeantResults={searchState.dirigeantResults}
             loading={searchState.loading}
             searching={searchState.isSearching}
             notFound={searchState.notFound}
