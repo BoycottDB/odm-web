@@ -138,6 +138,24 @@ export default function RootLayout({
         <main className="min-h-[calc(100vh-80px)] w-full">
           {children}
         </main>
+        {/* Footer */}
+        <footer className="bg-neutral-900 text-white section-padding">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <div className="mb-6">
+              <p className="body-large text-neutral-300 mb-2">
+                Développé avec ❤️ par le collectif
+              </p>
+              <h3 className="heading-main text-white font-bold">
+                Ethik Pirates
+              </h3>
+            </div>
+            <div className="border-t border-neutral-700 pt-6">
+              <p className="body-base text-neutral-400">
+                &ldquo;Lancez l&apos;ère de la piraterie partout !&rdquo; - Pour une consommation qui favorise la vie plutôt que les profits
+              </p>
+            </div>
+          </div>
+        </footer>
       </body>
     </html>
   );
