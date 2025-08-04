@@ -622,7 +622,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 </span>
               </label>
               <p className="body-xs text-neutral-500 mt-1">
-                Cocher si cette controverse a fait l'objet d'une condamnation judiciaire officielle
+                Cocher si cette controverse a fait l&apos;objet d&apos;une condamnation judiciaire officielle
               </p>
             </div>
           </div>
