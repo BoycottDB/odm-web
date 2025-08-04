@@ -87,6 +87,23 @@ body {
 .text-primary-light { color: var(--color-berry-500); }
 .text-primary-dark { color: var(--color-berry-700); }
 
+/* Classes Tailwind pour berry colors */
+.bg-berry-50 { background-color: var(--color-berry-50); }
+.bg-berry-100 { background-color: var(--color-berry-100); }
+.bg-berry-600 { background-color: var(--color-berry-600); }
+.bg-berry-700 { background-color: var(--color-berry-700); }
+.text-berry-600 { color: var(--color-berry-600); }
+.text-berry-700 { color: var(--color-berry-700); }
+.border-berry-100 { border-color: var(--color-berry-100); }
+.border-berry-200 { border-color: var(--color-berry-200); }
+.border-berry-300 { border-color: var(--color-berry-300); }
+.border-berry-400 { border-color: var(--color-berry-400); }
+.hover\:bg-berry-50:hover { background-color: var(--color-berry-50); }
+.hover\:bg-berry-700:hover { background-color: var(--color-berry-700); }
+.hover\:border-berry-400:hover { border-color: var(--color-berry-400); }
+.focus\:ring-berry-200:focus { --tw-ring-color: var(--color-berry-200); }
+.focus\:ring-neutral-300:focus { --tw-ring-color: #d1d5db; }
+
 /* Couleurs de texte neutres */
 .text-neutral-900 { color: #111827; } /* Titres principaux */
 .text-neutral-800 { color: #1f2937; } /* Texte fort */
