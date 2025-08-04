@@ -26,10 +26,11 @@ export async function GET() {
 
       return {
         id: proposition.id,
-        type: proposition.type,
         titre,
+        marque_nom: proposition.marque_nom,
         statut: proposition.statut,
         commentaire_admin: proposition.commentaire_admin || '',
+        source_url: proposition.source_url,
         date: proposition.updated_at
       };
     });
