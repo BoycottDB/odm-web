@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabaseClient';
-import { Proposition, Marque, Evenement } from '@/types';
+import { Proposition, Evenement } from '@/types';
 
 /**
  * Assure qu'une marque existe dans la base de données
@@ -54,7 +54,7 @@ export async function ensureMarqueExists(marqueNom: string, marqueId?: number): 
 /**
  * Convertit une proposition approuvée en événement dans la table principale
  */
-export async function convertPropositionToEvenement(proposition: Proposition): Promise<Evenement> {
+export async function convertPropositionToEvenement(proposition: Proposition, condamnationJudiciaire: boolean = false): Promise<Evenement> {
   if (proposition.statut !== 'approuve') {
     throw new Error('Seules les propositions approuvées peuvent être converties');
   }
@@ -75,6 +75,7 @@ export async function convertPropositionToEvenement(proposition: Proposition): P
       date: proposition.date,
       categorie_id: proposition.categorie_id!,
       source_url: proposition.source_url,
+      condamnation_judiciaire: condamnationJudiciaire,
       proposition_source_id: proposition.id
     })
     .select('*, Marque(*), Categorie!Evenement_categorie_id_fkey(*)')
@@ -103,11 +104,11 @@ export async function convertPropositionToEvenement(proposition: Proposition): P
 /**
  * Convertit automatiquement une proposition approuvée en événement
  */
-export async function convertApprovedProposition(proposition: Proposition): Promise<{ type: 'evenement', data: Evenement }> {
+export async function convertApprovedProposition(proposition: Proposition, condamnationJudiciaire: boolean = false): Promise<{ type: 'evenement', data: Evenement }> {
   if (proposition.statut !== 'approuve') {
     throw new Error('Seules les propositions approuvées peuvent être converties');
   }
 
-  const evenement = await convertPropositionToEvenement(proposition);
+  const evenement = await convertPropositionToEvenement(proposition, condamnationJudiciaire);
   return { type: 'evenement', data: evenement };
 }

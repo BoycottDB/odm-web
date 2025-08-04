@@ -51,6 +51,7 @@ export default function AdminModeration() {
     statut: 'approuve' | 'rejete';
     commentaire_admin?: string;
     decision_publique: boolean;
+    condamnation_judiciaire?: boolean;
   }) => {
     try {
       const response = await fetch(`/api/propositions/${id}`, {
