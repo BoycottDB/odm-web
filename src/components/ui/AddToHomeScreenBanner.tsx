@@ -45,12 +45,12 @@ export function AddToHomeScreenBanner() {
     if (os === 'ios') {
       return "Créer un raccourci vers cette page";
     }
-    return "Installez l'app pour un accès rapide à vos recherches !";
+    return "Créer un raccourci vers cette page";
   };
 
   const getButtonText = () => {
     if (isInstalling) return "Installation...";
-    if (os === 'ios') return "Ajouter";
+    if (os === 'ios') return "Installer";
     return "Installer";
   };
 
