@@ -57,10 +57,16 @@ export function useAddToHomeScreen(): AddToHomeScreenState & AddToHomeScreenActi
   }, []);
 
   const canInstall = isMobile && !isStandalone && !hasBeenDismissed && 
-    (deferredPrompt !== null || os === 'ios');
+    (deferredPrompt !== null || os === 'ios' || os === 'android');
 
   const installApp = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      // Cas Android sans deferredPrompt : ouvrir les instructions manuelles
+      if (os === 'android') {
+        setShowIOSInstructions(true); // Réutiliser le modal d'instructions
+      }
+      return;
+    }
 
     setIsInstalling(true);
     
