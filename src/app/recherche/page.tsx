@@ -4,6 +4,7 @@ import { useSearch } from '@/hooks/useSearch';
 import { useSuggestions } from '@/hooks/useSuggestions';
 import { SearchBar } from '@/components/search/SearchBar';
 import { EventList } from '@/components/events/EventList';
+import { AddToHomeScreenBanner } from '@/components/ui/AddToHomeScreenBanner';
 import { Marque } from '@/types';
 
 export default function RechercherPage() {
@@ -110,6 +111,9 @@ export default function RechercherPage() {
           />
         </div>
       </section>
+
+      {/* Composant mobile pour l'ajout à l'écran d'accueil */}
+      <AddToHomeScreenBanner />
     </div>
   );
 }
