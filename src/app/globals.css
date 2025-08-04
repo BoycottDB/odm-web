@@ -141,6 +141,7 @@ body {
 .bg-error-hover { background-color: #b91c1c; }
 .bg-warning-light { background-color: #fffbed; }
 .bg-info-light { background-color: #eff6ff; }
+.bg-info { background-color: #006eff; }
 
 /* Couleurs de bordure */
 .border-primary { border-color: var(--color-berry-200); }
