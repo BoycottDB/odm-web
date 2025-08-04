@@ -126,6 +126,7 @@ export interface PropositionUpdateRequest {
   statut: 'approuve' | 'rejete';
   commentaire_admin?: string;
   decision_publique: boolean;
+  condamnation_judiciaire?: boolean;
 }
 
 // Types pour la gestion des dirigeants controversés
