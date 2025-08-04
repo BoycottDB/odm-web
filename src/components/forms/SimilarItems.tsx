@@ -64,6 +64,20 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
                           : `${new Date(evenement.date).toLocaleDateString('fr-FR') + " · " + evenement.titre}`
                         }
                       </div>
+                      {evenement.source_url && (
+                        <div className="body-xs text-neutral-500 mt-1 flex items-center">
+                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                          Source: <a href={evenement.source_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1 truncate max-w-xs">{(() => {
+                            try {
+                              return new URL(evenement.source_url).hostname;
+                            } catch {
+                              return evenement.source_url.length > 30 ? evenement.source_url.substring(0, 30) + '...' : evenement.source_url;
+                            }
+                          })()}</a>
+                        </div>
+                      )}
                     </div>
                     <div className={`px-2 py-1 rounded body-xs font-medium border ${similarity.color} ml-3`}>
                       {similarity.label}
@@ -115,6 +129,20 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
                       <div className="body-xs text-neutral-500 mt-1">
                         Signalé le {new Date(proposition.created_at).toLocaleDateString('fr-FR')}
                       </div>
+                      {proposition.source_url && (
+                        <div className="body-xs text-neutral-500 mt-1 flex items-center">
+                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                          Source: <a href={proposition.source_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1 truncate max-w-xs">{(() => {
+                            try {
+                              return new URL(proposition.source_url).hostname;
+                            } catch {
+                              return proposition.source_url.length > 30 ? proposition.source_url.substring(0, 30) + '...' : proposition.source_url;
+                            }
+                          })()}</a>
+                        </div>
+                      )}
                     </div>
                     <div className={`px-2 py-1 rounded body-xs font-medium border ${similarity.color} ml-3`}>
                       {similarity.label}

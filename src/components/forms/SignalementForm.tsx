@@ -148,8 +148,8 @@ export default function SignalementForm() {
   // Pool de messages de remerciement rotatifs
   const successMessages = useMemo(() => [
     {
-      title: "Merci pour votre engagement !",
-      message: "Votre signalement contribue à une consommation plus éthique et transparente."
+      title: "Merci pour votre signalement !",
+      message: "Votre engagement contribue à une consommation plus éthique et transparente."
     },
     {
       title: "Votre contribution compte !",
@@ -160,7 +160,7 @@ export default function SignalementForm() {
       message: "Votre contribution renforce la transparence sur les pratiques des entreprises."
     },
     {
-      title: "🏴‍☠️ Bienvenue dans l&apos;équipage !",
+      title: "🏴‍☠️ Bienvenue dans l'équipage !",
       message: "Avec ce geste, vous venez de rejoindre la flotte de la consommation éthique. Ensemble, naviguons vers des mers plus propres !"
     }
   ], []);
@@ -233,16 +233,6 @@ export default function SignalementForm() {
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <HoneypotField onChange={setHoneypotValue} />
-        
-        {/* Information sur le type */}
-        <div className="bg-info-light border border-info rounded-lg p-4">
-          <h3 className="body-small font-medium text-info mb-2">
-            📢 Signaler une controverse
-          </h3>
-          <p className="body-small text-info">
-            Vous pouvez signaler une controverse liée à une marque pour informer les consommateurs.
-          </p>
-        </div>
 
         {/* Champs pour la controverse */}
             {/* Marque pour controverse */}
@@ -369,7 +359,7 @@ export default function SignalementForm() {
             disabled={isSubmitting || !captchaVerified}
             className="bg-gradient-to-r from-primary to-primary text-white px-6 py-3 rounded-lg font-semibold hover:from-primary-hover hover:to-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
-            {isSubmitting ? 'Envoi en cours...' : 'Proposer'}
+            {isSubmitting ? 'Envoi en cours...' : 'Signaler'}
           </button>
           
           <button
