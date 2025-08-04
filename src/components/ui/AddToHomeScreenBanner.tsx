@@ -24,7 +24,8 @@ export function AddToHomeScreenBanner() {
   }, [canInstall]);
 
   const handleInstall = async () => {
-    if (os === 'ios') {
+    if (os === 'ios' || os === 'android') {
+      // Pour iOS et Android : utiliser le modal local avec instructions spécifiques
       setShowLocalModal(true);
     } else {
       await installApp();
@@ -132,50 +133,94 @@ export function AddToHomeScreenBanner() {
               </h3>
 
               <div className="space-y-4 text-left">
-                <div className="flex items-start gap-3">
-                  <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
-                    1
-                  </div>
-                  <div>
-                    <p className="text-sm text-neutral-700">
-                      Appuyez sur l&apos;icône <strong>Partager</strong> dans la barre de navigation
-                    </p>
-                    <div className="mt-2 flex items-center justify-center">
-                      <div className="text-blue-500 p-1 mr-8">
-                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 50 50">
-                          <path d="M30 13L25 8l-5 5-1-1L25 5l6 6z"/>
-                          <path d="M24 7h2v21h-2z"/>
-                          <path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/>
-                        </svg>
+                {os === 'ios' ? (
+                  // Instructions iOS
+                  <>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
+                        1
+                      </div>
+                      <div>
+                        <p className="text-sm text-neutral-700">
+                          Appuyez sur l&apos;icône <strong>Partager</strong> dans la barre de navigation
+                        </p>
+                        <div className="mt-2 flex items-center justify-center">
+                          <div className="text-blue-500 p-1 mr-8">
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 50 50">
+                              <path d="M30 13L25 8l-5 5-1-1L25 5l6 6z"/>
+                              <path d="M24 7h2v21h-2z"/>
+                              <path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/>
+                            </svg>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
-                    2
-                  </div>
-                  <div>
-                    <p className="text-sm text-neutral-700">
-                      Sélectionnez <strong>&quot;Ajouter à l&apos;écran d&apos;accueil&quot;</strong>
-                    </p>
-                    <div className="mt-2 bg-neutral-100 rounded p-2 text-xs text-neutral-600">
-                      📱 Ajouter à l&apos;écran d&apos;accueil
+                    <div className="flex items-start gap-3">
+                      <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
+                        2
+                      </div>
+                      <div>
+                        <p className="text-sm text-neutral-700">
+                          Sélectionnez <strong>&quot;Ajouter à l&apos;écran d&apos;accueil&quot;</strong>
+                        </p>
+                        <div className="mt-2 bg-neutral-100 rounded p-2 text-xs text-neutral-600">
+                          📱 Ajouter à l&apos;écran d&apos;accueil
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
-                    3
-                  </div>
-                  <div>
-                    <p className="text-sm text-neutral-700">
-                      Confirmez en appuyant sur <strong>&quot;Ajouter&quot;</strong>
-                    </p>
-                  </div>
-                </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
+                        3
+                      </div>
+                      <div>
+                        <p className="text-sm text-neutral-700">
+                          Confirmez en appuyant sur <strong>&quot;Ajouter&quot;</strong>
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  // Instructions Android
+                  <>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
+                        1
+                      </div>
+                      <div>
+                        <p className="text-sm text-neutral-700">
+                          Appuyez sur le <strong>menu</strong> (⋮) en haut à droite
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
+                        2
+                      </div>
+                      <div>
+                        <p className="text-sm text-neutral-700">
+                          Sélectionnez <strong>&quot;Ajouter à l&apos;écran d&apos;accueil&quot;</strong>
+                        </p>
+                        <div className="mt-2 bg-neutral-100 rounded p-2 text-xs text-neutral-600">
+                          📱 Ajouter à l&apos;écran d&apos;accueil
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
+                        3
+                      </div>
+                      <div>
+                        <p className="text-sm text-neutral-700">
+                          Confirmez en appuyant sur <strong>&quot;Ajouter&quot;</strong>
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="mt-6 pt-4 border-t border-neutral-200">
