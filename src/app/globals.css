@@ -8,8 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-rubik);
+  --font-mono: var(--font-geist);
   
   /* Palette Berry - Violet bordeaux avec déclinaisons */
   --color-berry-50: #fdf2f8;
@@ -46,7 +46,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
   font-weight: 400;
 }
 
@@ -54,14 +54,19 @@ body {
 .heading-hero {
   font-size: clamp(1.5rem, 4vw, 3rem);
   line-height: 1;
+  font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
+  font-weight: 800;
 }
 
 .heading-main {
   font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
+  font-weight: 600;
 }
 
 .heading-sub {
   font-size: clamp(1rem, 2vw, 1.25rem);
+  font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
 }
 
 .body-large {

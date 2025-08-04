@@ -2,17 +2,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Rubik, Geist } from "next/font/google";
 import { useState } from "react";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const rubik = Rubik({
+  variable: "--font-rubik",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geistSans = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
@@ -107,7 +107,7 @@ export default function RootLayout({
   };
   return (
     <html lang="fr">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50 text-neutral-900`}>
+      <body className={`${geistSans.variable} ${rubik.variable} antialiased bg-neutral-50 text-neutral-900`}>
         <header className="w-full border-b border-primary bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
           <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <Link href="/" className="heading-main font-light text-neutral-900 hover:text-primary transition-colors">

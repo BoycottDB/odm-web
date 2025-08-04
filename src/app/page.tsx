@@ -36,7 +36,7 @@ export default function Home() {
                     Extension navigateur
                   </h3>
                 </div>
-                <p className="text-base md:text-lg text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
+                <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
                   Notre extension détecte automatiquement les marques controversées dans vos parcours d&apos;achat en ligne afin de vous aider à consommer de manière éclairée et responsable.
                 </p>
                 <div className="flex justify-start md:justify-start">
@@ -62,7 +62,7 @@ export default function Home() {
                     Explorez les données
                   </h3>
                 </div>
-                <p className="text-base md:text-lg text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
+                <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
                   Pour chaque marque, nous mentionnons ses diverses controverses en précisant s&apos;il y a eu condamnations juridiques et/ou réponses officielle de la marque. Une marque peut aussi être référencée pour les faits de ses dirigeants.
                 </p>
                 <div className="flex justify-start md:justify-start">
@@ -108,7 +108,7 @@ export default function Home() {
                     Signalement collaboratif
                   </h3>
                 </div>
-                <p className="text-base md:text-lg text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
+                <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
                   Participez à notre démarche collaborative en signalant de nouvelles controverses. 
                   Processus simplifié avec vérification de sources, modération transparente par la communauté 
                   et historique public de toutes les décisions.
@@ -135,11 +135,11 @@ export default function Home() {
             Pourquoi ce projet ?
           </h2>
           <div className="prose prose-lg max-w-none text-neutral-700 space-y-6">
-            <p className="body-large">
+            <p className="body-large font-light">
               <strong className="text-neutral-900">Nous croyons au pouvoir du boycott</strong> comme acte démocratique puissant. 
               En choisissant de ne plus financer des entreprises dont les pratiques vont à l&apos;encontre de nos valeurs, nous pouvons collectivement réduire leur pouvoir économique et les inciter au changement.
             </p>
-            <p className="body-large">
+            <p className="body-large font-light">
               Notre rôle est de vous permettre d&apos;effectuer vos achats en pleine conscience, selon vos propres valeurs et votre seuil de tolérance personnel. 
               Nous restons strictement neutres : vous avez toujours le choix, et notre engagement consiste uniquement 
               à centraliser des informations factuelles et vérifiées pour vous aider à décider librement.
@@ -170,7 +170,7 @@ export default function Home() {
                 <h3 className="text-lg md:text-xl font-medium text-neutral-900 mb-2 md:mb-4">
                   Identifiez
                 </h3>
-                <p className="text-sm md:text-base text-neutral-700 leading-relaxed">
+                <p className="text-sm md:text-base font-light text-neutral-700 leading-relaxed">
                   Identifiez les marques controversées en utilisant notre moteur de recherche ou notre extension.
                 </p>
               </div>
@@ -185,7 +185,7 @@ export default function Home() {
                 <h3 className="text-lg md:text-xl font-medium text-neutral-900 mb-2 md:mb-4">
                   Consultez
                 </h3>
-                <p className="text-sm md:text-base text-neutral-700 leading-relaxed">
+                <p className="text-sm md:text-base font-light text-neutral-700 leading-relaxed">
                   Consultez les controverses documentées, les dirigeants problématiques 
                   et leurs sources vérifiées pour comprendre les enjeux.
                 </p>
@@ -201,7 +201,7 @@ export default function Home() {
                 <h3 className="text-lg md:text-xl font-medium text-neutral-900 mb-2 md:mb-4">
                   Décidez
                 </h3>
-                <p className="text-sm md:text-base text-neutral-700 leading-relaxed">
+                <p className="text-sm md:text-base font-light text-neutral-700 leading-relaxed">
                   Prenez votre décision d&apos;achat en toute connaissance de cause, 
                   selon vos valeurs personnelles et votre seuil de tolérance.
                 </p>

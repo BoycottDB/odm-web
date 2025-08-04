@@ -28,10 +28,10 @@ export default function Moderation() {
               </div>
               <div className="flex-1">
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Principe de modération</h2>
-                <p className="body-large text-neutral-700 leading-relaxed mb-4">
+                <p className="body-large font-lsight text-neutral-700 leading-relaxed mb-4">
                   Chaque ajout, correction ou suppression d&apos;entrée est soumis à validation par la communauté et la modération. Les décisions sont publiques, justifiées et consultables ici.
                 </p>
-                <p className="body-large text-neutral-700 leading-relaxed">
+                <p className="body-large font-light text-neutral-700 leading-relaxed">
                   Cette transparence garantit la fiabilité des informations et permet à chacun de comprendre les critères de validation utilisés.
                 </p>
               </div>
@@ -153,7 +153,7 @@ export default function Moderation() {
               </div>
               <div className="flex-1">
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Comment signaler</h2>
-                <p className="body-large text-neutral-700 mb-6">
+                <p className="body-large font-light text-neutral-700 mb-6">
                   Vous souhaitez signaler une controverse ? Utilisez notre formulaire de signalement pour contribuer à la base de données.
                 </p>
                 <div className="bg-primary-light border border-primary rounded-lg p-6 mb-6">
