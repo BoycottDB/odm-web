@@ -388,9 +388,9 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               </svg>
             </button>
             <div>
-              <h1 className="heading-hero font-bold text-neutral-900">
+              <h2 className="heading-main font-bold text-neutral-900">
                 Signalement #{proposition.id}
-              </h1>
+              </h2>
               <div className="flex items-center space-x-2 mt-1">
                 <span className="body-small text-neutral-500">
                   Soumis le {formatDate(proposition.created_at)}
@@ -404,7 +404,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
       <div className="p-6">
         {/* Détails de la proposition */}
         <div className="bg-neutral-50 rounded-lg p-6 mb-6">
-          <h2 className="heading-main font-semibold text-neutral-900 mb-4">Détails du signalement</h2>
+          <h2 className="heading-sub font-semibold text-neutral-900 mb-4">Détails du signalement</h2>
           
           <div className="space-y-4">
             <div>
@@ -639,7 +639,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
 
         {/* Formulaire de décision */}
         <div className="border-t border-neutral pt-6">
-          <h2 className="heading-main font-semibold text-neutral-900 mb-4">Décision de modération</h2>
+          <h2 className="heading-sub font-semibold text-neutral-900 mb-4">Décision de modération</h2>
           
           {/* Commentaire admin */}
           <div className="mb-6">
