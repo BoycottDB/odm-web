@@ -71,6 +71,9 @@ function MobileNav() {
           <Link href="/" className={getLinkClass('/')} onClick={() => setOpen(false)}>
             Accueil
           </Link>
+          <Link href="/recherche" className={getLinkClass('/recherche')} onClick={() => setOpen(false)}>
+            Recherche
+          </Link>
           <Link href="/about" className={getLinkClass('/about')} onClick={() => setOpen(false)}>
             À propos
           </Link>
@@ -108,12 +111,15 @@ export default function RootLayout({
         <header className="w-full border-b border-primary bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
           <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <Link href="/" className="heading-main font-light text-neutral-900 hover:text-primary transition-colors">
-              Observatoire Marques
+              <strong>ODM</strong>
             </Link>
             {/* Menu desktop */}
             <nav className="hidden md:flex gap-8 body-base font-medium">
               <Link href="/" className={getDesktopLinkClass('/')}>
                 Accueil
+              </Link>
+              <Link href="/recherche" className={getDesktopLinkClass('/recherche')}>
+                Recherche
               </Link>
               <Link href="/about" className={getDesktopLinkClass('/about')}>
                 À propos
