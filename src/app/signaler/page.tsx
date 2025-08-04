@@ -66,8 +66,8 @@ export default function Signaler() {
                 
                 <div className="bg-info-light border border-info rounded-lg p-4">
                   
-                <Link href="/about">
-                  👉 <strong className="text-info mb-2hover:text-info font-medium underline">En savoir plus sur notre mission</strong>
+                <Link href="/moderation">
+                  👉 <strong className="text-info mb-2hover:text-info font-medium underline">En savoir plus sur notre processus de modération</strong>
                 </Link>
                 </div>
               </div>
