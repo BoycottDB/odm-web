@@ -8,8 +8,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-rubik);
-  --font-mono: var(--font-geist);
   
   /* Palette Berry - Violet bordeaux avec déclinaisons */
   --color-berry-50: #fdf2f8;
@@ -47,7 +45,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 /* Classes typographiques utilitaires - Tailles seulement */
