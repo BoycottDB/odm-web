@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { apiService } from '@/lib/services/api';
 import { validateHoneypot, validateSubmissionTime } from '@/lib/security/honeypot';
 import Captcha from '@/components/ui/Captcha';
@@ -145,22 +145,67 @@ export default function SignalementForm() {
     }
   };
 
+  // Pool de messages de remerciement rotatifs
+  const successMessages = useMemo(() => [
+    {
+      title: "Merci pour votre engagement !",
+      message: "Votre signalement contribue à une consommation plus éthique et transparente."
+    },
+    {
+      title: "Votre contribution compte !",
+      message: "Grâce à votre engagement, nous construisons ensemble un répertoire plus complet."
+    },
+    {
+      title: "Merci de faire la différence !",
+      message: "Votre contribution renforce la transparence sur les pratiques des entreprises."
+    },
+    {
+      title: "🏴‍☠️ Bienvenue dans l&apos;équipage !",
+      message: "Avec ce geste, vous venez de rejoindre la flotte de la consommation éthique. Ensemble, naviguons vers des mers plus propres !"
+    }
+  ], []);
+
+  // Sélection aléatoire d'un message à chaque soumission
+  const randomMessage = useMemo(() => {
+    return successMessages[Math.floor(Math.random() * successMessages.length)];
+  }, [isSuccess, successMessages]);
+
   if (isSuccess) {
     return (
       <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 text-center">
-        <div className="bg-success-light rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
-          <svg className="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
+        <div className="relative">
+          {/* Animation confettis */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+            {/* Confettis animés */}
+            <div className="absolute w-2 h-2 bg-yellow-400 rounded animate-bounce" style={{top: '10%', left: '20%', animationDelay: '0s', animationDuration: '2s'}}></div>
+            <div className="absolute w-2 h-2 bg-blue-400 rounded animate-bounce" style={{top: '30%', left: '80%', animationDelay: '0.2s', animationDuration: '2.5s'}}></div>
+            <div className="absolute w-2 h-2 bg-red-400 rounded animate-bounce" style={{top: '50%', left: '10%', animationDelay: '0.4s', animationDuration: '1.8s'}}></div>
+            <div className="absolute w-2 h-2 bg-green-400 rounded animate-bounce" style={{top: '20%', left: '70%', animationDelay: '0.6s', animationDuration: '2.2s'}}></div>
+            <div className="absolute w-2 h-2 bg-purple-400 rounded animate-bounce" style={{top: '40%', left: '90%', animationDelay: '0.8s', animationDuration: '1.9s'}}></div>
+            <div className="absolute w-2 h-2 bg-pink-400 rounded animate-bounce" style={{top: '60%', left: '30%', animationDelay: '1s', animationDuration: '2.1s'}}></div>
+            <div className="absolute w-2 h-2 bg-orange-400 rounded animate-bounce" style={{top: '80%', left: '60%', animationDelay: '1.2s', animationDuration: '2.3s'}}></div>
+            <div className="absolute w-2 h-2 bg-teal-400 rounded animate-bounce" style={{top: '70%', left: '15%', animationDelay: '1.4s', animationDuration: '2s'}}></div>
+          </div>
+          
+          {/* Animation de célébration */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="animate-ping absolute w-20 h-20 bg-success-light rounded-full opacity-75"></div>
+            <div className="animate-pulse absolute w-24 h-24 bg-success-light rounded-full opacity-50"></div>
+          </div>
+          
+          <div className="relative bg-success-light rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6 animate-bounce">
+            <svg className="w-8 h-8 text-success animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
         </div>
         
         <h2 className="heading-main font-bold text-neutral-900 mb-4">
-          Proposition soumise avec succès !
+          {randomMessage.title}
         </h2>
         
         <p className="body-large text-neutral-700 mb-8">
-          Votre proposition a été transmise à notre équipe de modération. 
-          Elle sera examinée dans les plus brefs délais.
+          {randomMessage.message}
         </p>
         
         <div className="bg-info-light border border-info rounded-lg p-4 mb-6">
@@ -170,12 +215,14 @@ export default function SignalementForm() {
           </p>
         </div>
         
-        <button
-          onClick={() => window.location.reload()}
-          className="bg-info text-white px-6 py-3 rounded-lg font-semibold hover:bg-info transition-colors"
-        >
-          Faire une nouvelle proposition
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-hover transition-colors"
+          >
+            Signaler une autre marque
+          </button>
+        </div>
       </div>
     );
   }
