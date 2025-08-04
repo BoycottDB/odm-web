@@ -2,6 +2,7 @@ import { Evenement, DirigeantResult } from '@/types';
 import { EventCard } from './EventCard';
 import { DirigeantCard } from './DirigeantCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import Link from 'next/link';
 
 interface EventListProps {
   events: Evenement[];
@@ -43,9 +44,18 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
           </svg>
         </div>
         <h3 className="heading-sub font-medium text-neutral-900 mb-2">Aucun résultat trouvé</h3>
-        <p className="body-large font-light text-neutral-600">
-          Essayez avec un autre terme de recherche ou vérifiez l&apos;orthographe.
+        <p className="body-large font-light text-neutral-600 mb-6">
+          <strong>Ce répertoire est collaboratif</strong> : si une marque n'apparaît pas, c'est que personne ne l'a encore signalée. <br />N'hésitez pas à contribuer pour enrichir cette base de données et aider d'autres consommateurs à faire des choix éclairés !
         </p>
+        <Link 
+          href="/signaler"
+          className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Signaler une controverse
+        </Link>
       </div>
     );
   }
@@ -105,6 +115,30 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
               {events.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}
+              
+              {/* Fausse controverse d'incitation */}
+              <div className="bg-primary-light/20 border-2 border-dashed border-primary/30 rounded-2xl p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-medium text-neutral-800 mb-3">
+                  Une controverse manque ?
+                </h3>
+                <p className="text-neutral-600 mb-4">
+                  <strong>Ce répertoire est collaboratif</strong> : si une controverse n'apparaît pas, c'est que personne ne l'a encore signalée. <br />N'hésitez pas à contribuer pour enrichir cette base de données et aider d'autres consommateurs à faire des choix éclairés !
+                </p>
+                <Link 
+                  href="/signaler"
+                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Signaler une controverse
+                </Link>
+              </div>
             </div>
           </div>
         )}
