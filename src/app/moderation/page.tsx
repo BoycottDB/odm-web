@@ -1,6 +1,71 @@
+'use client';
+
 import Link from 'next/link';
+import { useDecisions } from '@/hooks/useDecisions';
+
+function DecisionCard({ decision }: { decision: { id: number; titre: string; marque_nom: string; statut: 'approuve' | 'rejete'; commentaire_admin: string; source_url?: string; date: string; } }) {
+  const statusConfig = {
+    approuve: {
+      label: 'VALIDÉ',
+      bgColor: 'bg-success-light border-success',
+      textColor: 'text-success',
+      badgeColor: 'bg-success-light text-success'
+    },
+    rejete: {
+      label: 'REFUSÉ',
+      bgColor: 'bg-error-light border-error',
+      textColor: 'text-error',
+      badgeColor: 'bg-error-light text-error'
+    }
+  };
+
+  const config = statusConfig[decision.statut as keyof typeof statusConfig];
+  const formattedDate = new Date(decision.date).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'numeric',
+    year: '2-digit'
+  });
+
+  return (
+    <div className={`border rounded-lg p-4 ${config.bgColor}`}>
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0">
+          <span className={`${config.badgeColor} body-xs font-medium px-2.5 py-0.5 rounded-full sm:mr-3 self-start`}>
+            {config.label}
+          </span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+            <span className="font-bold text-neutral-900">{decision.marque_nom}</span>
+            {decision.titre && <span className="hidden sm:inline text-neutral-400">•</span>}
+            <span className="font-medium text-neutral-700">{decision.titre}</span>
+          </div>
+        </div>
+        <span className="body-small text-neutral-500">{formattedDate}</span>
+      </div>
+      {decision.commentaire_admin && <p className="text-neutral-700 mt-2">
+        <strong>Justification :</strong> {decision.commentaire_admin}
+      </p>}
+      {decision.source_url && (
+        <div className="pt-4 border-t border-neutral-200 mt-4">
+          <a
+            href={decision.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center body-small sm:body-base font-medium text-primary hover:text-primary transition-colors duration-200"
+          >
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            Voir la source
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Moderation() {
+  const { decisions, loading, error } = useDecisions(5);
+
   return (
     <div className="w-full">
       {/* Section Hero */}
@@ -29,7 +94,7 @@ export default function Moderation() {
               <div className="flex-1">
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Principe de modération</h2>
                 <p className="body-large font-lsight text-neutral-700 leading-relaxed mb-4">
-                  Chaque ajout, correction ou suppression d&apos;entrée est soumis à validation par la communauté et la modération. Les décisions sont publiques, justifiées et consultables ici.
+                  Chaque ajout, correction ou suppression d&apos;entrée est soumis à validation par des modérateurs. Les décisions sont publiques, justifiées et consultables ici.
                 </p>
                 <p className="body-large font-light text-neutral-700 leading-relaxed">
                   Cette transparence garantit la fiabilité des informations et permet à chacun de comprendre les critères de validation utilisés.
@@ -52,9 +117,8 @@ export default function Moderation() {
                   <div className="border-l-4 border-success pl-4">
                     <h3 className="font-semibold body-large text-neutral-900 mb-2">✅ Accepté si :</h3>
                     <ul className="text-neutral-700 space-y-2">
-                      <li>• Source fiable et vérifiable</li>
+                      <li>• Source vérifiable</li>
                       <li>• Information factuelle et datée</li>
-                      <li>• Respect de la neutralité</li>
                       <li>• Pertinence pour les consommateurs</li>
                     </ul>
                   </div>
@@ -63,7 +127,6 @@ export default function Moderation() {
                     <ul className="text-neutral-700 space-y-2">
                       <li>• Source douteuse ou inexistante</li>
                       <li>• Information non vérifiée</li>
-                      <li>• Contenu partial ou militant</li>
                       <li>• Hors sujet ou non pertinent</li>
                     </ul>
                   </div>
@@ -83,62 +146,58 @@ export default function Moderation() {
               <div className="flex-1">
                 <h2 className="heading-main font-bold text-neutral-900 mb-6">Historique des décisions</h2>
                 
-                {/* Note de développement */}
-                <div className="bg-warning-light border border-warning rounded-lg p-4 mb-6">
-                  <div className="flex items-start">
-                    <svg className="w-5 h-5 text-warning mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+{loading && (
+                  <div className="text-center py-8">
+                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    <p className="mt-2 text-neutral-600">Chargement des décisions...</p>
+                  </div>
+                )}
+
+                {error && (
+                  <div className="bg-error-light border border-error rounded-lg p-4 mb-6">
+                    <div className="flex items-start">
+                      <svg className="w-5 h-5 text-error mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 0v4m0-4h4m-4 0H4" />
+                      </svg>
+                      <div>
+                        <p className="text-error font-medium">Erreur de chargement</p>
+                        <p className="text-error body-small">{error}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!loading && !error && decisions.length === 0 && (
+                  <div className="text-center py-8">
+                    <svg className="w-16 h-16 text-neutral-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    <div>
-                      <p className="text-warning font-medium mb-1">Fonctionnalité en développement</p>
-                      <p className="text-warning body-small">
-                        L&apos;affichage automatique des validations/refus d&apos;entrées sera bientôt disponible. En attendant, voici quelques exemples du type de décisions qui seront affichées.&quot;
-                      </p>
-                    </div>
+                    <h3 className="heading-main text-neutral-900 mb-2">Aucune décision publique</h3>
+                    <p className="text-neutral-600">Aucune décision de modération n&apos;a encore été rendue publique.</p>
                   </div>
-                </div>
+                )}
 
-                {/* Exemples de décisions */}
-                <div className="space-y-4">
-                  <div className="border border-error rounded-lg p-4 bg-error-light">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center">
-                        <span className="bg-error-light text-error body-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;REFUSÉ&quot;</span>
-                        <span className="font-semibold text-neutral-900">&quot;Controverse Nike - Conditions de travail&quot;</span>
-                      </div>
-                      <span className="body-small text-neutral-500">30 juillet 2025</span>
+                {!loading && !error && decisions.length > 0 && (
+                  <>
+                    <div className="space-y-4 mb-6">
+                      {decisions.map((decision) => (
+                        <DecisionCard key={decision.id} decision={decision} />
+                      ))}
                     </div>
-                    <p className="text-neutral-700 mb-2">
-                      <strong>Justification :</strong> Source insuffisante - L&apos;article fourni ne contient pas de preuves suffisantes pour étayer les allégations concernant les conditions de travail. Une source plus fiable et détaillée est nécessaire.
-                    </p>
-                  </div>
 
-                  <div className="border border-success rounded-lg p-4 bg-success-light">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center">
-                        <span className="bg-success-light text-success body-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;VALIDÉ&quot;</span>
-                        <span className="font-semibold text-neutral-900">&quot;Controverse Nestlé - Gestion de l&apos;eau&quot;</span>
-                      </div>
-                      <span className="body-small text-neutral-500">29 juillet 2025</span>
+                    <div className="text-center">
+                      <Link 
+                        href="/moderation/decisions"
+                        className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-semibold"
+                      >
+                        Voir toutes les décisions
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
                     </div>
-                    <p className="text-neutral-700 mb-2">
-                      <strong>Justification :</strong> Source vérifiée - Article de presse fiable avec citations officielles et dates précises concernant la gestion de l&apos;eau. L&apos;information est factuelle et pertinente pour les consommateurs.
-                    </p>
-                  </div>
-
-                  <div className="border border-info rounded-lg p-4 bg-info-light">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center">
-                        <span className="bg-info-light text-info body-xs font-medium px-2.5 py-0.5 rounded-full mr-3">&quot;MODIFIÉ&quot;</span>
-                        <span className="font-semibold text-neutral-900">&quot;Controverse Amazon - Évasion fiscale&quot;</span>
-                      </div>
-                      <span className="body-small text-neutral-500">28 juillet 2025</span>
-                    </div>
-                    <p className="text-neutral-700 mb-2">
-                      <strong>Justification :</strong> Date corrigée - La date de l&apos;incident d&apos;évasion fiscale a été mise à jour suite à la vérification de sources complémentaires. Description également précisée pour plus de clarté.
-                    </p>
-                  </div>
-                </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

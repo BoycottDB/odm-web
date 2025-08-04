@@ -102,8 +102,10 @@ export interface Proposition {
 export interface DecisionPublique {
   id: number;
   titre: string;
+  marque_nom: string;
   statut: 'approuve' | 'rejete';
   commentaire_admin: string;
+  source_url?: string;
   date: string;
 }
 
