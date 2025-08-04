@@ -45,7 +45,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
         </div>
         <h3 className="heading-sub font-medium text-neutral-900 mb-2">Aucun résultat trouvé</h3>
         <p className="body-large font-light text-neutral-600 mb-6">
-          <strong>Ce répertoire est collaboratif</strong> : si une marque n'apparaît pas, c'est que personne ne l'a encore signalée. <br />N'hésitez pas à contribuer pour enrichir cette base de données et aider d'autres consommateurs à faire des choix éclairés !
+          <strong>Ce répertoire est collaboratif</strong> : si une marque n&apos;apparaît pas, c&apos;est que personne ne l&apos;a encore signalée. <br />N&apos;hésitez pas à contribuer pour enrichir cette base de données et aider d&apos;autres consommateurs à faire des choix éclairés !
         </p>
         <Link 
           href="/signaler"
@@ -127,7 +127,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
                   Une controverse manque ?
                 </h3>
                 <p className="text-neutral-600 mb-4">
-                  <strong>Ce répertoire est collaboratif</strong> : si une controverse n'apparaît pas, c'est que personne ne l'a encore signalée. <br />N'hésitez pas à contribuer pour enrichir cette base de données et aider d'autres consommateurs à faire des choix éclairés !
+                  <strong>Ce répertoire est collaboratif</strong> : si une controverse n&apos;apparaît pas, c'est que personne ne l&apos;a encore signalée. <br />N&apos;hésitez pas à contribuer pour enrichir cette base de données et aider d&apos;autres consommateurs à faire des choix éclairés !
                 </p>
                 <Link 
                   href="/signaler"
