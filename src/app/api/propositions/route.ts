@@ -42,8 +42,7 @@ export async function POST(req: NextRequest) {
     // Créer la proposition
     const propositionData = {
       ...validation.data!,
-      statut: 'en_attente',
-      decision_publique: false
+      statut: 'en_attente'
     };
 
     const { data: proposition, error: createError } = await supabaseAdmin

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
-import { DecisionPublique } from '@/types';
+import { Decision } from '@/types';
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '5');
     const offset = parseInt(searchParams.get('offset') || '0');
 
-    // Récupérer les propositions avec décision publique (approuvées ou rejetées)
+    // Récupérer toutes les propositions approuvées ou rejetées
     const { data: propositions, error } = await supabase
       .from('Proposition')
       .select(`
@@ -20,7 +20,6 @@ export async function GET(request: NextRequest) {
         source_url,
         updated_at
       `)
-      .eq('decision_publique', true)
       .in('statut', ['approuve', 'rejete'])
       .order('updated_at', { ascending: false })
       .range(offset, offset + limit - 1);
@@ -33,8 +32,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Transformer les données en format DecisionPublique
-    const decisions: DecisionPublique[] = (propositions || []).map(prop => ({
+    // Transformer les données en format Decision
+    const decisions: Decision[] = (propositions || []).map(prop => ({
       id: prop.id,
       titre: prop.titre_controverse,
       marque_nom: prop.marque_nom,

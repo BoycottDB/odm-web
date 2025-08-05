@@ -10,7 +10,6 @@ interface PropositionDetailProps {
   onUpdate: (id: number, updateData: {
     statut: 'approuve' | 'rejete';
     commentaire_admin?: string;
-    decision_publique: boolean;
     condamnation_judiciaire?: boolean;
   }) => Promise<void>;
   onBack: () => void;
@@ -18,7 +17,6 @@ interface PropositionDetailProps {
 
 export default function PropositionDetail({ proposition, onUpdate, onBack }: PropositionDetailProps) {
   const [commentaire, setCommentaire] = useState('');
-  const [decisionPublique, setDecisionPublique] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editedData, setEditedData] = useState(proposition);
   const [categories, setCategories] = useState<Categorie[]>([]);
@@ -336,7 +334,6 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
       await onUpdate(proposition.id, {
         statut,
         commentaire_admin: commentaire.trim() || undefined,
-        decision_publique: decisionPublique,
         condamnation_judiciaire: statut === 'approuve' ? condamnationJudiciaire : undefined
       });
     } catch (error) {
@@ -692,23 +689,6 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             </div>
           </div>
 
-          {/* Décision publique */}
-          <div className="mb-6">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={decisionPublique}
-                onChange={(e) => setDecisionPublique(e.target.checked)}
-                className="mr-2"
-              />
-              <span className="body-small font-medium text-neutral-700">
-                Rendre cette décision publique
-              </span>
-            </label>
-            <p className="body-xs text-neutral-500 mt-1">
-              La décision apparaîtra dans la page de modération publique avec le commentaire
-            </p>
-          </div>
 
           {/* Boutons d'action */}
           <div className="flex space-x-4">

@@ -17,13 +17,13 @@ export function DirigeantCard({ dirigeantResult }: DirigeantCardProps) {
           <span className="heading-main">⚠️</span>
         </div>
         <div>         
+          <div className="text-primary body-small">
+            Un dirigeant controversé est associé à la marque <strong className="body-large font-semibold">{marque.nom}</strong>
+          </div>
           {/* Nom du dirigeant */}
           <h3 className="heading-sub font-bold text-neutral-900">
             {dirigeant.dirigeant_nom}
           </h3>
-          <div className="text-primary body-small">
-            Un dirigeant controversé est associé à la marque {marque.nom}
-          </div>
         </div>
       </div>
 

@@ -248,10 +248,9 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     return { success: false, errors };
   }
 
-  const { statut, commentaire_admin, decision_publique, condamnation_judiciaire } = data as {
+  const { statut, commentaire_admin, condamnation_judiciaire } = data as {
     statut?: unknown;
     commentaire_admin?: unknown;
-    decision_publique?: unknown;
     condamnation_judiciaire?: unknown;
   };
 
@@ -269,10 +268,6 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     }
   }
 
-  // Validation decision_publique
-  if (typeof decision_publique !== 'boolean') {
-    errors.push('La décision publique doit être un booléen');
-  }
 
   // Validation condamnation_judiciaire (optionnel)
   if (condamnation_judiciaire !== undefined && typeof condamnation_judiciaire !== 'boolean') {
@@ -288,7 +283,6 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     data: {
       statut: statut as 'approuve' | 'rejete',
       commentaire_admin: typeof commentaire_admin === 'string' ? commentaire_admin.trim() : undefined,
-      decision_publique: Boolean(decision_publique),
       condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined
     }
   };

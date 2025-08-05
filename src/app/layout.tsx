@@ -33,13 +33,12 @@ function MobileNav() {
   return (
     <>
       <button
-        className="md:hidden flex items-center justify-center w-10 h-10 rounded-full border border-primary bg-white shadow hover:bg-primary-light transition-all focus:outline-none focus:ring-2 focus:ring-primary"
+        className="md:hidden flex items-center justify-center w-10 h-10 rounded-full border border-primary bg-white shadow hover:bg-primary-light transition-all focus:outline-none focus:ring-2 focus:ring-primary relative z-50"
         aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen((o: boolean) => !o)}
       >
-        <span className="sr-only">Menu</span>
         <svg
           className="w-6 h-6 text-primary"
           fill="none"
@@ -59,15 +58,34 @@ function MobileNav() {
         <div className="fixed inset-0 z-40 md:hidden" onClick={() => setOpen(false)} aria-hidden="true" />
       )}
       {open && (
-  <div
-    id="mobile-menu"
-    className="fixed top-0 right-0 z-50 w-64 md:hidden animate-in fade-in"
-    tabIndex={-1}
-    aria-modal="true"
-    role="dialog"
-  >
-    <nav className="flex flex-col gap-4 p-4 mt-18 bg-white rounded-b-2xl shadow-lg">
-  {/* Contraste renforcé sur le menu mobile */}
+      <div
+        id="mobile-menu"
+        className="fixed top-0 right-0 z-50 w-64 md:hidden animate-in fade-in"
+        tabIndex={-1}
+        aria-modal="true"
+        role="dialog"
+      >
+        {/* Header avec bouton de fermeture */}
+        <div className="flex justify-end items-center p-5 ">
+          <button
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center w-8 h-8 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Fermer le menu"
+          >
+            <svg
+              className="w-5 h-5 text-neutral-600"
+              fill="none"
+              stroke="none"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        <nav className="flex flex-col gap-4 p-4 bg-white border-b border-neutral-200 rounded-b-2xl">
+          {/* Contraste renforcé sur le menu mobile */}
           <Link href="/" className={getLinkClass('/')} onClick={() => setOpen(false)}>
             Accueil
           </Link>
@@ -76,9 +94,6 @@ function MobileNav() {
           </Link>
           {/* <Link href="/about" className={getLinkClass('/about')} onClick={() => setOpen(false)}>
             À propos
-          </Link> */}
-          {/* <Link href="/moderation" className={getLinkClass('/moderation')} onClick={() => setOpen(false)}>
-            Modération
           </Link> */}
           <Link href="/signaler" className={getLinkClass('/signaler')} onClick={() => setOpen(false)}>
             Signaler
@@ -110,6 +125,27 @@ export default function RootLayout({
   };
   return (
     <html lang="fr">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#DB2777" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="ODM" />
+        
+        {/* Favicons */}
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+        <link rel="apple-touch-icon" sizes="167x167" href="/icon-167.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icon-152.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/icon-120.png" />
+        
+        {/* Android Chrome Icons */}
+        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+      </head>
       <body className={`${geistSans.variable} ${rubik.variable} antialiased bg-neutral-50 text-neutral-900`}>
         <header className="w-full border-b border-primary bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
           <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -129,9 +165,6 @@ export default function RootLayout({
               </Link>
               {/* <Link href="/about" className={getDesktopLinkClass('/about')}>
                 À propos
-              </Link> */}
-              {/* <Link href="/moderation" className={getDesktopLinkClass('/moderation')}>
-                Modération
               </Link> */}
               <Link href="/signaler" className={getDesktopLinkClass('/signaler')}>
                 Signaler
