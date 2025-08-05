@@ -175,3 +175,21 @@ export interface MarqueDirigeantUpdateRequest {
   impact_description?: string;
   sources?: string[];
 }
+
+// Interface simplifiée pour les catégories dans les stats
+export interface CategorieStats {
+  id: number;
+  nom: string;
+  emoji?: string;
+  couleur?: string;
+}
+
+// Interface pour les statistiques de marques
+export interface MarqueWithStats {
+  id: number;
+  nom: string;
+  nbControverses: number;
+  categories: CategorieStats[]; // Catégories uniques de controverses avec émojis et couleurs
+  nbCondamnations: number; // Nombre de controverses avec condamnation judiciaire
+  nbDirigeantsControverses: number; // Nombre de dirigeants controversés associés
+}

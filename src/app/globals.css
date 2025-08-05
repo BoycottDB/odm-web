@@ -161,6 +161,11 @@ body {
 .hover\:bg-primary:hover { background-color: var(--color-berry-700); }
 .hover\:bg-neutral:hover { background-color: #f3f4f6; }
 
+/* Couleurs pour les états hover */
+.fill-neutral-900 { fill: #111827; }
+.fill-primary { fill: var(--color-berry-600); }
+.hover\:fill-primary:hover { fill: var(--color-berry-700); }
+
 /* Espacement responsive pour les cards */
 .card-padding {
   padding: 1rem;

@@ -1,5 +1,6 @@
 "use client";
 import { KeyboardEvent } from "react";
+import Link from 'next/link';
 import { useSearch } from '@/hooks/useSearch';
 import { useSuggestions } from '@/hooks/useSuggestions';
 import { SearchBar } from '@/components/search/SearchBar';
@@ -95,6 +96,16 @@ export default function RechercherPage() {
             onFocus={showSuggestions}
             onBlur={hideSuggestions}
           />
+          
+          {/* Lien vers la liste des marques */}
+          <div className="mt-4 relative w-full max-w-2xl mx-auto flex justify-end">
+            <Link 
+              href="/marques" 
+              className="body-base align-right text-berry-600 underline hover:text-berry-700 transition-colors duration-200"
+            >
+              <strong>Consulter toutes les marques &gt;</strong>
+            </Link>
+          </div>
         </div>
       </section>
 

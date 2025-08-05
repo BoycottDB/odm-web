@@ -84,7 +84,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
 
   return (
     <div>
-      <h2 className="heading-main font-light text-neutral-900 mb-8 text-center">
+      <h2 className="heading-main font-light text-neutral-900 mb-12 text-center">
         {isSearchResults ? 'Résultats de recherche' : 'Derniers signalements'}
       </h2>
       
