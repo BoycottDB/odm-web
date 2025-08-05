@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Evenement, SearchState, Marque, DirigeantResult } from '@/types';
 
 export function useSearch() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
   const [searchState, setSearchState] = useState<SearchState>({
     query: '',
     isSearching: false,
@@ -28,35 +32,8 @@ export function useSearch() {
     }
   }, []);
 
-  // Charger les événements au démarrage
-  useEffect(() => {
-    const loadInitialEvents = async () => {
-      try {
-        const events = await loadEvents(10);
-        setSearchState(prev => ({
-          ...prev,
-          results: events,
-          dirigeantResults: [],
-          loading: false
-        }));
-      } catch (error) {
-        setSearchState(prev => ({
-          ...prev,
-          loading: false,
-          notFound: true,
-          dirigeantResults: []
-        }));
-      }
-    };
-
-    loadInitialEvents();
-  }, [loadEvents]);
-
-  const updateQuery = useCallback((query: string) => {
-    setSearchState(prev => ({ ...prev, query }));
-  }, []);
-
-  const performSearch = useCallback(async (query: string) => {
+  // Fonction interne pour effectuer la recherche sans mettre à jour l'URL
+  const performSearchInternal = useCallback(async (query: string) => {
     setSearchState(prev => ({ ...prev, query }));
     if (!query.trim()) {
       // Si la recherche est vide, recharger les événements initiaux
@@ -140,9 +117,63 @@ export function useSearch() {
         dirigeantResults: []
       }));
     }
+  }, [loadEvents]);
+
+  // Charger les événements au démarrage et gérer les paramètres URL
+  useEffect(() => {
+    const initializeSearch = async () => {
+      const queryParam = searchParams.get('q');
+      
+      if (queryParam) {
+        // Si il y a un paramètre de recherche, effectuer la recherche
+        setSearchState(prev => ({ ...prev, query: queryParam }));
+        await performSearchInternal(queryParam);
+      } else {
+        // Sinon, charger les événements par défaut
+        try {
+          const events = await loadEvents(10);
+          setSearchState(prev => ({
+            ...prev,
+            results: events,
+            dirigeantResults: [],
+            loading: false
+          }));
+        } catch (error) {
+          setSearchState(prev => ({
+            ...prev,
+            loading: false,
+            notFound: true,
+            dirigeantResults: []
+          }));
+        }
+      }
+    };
+
+    initializeSearch();
+  }, [searchParams, loadEvents, performSearchInternal]);
+
+  const updateQuery = useCallback((query: string) => {
+    setSearchState(prev => ({ ...prev, query }));
   }, []);
 
+  // Fonction publique pour effectuer la recherche et mettre à jour l'URL
+  const performSearch = useCallback(async (query: string) => {
+    // Mettre à jour l'URL
+    const params = new URLSearchParams();
+    if (query.trim()) {
+      params.set('q', query.trim());
+    }
+    const newUrl = params.toString() ? `?${params.toString()}` : '';
+    router.push(`/recherche${newUrl}`, { scroll: false });
+    
+    // Effectuer la recherche
+    await performSearchInternal(query);
+  }, [router, performSearchInternal]);
+
   const clearSearch = useCallback(() => {
+    // Réinitialiser l'URL
+    router.push('/recherche', { scroll: false });
+    
     setSearchState({
       query: '',
       isSearching: false,
@@ -151,7 +182,7 @@ export function useSearch() {
       notFound: false,
       loading: false
     });
-  }, []);
+  }, [router]);
 
   return {
     searchState,

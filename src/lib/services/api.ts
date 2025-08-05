@@ -8,7 +8,8 @@ import {
   PropositionCreateRequest,
   PropositionUpdateRequest,
   DecisionPublique,
-  SimilarityScore
+  SimilarityScore,
+  MarqueWithStats
 } from '@/types';
 
 class ApiService {
@@ -48,6 +49,10 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify(data),
     });
+  }
+
+  async getMarquesWithStats(): Promise<MarqueWithStats[]> {
+    return this.request<MarqueWithStats[]>('/marques/stats');
   }
 
   // Controverses
