@@ -1,5 +1,5 @@
 "use client";
-import { KeyboardEvent } from "react";
+import { KeyboardEvent, Suspense } from "react";
 import Link from 'next/link';
 import { useSearch } from '@/hooks/useSearch';
 import { useSuggestions } from '@/hooks/useSuggestions';
@@ -8,7 +8,7 @@ import { EventList } from '@/components/events/EventList';
 import { AddToHomeScreenBanner } from '@/components/ui/AddToHomeScreenBanner';
 import { Marque } from '@/types';
 
-export default function RechercherPage() {
+function SearchPageContent() {
   const { searchState, updateQuery, performSearch } = useSearch();
   const {
     suggestionState,
@@ -126,5 +126,18 @@ export default function RechercherPage() {
       {/* Composant mobile pour l'ajout à l'écran d'accueil */}
       <AddToHomeScreenBanner />
     </div>
+  );
+}
+
+export default function RechercherPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-white to-primary-light flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+        <p className="text-neutral-600">Chargement...</p>
+      </div>
+    </div>}>
+      <SearchPageContent />
+    </Suspense>
   );
 }
