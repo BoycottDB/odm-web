@@ -7,7 +7,7 @@ import {
   Proposition,
   PropositionCreateRequest,
   PropositionUpdateRequest,
-  DecisionPublique,
+  Decision,
   SimilarityScore,
   MarqueWithStats
 } from '@/types';
@@ -97,9 +97,9 @@ class ApiService {
     });
   }
 
-  // Décisions publiques
-  async getDecisionsPubliques(): Promise<DecisionPublique[]> {
-    return this.request<DecisionPublique[]>('/decisions-publiques');
+  // Décisions de modération
+  async getDecisions(): Promise<Decision[]> {
+    return this.request<Decision[]>('/decisions');
   }
 
   // Recherche de doublons

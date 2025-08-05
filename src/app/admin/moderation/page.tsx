@@ -50,7 +50,6 @@ export default function AdminModeration() {
   const handlePropositionUpdate = async (id: number, updateData: {
     statut: 'approuve' | 'rejete';
     commentaire_admin?: string;
-    decision_publique: boolean;
     condamnation_judiciaire?: boolean;
   }) => {
     try {

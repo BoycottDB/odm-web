@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { DecisionPublique } from '@/types';
+import { Decision } from '@/types';
 
 export function useDecisions(limit: number = 5, offset: number = 0) {
-  const [decisions, setDecisions] = useState<DecisionPublique[]>([]);
+  const [decisions, setDecisions] = useState<Decision[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

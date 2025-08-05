@@ -94,12 +94,11 @@ export interface Proposition {
   source_url: string;
   statut: 'en_attente' | 'approuve' | 'rejete';
   commentaire_admin?: string;
-  decision_publique: boolean;
   created_at: string;
   updated_at: string;
 }
 
-export interface DecisionPublique {
+export interface Decision {
   id: number;
   titre: string;
   marque_nom: string;
@@ -127,7 +126,6 @@ export interface PropositionCreateRequest {
 export interface PropositionUpdateRequest {
   statut: 'approuve' | 'rejete';
   commentaire_admin?: string;
-  decision_publique: boolean;
   condamnation_judiciaire?: boolean;
 }
 
