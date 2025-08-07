@@ -1,7 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Marque } from '@/types';
+
+// Déclaration globale pour étendre le type Window
+declare global {
+  interface Window {
+    handleImageClick?: (src: string) => void;
+  }
+}
 
 interface BoycottTipsSectionProps {
   marque: Marque;
@@ -15,12 +23,12 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
   useEffect(() => {
     if (isExpanded) {
       // Définir la fonction globalement pour qu'elle soit accessible depuis onclick
-      (window as any).handleImageClick = (src: string) => {
+      window.handleImageClick = (src: string) => {
         setSelectedImage(src);
       };
 
       return () => {
-        delete (window as any).handleImageClick;
+        delete window.handleImageClick;
       };
     }
   }, [isExpanded]);
@@ -200,12 +208,15 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
           className="fixed inset-0 backdrop-blur-xs bg-black/50 flex items-center justify-center z-50"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="relative">
-            <img 
-              src={selectedImage} 
+          <div className="relative max-w-[90vw] max-h-[90vh]">
+            <Image
+              src={selectedImage}
               alt="Image agrandie"
-              className="max-w-xl max-h-xl object-contain rounded-lg"
+              width={800}
+              height={600}
+              className="max-w-full max-h-full object-contain rounded-lg"
               onClick={(e) => e.stopPropagation()}
+              unoptimized
             />
             <button
               onClick={() => setSelectedImage(null)}
