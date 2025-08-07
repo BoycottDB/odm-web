@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Marque } from '@/types';
 
 interface BoycottTipsSectionProps {
@@ -9,6 +9,21 @@ interface BoycottTipsSectionProps {
 
 export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // Effet pour attacher les event listeners aux images après le rendu
+  useEffect(() => {
+    if (isExpanded) {
+      // Définir la fonction globalement pour qu'elle soit accessible depuis onclick
+      (window as any).handleImageClick = (src: string) => {
+        setSelectedImage(src);
+      };
+
+      return () => {
+        delete (window as any).handleImageClick;
+      };
+    }
+  }, [isExpanded]);
 
   // Vérifier s'il y a des tips à afficher
   const hasBoycottTips = marque.message_boycott_tips || marque.secteur_marque?.message_boycott_tips;
@@ -33,15 +48,23 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
     }
   ];
 
-  // Fonction pour formater le markdown basique
+  // Fonction pour formater le markdown basique avec gestion des clics sur images
   const formatMarkdown = (text: string) => {
+    let imageIndex = 0;
+    
     return text
       .replace(/\[img-group\]([\s\S]*?)\[\/img-group\]/g, (_, content) => {
-        // Traiter le contenu du groupe pour extraire les images
-        const imageContent = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
+        // Traiter le contenu du groupe pour extraire les images avec clics
+        const imageContent = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match: string, alt: string, src: string) => {
+          const currentIndex = imageIndex++;
+          return `<img src="${src}" alt="${alt}" onclick="handleImageClick('${src}')" style="cursor: pointer;" data-image-index="${currentIndex}" />`;
+        });
         return `<div class="image-group">${imageContent}</div>`;
       }) // groupes d'images [img-group]...[/img-group]
-      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg my-2" />') // images individuelles ![alt](url)
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match: string, alt: string, src: string) => {
+        const currentIndex = imageIndex++;
+        return `<img src="${src}" alt="${alt}" class="max-w-full h-auto rounded-lg my-2" onclick="handleImageClick('${src}')" style="cursor: pointer;" data-image-index="${currentIndex}" />`;
+      }) // images individuelles ![alt](url)
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **gras**
       .replace(/\*(.*?)\*/g, '<em>$1</em>') // *italique*
       .replace(/^• (.+)$/gm, '<div class="flex items-start"><span class="text-primary mr-2">•</span><span>$1</span></div>') // listes avec •
@@ -170,6 +193,29 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
           </div>
         </div>
       </div>
+
+      {/* Modal pour affichage d'image en grand */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 backdrop-blur-xs bg-black/50 flex items-center justify-center z-50"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative">
+            <img 
+              src={selectedImage} 
+              alt="Image agrandie"
+              className="max-w-xl max-h-xl object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-2 right-2 w-8 h-8 bg-black bg-opacity-50 text-white rounded-full flex items-center justify-center hover:bg-opacity-75 transition-all"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
