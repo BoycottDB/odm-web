@@ -2,6 +2,7 @@ import { Evenement, DirigeantResult } from '@/types';
 import { EventCard } from './EventCard';
 import { DirigeantCard } from './DirigeantCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import BoycottTipsSection from '@/components/ui/BoycottTipsSection';
 import Link from 'next/link';
 
 interface EventListProps {
@@ -82,8 +83,18 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
   const hasDirigeants = dirigeantResults.length > 0;
   const isSearchResults = hasSearched && (hasEvents || hasDirigeants);
 
+  // Extraire la marque des résultats pour afficher les Boycott Tips
+  const marque = hasEvents ? events[0].marque : (hasDirigeants ? dirigeantResults[0].marque : null);
+
   return (
     <div>
+      
+      {/* Section Boycott Tips - seulement pour les résultats de recherche avec marque spécifique */}
+      {isSearchResults && marque && (
+        <div className="max-w-4xl mx-auto px-2 sm:px-0 mb-6">
+          <BoycottTipsSection marque={marque} />
+        </div>
+      )}
       <h2 className="heading-main font-light text-neutral-900 mb-12 text-center">
         {isSearchResults ? 'Résultats de recherche' : 'Derniers signalements'}
       </h2>

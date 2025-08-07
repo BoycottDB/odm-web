@@ -8,6 +8,19 @@ export interface Marque {
   lien_financier?: string;
   impact_description?: string;
   liaison_id?: number;
+  // Champs pour les Boycott Tips
+  secteur_marque_id?: number;
+  message_boycott_tips?: string;
+  secteur_marque?: SecteurMarque;
+}
+
+export interface SecteurMarque {
+  id: number;
+  nom: string;
+  description?: string;
+  message_boycott_tips?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Categorie {
@@ -71,6 +84,15 @@ export interface ApiResponse<T> {
 
 export interface MarqueCreateRequest {
   nom: string;
+  secteur_marque_id?: number;
+  message_boycott_tips?: string;
+}
+
+export interface MarqueUpdateRequest {
+  id: number;
+  nom?: string;
+  secteur_marque_id?: number;
+  message_boycott_tips?: string;
 }
 
 export interface EvenementCreateRequest {
@@ -190,4 +212,18 @@ export interface MarqueWithStats {
   categories: CategorieStats[]; // Catégories uniques de controverses avec émojis et couleurs
   nbCondamnations: number; // Nombre de controverses avec condamnation judiciaire
   nbDirigeantsControverses: number; // Nombre de dirigeants controversés associés
+}
+
+// Types pour les secteurs marque
+export interface SecteurMarqueCreateRequest {
+  nom: string;
+  description?: string;
+  message_boycott_tips?: string;
+}
+
+export interface SecteurMarqueUpdateRequest {
+  id: number;
+  nom?: string;
+  description?: string;
+  message_boycott_tips?: string;
 }

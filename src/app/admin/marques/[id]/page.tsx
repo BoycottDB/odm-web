@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Marque, MarqueDirigeantCreateRequest } from '@/types';
+import { Marque, MarqueDirigeantCreateRequest, SecteurMarque, MarqueUpdateRequest } from '@/types';
 import DirigentForm from '@/components/admin/DirigentForm';
 
 interface MarqueEditPageProps {
@@ -25,13 +25,20 @@ export default function MarqueEditPage({ params }: MarqueEditPageProps) {
 
 function MarqueEditContent({ params }: { params: { id: string } }) {
   const [marque, setMarque] = useState<Marque | null>(null);
+  const [secteurs, setSecteurs] = useState<SecteurMarque[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [savingMarque, setSavingMarque] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [marqueFormData, setMarqueFormData] = useState({
+    secteur_marque_id: null as number | null,
+    message_boycott_tips: ''
+  });
   const router = useRouter();
   
   useEffect(() => {
     loadMarqueData();
+    loadSecteurs();
   }, [params.id]);
   
   const loadMarqueData = async () => {
@@ -42,6 +49,10 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
         const foundMarque = marques.find((m: Marque) => m.id === parseInt(params.id));
         if (foundMarque) {
           setMarque(foundMarque);
+          setMarqueFormData({
+            secteur_marque_id: foundMarque.secteur_marque_id || null,
+            message_boycott_tips: foundMarque.message_boycott_tips || ''
+          });
         } else {
           setMessage({ type: 'error', text: 'Marque non trouvée' });
         }
@@ -51,6 +62,18 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       setMessage({ type: 'error', text: 'Erreur lors du chargement' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadSecteurs = async () => {
+    try {
+      const response = await fetch('/api/secteurs-marque');
+      if (response.ok) {
+        const data = await response.json();
+        setSecteurs(data);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des secteurs:', error);
     }
   };
   
@@ -143,6 +166,43 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       setSaving(false);
     }
   };
+
+  const saveMarqueData = async () => {
+    if (!marque) return;
+    
+    setSavingMarque(true);
+    setMessage(null);
+    
+    try {
+      const updateData: MarqueUpdateRequest = {
+        id: marque.id,
+        secteur_marque_id: marqueFormData.secteur_marque_id || undefined,
+        message_boycott_tips: marqueFormData.message_boycott_tips?.trim() || undefined
+      };
+      
+      const response = await fetch('/api/marques', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updateData)
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de la mise à jour');
+      }
+      
+      setMessage({ type: 'success', text: 'Marque mise à jour avec succès' });
+      await loadMarqueData();
+    } catch (error) {
+      console.error('Erreur sauvegarde marque:', error);
+      setMessage({ 
+        type: 'error', 
+        text: error instanceof Error ? error.message : 'Erreur lors de la sauvegarde' 
+      });
+    } finally {
+      setSavingMarque(false);
+    }
+  };
   
   if (loading) {
     return (
@@ -200,8 +260,18 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       
       {/* Informations générales marque */}
       <div className="mb-8 p-6 bg-white rounded-lg border border-neutral">
-        <h3 className="heading-sub font-semibold text-neutral-900 mb-4">Informations générales</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="heading-sub font-semibold text-neutral-900">Informations générales</h3>
+          <button
+            onClick={saveMarqueData}
+            disabled={savingMarque}
+            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover disabled:opacity-50"
+          >
+            {savingMarque ? 'Sauvegarde...' : 'Sauvegarder'}
+          </button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
             <label className="block body-small font-medium text-neutral-700 mb-1">
               Nom de la marque
@@ -225,10 +295,85 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             />
           </div>
         </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block body-small font-medium text-neutral-700 mb-1">
+              Secteur d&apos;activité
+            </label>
+            <select
+              value={marqueFormData.secteur_marque_id || ''}
+              onChange={(e) => setMarqueFormData({ 
+                ...marqueFormData, 
+                secteur_marque_id: e.target.value ? parseInt(e.target.value) : null 
+              })}
+              className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="">Aucun secteur</option>
+              {secteurs.map(secteur => (
+                <option key={secteur.id} value={secteur.id}>
+                  {secteur.nom}
+                </option>
+              ))}
+            </select>
+            {marque.secteur_marque && (
+              <p className="body-xs text-neutral-500 mt-1">
+                Secteur actuel : {marque.secteur_marque.nom}
+              </p>
+            )}
+          </div>
+        </div>
+        
+        <div>
+          <label className="block body-small font-medium text-neutral-700 mb-1">
+            Message Boycott Tips spécifique
+          </label>
+          <textarea
+            value={marqueFormData.message_boycott_tips}
+            onChange={(e) => setMarqueFormData({ 
+              ...marqueFormData, 
+              message_boycott_tips: e.target.value 
+            })}
+            className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-32"
+            placeholder="Message spécifique pour cette marque (optionnel). Supporte le markdown : **gras**, listes • etc."
+          />
+          <p className="body-xs text-neutral-500 mt-1">
+            Si renseigné, ce message sera prioritaire sur le message du secteur. Supporte le format Markdown.
+          </p>
+        </div>
       </div>
       
+      {/* Section Boycott Tips preview */}
+      {(marqueFormData.message_boycott_tips || (marque.secteur_marque?.message_boycott_tips)) && (
+        <div className="mb-8 p-6 bg-warning-light rounded-lg border border-warning">
+          <h3 className="heading-sub font-semibold text-neutral-900 mb-4">
+            💡 Aperçu Boycott Tips
+          </h3>
+          <div className="p-4 bg-white rounded-lg border">
+            <h4 className="body-large font-medium mb-2">
+              Comment bien boycotter {marque.nom}
+            </h4>
+            <div className="body-small text-neutral-600 whitespace-pre-wrap">
+              {marqueFormData.message_boycott_tips ? (
+                <>
+                  <strong>Message spécifique :</strong>
+                  <br />
+                  {marqueFormData.message_boycott_tips}
+                </>
+              ) : marque.secteur_marque?.message_boycott_tips ? (
+                <>
+                  <strong>Message du secteur &quot;{marque.secteur_marque.nom}&quot; :</strong>
+                  <br />
+                  {marque.secteur_marque.message_boycott_tips}
+                </>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Section dirigeant controversé */}
-      <div className="p-6 bg-primary-light rounded-lg border border-primary">
+      <div className="mb-8 p-6 bg-primary-light rounded-lg border border-primary">
         <div className="flex items-center justify-between mb-4">
           <h3 className="heading-sub font-semibold text-neutral-900">
             ⚠️ Dirigeant controversé

@@ -9,7 +9,7 @@ export async function GET() {
       .from('Evenement')
       .select(`
         *, 
-        Marque(*, marque_dirigeant(*)), 
+        Marque(*, marque_dirigeant(*), SecteurMarque!secteur_marque_id(*)), 
         Categorie!Evenement_categorie_id_fkey(*)
       `)
       .order('date', { ascending: false });
@@ -20,7 +20,8 @@ export async function GET() {
       ...ev,
       marque: ev.Marque ? {
         ...ev.Marque,
-        dirigeant_controverse: ev.Marque.marque_dirigeant || null
+        dirigeant_controverse: ev.Marque.marque_dirigeant || null,
+        secteur_marque: ev.Marque.SecteurMarque || null
       } : null,
       categorie: ev.Categorie,
       Marque: undefined,

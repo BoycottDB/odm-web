@@ -12,6 +12,7 @@ export default function AdminNavigation() {
     { path: '/admin/moderation', label: 'Modération', icon: '📋' },
     { path: '/admin/marques', label: 'Marques', icon: '🏢' },
     { path: '/admin/dirigeants', label: 'Dirigeants', icon: '⚠️' },
+    { path: '/admin/secteurs-marque', label: 'Secteurs', icon: '🏷️' },
   ];
   
   return (
