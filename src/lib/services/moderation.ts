@@ -54,7 +54,7 @@ export async function ensureMarqueExists(marqueNom: string, marqueId?: number): 
 /**
  * Convertit une proposition approuvée en événement dans la table principale
  */
-export async function convertPropositionToEvenement(proposition: Proposition, condamnationJudiciaire: boolean = false): Promise<Evenement> {
+export async function convertPropositionToEvenement(proposition: Proposition, condamnationJudiciaire: boolean = false, reponseUrl?: string): Promise<Evenement> {
   if (proposition.statut !== 'approuve') {
     throw new Error('Seules les propositions approuvées peuvent être converties');
   }
@@ -75,6 +75,7 @@ export async function convertPropositionToEvenement(proposition: Proposition, co
       date: proposition.date,
       categorie_id: proposition.categorie_id!,
       source_url: proposition.source_url,
+      reponse: reponseUrl || null,
       condamnation_judiciaire: condamnationJudiciaire,
       proposition_source_id: proposition.id
     })
@@ -104,11 +105,11 @@ export async function convertPropositionToEvenement(proposition: Proposition, co
 /**
  * Convertit automatiquement une proposition approuvée en événement
  */
-export async function convertApprovedProposition(proposition: Proposition, condamnationJudiciaire: boolean = false): Promise<{ type: 'evenement', data: Evenement }> {
+export async function convertApprovedProposition(proposition: Proposition, condamnationJudiciaire: boolean = false, reponseUrl?: string): Promise<{ type: 'evenement', data: Evenement }> {
   if (proposition.statut !== 'approuve') {
     throw new Error('Seules les propositions approuvées peuvent être converties');
   }
 
-  const evenement = await convertPropositionToEvenement(proposition, condamnationJudiciaire);
+  const evenement = await convertPropositionToEvenement(proposition, condamnationJudiciaire, reponseUrl);
   return { type: 'evenement', data: evenement };
 }

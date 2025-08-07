@@ -251,7 +251,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
             <div className="p-4 bg-primary-light border border-primary rounded-xl">
               <div className="flex items-center mb-3">
                 <h3 className="body-large font-semibold text-neutral-900">
-                  Conseils généraux pour le secteur &quot;{marque.secteur_marque.nom}&quot;
+                  Conseils généraux pour le secteur {marque.secteur_marque.nom}
                 </h3>
               </div>
               <div 

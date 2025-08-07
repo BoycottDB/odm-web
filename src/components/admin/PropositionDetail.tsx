@@ -11,6 +11,7 @@ interface PropositionDetailProps {
     statut: 'approuve' | 'rejete';
     commentaire_admin?: string;
     condamnation_judiciaire?: boolean;
+    reponse?: string;
   }) => Promise<void>;
   onBack: () => void;
 }
@@ -21,6 +22,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
   const [editedData, setEditedData] = useState(proposition);
   const [categories, setCategories] = useState<Categorie[]>([]);
   const [condamnationJudiciaire, setCondamnationJudiciaire] = useState(false);
+  const [reponseUrl, setReponseUrl] = useState('');
   const [marqueSearch, setMarqueSearch] = useState('');
   const [marqueSearchResults, setMarqueSearchResults] = useState<{ id: number; nom: string }[]>([]);
   const [showMarqueResults, setShowMarqueResults] = useState(false);
@@ -306,6 +308,9 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
     } else if (!/^https?:\/\/.+/.test(editedData.source_url.trim())) {
       errors.push('La source doit être une URL valide (http:// ou https://)');
     }
+    if (reponseUrl.trim() && !/^https?:\/\/.+/.test(reponseUrl.trim())) {
+      errors.push('La réponse de la marque doit être une URL valide (http:// ou https://)');
+    }
     if (!editedData.titre_controverse?.trim()) {
       errors.push('Le titre de la controverse est obligatoire');
     } else if (editedData.titre_controverse.trim().length < 10) {
@@ -334,7 +339,8 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
       await onUpdate(proposition.id, {
         statut,
         commentaire_admin: commentaire.trim() || undefined,
-        condamnation_judiciaire: statut === 'approuve' ? condamnationJudiciaire : undefined
+        condamnation_judiciaire: statut === 'approuve' ? condamnationJudiciaire : undefined,
+        reponse: statut === 'approuve' && reponseUrl.trim() ? reponseUrl.trim() : undefined
       });
     } catch (error) {
       console.error('Erreur lors de la mise à jour:', error);
@@ -584,6 +590,23 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
+            </div>
+
+            <div>
+              <label className="block body-small font-medium text-neutral-700 mb-1">
+                Réponse de la marque (URL) 
+                <span className="body-xs text-neutral-500"> (optionnel)</span>
+              </label>
+              <input
+                type="url"
+                value={reponseUrl}
+                onChange={(e) => setReponseUrl(e.target.value)}
+                placeholder="https://exemple.com/reponse-officielle"
+                className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <p className="body-xs text-neutral-500 mt-1">
+                URL vers la réponse officielle de la marque à cette controverse
+              </p>
             </div>
 
             <div>
