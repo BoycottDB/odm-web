@@ -21,6 +21,14 @@ export async function GET(request: NextRequest) {
           sources,
           created_at,
           updated_at
+        ),
+        SecteurMarque!secteur_marque_id (
+          id,
+          nom,
+          description,
+          message_boycott_tips,
+          created_at,
+          updated_at
         )
       `);
     
@@ -34,7 +42,8 @@ export async function GET(request: NextRequest) {
     // Transformation pour adapter aux types frontend
     const marquesWithDirigent = marques.map(marque => ({
       ...marque,
-      dirigeant_controverse: marque.marque_dirigeant || null
+      dirigeant_controverse: marque.marque_dirigeant || null,
+      secteur_marque: marque.SecteurMarque || null
     }));
     
     return NextResponse.json(marquesWithDirigent);
@@ -42,6 +51,68 @@ export async function GET(request: NextRequest) {
     console.error('Erreur lors de la récupération des marques:', error);
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des marques' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { id, secteur_marque_id, message_boycott_tips } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'L\'ID de la marque est requis' },
+        { status: 400 }
+      );
+    }
+
+    const updateData: Record<string, unknown> = {};
+    if (secteur_marque_id !== undefined) updateData.secteur_marque_id = secteur_marque_id;
+    if (message_boycott_tips !== undefined) updateData.message_boycott_tips = message_boycott_tips;
+
+    const { data: updatedMarque, error } = await supabaseAdmin
+      .from('Marque')
+      .update(updateData)
+      .eq('id', id)
+      .select(`
+        *,
+        marque_dirigeant!marque_id (
+          id,
+          dirigeant_nom,
+          controverses,
+          lien_financier,
+          impact_description,
+          sources,
+          created_at,
+          updated_at
+        ),
+        SecteurMarque!secteur_marque_id (
+          id,
+          nom,
+          description,
+          message_boycott_tips,
+          created_at,
+          updated_at
+        )
+      `)
+      .single();
+
+    if (error) throw error;
+
+    // Transformation pour adapter aux types frontend
+    const marqueWithDirigent = {
+      ...updatedMarque,
+      dirigeant_controverse: updatedMarque.marque_dirigeant || null,
+      secteur_marque: updatedMarque.SecteurMarque || null
+    };
+
+    return NextResponse.json(marqueWithDirigent);
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de la marque:', error);
+    return NextResponse.json(
+      { error: 'Erreur lors de la mise à jour de la marque' },
       { status: 500 }
     );
   }
