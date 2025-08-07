@@ -7,7 +7,7 @@ import { Marque } from '@/types';
 // Déclaration globale pour étendre le type Window
 declare global {
   interface Window {
-    handleImageClick?: (src: string) => void;
+    handleImageClick?: (src: string, groupIndex?: string) => void;
   }
 }
 
@@ -15,16 +15,37 @@ interface BoycottTipsSectionProps {
   marque: Marque;
 }
 
+interface ImageGroup {
+  images: string[];
+  currentIndex: number;
+}
+
 export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentImageGroup, setCurrentImageGroup] = useState<ImageGroup | null>(null);
 
   // Effet pour attacher les event listeners aux images après le rendu
   useEffect(() => {
     if (isExpanded) {
       // Définir la fonction globalement pour qu'elle soit accessible depuis onclick
-      window.handleImageClick = (src: string) => {
+      window.handleImageClick = (src: string, groupIndex?: string) => {
         setSelectedImage(src);
+        
+        // Si l'image fait partie d'un groupe, récupérer les informations du groupe
+        if (groupIndex !== undefined) {
+          const groupId = parseInt(groupIndex);
+          const imageGroups = extractImageGroups();
+          if (imageGroups[groupId]) {
+            const images = imageGroups[groupId];
+            const currentIndex = images.indexOf(src);
+            if (currentIndex !== -1) {
+              setCurrentImageGroup({ images, currentIndex });
+            }
+          }
+        } else {
+          setCurrentImageGroup(null);
+        }
       };
 
       return () => {
@@ -32,6 +53,77 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
       };
     }
   }, [isExpanded]);
+
+  // Fonction pour extraire tous les groupes d'images du contenu
+  const extractImageGroups = (): string[][] => {
+    const groups: string[][] = [];
+    const texts = [
+      marque.message_boycott_tips,
+      marque.secteur_marque?.message_boycott_tips,
+      ...messagesGeneriques.map(m => m.contenu)
+    ].filter(Boolean) as string[];
+
+    texts.forEach(text => {
+      const groupMatches = text.match(/\[img-group\]([\s\S]*?)\[\/img-group\]/g);
+      if (groupMatches) {
+        groupMatches.forEach(groupMatch => {
+          const imageMatches = groupMatch.match(/!\[([^\]]*)\]\(([^)]+)\)/g);
+          if (imageMatches) {
+            const imageUrls = imageMatches.map(match => {
+              const urlMatch = match.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+              return urlMatch ? urlMatch[2] : '';
+            }).filter(Boolean);
+            groups.push(imageUrls);
+          }
+        });
+      }
+    });
+
+    return groups;
+  };
+
+  // Navigation dans le groupe d'images
+  const navigateImage = (direction: 'prev' | 'next') => {
+    if (!currentImageGroup) return;
+
+    const newIndex = direction === 'prev' 
+      ? (currentImageGroup.currentIndex - 1 + currentImageGroup.images.length) % currentImageGroup.images.length
+      : (currentImageGroup.currentIndex + 1) % currentImageGroup.images.length;
+
+    const newImageSrc = currentImageGroup.images[newIndex];
+    setSelectedImage(newImageSrc);
+    setCurrentImageGroup({
+      ...currentImageGroup,
+      currentIndex: newIndex
+    });
+  };
+
+  // Gestion des touches clavier
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (!selectedImage) return;
+      
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          navigateImage('prev');
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          navigateImage('next');
+          break;
+        case 'Escape':
+          setSelectedImage(null);
+          setCurrentImageGroup(null);
+          break;
+      }
+    };
+
+    if (selectedImage) {
+      window.addEventListener('keydown', handleKeyPress);
+      return () => window.removeEventListener('keydown', handleKeyPress);
+    }
+  }, [selectedImage, currentImageGroup]);
 
   // Vérifier s'il y a des tips à afficher
   const hasBoycottTips = marque.message_boycott_tips || marque.secteur_marque?.message_boycott_tips;
@@ -59,13 +151,15 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
   // Fonction pour formater le markdown basique avec gestion des clics sur images
   const formatMarkdown = (text: string) => {
     let imageIndex = 0;
+    let groupIndex = 0;
     
     return text
       .replace(/\[img-group\]([\s\S]*?)\[\/img-group\]/g, (_, content) => {
+        const currentGroupIndex = groupIndex++;
         // Traiter le contenu du groupe pour extraire les images avec clics
         const imageContent = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match: string, alt: string, src: string) => {
           const currentIndex = imageIndex++;
-          return `<img src="${src}" alt="${alt}" onclick="handleImageClick('${src}')" style="cursor: pointer;" data-image-index="${currentIndex}" />`;
+          return `<img src="${src}" alt="${alt}" onclick="handleImageClick('${src}', '${currentGroupIndex}')" style="cursor: pointer;" data-image-index="${currentIndex}" data-group-index="${currentGroupIndex}" />`;
         });
         return `<div class="image-group">${imageContent}</div>`;
       }) // groupes d'images [img-group]...[/img-group]
@@ -146,7 +240,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                 </h3>
               </div>
               <div 
-                className="body-small text-neutral-700 leading-relaxed"
+                className="body-small text-neutral-700 leading-relaxed boycott-content"
                 dangerouslySetInnerHTML={{ __html: formatMarkdown(marque.message_boycott_tips) }}
               />
             </div>
@@ -161,7 +255,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                 </h3>
               </div>
               <div 
-                className="body-small text-neutral-700 leading-relaxed"
+                className="body-small text-neutral-700 leading-relaxed boycott-content"
                 dangerouslySetInnerHTML={{ __html: formatMarkdown(marque.secteur_marque.message_boycott_tips) }}
               />
             </div>
@@ -186,7 +280,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                   {message.titre}
                 </h4>
                 <div 
-                  className="body-small text-neutral-700 leading-relaxed"
+                  className="body-small text-neutral-700 leading-relaxed boycott-content"
                   dangerouslySetInnerHTML={{ __html: formatMarkdown(message.contenu) }}
                 />
               </div>
@@ -205,25 +299,76 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
       {/* Modal pour affichage d'image en grand */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 backdrop-blur-xs bg-black/50 flex items-center justify-center z-50"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 backdrop-blur-xs bg-black/50 flex items-center justify-center z-50 p-7"
+          onClick={() => {
+            setSelectedImage(null);
+            setCurrentImageGroup(null);
+          }}
         >
-          <div className="relative max-w-[90vw] max-h-[90vh]">
-            <Image
-              src={selectedImage}
-              alt="Image agrandie"
-              width={800}
-              height={600}
-              className="max-w-full max-h-full object-contain rounded-lg"
-              onClick={(e) => e.stopPropagation()}
-              unoptimized
-            />
-            <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-2 right-2 w-8 h-8 bg-black bg-opacity-50 text-white rounded-full flex items-center justify-center hover:bg-opacity-75 transition-all"
-            >
-              ×
-            </button>
+          <div className="relative max-w-md md:max-w-xl flex items-center">
+            {/* Bouton navigation gauche */}
+            {currentImageGroup && currentImageGroup.images.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigateImage('prev');
+                }}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-black bg-opacity-50 text-white rounded-full flex items-center justify-center hover:bg-opacity-75 transition-all z-10"
+                aria-label="Image précédente"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Image */}
+            <div className="relative">
+              <Image
+                src={selectedImage}
+                alt="Image agrandie"
+                width={800}
+                height={600}
+                className="max-w-full max-h-full object-contain rounded-lg"
+                onClick={(e) => e.stopPropagation()}
+                unoptimized
+              />
+              
+              {/* Bouton fermeture */}
+              <button
+                onClick={() => {
+                  setSelectedImage(null);
+                  setCurrentImageGroup(null);
+                }}
+                className="absolute top-2 right-2 w-8 h-8 bg-black bg-opacity-50 text-white rounded-full flex items-center justify-center hover:bg-opacity-75 transition-all"
+                aria-label="Fermer"
+              >
+                ×
+              </button>
+
+              {/* Indicateur de position dans le groupe */}
+              {currentImageGroup && currentImageGroup.images.length > 1 && (
+                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                  {currentImageGroup.currentIndex + 1} / {currentImageGroup.images.length}
+                </div>
+              )}
+            </div>
+
+            {/* Bouton navigation droite */}
+            {currentImageGroup && currentImageGroup.images.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigateImage('next');
+                }}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-black bg-opacity-50 text-white rounded-full flex items-center justify-center hover:bg-opacity-75 transition-all z-10"
+                aria-label="Image suivante"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                </button>
+            )}
           </div>
         </div>
       )}

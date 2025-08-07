@@ -22,7 +22,7 @@ export function SearchBar({
   onKeyDown,
   onFocus,
   onBlur,
-  placeholder = "Rechercher une marque (ex : Amazon, Smartbox, St Michel)"
+  placeholder = "Amazon, Nous Anti Gaspi, St Michel, Uniqlo)"
 }: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
