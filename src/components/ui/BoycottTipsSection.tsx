@@ -104,7 +104,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
               </svg>
             </div>
             <span className="relative z-10">
-              Comment bien boycotter {marque.nom}
+              Comment bien boycotter {marque.nom} ?
             </span>
           </div>
           
@@ -120,7 +120,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
           <div className="flex items-center justify-between pb-4 mb-2">
             <div className="flex-1">
               <h2 className="heading-sub font-bold text-neutral-900 mb-2">
-                Comment bien boycotter {marque.nom}
+                Comment bien boycotter {marque.nom} ?
               </h2>
               <p className="body-small text-neutral-600">
                 Conseils pratiques pour un boycott efficace
