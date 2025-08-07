@@ -149,6 +149,7 @@ export interface PropositionUpdateRequest {
   statut: 'approuve' | 'rejete';
   commentaire_admin?: string;
   condamnation_judiciaire?: boolean;
+  reponse?: string; // URL de la réponse de la marque (sera appliquée à l'événement lors de l'approbation)
 }
 
 // Types pour la gestion des dirigeants controversés

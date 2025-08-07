@@ -248,10 +248,11 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     return { success: false, errors };
   }
 
-  const { statut, commentaire_admin, condamnation_judiciaire } = data as {
+  const { statut, commentaire_admin, condamnation_judiciaire, reponse } = data as {
     statut?: unknown;
     commentaire_admin?: unknown;
     condamnation_judiciaire?: unknown;
+    reponse?: unknown;
   };
 
   // Validation statut
@@ -274,6 +275,15 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     errors.push('La condamnation judiciaire doit être un booléen');
   }
 
+  // Validation reponse (optionnel)
+  if (reponse !== undefined) {
+    if (typeof reponse !== 'string') {
+      errors.push('La réponse doit être une chaîne de caractères');
+    } else if (reponse.trim() && !/^https?:\/\/.+/.test(reponse.trim())) {
+      errors.push('La réponse de la marque doit être une URL valide (http:// ou https://)');
+    }
+  }
+
   if (errors.length > 0) {
     return { success: false, errors };
   }
@@ -283,7 +293,8 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     data: {
       statut: statut as 'approuve' | 'rejete',
       commentaire_admin: typeof commentaire_admin === 'string' ? commentaire_admin.trim() : undefined,
-      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined
+      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined,
+      reponse: typeof reponse === 'string' && reponse.trim() ? reponse.trim() : undefined
     }
   };
 }
