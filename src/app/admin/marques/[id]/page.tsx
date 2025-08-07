@@ -351,7 +351,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
           </h3>
           <div className="p-4 bg-white rounded-lg border">
             <h4 className="body-large font-medium mb-2">
-              Comment bien boycotter {marque.nom}
+              Comment bien boycotter {marque.nom} ?
             </h4>
             <div className="body-small text-neutral-600 whitespace-pre-wrap">
               {marqueFormData.message_boycott_tips ? (
