@@ -36,6 +36,12 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
   // Fonction pour formater le markdown basique
   const formatMarkdown = (text: string) => {
     return text
+      .replace(/\[img-group\]([\s\S]*?)\[\/img-group\]/g, (_, content) => {
+        // Traiter le contenu du groupe pour extraire les images
+        const imageContent = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
+        return `<div class="image-group">${imageContent}</div>`;
+      }) // groupes d'images [img-group]...[/img-group]
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg my-2" />') // images individuelles ![alt](url)
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **gras**
       .replace(/\*(.*?)\*/g, '<em>$1</em>') // *italique*
       .replace(/^• (.+)$/gm, '<div class="flex items-start"><span class="text-primary mr-2">•</span><span>$1</span></div>') // listes avec •
