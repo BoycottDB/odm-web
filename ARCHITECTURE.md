@@ -12,12 +12,14 @@ src/
 │   │   ├── decisions/     # Décisions de modération
 │   │   ├── dirigeants/    # Dirigeants controversés
 │   │   ├── categories/    # Catégories d'événements
+│   │   ├── secteurs-marque/ # CRUD secteurs BoycottTips
 │   │   └── search-similaire/ # Détection de doublons
 │   ├── about/             # Page À propos
 │   ├── admin/             # Interface d'administration
 │   │   ├── marques/       # Gestion des marques
 │   │   ├── dirigeants/    # Gestion des dirigeants
 │   │   ├── moderation/    # Interface de modération
+│   │   ├── secteurs-marque/ # Gestion secteurs BoycottTips
 │   │   └── login/         # Authentification admin
 │   ├── faq/               # Page FAQ
 │   ├── moderation/        # Page modération publique
@@ -36,7 +38,8 @@ src/
 │   │   ├── HoneypotField.tsx # Champ anti-bot
 │   │   ├── AddToHomeScreenBanner.tsx # PWA prompts
 │   │   ├── IOSInstallInstructions.tsx # Guide install iOS
-│   │   └── JudicialCondemnationNotice.tsx # Avis légaux
+│   │   ├── JudicialCondemnationNotice.tsx # Avis légaux
+│   │   └── BoycottTipsSection.tsx # Section conseils boycott avec modal
 │   ├── search/           # Système de recherche
 │   │   └── SearchBar.tsx  # Barre avec auto-complétion
 │   ├── events/           # Affichage des événements
@@ -132,6 +135,34 @@ src/
 3. Affichage suggestions avec scores de similarité
 4. Prévention création doublons automatique
 
+### **Système BoycottTips (Conseils de Boycott)**
+1. `BoycottTipsSection` → Affichage conditionnel selon disponibilité
+2. Logique de priorité : Message spécifique marque > Message secteur > Pas de bouton
+3. `formatMarkdown` → Rendu avec support images et groupes d'images
+4. Modal lightbox → Affichage images agrandies avec navigation
+5. Interface admin → CRUD secteurs via `/admin/secteurs-marque`
+
+#### **Architecture BoycottTips**
+```
+SecteurMarque (1) ←→ (N) Marque
+│
+├── message_boycott_tips (secteur)    # Message générique par secteur
+└── Marque.message_boycott_tips       # Message spécifique (priorité)
+```
+
+#### **Syntaxe Markdown Étendue**
+- **Texte enrichi** : `**gras**`, `*italique*`
+- **Listes** : `• élément` (avec espacement optimisé)
+- **Images individuelles** : `![alt](url)` (responsive avec modal)
+- **Groupes d'images** : `[img-group]![](url1)![](url2)[/img-group]` (height fixe, width auto)
+- **Modal interactive** : Clic sur image → affichage plein écran avec fermeture
+
+#### **Composants BoycottTips**
+- **`BoycottTipsSection`** : Bouton shiny + section dépliable
+- **Modal lightbox** : Image agrandie avec overlay et bouton fermeture
+- **Interface admin** : Page CRUD pour secteurs avec assignation marques
+- **API `/secteurs-marque`** : CRUD complet avec validation
+
 ## 🛡️ Validation et Sécurité
 
 ### **API Routes (Architecture RESTful)**
@@ -163,6 +194,8 @@ src/
 CREATE TABLE "Marque" (
   id SERIAL PRIMARY KEY,
   nom VARCHAR(255) UNIQUE NOT NULL,
+  secteur_marque_id INTEGER REFERENCES "SecteurMarque"(id),
+  message_boycott_tips TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -213,12 +246,24 @@ CREATE TABLE "Decision" (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Table pour les secteurs de marques (BoycottTips)
+CREATE TABLE "SecteurMarque" (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(255) UNIQUE NOT NULL,
+  description TEXT,
+  message_boycott_tips TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Index pour les performances
 CREATE INDEX idx_marque_nom ON "Marque" USING gin(to_tsvector('french', nom));
+CREATE INDEX idx_marque_secteur ON "Marque"(secteur_marque_id);
 CREATE INDEX idx_evenement_categorie ON "Evenement"(categorie);
 CREATE INDEX idx_evenement_date ON "Evenement"(date DESC);
 CREATE INDEX idx_proposition_status ON "Proposition"(status);
 CREATE INDEX idx_dirigeant_nom ON "Dirigeant" USING gin(to_tsvector('french', nom || ' ' || COALESCE(prenom, '')));
+CREATE INDEX idx_secteur_nom ON "SecteurMarque"(nom);
 ```
 
 ## 🎨 Design System
@@ -260,6 +305,7 @@ CREATE INDEX idx_dirigeant_nom ON "Dirigeant" USING gin(to_tsvector('french', no
 - **`LoadingSpinner`** : 3 tailles (sm/md/lg) avec animation fluide
 - **`Badge`** : Couleurs dynamiques basées sur catégories + variants
 - **`EventCard`** : Design responsive avec états hover/focus
+- **`BoycottTipsSection`** : Bouton shiny + section dépliable + modal images
 - **`SearchBar`** : Auto-complétion + navigation clavier + états loading
 - **`AddToHomeScreenBanner`** : PWA prompt adaptatif iOS/Android
 - **`JudicialCondemnationNotice`** : Composant légal avec disclaimers

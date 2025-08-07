@@ -27,9 +27,10 @@ Ce projet a pour but d’informer les consommateurs sur les pratiques éthiques,
 ## Architecture de la Base de Données
 
 ### Modèles Principaux
-- **Marque** : Marques et entreprises référencées
+- **Marque** : Marques et entreprises référencées avec secteur d'activité
 - **Événement** : Controverses et pratiques documentées
 - **Dirigeant** : Dirigeants controversés avec liens vers marques
+- **SecteurMarque** : Secteurs d'activité pour conseils de boycott ciblés
 - **Proposition** : Système de modération collaborative
 - **Décision** : Historique transparent des validations/rejets
 
@@ -37,6 +38,7 @@ Ce projet a pour but d’informer les consommateurs sur les pratiques éthiques,
 ```
 Marque (1) ←→ (N) Événement
 Marque (N) ←→ (N) Dirigeant (via DirigeantMarque)
+Marque (N) ←→ (1) SecteurMarque (optionnel)
 Proposition (1) ←→ (1) Décision
 ```
 
@@ -80,12 +82,14 @@ Proposition (1) ←→ (1) Décision
 - **📱 Design Responsive** : Mobile-first avec PWA native
 - **⚡ Performance** : Chargement instantané avec cache optimisé
 - **♿ Accessibilité** : WCAG 2.1 compliant, navigation clavier
+- **💡 Conseils de Boycott** : Recommandations pratiques par marque et secteur
 
 ### Système de Données
 - **📊 Affichage Enrichi** : Chronologie, catégories, condamnations judiciaires
 - **🔗 Dirigeants Controversés** : Liens entre dirigeants et marques
 - **📋 Sources Vérifiées** : Liens directs vers sources officielles
 - **⚖️ Notices Légales** : Disclaimers pour condamnations judiciaires
+- **🎯 BoycottTips** : Conseils personnalisés par marque et secteur d'activité
 
 ### Modération Collaborative
 - **✍️ Signalements** : Formulaire sécurisé avec détection de doublons
@@ -96,6 +100,7 @@ Proposition (1) ←→ (1) Décision
 ### Administration
 - **👥 Gestion Marques** : CRUD complet avec statistiques
 - **👤 Gestion Dirigeants** : Création et liaison avec marques
+- **🏷️ Gestion Secteurs** : Catégorisation marques pour BoycottTips
 - **📋 Interface Modération** : Workflow optimisé pour les propositions
 - **📈 Analytics** : Statistiques d'usage et performance
 
