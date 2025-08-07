@@ -38,8 +38,9 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
     return text
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **gras**
       .replace(/\*(.*?)\*/g, '<em>$1</em>') // *italique*
-      .replace(/^• (.+)$/gm, '<div class="flex items-start"><span class="text-primary mr-2 mb-2">•</span><span>$1</span></div>') // listes avec •
-      .replace(/\n/g, '<br />'); // retours à la ligne
+      .replace(/^• (.+)$/gm, '<div class="flex items-start"><span class="text-primary mr-2">•</span><span>$1</span></div>') // listes avec •
+      .replace(/\n/g, '<br />') // tous les retours à la ligne
+      .replace(/(<\/div>)<br \/>/g, '$1'); // supprimer les <br /> immédiatement après les éléments de liste
   };
 
   return (
@@ -103,9 +104,6 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
           {marque.message_boycott_tips && (
             <div className="p-4 bg-warning-light border border-warning rounded-xl mb-8">
               <div className="flex items-center mb-3">
-                <div className="w-8 h-8 bg-warning rounded-full flex items-center justify-center mr-3">
-                  <span className="text-white font-bold text-sm">!</span>
-                </div>
                 <h3 className="body-large font-semibold text-neutral-900">
                   Conseils spécifiques pour {marque.nom}
                 </h3>
@@ -118,16 +116,11 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
           )}
 
           {/* Message du secteur */}
-          {!marque.message_boycott_tips && marque.secteur_marque?.message_boycott_tips && (
+          {marque.secteur_marque?.message_boycott_tips && (
             <div className="p-4 bg-primary-light border border-primary rounded-xl">
               <div className="flex items-center mb-3">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-3">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                  </svg>
-                </div>
                 <h3 className="body-large font-semibold text-neutral-900">
-                  Conseils pour le secteur &quot;{marque.secteur_marque.nom}&quot;
+                  Conseils généraux pour le secteur &quot;{marque.secteur_marque.nom}&quot;
                 </h3>
               </div>
               <div 
