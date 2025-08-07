@@ -20,7 +20,7 @@ export function Badge({ children, variant = 'category', className = '', category
     return (
       <span 
         className={`inline-flex items-center px-3 py-1 rounded-full body-small font-medium text-neutral-800 border border-berry-200 ${className}`}
-        style={{ backgroundColor: bgColor }}
+        style={{ backgroundColor: 'white' }}
       >
         <span className="mr-1.5">{category.emoji}</span>
         {children}
