@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { MarqueDirigeantCreateRequest, Marque } from '@/types';
+import { MarqueDirigeantCreateRequest, MarqueDirigeantUpdateRequest, Marque } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
 import MarqueDirigeantForm from '@/components/admin/MarqueDirigeantForm';
 
@@ -48,11 +48,15 @@ export default function LierDirigeantPage() {
     }
   };
 
-  const handleSave = async (data: MarqueDirigeantCreateRequest) => {
+  const handleSave = async (data: MarqueDirigeantCreateRequest | MarqueDirigeantUpdateRequest) => {
     setSaving(true);
     setMessage(null);
 
     try {
+      // Cette page est réservée à la création d'une liaison
+      if ('id' in data) {
+        throw new Error('Ce formulaire est réservé à la création d\'une liaison');
+      }
       const response = await fetch('/api/marque-dirigeant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

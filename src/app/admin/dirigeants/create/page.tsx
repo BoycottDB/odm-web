@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { DirigeantCreateRequest } from '@/types';
+import { DirigeantCreateRequest, DirigeantUpdateRequest } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
 import DirigeantForm from '@/components/admin/DirigeantForm';
 
@@ -11,11 +11,15 @@ export default function CreateDirigeantPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const router = useRouter();
 
-  const handleSave = async (data: DirigeantCreateRequest) => {
+  const handleSave = async (data: DirigeantCreateRequest | DirigeantUpdateRequest) => {
     setSaving(true);
     setMessage(null);
 
     try {
+      // Ce formulaire est dédié à la création uniquement
+      if ('id' in data) {
+        throw new Error('Ce formulaire est réservé à la création d\'un dirigeant');
+      }
       const response = await fetch('/api/dirigeants', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -37,22 +37,30 @@ export async function GET() {
     if (marquesError) throw marquesError;
 
     // Calculer les statistiques pour chaque marque
-    const marquesWithStats: MarqueWithStats[] = (marques || []).map((marque: {
+    type EvenementRow = {
+      id: number;
+      categorie_id: number | null;
+      condamnation_judiciaire: boolean;
+      Categorie: { id: number; nom: string; emoji?: string; couleur?: string } | Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
+    };
+
+    type MarqueDirigeantRow = {
+      id: number;
+      dirigeant_id: number;
+      lien_financier: string;
+      dirigeant: { id: number; nom: string; controverses: string } | Array<{ id: number; nom: string; controverses: string }>;
+    };
+
+    type MarqueRow = {
       id: number;
       nom: string;
-      Evenement: Array<{
-        id: number;
-        categorie_id: number | null;
-        condamnation_judiciaire: boolean;
-        Categorie: { id: number; nom: string; emoji?: string; couleur?: string } | Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
-      }>;
-      marque_dirigeant: Array<{ 
-        id: number; 
-        dirigeant_id: number; 
-        lien_financier: string;
-        dirigeant: { id: number; nom: string; controverses: string };
-      }> | null;
-    }) => {
+      Evenement: EvenementRow[] | null;
+      marque_dirigeant: MarqueDirigeantRow[] | null;
+    };
+
+    const marquesTyped = (marques || []) as unknown as MarqueRow[];
+
+    const marquesWithStats: MarqueWithStats[] = marquesTyped.map((marque) => {
       const evenements = marque.Evenement || [];
       
       // Nombre total de controverses
@@ -79,7 +87,7 @@ export async function GET() {
       const nbCondamnations = evenements.filter((e) => e.condamnation_judiciaire === true).length;
       
       // Nombre de dirigeants controversés (comme dans l'API marques normale)
-      const nbDirigeantsControverses = marque.marque_dirigeant ? (Array.isArray(marque.marque_dirigeant) ? marque.marque_dirigeant.length : 1) : 0;
+      const nbDirigeantsControverses = Array.isArray(marque.marque_dirigeant) ? marque.marque_dirigeant.length : 0;
       
       return {
         id: marque.id,
