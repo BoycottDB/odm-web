@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Marque, MarqueDirigeantCreateRequest, SecteurMarque, MarqueUpdateRequest } from '@/types';
-import DirigentForm from '@/components/admin/DirigentForm';
+import MarqueDirigeantForm from '@/components/admin/MarqueDirigeantForm';
 
 interface MarqueEditPageProps {
   params: Promise<{ id: string }>;
@@ -77,75 +77,17 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
     }
   };
   
-  const saveDirigeantData = async (data: MarqueDirigeantCreateRequest) => {
-    setSaving(true);
-    setMessage(null);
-    
-    try {
-      if (marque?.dirigeant_controverse) {
-        // Mise à jour
-        const response = await fetch(`/api/dirigeants`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            id: marque.dirigeant_controverse.id, 
-            ...data 
-          })
-        });
-        
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.error || 'Erreur lors de la mise à jour');
-        }
-        
-        setMessage({ type: 'success', text: 'Dirigeant mis à jour avec succès' });
-      } else {
-        // Création
-        const response = await fetch('/api/dirigeants', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.error || 'Erreur lors de la création');
-        }
-        
-        setMessage({ type: 'success', text: 'Dirigeant créé avec succès' });
-        
-        // Redirection vers la page de détail du dirigeant après création
-        setTimeout(() => {
-          router.push(`/admin/dirigeants/${encodeURIComponent(data.dirigeant_nom)}`);
-        }, 1000);
-      }
-      
-      // Recharger les données (seulement pour les mises à jour)
-      if (marque?.dirigeant_controverse) {
-        await loadMarqueData();
-      }
-    } catch (error) {
-      console.error('Erreur sauvegarde dirigeant:', error);
-      setMessage({ 
-        type: 'error', 
-        text: error instanceof Error ? error.message : 'Erreur lors de la sauvegarde' 
-      });
-    } finally {
-      setSaving(false);
-    }
-  };
-  
-  const deleteDirigeant = async () => {
+  const deleteLiaison = async () => {
     if (!marque?.dirigeant_controverse) return;
     
-    const confirmed = confirm('Êtes-vous sûr de vouloir supprimer ce dirigeant controversé ?');
+    const confirmed = confirm(`Êtes-vous sûr de vouloir supprimer la liaison entre ${marque.dirigeant_controverse.dirigeant_nom} et ${marque.nom} ?`);
     if (!confirmed) return;
     
     setSaving(true);
     setMessage(null);
     
     try {
-      const response = await fetch(`/api/dirigeants?id=${marque.dirigeant_controverse.id}`, {
+      const response = await fetch(`/api/marque-dirigeant?id=${marque.dirigeant_controverse.id}`, {
         method: 'DELETE'
       });
       
@@ -154,10 +96,10 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
         throw new Error(error.error || 'Erreur lors de la suppression');
       }
       
-      setMessage({ type: 'success', text: 'Dirigeant supprimé avec succès' });
+      setMessage({ type: 'success', text: 'Liaison supprimée avec succès' });
       await loadMarqueData();
     } catch (error) {
-      console.error('Erreur suppression dirigeant:', error);
+      console.error('Erreur suppression liaison:', error);
       setMessage({ 
         type: 'error', 
         text: error instanceof Error ? error.message : 'Erreur lors de la suppression' 
@@ -381,43 +323,74 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
           
           {marque.dirigeant_controverse && (
             <button
-              onClick={deleteDirigeant}
+              onClick={deleteLiaison}
               disabled={saving}
               className="body-small text-error hover:text-error underline disabled:opacity-50"
             >
-              Supprimer
+              Supprimer liaison
             </button>
           )}
         </div>
         
-        {marque.dirigeant_controverse && (
-          <div className="mb-6 p-4 bg-success-light border border-success rounded-lg">
-            <div className="flex items-center space-x-2">
-              <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <p className="body-small text-success font-medium">
-                Dirigeant configuré : <strong>{marque.dirigeant_controverse.dirigeant_nom}</strong>
-              </p>
+        {marque.dirigeant_controverse ? (
+          <div>
+            <div className="mb-6 p-4 bg-success-light border border-success rounded-lg">
+              <div className="flex items-center space-x-2 mb-2">
+                <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <p className="body-small text-success font-medium">
+                  Dirigeant lié : <strong>{marque.dirigeant_controverse.dirigeant_nom}</strong>
+                </p>
+              </div>
+              <div className="body-xs text-success">
+                <p><strong>Lien financier :</strong> {marque.dirigeant_controverse.lien_financier}</p>
+                <p><strong>Impact :</strong> {marque.dirigeant_controverse.impact_description}</p>
+              </div>
             </div>
-            <p className="body-xs text-success mt-1">
-              Le badge apparaît sur la fiche publique de la marque
+            
+            <div className="flex space-x-3">
+              <button
+                onClick={() => {
+                  if (marque.dirigeant_controverse?.dirigeant_id) {
+                    router.push(`/admin/dirigeants/${marque.dirigeant_controverse.dirigeant_id}`);
+                  } else {
+                    alert('ID du dirigeant non trouvé');
+                  }
+                }}
+                className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
+              >
+                Éditer dirigeant
+              </button>
+              <button
+                onClick={() => alert('Fonctionnalité d\'édition de liaison à implémenter')}
+                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+              >
+                Modifier liaison
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <div className="text-neutral-500 mb-4">
+              <svg className="w-12 h-12 mx-auto mb-3 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+              </svg>
+            </div>
+            <h4 className="body-large font-medium text-neutral-900 mb-2">
+              Aucun dirigeant controversé associé
+            </h4>
+            <p className="text-neutral-600 mb-4">
+              Vous pouvez lier un dirigeant controversé existant à cette marque.
             </p>
+            <button
+              onClick={() => router.push(`/admin/marques/${marque.id}/lier-dirigeant`)}
+              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+            >
+              Lier un dirigeant
+            </button>
           </div>
         )}
-        
-        <DirigentForm
-          marqueId={marque.id}
-          initialData={marque.dirigeant_controverse ? {
-            nom: marque.dirigeant_controverse.dirigeant_nom,
-            controverses: marque.dirigeant_controverse.controverses,
-            lienFinancier: marque.dirigeant_controverse.lien_financier,
-            impact: marque.dirigeant_controverse.impact_description,
-            sources: marque.dirigeant_controverse.sources
-          } : undefined}
-          onSave={saveDirigeantData}
-          isLoading={saving}
-        />
       </div>
     </div>
   );

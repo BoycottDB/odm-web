@@ -1,13 +1,12 @@
 'use client';
 
-import { DirigeantResult } from '@/types';
+import { DirigeantComplet } from '@/types';
 
 interface DirigeantCardProps {
-  dirigeantResult: DirigeantResult;
+  dirigeant: DirigeantComplet;
 }
 
-export function DirigeantCard({ dirigeantResult }: DirigeantCardProps) {
-  const { marque, dirigeant } = dirigeantResult;
+export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
 
   return (
     <div className="bg-gradient-to-r from-primary-light to-orange-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
@@ -18,11 +17,11 @@ export function DirigeantCard({ dirigeantResult }: DirigeantCardProps) {
         </div>
         <div>         
           <div className="text-primary body-small">
-            Un dirigeant controversé est associé à la marque <strong className="body-large font-semibold">{marque.nom}</strong>
+            Un dirigeant controversé est associé à la marque <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong>
           </div>
           {/* Nom du dirigeant */}
           <h3 className="heading-sub font-bold text-neutral-900">
-            {dirigeant.dirigeant_nom}
+            {dirigeant.nom}
           </h3>
         </div>
       </div>

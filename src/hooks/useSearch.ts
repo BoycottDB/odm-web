@@ -95,6 +95,7 @@ export function useSearch() {
         marque: marque,
         dirigeant: marque.dirigeant_controverse!
       }));
+      
 
       const hasResults = filteredEvents.length > 0 || dirigeantResults.length > 0;
 
