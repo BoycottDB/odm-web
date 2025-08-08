@@ -223,6 +223,7 @@ export interface DirigeantComplet {
 
 // Requests pour l'API dirigeants
 export interface DirigeantCreateRequest {
+  id: number;
   nom: string;
   controverses: string;
   sources: string[];
