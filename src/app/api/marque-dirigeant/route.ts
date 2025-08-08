@@ -21,14 +21,14 @@ export async function GET(request: NextRequest) {
         impact_specifique,
         created_at,
         updated_at,
-        dirigeant:dirigeant_id (
+        dirigeant:dirigeants!dirigeant_id (
           id,
           nom,
           controverses,
           sources,
           impact_generique
         ),
-        marque:marque_id (
+        marque:Marque!marque_id (
           id,
           nom
         )
@@ -46,8 +46,27 @@ export async function GET(request: NextRequest) {
     
     if (error) throw error;
     
+    // TS: typage explicite pour garantir des objets (et non tableaux) sur les relations
+    type LiaisonRow = {
+      id: number;
+      marque_id: number;
+      dirigeant_id: number;
+      lien_financier: string;
+      impact_specifique?: string | null;
+      dirigeant: {
+        id: number;
+        nom: string;
+        controverses: string;
+        sources: string[];
+        impact_generique?: string | null;
+      };
+      marque: { id: number; nom: string };
+    };
+
+    const liaisonsTyped = (liaisons || []) as unknown as LiaisonRow[];
+
     // Transformer en format DirigeantComplet pour l'affichage
-    const dirigeantsComplets: DirigeantComplet[] = liaisons.map(liaison => ({
+    const dirigeantsComplets: DirigeantComplet[] = liaisonsTyped.map(liaison => ({
       id: liaison.dirigeant.id,
       nom: liaison.dirigeant.nom,
       controverses: liaison.dirigeant.controverses,

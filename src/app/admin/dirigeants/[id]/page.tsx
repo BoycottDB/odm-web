@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { DirigeantWithMarques, DirigeantUpdateRequest } from '@/types';
+import { DirigeantWithMarques, DirigeantCreateRequest, DirigeantUpdateRequest } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
 import DirigeantForm from '@/components/admin/DirigeantForm';
 
@@ -43,11 +43,15 @@ export default function DirigeantDetailPage() {
     }
   };
 
-  const handleSave = async (data: DirigeantUpdateRequest) => {
+  const handleSave = async (data: DirigeantCreateRequest | DirigeantUpdateRequest) => {
     setSaving(true);
     setMessage(null);
 
     try {
+      // Cette page est réservée à la modification d'un dirigeant existant
+      if (!('id' in data)) {
+        throw new Error('Ce formulaire est réservé à la modification');
+      }
       const response = await fetch('/api/dirigeants', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

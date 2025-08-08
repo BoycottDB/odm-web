@@ -28,27 +28,41 @@ export async function GET() {
         dirigeant_id,
         lien_financier,
         impact_specifique,
-        marque:marque_id (id, nom)
+        marque:Marque!marque_id (id, nom)
       `);
       
     if (liaisonError) throw liaisonError;
     
     // Construire la vue dirigeant-centrique
+    type LiaisonRow = {
+      id: number;
+      marque_id: number;
+      dirigeant_id: number;
+      lien_financier: string;
+      impact_specifique?: string | null;
+      marque: { id: number; nom: string } | Array<{ id: number; nom: string }>;
+    };
+
+    const liaisonsTyped = (liaisons || []) as unknown as LiaisonRow[];
+
     const dirigeantsWithMarques: DirigeantWithMarques[] = dirigeants.map(dirigeant => ({
       id: dirigeant.id,
       nom: dirigeant.nom,
       controverses: dirigeant.controverses,
       sources: dirigeant.sources,
       impact_generique: dirigeant.impact_generique,
-      marques: liaisons
+      marques: liaisonsTyped
         .filter(liaison => liaison.dirigeant_id === dirigeant.id)
-        .map(liaison => ({
-          id: liaison.marque.id,
-          nom: liaison.marque.nom,
-          lien_financier: liaison.lien_financier,
-          impact_specifique: liaison.impact_specifique,
-          liaison_id: liaison.id
-        }))
+        .map(liaison => {
+          const marqueObj = Array.isArray(liaison.marque) ? liaison.marque[0] : liaison.marque;
+          return {
+            id: marqueObj?.id ?? liaison.marque_id,
+            nom: marqueObj?.nom ?? 'Marque inconnue',
+            lien_financier: liaison.lien_financier,
+            impact_specifique: liaison.impact_specifique || undefined,
+            liaison_id: liaison.id
+          };
+        })
     }));
     
     return NextResponse.json(dirigeantsWithMarques);
