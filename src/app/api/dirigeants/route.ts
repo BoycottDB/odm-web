@@ -1,41 +1,57 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
-import { MarqueDirigeantCreateRequest, DirigeantWithMarques, Marque } from '@/types';
+import { DirigeantCreateRequest, DirigeantUpdateRequest, DirigeantWithMarques, Dirigeant } from '@/types';
 
 export async function GET() {
   try {
-    const { data, error } = await supabase
+    // Récupérer tous les dirigeants avec leurs liaisons marque
+    const { data: dirigeants, error: dirigeantError } = await supabase
+      .from('dirigeants')
+      .select(`
+        id,
+        nom,
+        controverses,
+        sources,
+        impact_generique,
+        created_at,
+        updated_at
+      `);
+      
+    if (dirigeantError) throw dirigeantError;
+    
+    // Récupérer toutes les liaisons marque-dirigeant
+    const { data: liaisons, error: liaisonError } = await supabase
       .from('marque_dirigeant')
       .select(`
-        *,
-        marques:marque_id (id, nom)
+        id,
+        marque_id,
+        dirigeant_id,
+        lien_financier,
+        impact_specifique,
+        marque:marque_id (id, nom)
       `);
-    
-    if (error) throw error;
-    
-    // Grouper par dirigeant pour la vue dirigeant-centrique
-    const grouped: { [key: string]: DirigeantWithMarques } = {};
-    
-    data.forEach(item => {
-      if (!grouped[item.dirigeant_nom]) {
-        grouped[item.dirigeant_nom] = {
-          nom: item.dirigeant_nom,
-          controverses: item.controverses,
-          sources: item.sources,
-          marques: []
-        };
-      }
       
-      grouped[item.dirigeant_nom].marques.push({
-        id: item.marques.id,
-        nom: item.marques.nom,
-        lien_financier: item.lien_financier,
-        impact_description: item.impact_description,
-        liaison_id: item.id // ID de la liaison marque_dirigeant
-      } as Marque & { lien_financier: string; impact_description: string; liaison_id: number });
-    });
+    if (liaisonError) throw liaisonError;
     
-    return NextResponse.json(Object.values(grouped));
+    // Construire la vue dirigeant-centrique
+    const dirigeantsWithMarques: DirigeantWithMarques[] = dirigeants.map(dirigeant => ({
+      id: dirigeant.id,
+      nom: dirigeant.nom,
+      controverses: dirigeant.controverses,
+      sources: dirigeant.sources,
+      impact_generique: dirigeant.impact_generique,
+      marques: liaisons
+        .filter(liaison => liaison.dirigeant_id === dirigeant.id)
+        .map(liaison => ({
+          id: liaison.marque.id,
+          nom: liaison.marque.nom,
+          lien_financier: liaison.lien_financier,
+          impact_specifique: liaison.impact_specifique,
+          liaison_id: liaison.id
+        }))
+    }));
+    
+    return NextResponse.json(dirigeantsWithMarques);
   } catch (error) {
     console.error('Erreur lors de la récupération des dirigeants:', error);
     return NextResponse.json(
@@ -47,12 +63,12 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const data: MarqueDirigeantCreateRequest = await request.json();
+    const data: DirigeantCreateRequest = await request.json();
     
     // Validation des champs obligatoires
-    const requiredFields = ['marque_id', 'dirigeant_nom', 'controverses', 'lien_financier', 'impact_description', 'sources'];
+    const requiredFields = ['nom', 'controverses', 'sources'];
     for (const field of requiredFields) {
-      if (!data[field as keyof MarqueDirigeantCreateRequest]) {
+      if (!data[field as keyof DirigeantCreateRequest]) {
         return NextResponse.json(
           { error: `Le champ ${field} est obligatoire` },
           { status: 400 }
@@ -88,29 +104,27 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Vérifier qu'il n'y a pas déjà un dirigeant pour cette marque
+    // Vérifier qu'un dirigeant avec ce nom n'existe pas déjà
     const { data: existing, error: checkError } = await supabaseAdmin
-      .from('marque_dirigeant')
+      .from('dirigeants')
       .select('id')
-      .eq('marque_id', data.marque_id)
+      .eq('nom', data.nom.trim())
       .single();
     
     if (existing) {
       return NextResponse.json(
-        { error: 'Cette marque a déjà un dirigeant controversé associé' },
+        { error: 'Un dirigeant avec ce nom existe déjà' },
         { status: 409 }
       );
     }
     
     const { data: dirigeant, error } = await supabaseAdmin
-      .from('marque_dirigeant')
+      .from('dirigeants')
       .insert({
-        marque_id: data.marque_id,
-        dirigeant_nom: data.dirigeant_nom.trim(),
+        nom: data.nom.trim(),
         controverses: data.controverses.trim(),
-        lien_financier: data.lien_financier.trim(),
-        impact_description: data.impact_description.trim(),
-        sources: data.sources
+        sources: data.sources,
+        impact_generique: data.impact_generique?.trim()
       })
       .select()
       .single();
@@ -129,7 +143,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const data = await request.json();
+    const data: DirigeantUpdateRequest = await request.json();
     const { id, ...updateData } = data;
     
     if (!id) {
@@ -161,18 +175,35 @@ export async function PUT(request: NextRequest) {
       );
     }
     
+    // Vérifier unicité du nom si modifié
+    if (updateData.nom) {
+      const { data: existing, error: checkError } = await supabaseAdmin
+        .from('dirigeants')
+        .select('id')
+        .eq('nom', updateData.nom.trim())
+        .neq('id', id)
+        .single();
+      
+      if (existing) {
+        return NextResponse.json(
+          { error: 'Un dirigeant avec ce nom existe déjà' },
+          { status: 409 }
+        );
+      }
+    }
+    
     // Nettoyer les données avant mise à jour
     const cleanedData = Object.keys(updateData).reduce((acc, key) => {
-      if (typeof updateData[key] === 'string') {
-        acc[key] = updateData[key].trim();
+      if (typeof updateData[key as keyof typeof updateData] === 'string') {
+        acc[key] = (updateData[key as keyof typeof updateData] as string).trim();
       } else {
-        acc[key] = updateData[key];
+        acc[key] = updateData[key as keyof typeof updateData];
       }
       return acc;
     }, {} as Record<string, unknown>);
     
     const { data: dirigeant, error } = await supabaseAdmin
-      .from('marque_dirigeant')
+      .from('dirigeants')
       .update(cleanedData)
       .eq('id', id)
       .select()
@@ -202,8 +233,23 @@ export async function DELETE(request: NextRequest) {
       );
     }
     
-    const { error } = await supabaseAdmin
+    // Vérifier s'il existe des liaisons avec ce dirigeant
+    const { data: liaisons, error: checkError } = await supabaseAdmin
       .from('marque_dirigeant')
+      .select('id')
+      .eq('dirigeant_id', id);
+    
+    if (checkError) throw checkError;
+    
+    if (liaisons && liaisons.length > 0) {
+      return NextResponse.json(
+        { error: `Impossible de supprimer ce dirigeant : il est lié à ${liaisons.length} marque(s)` },
+        { status: 409 }
+      );
+    }
+    
+    const { error } = await supabaseAdmin
+      .from('dirigeants')
       .delete()
       .eq('id', id);
       

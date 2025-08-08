@@ -82,6 +82,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
   const hasEvents = events.length > 0;
   const hasDirigeants = dirigeantResults.length > 0;
   const isSearchResults = hasSearched && (hasEvents || hasDirigeants);
+  
 
   // Extraire la marque des résultats pour afficher les Boycott Tips
   const marque = hasEvents ? events[0].marque : (hasDirigeants ? dirigeantResults[0].marque : null);
@@ -107,9 +108,25 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
               Dirigeants controversés associés
             </h3>
             <div className="grid gap-10 sm:gap-12 grid-cols-1 lg:grid-cols-1">
-              {dirigeantResults.map((dirigeantResult) => (
-                <DirigeantCard key={dirigeantResult.id} dirigeantResult={dirigeantResult} />
-              ))}
+              {dirigeantResults.map((dirigeantResult) => {
+                // Transformer DirigeantResult en DirigeantComplet pour le nouveau composant
+                const dirigeantComplet = {
+                  id: dirigeantResult.dirigeant.dirigeant_id || parseInt(dirigeantResult.id.replace('dirigeant-', '')),
+                  nom: dirigeantResult.dirigeant.dirigeant_nom,
+                  controverses: dirigeantResult.dirigeant.controverses,
+                  sources: dirigeantResult.dirigeant.sources,
+                  lien_financier: dirigeantResult.dirigeant.lien_financier,
+                  impact_description: dirigeantResult.dirigeant.impact_description,
+                  marque_id: dirigeantResult.marque.id,
+                  marque_nom: dirigeantResult.marque.nom,
+                  liaison_id: dirigeantResult.dirigeant.id
+                };
+                
+                
+                return (
+                  <DirigeantCard key={dirigeantResult.id} dirigeant={dirigeantComplet} />
+                );
+              })}
             </div>
           </div>
         )}

@@ -1,9 +1,23 @@
 // Types centralisés pour toute l'application
+// Type pour la compatibilité avec l'ancienne structure (API marques)
+export interface MarqueDirigeantLegacy {
+  id: number; // ID de la liaison
+  marque_id: number;
+  dirigeant_id: number; // ID du dirigeant (nouveau)
+  dirigeant_nom: string;
+  controverses: string;
+  lien_financier: string;
+  impact_description: string;
+  sources: string[];
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Marque {
   id: number;
   nom: string;
   evenements?: Evenement[];
-  dirigeant_controverse?: MarqueDirigeant;
+  dirigeant_controverse?: MarqueDirigeantLegacy;
   // Champs spécifiques au contexte dirigeant-marque
   lien_financier?: string;
   impact_description?: string;
@@ -57,7 +71,7 @@ export interface DirigeantResult {
   id: string;
   type: 'dirigeant';
   marque: Marque;
-  dirigeant: MarqueDirigeant;
+  dirigeant: MarqueDirigeantLegacy;
 }
 
 export interface SearchState {
@@ -152,49 +166,89 @@ export interface PropositionUpdateRequest {
   reponse?: string; // URL de la réponse de la marque (sera appliquée à l'événement lors de l'approbation)
 }
 
-// Types pour la gestion des dirigeants controversés
-export interface MarqueDirigeant {
+// Types pour la gestion des dirigeants controversés - Version 2
+// Table dirigeants centralisée
+export interface Dirigeant {
   id: number;
-  marque_id: number;
-  dirigeant_nom: string;
+  nom: string;
   controverses: string;
-  lien_financier: string;
-  impact_description: string;
   sources: string[];
+  impact_generique?: string; // Template réutilisable
   created_at: string;
   updated_at: string;
 }
 
+// Table liaisons marque-dirigeant
+export interface MarqueDirigeant {
+  id: number;
+  marque_id: number;
+  dirigeant_id: number;
+  lien_financier: string;
+  impact_specifique?: string; // Override optionnel de l'impact générique
+  created_at: string;
+  updated_at: string;
+  // Relations populées
+  dirigeant?: Dirigeant;
+  marque?: { id: number; nom: string };
+}
+
 // Interface pour la vue dirigeant-centrique
 export interface DirigeantWithMarques {
+  id: number;
   nom: string;
   controverses: string;
   sources: string[];
+  impact_generique?: string;
   marques: Array<{
     id: number;
     nom: string;
     lien_financier: string;
-    impact_description: string;
+    impact_specifique?: string;
+    liaison_id: number; // ID de la liaison pour pouvoir l'éditer
   }>;
 }
 
+// Vue complète dirigeant + liaison (pour affichage public)
+export interface DirigeantComplet {
+  id: number;
+  nom: string;
+  controverses: string;
+  sources: string[];
+  lien_financier: string;
+  impact_description: string; // impact_specifique || impact_generique
+  marque_id: number;
+  marque_nom: string;
+  liaison_id: number;
+}
+
 // Requests pour l'API dirigeants
+export interface DirigeantCreateRequest {
+  nom: string;
+  controverses: string;
+  sources: string[];
+  impact_generique?: string;
+}
+
+export interface DirigeantUpdateRequest {
+  id: number;
+  nom?: string;
+  controverses?: string;
+  sources?: string[];
+  impact_generique?: string;
+}
+
+// Requests pour l'API liaisons marque-dirigeant
 export interface MarqueDirigeantCreateRequest {
   marque_id: number;
-  dirigeant_nom: string;
-  controverses: string;
+  dirigeant_id: number;
   lien_financier: string;
-  impact_description: string;
-  sources: string[];
+  impact_specifique?: string;
 }
 
 export interface MarqueDirigeantUpdateRequest {
   id: number;
-  dirigeant_nom?: string;
-  controverses?: string;
   lien_financier?: string;
-  impact_description?: string;
-  sources?: string[];
+  impact_specifique?: string;
 }
 
 // Interface simplifiée pour les catégories dans les stats

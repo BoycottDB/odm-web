@@ -1,36 +1,34 @@
 'use client';
 
 import { useState } from 'react';
-import { MarqueDirigeantCreateRequest } from '@/types';
+import { DirigeantCreateRequest, DirigeantUpdateRequest, Dirigeant } from '@/types';
 
-interface DirigentFormData {
+interface DirigeantFormData {
   nom: string;
   controverses: string;
-  lienFinancier: string;
-  impact: string;
+  impactGenerique: string;
   sources: string[];
 }
 
-interface DirigentFormProps {
-  marqueId: number;
-  initialData?: Partial<DirigentFormData>;
-  onSave: (data: MarqueDirigeantCreateRequest) => Promise<void>;
+interface DirigeantFormProps {
+  initialData?: Partial<DirigeantFormData>;
+  onSave: (data: DirigeantCreateRequest | DirigeantUpdateRequest) => Promise<void>;
   isLoading?: boolean;
-  showPreview?: boolean;
+  isEditing?: boolean;
+  dirigeantId?: number;
 }
 
-export default function DirigentForm({ 
-  marqueId, 
+export default function DirigeantForm({ 
   initialData, 
   onSave, 
   isLoading = false,
-  showPreview = true 
-}: DirigentFormProps) {
-  const [data, setData] = useState<DirigentFormData>({
+  isEditing = false,
+  dirigeantId
+}: DirigeantFormProps) {
+  const [data, setData] = useState<DirigeantFormData>({
     nom: initialData?.nom || '',
     controverses: initialData?.controverses || '',
-    lienFinancier: initialData?.lienFinancier || '',
-    impact: initialData?.impact || '',
+    impactGenerique: initialData?.impactGenerique || '',
     sources: initialData?.sources || ['']
   });
   
@@ -45,14 +43,6 @@ export default function DirigentForm({
     
     if (!data.controverses.trim() || data.controverses.length < 20) {
       newErrors.push('La description des controverses doit faire au moins 20 caractères');
-    }
-    
-    if (!data.lienFinancier.trim()) {
-      newErrors.push('Le lien financier est obligatoire');
-    }
-    
-    if (!data.impact.trim()) {
-      newErrors.push('La description de l\'impact est obligatoire');
     }
     
     const validSources = data.sources.filter(s => s.trim());
@@ -76,14 +66,18 @@ export default function DirigentForm({
   const handleSave = async () => {
     if (!validateData()) return;
     
-    const payload: MarqueDirigeantCreateRequest = {
-      marque_id: marqueId,
-      dirigeant_nom: data.nom.trim(),
+    const payload = isEditing ? {
+      id: dirigeantId!,
+      nom: data.nom.trim(),
       controverses: data.controverses.trim(),
-      lien_financier: data.lienFinancier.trim(),
-      impact_description: data.impact.trim(),
+      impact_generique: data.impactGenerique.trim() || undefined,
       sources: data.sources.filter(s => s.trim())
-    };
+    } as DirigeantUpdateRequest : {
+      nom: data.nom.trim(),
+      controverses: data.controverses.trim(),
+      impact_generique: data.impactGenerique.trim() || undefined,
+      sources: data.sources.filter(s => s.trim())
+    } as DirigeantCreateRequest;
     
     try {
       await onSave(payload);
@@ -94,7 +88,7 @@ export default function DirigentForm({
   };
   
   const updateSources = (value: string) => {
-    const sourcesList = value.split('\n');
+    const sourcesList = value.split('\n').filter(s => s.length > 0);
     setData({ ...data, sources: sourcesList });
   };
   
@@ -118,7 +112,7 @@ export default function DirigentForm({
         </label>
         <input
           type="text"
-          placeholder="Pierre-Edouard Stérin"
+          placeholder="Pierre-Édouard Stérin"
           value={data.nom}
           onChange={(e) => setData({ ...data, nom: e.target.value })}
           className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
@@ -147,32 +141,20 @@ export default function DirigentForm({
       
       <div>
         <label className="block body-small font-medium text-neutral-700 mb-2">
-          Lien financier avec la marque *
+          Impact générique (optionnel)
         </label>
         <input
           type="text"
-          placeholder="Co-fondateur et actionnaire via Otium Capital (100%)"
-          value={data.lienFinancier}
-          onChange={(e) => setData({ ...data, lienFinancier: e.target.value })}
+          placeholder="Vos achats contribuent à la fortune de [NOM] et financent ses projets controversés"
+          value={data.impactGenerique}
+          onChange={(e) => setData({ ...data, impactGenerique: e.target.value })}
           className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           maxLength={500}
           disabled={isLoading}
         />
-      </div>
-      
-      <div>
-        <label className="block body-small font-medium text-neutral-700 mb-2">
-          Impact de l&apos;achat *
-        </label>
-        <input
-          type="text"
-          placeholder="100% de vos achats contribuent au financement du projet Périclès"
-          value={data.impact}
-          onChange={(e) => setData({ ...data, impact: e.target.value })}
-          className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-          maxLength={500}
-          disabled={isLoading}
-        />
+        <p className="body-xs text-neutral-500 mt-1">
+          Message réutilisable pour toutes les marques liées. Laissez vide pour auto-génération.
+        </p>
       </div>
       
       <div>
@@ -193,20 +175,19 @@ export default function DirigentForm({
       </div>
       
       {/* Aperçu en temps réel */}
-      {showPreview && data.nom && data.controverses && (
+      {data.nom && data.controverses && (
         <div className="mt-6 p-4 bg-white border border-primary rounded-lg">
-          <h4 className="body-small font-medium text-neutral-700 mb-2">Aperçu public :</h4>
+          <h4 className="body-small font-medium text-neutral-700 mb-2">Aperçu dirigeant :</h4>
           <div className="body-small">
             <div className="font-semibold text-primary mb-2">⚠️ DIRIGEANT CONTROVERSÉ</div>
             <div className="font-medium text-primary mb-1">{data.nom}</div>
-            <div className="text-primary mb-2">
-              {data.lienFinancier && <span><strong>Lien :</strong> {data.lienFinancier}</span>}
-            </div>
-            <div className="text-primary mb-2">
-              {data.impact && <span><strong>Impact :</strong> {data.impact}</span>}
-            </div>
+            {data.impactGenerique && (
+              <div className="text-primary mb-2">
+                <strong>Impact générique :</strong> {data.impactGenerique}
+              </div>
+            )}
             <div className="text-primary body-xs">
-              {data.controverses.substring(0, 150)}...
+              <strong>Controverses :</strong> {data.controverses.substring(0, 150)}...
             </div>
           </div>
         </div>
@@ -217,7 +198,7 @@ export default function DirigentForm({
         disabled={isLoading}
         className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? 'Sauvegarde...' : 'Sauvegarder dirigeant'}
+        {isLoading ? 'Sauvegarde...' : (isEditing ? 'Modifier dirigeant' : 'Créer dirigeant')}
       </button>
     </div>
   );

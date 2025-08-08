@@ -24,8 +24,13 @@ export async function GET() {
         ),
         marque_dirigeant!marque_id (
           id,
-          dirigeant_nom,
-          controverses
+          dirigeant_id,
+          lien_financier,
+          dirigeant:dirigeant_id (
+            id,
+            nom,
+            controverses
+          )
         )
       `);
 
@@ -41,7 +46,12 @@ export async function GET() {
         condamnation_judiciaire: boolean;
         Categorie: { id: number; nom: string; emoji?: string; couleur?: string } | Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
       }>;
-      marque_dirigeant: Array<{ id: number; dirigeant_nom: string; controverses: string }> | null;
+      marque_dirigeant: Array<{ 
+        id: number; 
+        dirigeant_id: number; 
+        lien_financier: string;
+        dirigeant: { id: number; nom: string; controverses: string };
+      }> | null;
     }) => {
       const evenements = marque.Evenement || [];
       

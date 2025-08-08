@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { DirigeantWithMarques } from '@/types';
+import { DirigeantWithMarques, Dirigeant } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
 
 export default function DirigeantListPage() {
@@ -106,9 +106,9 @@ export default function DirigeantListPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredDirigeants.map((dirigeant) => (
             <DirigeantCard 
-              key={dirigeant.nom} 
+              key={dirigeant.id} 
               dirigeant={dirigeant} 
-              onEdit={() => router.push(`/admin/dirigeants/${encodeURIComponent(dirigeant.nom)}`)}
+              onEdit={() => router.push(`/admin/dirigeants/${dirigeant.id}`)}
             />
           ))}
           

@@ -14,13 +14,18 @@ export async function GET(request: NextRequest) {
         *,
         marque_dirigeant!marque_id (
           id,
-          dirigeant_nom,
-          controverses,
+          dirigeant_id,
           lien_financier,
-          impact_description,
-          sources,
+          impact_specifique,
           created_at,
-          updated_at
+          updated_at,
+          dirigeant:dirigeant_id (
+            id,
+            nom,
+            controverses,
+            sources,
+            impact_generique
+          )
         ),
         SecteurMarque!secteur_marque_id (
           id,
@@ -39,12 +44,36 @@ export async function GET(request: NextRequest) {
     const { data: marques, error } = await query;
     if (error) throw error;
     
+    
     // Transformation pour adapter aux types frontend
-    const marquesWithDirigent = marques.map(marque => ({
-      ...marque,
-      dirigeant_controverse: marque.marque_dirigeant || null,
-      secteur_marque: marque.SecteurMarque || null
-    }));
+    const marquesWithDirigent = marques.map(marque => {
+      let dirigeant_controverse = null;
+      
+      // marque_dirigeant est un array, prendre le premier élément
+      const dirigeantLiaison = marque.marque_dirigeant?.[0];
+      
+      if (dirigeantLiaison && dirigeantLiaison.dirigeant) {
+        // Transformer en format compatible avec l'ancien type + ajouter dirigeant_id
+        dirigeant_controverse = {
+          id: dirigeantLiaison.id,
+          marque_id: marque.id,
+          dirigeant_id: dirigeantLiaison.dirigeant.id, // Ajouter l'ID du dirigeant
+          dirigeant_nom: dirigeantLiaison.dirigeant.nom,
+          controverses: dirigeantLiaison.dirigeant.controverses,
+          lien_financier: dirigeantLiaison.lien_financier,
+          impact_description: dirigeantLiaison.impact_specifique || dirigeantLiaison.dirigeant.impact_generique || '',
+          sources: dirigeantLiaison.dirigeant.sources,
+          created_at: dirigeantLiaison.created_at,
+          updated_at: dirigeantLiaison.updated_at
+        };
+      }
+      
+      return {
+        ...marque,
+        dirigeant_controverse,
+        secteur_marque: marque.SecteurMarque || null
+      };
+    });
     
     return NextResponse.json(marquesWithDirigent);
   } catch (error) {
