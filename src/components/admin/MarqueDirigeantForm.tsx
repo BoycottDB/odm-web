@@ -60,7 +60,7 @@ export default function MarqueDirigeantForm({
       if (response.ok) {
         const dirigeantsList = await response.json();
         // Extraire les dirigeants uniques de la réponse
-        const uniqueDirigeants: Dirigeant[] = dirigeantsList.map((d: any) => ({
+        const uniqueDirigeants: Dirigeant[] = dirigeantsList.map((d: Dirigeant) => ({
           id: d.id,
           nom: d.nom,
           controverses: d.controverses,

@@ -163,7 +163,7 @@ export default function DirigeantDetailPage() {
             </svg>
           </button>
           <div>
-            <h1 className="heading-hero font-bold text-neutral-900">{dirigeant.nom}</h1>
+            <h1 className="heading-main font-bold text-neutral-900">{dirigeant.nom}</h1>
             <p className="body-small text-neutral-600">Dirigeant controversé</p>
           </div>
         </div>

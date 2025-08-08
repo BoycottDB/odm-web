@@ -10,7 +10,8 @@ src/
 │   │   ├── evenements/    # CRUD événements
 │   │   ├── propositions/  # Système de modération
 │   │   ├── decisions/     # Décisions de modération
-│   │   ├── dirigeants/    # Dirigeants controversés
+│   │   ├── dirigeants/    # CRUD dirigeants V2 (centralisés)
+│   │   ├── marque-dirigeant/ # API liaisons marque-dirigeant V2
 │   │   ├── categories/    # Catégories d'événements
 │   │   ├── secteurs-marque/ # CRUD secteurs BoycottTips
 │   │   └── search-similaire/ # Détection de doublons
@@ -51,7 +52,8 @@ src/
 │   │   └── SimilarItems.tsx # Détection de doublons UI
 │   ├── admin/            # Interface d'administration
 │   │   ├── AdminNavigation.tsx # Navigation admin
-│   │   ├── DirigentForm.tsx # Formulaire dirigeant
+│   │   ├── DirigeantForm.tsx # Formulaire dirigeant V2 (centralisé)
+│   │   ├── MarqueDirigeantForm.tsx # Formulaire liaison V2
 │   │   ├── PropositionDetail.tsx # Détail proposition
 │   │   └── PropositionList.tsx # Liste propositions
 │   └── index.ts          # Export centralisé
@@ -212,6 +214,29 @@ CREATE TABLE "Evenement" (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- ARCHITECTURE V2 - Dirigeants Normalisés
+CREATE TABLE "dirigeants" (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(255) NOT NULL,
+  controverses TEXT NOT NULL,
+  sources JSONB NOT NULL,
+  impact_generique TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE "marque_dirigeant" (
+  id SERIAL PRIMARY KEY,
+  marque_id INTEGER REFERENCES "Marque"(id) ON DELETE CASCADE,
+  dirigeant_id INTEGER REFERENCES "dirigeants"(id) ON DELETE CASCADE,
+  lien_financier VARCHAR(500) NOT NULL,
+  impact_specifique TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(marque_id, dirigeant_id)
+);
+
+-- Tables legacy (rétrocompatibilité - peuvent être supprimées après migration)
 CREATE TABLE "Dirigeant" (
   id SERIAL PRIMARY KEY,
   nom VARCHAR(255) NOT NULL,
@@ -262,9 +287,74 @@ CREATE INDEX idx_marque_secteur ON "Marque"(secteur_marque_id);
 CREATE INDEX idx_evenement_categorie ON "Evenement"(categorie);
 CREATE INDEX idx_evenement_date ON "Evenement"(date DESC);
 CREATE INDEX idx_proposition_status ON "Proposition"(status);
-CREATE INDEX idx_dirigeant_nom ON "Dirigeant" USING gin(to_tsvector('french', nom || ' ' || COALESCE(prenom, '')));
+-- Index V2 - Dirigeants normalisés
+CREATE INDEX idx_dirigeants_nom ON "dirigeants" USING gin(to_tsvector('french', nom));
+CREATE INDEX idx_dirigeants_controverses ON "dirigeants" USING gin(to_tsvector('french', controverses));
+CREATE INDEX idx_marque_dirigeant_marque ON "marque_dirigeant"(marque_id);
+CREATE INDEX idx_marque_dirigeant_dirigeant ON "marque_dirigeant"(dirigeant_id);
 CREATE INDEX idx_secteur_nom ON "SecteurMarque"(nom);
+
+-- Index legacy (rétrocompatibilité)
+CREATE INDEX idx_dirigeant_nom ON "Dirigeant" USING gin(to_tsvector('french', nom || ' ' || COALESCE(prenom, '')));
 ```
+
+### **Architecture V2 - Dirigeants Normalisés**
+
+#### **Évolution Architecturale (2024-08)**
+Migration d'un système monolithique vers une architecture normalisée pour les dirigeants controversés :
+
+**V1 (Legacy)** : Données dirigeant dupliquées pour chaque marque
+```sql
+-- Structure V1 (obsolète)
+DirigeantMarque: {
+  dirigeantId, marqueId, poste, dateDebut, dateFin
+  -- ❌ Pas de controverses ni sources centralisées
+}
+```
+
+**V2 (Actuel)** : Architecture normalisée avec réutilisabilité
+```sql
+-- Structure V2 (actuelle)
+dirigeants: {
+  id, nom, controverses, sources[], impact_generique
+  -- ✅ Données centralisées et réutilisables
+}
+
+marque_dirigeant: {
+  marque_id, dirigeant_id, lien_financier, impact_specifique
+  -- ✅ Relation pure avec spécificités par marque
+}
+```
+
+#### **Avantages Architecture V2**
+- **Réutilisabilité** : Un dirigeant lié à plusieurs marques
+- **Consistance** : Mise à jour centralisée des controverses
+- **Performance** : Moins de duplication, requêtes optimisées
+- **Évolutivité** : Ajout de nouveaux champs dirigeant sans impact
+- **Flexibilité** : Impact générique + spécifique par marque
+
+#### **Logique Métier - Impact Hybride**
+```typescript
+// Priorité des messages d'impact
+const getImpactMessage = (liaison: MarqueDirigeant) => {
+  return liaison.impact_specifique        // 1. Spécifique marque (priorité)
+      || liaison.dirigeant.impact_generique // 2. Générique dirigeant
+      || "Impact à définir"               // 3. Fallback par défaut
+}
+```
+
+#### **Composants Frontend V2**
+- **`DirigeantForm`** : CRUD dirigeants centralisés (nom, controverses, sources)
+- **`MarqueDirigeantForm`** : Gestion liaisons marque-dirigeant (lien, impact)
+- **`DirigeantCard`** : Affichage public unifié avec impact hybride
+- **API `/dirigeants`** : Endpoint dirigeant-centrique avec marques liées
+- **API `/marque-dirigeant`** : Endpoint relation pure CRUD
+
+#### **Migration et Compatibilité**
+- **Rétrocompatibilité** : Interface publique identique (`DirigeantResult`)  
+- **Migration SQL** : Script `migration-dirigeants-v2.sql` avec transformation automatique
+- **Types TypeScript** : `MarqueDirigeantLegacy` pour transition en douceur
+- **Extension API** : Format `dirigeants_controverses` maintenu pour extensions
 
 ## 🎨 Design System
 
