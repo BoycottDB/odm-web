@@ -211,7 +211,7 @@ export default function MarqueDirigeantForm({
           disabled={isLoading}
         />
         <p className="body-xs text-neutral-500 mt-1">
-          Si vide, utilisera l'impact générique du dirigeant. Sinon, ce message sera prioritaire.
+          Si vide, utilisera l&apos;impact générique du dirigeant. Sinon, ce message sera prioritaire.
         </p>
       </div>
       
