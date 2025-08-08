@@ -59,7 +59,7 @@ export default function CreateDirigeantPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="heading-hero font-bold text-neutral-900">Nouveau dirigeant controversé</h1>
+          <h1 className="heading-main font-bold text-neutral-900">Nouveau dirigeant controversé</h1>
         </div>
 
         {message && (
