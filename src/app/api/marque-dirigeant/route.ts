@@ -66,18 +66,42 @@ export async function GET(request: NextRequest) {
     const liaisonsTyped = (liaisons || []) as unknown as LiaisonRow[];
 
     // Transformer en format DirigeantComplet pour l'affichage
-    const dirigeantsComplets: DirigeantComplet[] = liaisonsTyped.map(liaison => ({
-      id: liaison.dirigeant.id,
-      nom: liaison.dirigeant.nom,
-      controverses: liaison.dirigeant.controverses,
-      sources: liaison.dirigeant.sources,
-      lien_financier: liaison.lien_financier,
-      // Priorité à l'impact spécifique, sinon impact générique
-      impact_description: liaison.impact_specifique || liaison.dirigeant.impact_generique || '',
-      marque_id: liaison.marque.id,
-      marque_nom: liaison.marque.nom,
-      liaison_id: liaison.id
-    }));
+    const dirigeantsMap = new Map<number, DirigeantComplet>();
+    
+    for (const liaison of liaisonsTyped) {
+      const dirigeantId = liaison.dirigeant.id;
+      
+      if (!dirigeantsMap.has(dirigeantId)) {
+        // Premier dirigeant, récupérer toutes ses marques
+        const { data: toutesMarques } = await supabase
+          .from('marque_dirigeant')
+          .select(`
+            marque:Marque!marque_id (id, nom)
+          `)
+          .eq('dirigeant_id', dirigeantId);
+        
+        const marquesArray = toutesMarques?.map(m => {
+          const marqueData = m.marque as unknown as { id: number; nom: string };
+          return { id: marqueData.id, nom: marqueData.nom };
+        }) || [];
+        
+        dirigeantsMap.set(dirigeantId, {
+          id: liaison.dirigeant.id,
+          nom: liaison.dirigeant.nom,
+          controverses: liaison.dirigeant.controverses,
+          sources: liaison.dirigeant.sources,
+          lien_financier: liaison.lien_financier,
+          // Priorité à l'impact spécifique, sinon impact générique
+          impact_description: liaison.impact_specifique || liaison.dirigeant.impact_generique || '',
+          marque_id: liaison.marque.id,
+          marque_nom: liaison.marque.nom,
+          liaison_id: liaison.id,
+          toutes_marques: marquesArray
+        });
+      }
+    }
+    
+    const dirigeantsComplets = Array.from(dirigeantsMap.values());
     
     return NextResponse.json(dirigeantsComplets);
   } catch (error) {

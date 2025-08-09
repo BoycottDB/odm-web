@@ -35,6 +35,7 @@ src/
 │   ├── ui/               # Design System
 │   │   ├── LoadingSpinner.tsx # Spinner avec variants
 │   │   ├── Badge.tsx      # Badges avec couleurs dynamiques
+│   │   ├── MarquesBadges.tsx # Badges marques avec navigation cliquable
 │   │   ├── Captcha.tsx    # Composant Captcha sécurisé
 │   │   ├── HoneypotField.tsx # Champ anti-bot
 │   │   ├── AddToHomeScreenBanner.tsx # PWA prompts
@@ -46,7 +47,7 @@ src/
 │   ├── events/           # Affichage des événements
 │   │   ├── EventCard.tsx  # Carte d'événement enrichie
 │   │   ├── EventList.tsx  # Liste avec gestion d'état
-│   │   └── DirigeantCard.tsx # Carte dirigeant
+│   │   └── DirigeantCard.tsx # Carte dirigeant avec toutes marques liées
 │   ├── forms/            # Formulaires complexes
 │   │   ├── SignalementForm.tsx # Formulaire de signalement
 │   │   └── SimilarItems.tsx # Détection de doublons UI
@@ -346,14 +347,14 @@ const getImpactMessage = (liaison: MarqueDirigeant) => {
 #### **Composants Frontend V2**
 - **`DirigeantForm`** : CRUD dirigeants centralisés (nom, controverses, sources)
 - **`MarqueDirigeantForm`** : Gestion liaisons marque-dirigeant (lien, impact)
-- **`DirigeantCard`** : Affichage public unifié avec impact hybride
+- **`DirigeantCard`** : Affichage public avec toutes marques liées et navigation cliquable
 - **API `/dirigeants`** : Endpoint dirigeant-centrique avec marques liées
 - **API `/marque-dirigeant`** : Endpoint relation pure CRUD
 
 #### **Migration et Compatibilité**
 - **Rétrocompatibilité** : Interface publique identique (`DirigeantResult`)  
 - **Migration SQL** : Script `migration-dirigeants-v2.sql` avec transformation automatique
-- **Types TypeScript** : `MarqueDirigeantLegacy` pour transition en douceur
+- **Types TypeScript** : `MarqueDirigeantLegacy` et `DirigeantComplet` enrichis avec `toutes_marques`
 - **Extension API** : Format `dirigeants_controverses` maintenu pour extensions
 
 ## 🎨 Design System

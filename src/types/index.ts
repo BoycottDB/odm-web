@@ -11,6 +11,10 @@ export interface MarqueDirigeantLegacy {
   sources: string[];
   created_at: string;
   updated_at: string;
+  toutes_marques: Array<{
+    id: number;
+    nom: string;
+  }>;
 }
 
 export interface Marque {
@@ -219,6 +223,10 @@ export interface DirigeantComplet {
   marque_id: number;
   marque_nom: string;
   liaison_id: number;
+  toutes_marques: Array<{
+    id: number;
+    nom: string;
+  }>;
 }
 
 // Requests pour l'API dirigeants

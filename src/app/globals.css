@@ -84,6 +84,8 @@ body {
 }
 
 /* Classes de couleurs sémantiques centralisées */
+.text-white { color: #FFF; }
+.hover\:text-white:hover { color: #FFF; }
 
 /* Couleurs de texte principales */
 .text-primary { color: var(--color-berry-600); }
