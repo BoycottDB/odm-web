@@ -95,8 +95,8 @@ export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
       {/* Toutes les marques liées */}
       {dirigeant.toutes_marques && dirigeant.toutes_marques.length > 1 && (
         <div className="mt-6 pt-4 border-t border-primary">
-          <div className="font-semibold text-primary body-small mb-3">
-            Autres marques également liées à ce dirigeant ({dirigeant.toutes_marques.length - 1}) :
+          <div className="font-semibold text-black body-small mb-3">
+            Autres marques également liées à {dirigeant.nom} ({dirigeant.toutes_marques.length - 1}) :
           </div>
           <MarquesBadges 
             marques={dirigeant.toutes_marques.filter(m => m.id !== dirigeant.marque_id)}

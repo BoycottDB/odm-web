@@ -398,6 +398,11 @@ const getImpactMessage = (liaison: MarqueDirigeant) => {
 - **`EventCard`** : Design responsive avec états hover/focus
 - **`BoycottTipsSection`** : Bouton shiny + section dépliable + modal images
 - **`SearchBar`** : Auto-complétion + navigation clavier + états loading
+- **`ShareButton`** : Partage adaptatif mobile (natif) / desktop (copie lien)
+  - Détection robuste via User Agent (`/iphone|ipad|ipod|android/`)
+  - Position flottante avec adaptation PWA banner (`canInstall ? 'bottom-20' : 'bottom-6'`)
+  - Feedback visuel "Copié !" pendant 2 secondes sur desktop
+  - Préservation encodage URL (`Nestl%C3%A9`) via `rawSearchQuery`
 - **`AddToHomeScreenBanner`** : PWA prompt adaptatif iOS/Android
 - **`JudicialCondemnationNotice`** : Composant légal avec disclaimers
 - **`Captcha`** : Intégration sécurisée anti-bot
