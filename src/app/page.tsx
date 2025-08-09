@@ -42,7 +42,7 @@ export default function Home() {
                 <div className="flex justify-start md:justify-start">
                   <Link 
                     href="https://chrome.google.com/webstore" 
-                    className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base ml-auto md:ml-0"
+                    className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base"
                   >
                     <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                     Installer l&apos;extension
@@ -68,7 +68,7 @@ export default function Home() {
                 <div className="flex justify-start md:justify-start">
                   <Link 
                     href="/recherche" 
-                    className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base ml-auto md:ml-0"
+                    className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base"
                   >
                     <Search className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                     Rechercher une marque
@@ -116,7 +116,7 @@ export default function Home() {
                 <div className="flex justify-start md:justify-start">
                   <Link 
                     href="/signaler" 
-                    className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base ml-auto md:ml-0"
+                    className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base"
                   >
                     <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                     Signaler une controverse
