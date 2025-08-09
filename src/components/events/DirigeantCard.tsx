@@ -1,6 +1,7 @@
 'use client';
 
 import { DirigeantComplet } from '@/types';
+import { MarquesBadges } from '@/components/ui/MarquesBadges';
 
 interface DirigeantCardProps {
   dirigeant: DirigeantComplet;
@@ -61,6 +62,7 @@ export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
         </div>
       </div>
 
+
       {/* Sources */}
       <div className="pt-4 border-t border-primary">
         <div className="font-semibold text-primary body-small mb-2">
@@ -74,9 +76,9 @@ export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center body-small text-primary hover:text-primary underline"
-              >
+                >
                 <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
                 {source.includes('://') ? new URL(source).hostname : source}
               </a>
@@ -89,6 +91,20 @@ export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
           )}
         </div>
       </div>
+
+      {/* Toutes les marques liées */}
+      {dirigeant.toutes_marques && dirigeant.toutes_marques.length > 1 && (
+        <div className="mt-6 pt-4 border-t border-primary">
+          <div className="font-semibold text-primary body-small mb-3">
+            Autres marques également liées à ce dirigeant ({dirigeant.toutes_marques.length - 1}) :
+          </div>
+          <MarquesBadges 
+            marques={dirigeant.toutes_marques.filter(m => m.id !== dirigeant.marque_id)}
+            variant="public"
+          />
+        </div>
+      )}
+
     </div>
   );
 }

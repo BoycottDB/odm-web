@@ -119,7 +119,8 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
                   impact_description: dirigeantResult.dirigeant.impact_description,
                   marque_id: dirigeantResult.marque.id,
                   marque_nom: dirigeantResult.marque.nom,
-                  liaison_id: dirigeantResult.dirigeant.id
+                  liaison_id: dirigeantResult.dirigeant.id,
+                  toutes_marques: dirigeantResult.dirigeant.toutes_marques || []
                 };
                 
                 

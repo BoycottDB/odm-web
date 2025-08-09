@@ -117,31 +117,49 @@ class DataService {
         if (error) throw error;
         
         // Transform to match frontend expectations
-        return marques?.map(marque => {
-          let dirigeant_controverse = null;
-          const dirigeantLiaison = marque.marque_dirigeant?.[0];
-          
-          if (dirigeantLiaison && dirigeantLiaison.dirigeant) {
-            dirigeant_controverse = {
-              id: dirigeantLiaison.id,
-              marque_id: marque.id,
-              dirigeant_id: dirigeantLiaison.dirigeant.id,
-              dirigeant_nom: dirigeantLiaison.dirigeant.nom,
-              controverses: dirigeantLiaison.dirigeant.controverses,
-              lien_financier: dirigeantLiaison.lien_financier,
-              impact_description: dirigeantLiaison.impact_specifique || dirigeantLiaison.dirigeant.impact_generique || '',
-              sources: dirigeantLiaison.dirigeant.sources,
-              created_at: dirigeantLiaison.created_at,
-              updated_at: dirigeantLiaison.updated_at
+        const transformedMarques = await Promise.all(
+          (marques || []).map(async (marque) => {
+            let dirigeant_controverse = null;
+            const dirigeantLiaison = marque.marque_dirigeant?.[0];
+            
+            if (dirigeantLiaison && dirigeantLiaison.dirigeant) {
+              // Récupérer toutes les marques pour ce dirigeant
+              const { data: toutesMarquesDuDirigeant } = await supabase
+                .from('marque_dirigeant')
+                .select(`
+                  marque:Marque!marque_id (id, nom)
+                `)
+                .eq('dirigeant_id', dirigeantLiaison.dirigeant.id);
+              
+              const toutesMarques = toutesMarquesDuDirigeant?.map(m => {
+                const marqueData = m.marque as unknown as { id: number; nom: string };
+                return { id: marqueData.id, nom: marqueData.nom };
+              }) || [];
+              
+              dirigeant_controverse = {
+                id: dirigeantLiaison.id,
+                marque_id: marque.id,
+                dirigeant_id: dirigeantLiaison.dirigeant.id,
+                dirigeant_nom: dirigeantLiaison.dirigeant.nom,
+                controverses: dirigeantLiaison.dirigeant.controverses,
+                lien_financier: dirigeantLiaison.lien_financier,
+                impact_description: dirigeantLiaison.impact_specifique || dirigeantLiaison.dirigeant.impact_generique || '',
+                sources: dirigeantLiaison.dirigeant.sources,
+                created_at: dirigeantLiaison.created_at,
+                updated_at: dirigeantLiaison.updated_at,
+                toutes_marques: toutesMarques
+              };
+            }
+            
+            return {
+              ...marque,
+              dirigeant_controverse,
+              secteur_marque: marque.SecteurMarque || null
             };
-          }
-          
-          return {
-            ...marque,
-            dirigeant_controverse,
-            secteur_marque: marque.SecteurMarque || null
-          };
-        }) || [];
+          })
+        );
+        
+        return transformedMarques;
       }
     );
   }
