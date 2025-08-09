@@ -58,8 +58,10 @@ Proposition (1) ←→ (1) Décision
 - **PWA** : Installation native iOS/Android
 
 ### Backend & Base de Données
+- **Architecture Hybride** : Lectures via extension-api (cache CDN), écritures directes Supabase
 - **BaaS** : Supabase (PostgreSQL + API REST)
-- **ORM** : Client Supabase TypeScript
+- **Extension API** : Netlify Functions pour cache optimisé et performance
+- **ORM** : Client Supabase TypeScript avec DataService abstraction layer
 - **Auth** : Authentification admin par token
 - **Storage** : Assets et images via Supabase Storage
 
@@ -70,10 +72,12 @@ Proposition (1) ←→ (1) Décision
 - **CORS** : Configuration sécurisée pour production
 
 ### Performance & SEO
+- **Architecture Hybride** : Cache CDN multi-niveaux (15min-1h TTL) via extension-api
+- **Fallback Automatique** : Basculement transparent vers Supabase direct si API indisponible
 - **SSR/SSG** : Pre-rendering Next.js pour SEO optimal
 - **Image Optimization** : Next.js Image avec WebP
 - **Bundle Splitting** : Code splitting automatique
-- **Caching** : Stratégies de cache intelligentes
+- **Edge Functions** : Réponses ultra-rapides depuis le CDN global
 
 ## Fonctionnalités Principales
 
@@ -132,7 +136,10 @@ npm install
 
 # Configuration environnement
 cp .env.example .env.local
-# Remplir SUPABASE_URL et SUPABASE_ANON_KEY
+# Variables requises :
+# SUPABASE_URL et SUPABASE_ANON_KEY (obligatoire)
+# NEXT_PUBLIC_EXTENSION_API_URL=https://odm-api.netlify.app (optionnel)
+# NEXT_PUBLIC_USE_EXTENSION_API_FOR_READS=true (production) ou false (debug)
 
 # Lancement développement
 npm run dev
@@ -164,8 +171,17 @@ npm run build       # Production build
 ### Documentation
 - **CLAUDE.md** : Instructions pour IA et développeurs
 - **ARCHITECTURE.md** : Documentation technique détaillée
-- **MODERATION_DEV_BOOK.md** : Guide de modération
 - **Code Comments** : JSDoc pour fonctions complexes uniquement
+
+### Architecture des Données
+L'application utilise une **architecture hybride** pour optimiser performances et maintenance :
+
+- **Lectures** : Via [extension-api](../extension-api/) avec cache CDN (15min-1h)
+- **Écritures** : Direct vers Supabase pour fiabilité transactionnelle
+- **Fallback** : Basculement automatique vers Supabase si extension-api indisponible
+- **Configuration** : Variables d'environnement pour activer/désactiver le mode hybride
+
+Cette architecture résout le problème de duplication de maintenance entre les applications web et extension tout en améliorant les performances grâce au cache CDN.
 
 ---
 
