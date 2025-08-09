@@ -3,7 +3,10 @@ import { EventCard } from './EventCard';
 import { DirigeantCard } from './DirigeantCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import BoycottTipsSection from '@/components/ui/BoycottTipsSection';
+import { ShareButton } from '@/components/ui/ShareButton';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useAddToHomeScreen } from '@/hooks/useAddToHomeScreen';
 
 interface EventListProps {
   events: Evenement[];
@@ -15,6 +18,13 @@ interface EventListProps {
 }
 
 export function EventList({ events, dirigeantResults, loading, searching, notFound, hasSearched }: EventListProps) {
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('q') || '';
+  // Récupérer la valeur brute encodée depuis l'URL
+  const rawSearchQuery = typeof window !== 'undefined' ? 
+    new URLSearchParams(window.location.search).get('q') || '' : 
+    searchQuery;
+  const { canInstall } = useAddToHomeScreen();
   // État de chargement initial
   if (loading && !hasSearched) {
     return (
@@ -96,9 +106,24 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
           <BoycottTipsSection marque={marque} />
         </div>
       )}
+
       <h2 className="heading-main font-light text-neutral-900 mb-12 text-center">
         {isSearchResults ? 'Résultats de recherche' : 'Derniers signalements'}
       </h2>
+
+      {/* Bouton flottant desktop & mobile avec adaptation selon le banner PWA */}
+      {isSearchResults && searchQuery && (
+        <div className={`fixed right-6 z-50 md:bottom-24 md:right-24 ${canInstall ? 'bottom-16' : 'bottom-6'}`}>
+          <ShareButton
+            url={`/recherche?q=${rawSearchQuery}`}
+            title={`Controverses de ${searchQuery} - Répertoire des marques`}
+            text={`Découvrez les controverses documentées de ${searchQuery} sur notre répertoire collaboratif.`}
+            variant="primary"
+            size="lg"
+            className="shadow-xl rounded-full px-4 py-4 hover:scale-105 transition-transform"
+          />
+        </div>
+      )}
       
       <div className="max-w-4xl mx-auto px-2 sm:px-0 space-y-8">
         {/* Dirigeants controversés (seulement lors de recherche) */}
