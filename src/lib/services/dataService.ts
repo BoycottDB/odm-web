@@ -80,19 +80,20 @@ class DataService {
           .from('Marque')
           .select(`
             *,
-            marque_dirigeant!marque_id (
+            Marque_beneficiaire!marque_id (
               id,
-              dirigeant_id,
+              beneficiaire_id,
               lien_financier,
               impact_specifique,
               created_at,
               updated_at,
-              dirigeant:dirigeant_id (
+              beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey (
                 id,
                 nom,
                 controverses,
                 sources,
-                impact_generique
+                impact_generique,
+                type_beneficiaire
               )
             ),
             SecteurMarque!secteur_marque_id (
@@ -120,18 +121,18 @@ class DataService {
         const transformedMarques = await Promise.all(
           (marques || []).map(async (marque) => {
             let dirigeant_controverse = null;
-            const dirigeantLiaison = marque.marque_dirigeant?.[0];
+            const dirigeantLiaison = marque.Marque_beneficiaire?.[0];
             
-            if (dirigeantLiaison && dirigeantLiaison.dirigeant) {
-              // Récupérer toutes les marques pour ce dirigeant
-              const { data: toutesMarquesDuDirigeant } = await supabase
-                .from('marque_dirigeant')
+            if (dirigeantLiaison && dirigeantLiaison.beneficiaire) {
+              // Récupérer toutes les marques pour ce bénéficiaire
+              const { data: toutesMarquesDuBeneficiaire } = await supabase
+                .from('Marque_beneficiaire')
                 .select(`
                   marque:Marque!marque_id (id, nom)
                 `)
-                .eq('dirigeant_id', dirigeantLiaison.dirigeant.id);
+                .eq('beneficiaire_id', dirigeantLiaison.beneficiaire.id);
               
-              const toutesMarques = toutesMarquesDuDirigeant?.map(m => {
+              const toutesMarques = toutesMarquesDuBeneficiaire?.map(m => {
                 const marqueData = m.marque as unknown as { id: number; nom: string };
                 return { id: marqueData.id, nom: marqueData.nom };
               }) || [];
@@ -139,15 +140,16 @@ class DataService {
               dirigeant_controverse = {
                 id: dirigeantLiaison.id,
                 marque_id: marque.id,
-                dirigeant_id: dirigeantLiaison.dirigeant.id,
-                dirigeant_nom: dirigeantLiaison.dirigeant.nom,
-                controverses: dirigeantLiaison.dirigeant.controverses,
+                dirigeant_id: dirigeantLiaison.beneficiaire.id,
+                dirigeant_nom: dirigeantLiaison.beneficiaire.nom,
+                controverses: dirigeantLiaison.beneficiaire.controverses,
                 lien_financier: dirigeantLiaison.lien_financier,
-                impact_description: dirigeantLiaison.impact_specifique || dirigeantLiaison.dirigeant.impact_generique || '',
-                sources: dirigeantLiaison.dirigeant.sources,
+                impact_description: dirigeantLiaison.impact_specifique || dirigeantLiaison.beneficiaire.impact_generique || '',
+                sources: dirigeantLiaison.beneficiaire.sources,
                 created_at: dirigeantLiaison.created_at,
                 updated_at: dirigeantLiaison.updated_at,
-                toutes_marques: toutesMarques
+                toutes_marques: toutesMarques,
+                type_beneficiaire: dirigeantLiaison.beneficiaire.type_beneficiaire || 'individu'
               };
             }
             
@@ -266,10 +268,10 @@ class DataService {
       // Fallback to direct Supabase
       async () => {
         let query = supabase
-          .from('dirigeants')
+          .from('Beneficiaires')
           .select(`
             *,
-            marque_dirigeant!dirigeant_id (
+            Marque_beneficiaire!beneficiaire_id (
               id,
               marque_id,
               lien_financier,
@@ -290,13 +292,14 @@ class DataService {
         if (error) throw error;
 
         // Define types for Supabase response
-        interface DirigeantSupabaseResponse {
+        interface BeneficiaireSupabaseResponse {
           id: number;
           nom: string;
           controverses: string;
           sources: string[];
           impact_generique?: string;
-          marque_dirigeant?: {
+          type_beneficiaire?: string;
+          Marque_beneficiaire?: {
             id: number;
             marque_id: number;
             lien_financier: string;
@@ -308,13 +311,14 @@ class DataService {
           }[];
         }
 
-        const transform = (dirigeant: DirigeantSupabaseResponse) => ({
-          id: dirigeant.id,
-          nom: dirigeant.nom,
-          controverses: dirigeant.controverses,
-          sources: dirigeant.sources,
-          impact_generique: dirigeant.impact_generique,
-          marques: dirigeant.marque_dirigeant?.map((liaison) => ({
+        const transform = (beneficiaire: BeneficiaireSupabaseResponse) => ({
+          id: beneficiaire.id,
+          nom: beneficiaire.nom,
+          controverses: beneficiaire.controverses,
+          sources: beneficiaire.sources,
+          impact_generique: beneficiaire.impact_generique,
+          type_beneficiaire: beneficiaire.type_beneficiaire || 'individu',
+          marques: beneficiaire.Marque_beneficiaire?.map((liaison) => ({
             id: liaison.Marque.id,
             nom: liaison.Marque.nom,
             lien_financier: liaison.lien_financier,
@@ -440,8 +444,8 @@ class DataService {
    * Create a new leader
    */
   async createDirigeant(data: DirigeantCreateRequest): Promise<DirigeantWithMarques> {
-    const { data: dirigeant, error } = await supabaseAdmin
-      .from('dirigeants')
+    const { data: beneficiaire, error } = await supabaseAdmin
+      .from('Beneficiaires')
       .insert([data])
       .select()
       .single();
@@ -449,7 +453,7 @@ class DataService {
     if (error) throw error;
     
     return {
-      ...dirigeant,
+      ...beneficiaire,
       marques: []
     };
   }
@@ -459,7 +463,7 @@ class DataService {
    */
   async updateDirigeant(id: number, data: Partial<DirigeantCreateRequest>): Promise<void> {
     const { error } = await supabaseAdmin
-      .from('dirigeants')
+      .from('Beneficiaires')
       .update(data)
       .eq('id', id);
     
@@ -471,7 +475,7 @@ class DataService {
    */
   async deleteDirigeant(id: number): Promise<void> {
     const { error } = await supabaseAdmin
-      .from('dirigeants')
+      .from('Beneficiaires')
       .delete()
       .eq('id', id);
     
@@ -482,9 +486,17 @@ class DataService {
    * Create a brand-leader relationship
    */
   async createMarqueDirigeant(data: MarqueDirigeantCreateRequest): Promise<void> {
+    // Transform dirigeant_id to beneficiaire_id for the new schema
+    const transformedData = {
+      marque_id: data.marque_id,
+      beneficiaire_id: (data as any).dirigeant_id || (data as any).beneficiaire_id,
+      lien_financier: data.lien_financier,
+      impact_specifique: data.impact_specifique
+    };
+    
     const { error } = await supabaseAdmin
-      .from('marque_dirigeant')
-      .insert([data]);
+      .from('Marque_beneficiaire')
+      .insert([transformedData]);
     
     if (error) throw error;
   }
@@ -493,9 +505,16 @@ class DataService {
    * Update a brand-leader relationship
    */
   async updateMarqueDirigeant(id: number, data: Partial<MarqueDirigeantCreateRequest>): Promise<void> {
+    // Transform dirigeant_id to beneficiaire_id for the new schema
+    const transformedData: any = { ...data };
+    if ((data as any).dirigeant_id) {
+      transformedData.beneficiaire_id = (data as any).dirigeant_id;
+      delete transformedData.dirigeant_id;
+    }
+    
     const { error } = await supabaseAdmin
-      .from('marque_dirigeant')
-      .update(data)
+      .from('Marque_beneficiaire')
+      .update(transformedData)
       .eq('id', id);
     
     if (error) throw error;
@@ -506,7 +525,7 @@ class DataService {
    */
   async deleteMarqueDirigeant(id: number): Promise<void> {
     const { error } = await supabaseAdmin
-      .from('marque_dirigeant')
+      .from('Marque_beneficiaire')
       .delete()
       .eq('id', id);
     

@@ -1,6 +1,6 @@
-import { Evenement, DirigeantResult } from '@/types';
+import { Evenement, DirigeantResult, BeneficiaireComplet } from '@/types';
 import { EventCard } from './EventCard';
-import { DirigeantCard } from './DirigeantCard';
+import BeneficiaireNavigation from './BeneficiaireNavigation';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import BoycottTipsSection from '@/components/ui/BoycottTipsSection';
 import { ShareButton } from '@/components/ui/ShareButton';
@@ -126,16 +126,21 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
       )}
       
       <div className="max-w-4xl mx-auto px-2 sm:px-0 space-y-8">
-        {/* Dirigeants controversés (seulement lors de recherche) */}
+        {/* Bénéficiaires controversés (seulement lors de recherche) */}
         {hasDirigeants && (
           <div>
             <h3 className="heading-sub font-medium text-neutral-900 mb-6 text-center">
-              Dirigeants controversés associés
+              Qui bénéficie de vos achats ?
             </h3>
-            <div className="grid gap-10 sm:gap-12 grid-cols-1 lg:grid-cols-1">
-              {dirigeantResults.map((dirigeantResult) => {
-                // Transformer DirigeantResult en DirigeantComplet pour le nouveau composant
-                const dirigeantComplet = {
+            <p className="text-center text-neutral-600 mb-8 max-w-2xl mx-auto">
+              Découvrez les individus et groupes controversés qui reçoivent une partie de votre argent quand vous achetez cette marque.
+            </p>
+            
+            {/* Navigation entre bénéficiaires avec transformation des données */}
+            <BeneficiaireNavigation 
+              beneficiaires={dirigeantResults.map(dirigeantResult => {
+                // Transformation existante + nouveaux champs bénéficiaires
+                const beneficiaireComplet: BeneficiaireComplet = {
                   id: dirigeantResult.dirigeant.dirigeant_id || parseInt(dirigeantResult.id.replace('dirigeant-', '')),
                   nom: dirigeantResult.dirigeant.dirigeant_nom,
                   controverses: dirigeantResult.dirigeant.controverses,
@@ -145,15 +150,20 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
                   marque_id: dirigeantResult.marque.id,
                   marque_nom: dirigeantResult.marque.nom,
                   liaison_id: dirigeantResult.dirigeant.id,
-                  toutes_marques: dirigeantResult.dirigeant.toutes_marques || []
+                  toutes_marques: dirigeantResult.dirigeant.toutes_marques || [],
+                  
+                  // NOUVEAU - Type bénéficiaire avec fallback
+                  type_beneficiaire: (dirigeantResult.beneficiaire as any)?.type_beneficiaire || 
+                                   (dirigeantResult.dirigeant as any)?.type_beneficiaire || 
+                                   'individu',
+                  type_affichage: ((dirigeantResult.beneficiaire as any)?.type_beneficiaire || 
+                                  (dirigeantResult.dirigeant as any)?.type_beneficiaire || 
+                                  'individu') === 'groupe' ? 'Groupe' : 'Dirigeant'
                 };
                 
-                
-                return (
-                  <DirigeantCard key={dirigeantResult.id} dirigeant={dirigeantComplet} />
-                );
+                return beneficiaireComplet;
               })}
-            </div>
+            />
           </div>
         )}
 
