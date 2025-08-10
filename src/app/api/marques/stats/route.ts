@@ -5,7 +5,7 @@ import { MarqueWithStats, CategorieStats } from '@/types';
 
 export async function GET() {
   try {
-    // Récupérer toutes les marques avec leurs événements et dirigeants
+    // Récupérer toutes les marques avec leurs événements et bénéficiaires
     const { data: marques, error: marquesError } = await supabase
       .from('Marque')
       .select(`
@@ -22,14 +22,15 @@ export async function GET() {
             couleur
           )
         ),
-        marque_dirigeant!marque_id (
+        Marque_beneficiaire!marque_id (
           id,
-          dirigeant_id,
+          beneficiaire_id,
           lien_financier,
-          dirigeant:dirigeant_id (
+          beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey (
             id,
             nom,
-            controverses
+            controverses,
+            type_beneficiaire
           )
         )
       `);
@@ -44,18 +45,18 @@ export async function GET() {
       Categorie: { id: number; nom: string; emoji?: string; couleur?: string } | Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
     };
 
-    type MarqueDirigeantRow = {
+    type MarqueBeneficiaireRow = {
       id: number;
-      dirigeant_id: number;
+      beneficiaire_id: number;
       lien_financier: string;
-      dirigeant: { id: number; nom: string; controverses: string } | Array<{ id: number; nom: string; controverses: string }>;
+      beneficiaire: { id: number; nom: string; controverses: string; type_beneficiaire?: string } | Array<{ id: number; nom: string; controverses: string; type_beneficiaire?: string }>;
     };
 
     type MarqueRow = {
       id: number;
       nom: string;
       Evenement: EvenementRow[] | null;
-      marque_dirigeant: MarqueDirigeantRow[] | null;
+      Marque_beneficiaire: MarqueBeneficiaireRow[] | null;
     };
 
     const marquesTyped = (marques || []) as unknown as MarqueRow[];
@@ -86,8 +87,8 @@ export async function GET() {
       // Nombre de condamnations judiciaires
       const nbCondamnations = evenements.filter((e) => e.condamnation_judiciaire === true).length;
       
-      // Nombre de dirigeants controversés (comme dans l'API marques normale)
-      const nbDirigeantsControverses = Array.isArray(marque.marque_dirigeant) ? marque.marque_dirigeant.length : 0;
+      // Nombre de bénéficiaires controversés (comme dans l'API marques normale)
+      const nbDirigeantsControverses = Array.isArray(marque.Marque_beneficiaire) ? marque.Marque_beneficiaire.length : 0;
       
       return {
         id: marque.id,

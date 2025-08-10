@@ -71,11 +71,22 @@ export interface Evenement {
   categorie?: Categorie | null;
 }
 
-export interface DirigeantResult {
+// Types pour les résultats de recherche
+export interface BeneficiaireResult {
   id: string;
-  type: 'dirigeant';
+  type: 'beneficiaire';
   marque: Marque;
-  dirigeant: MarqueDirigeantLegacy;
+  beneficiaire: MarqueDirigeantLegacy & {
+    type_beneficiaire?: TypeBeneficiaire;
+  };
+}
+
+// Alias pour rétrocompatibilité
+export interface DirigeantResult extends BeneficiaireResult {
+  type: 'dirigeant';
+  dirigeant: MarqueDirigeantLegacy & {
+    type_beneficiaire?: TypeBeneficiaire;
+  };
 }
 
 export interface SearchState {
@@ -170,39 +181,49 @@ export interface PropositionUpdateRequest {
   reponse?: string; // URL de la réponse de la marque (sera appliquée à l'événement lors de l'approbation)
 }
 
-// Types pour la gestion des dirigeants controversés - Version 2
-// Table dirigeants centralisée
-export interface Dirigeant {
+// Types pour la gestion des bénéficiaires controversés - Version 2 (ex-dirigeants)
+export type TypeBeneficiaire = 'individu' | 'groupe';
+
+// Table bénéficiaires centralisée (ex-dirigeants)
+export interface Beneficiaire {
   id: number;
   nom: string;
   controverses: string;
   sources: string[];
   impact_generique?: string; // Template réutilisable
+  type_beneficiaire: TypeBeneficiaire;
   created_at: string;
   updated_at: string;
 }
 
-// Table liaisons marque-dirigeant
-export interface MarqueDirigeant {
+// Table liaisons marque-bénéficiaire (ex-marque_dirigeant)
+export interface MarqueBeneficiaire {
   id: number;
   marque_id: number;
-  dirigeant_id: number;
+  beneficiaire_id: number;
   lien_financier: string;
   impact_specifique?: string; // Override optionnel de l'impact générique
   created_at: string;
   updated_at: string;
   // Relations populées
-  dirigeant?: Dirigeant;
+  beneficiaire?: Beneficiaire;
   marque?: { id: number; nom: string };
 }
 
-// Interface pour la vue dirigeant-centrique
-export interface DirigeantWithMarques {
+// Alias pour rétrocompatibilité
+export interface Dirigeant extends Beneficiaire {}
+export interface MarqueDirigeant extends Omit<MarqueBeneficiaire, 'beneficiaire_id'> {
+  dirigeant_id: number;
+}
+
+// Interface pour la vue bénéficiaire-centrique
+export interface BeneficiaireWithMarques {
   id: number;
   nom: string;
   controverses: string;
   sources: string[];
   impact_generique?: string;
+  type_beneficiaire: TypeBeneficiaire;
   marques: Array<{
     id: number;
     nom: string;
@@ -212,8 +233,8 @@ export interface DirigeantWithMarques {
   }>;
 }
 
-// Vue complète dirigeant + liaison (pour affichage public)
-export interface DirigeantComplet {
+// Vue complète bénéficiaire + liaison (pour affichage public)
+export interface BeneficiaireComplet {
   id: number;
   nom: string;
   controverses: string;
@@ -223,41 +244,57 @@ export interface DirigeantComplet {
   marque_id: number;
   marque_nom: string;
   liaison_id: number;
+  type_beneficiaire: TypeBeneficiaire;
+  type_affichage: 'Dirigeant' | 'Groupe'; // Computed field for UI
   toutes_marques: Array<{
     id: number;
     nom: string;
   }>;
 }
 
-// Requests pour l'API dirigeants
-export interface DirigeantCreateRequest {
+// Aliases pour rétrocompatibilité
+export interface DirigeantWithMarques extends BeneficiaireWithMarques {}
+export interface DirigeantComplet extends BeneficiaireComplet {}
+
+// Requests pour l'API bénéficiaires
+export interface BeneficiaireCreateRequest {
   nom: string;
   controverses: string;
   sources: string[];
   impact_generique?: string;
+  type_beneficiaire: TypeBeneficiaire;
 }
 
-export interface DirigeantUpdateRequest {
+export interface BeneficiaireUpdateRequest {
   id: number;
   nom?: string;
   controverses?: string;
   sources?: string[];
   impact_generique?: string;
+  type_beneficiaire?: TypeBeneficiaire;
 }
 
-// Requests pour l'API liaisons marque-dirigeant
-export interface MarqueDirigeantCreateRequest {
+// Requests pour l'API liaisons marque-bénéficiaire
+export interface MarqueBeneficiaireCreateRequest {
   marque_id: number;
-  dirigeant_id: number;
+  beneficiaire_id: number;
   lien_financier: string;
   impact_specifique?: string;
 }
 
-export interface MarqueDirigeantUpdateRequest {
+export interface MarqueBeneficiaireUpdateRequest {
   id: number;
   lien_financier?: string;
   impact_specifique?: string;
 }
+
+// Aliases pour rétrocompatibilité
+export interface DirigeantCreateRequest extends BeneficiaireCreateRequest {}
+export interface DirigeantUpdateRequest extends BeneficiaireUpdateRequest {}
+export interface MarqueDirigeantCreateRequest extends Omit<MarqueBeneficiaireCreateRequest, 'beneficiaire_id'> {
+  dirigeant_id: number;
+}
+export interface MarqueDirigeantUpdateRequest extends MarqueBeneficiaireUpdateRequest {}
 
 // Interface simplifiée pour les catégories dans les stats
 export interface CategorieStats {
