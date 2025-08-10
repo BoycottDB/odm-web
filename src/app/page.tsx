@@ -30,7 +30,8 @@ export default function Home() {
           </h3>
         </div>
         <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
-          Notre extension détecte automatiquement les marques controversées dans vos parcours d&apos;achat en ligne afin de vous aider à consommer de manière éclairée et responsable.
+          Notre extension détecte automatiquement les marques controversées sur les sites e-commerce que vous visitez. 
+          Visualisez directement les marques controversées afin de faire des achats plus éclairés et responsables.
         </p>
         <div className="flex justify-start md:justify-start">
           <Link 
@@ -67,7 +68,8 @@ export default function Home() {
           </h3>
         </div>
         <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
-          Pour chaque marque, nous mentionnons ses diverses controverses en précisant s&apos;il y a eu condamnations juridiques et/ou réponses officielle de la marque. Une marque peut aussi être référencée pour les faits de ses dirigeants.
+          Recherchez des marques et découvrez leurs controverses et condamnations judiciaires documentées, mais aussi si elles enrichissent des dirigeants problématiques. 
+          Accédez à nos conseils personnalisés par secteur d&apos;activité pour savoir comment réagir concrètement.
         </p>
         <div className="flex justify-start md:justify-start">
           <Link 
@@ -114,9 +116,9 @@ export default function Home() {
           </h3>
         </div>
         <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
-          Participez à notre démarche collaborative en signalant de nouvelles controverses. 
-          Processus simplifié avec vérification de sources, modération transparente par la communauté 
-          et historique public de toutes les décisions.
+          Participez à notre démarche collaborative en signalant de nouvelles controverses de marques ou dirigeants. 
+          Processus simplifié avec détection de doublons, modération transparente par la communauté 
+          et historique public de toutes les décisions pour une totale transparence.
         </p>
         <div className="flex justify-start md:justify-start">
           <Link 
