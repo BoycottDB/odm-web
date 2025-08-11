@@ -21,7 +21,22 @@ export interface Marque {
   id: number;
   nom: string;
   evenements?: Evenement[];
-  dirigeant_controverse?: MarqueDirigeantLegacy;
+  dirigeant_controverse?: MarqueDirigeantLegacy; // Legacy compatibility
+  beneficiaires_marque?: Array<{
+    id: number;
+    lien_financier: string;
+    impact_specifique?: string;
+    beneficiaire: {
+      id: number;
+      nom: string;
+      controverses: string;
+      sources: string[];
+      impact_generique?: string;
+      type_beneficiaire?: string;
+      created_at: string;
+      updated_at: string;
+    };
+  }>;
   // Champs spécifiques au contexte dirigeant-marque
   lien_financier?: string;
   impact_description?: string;

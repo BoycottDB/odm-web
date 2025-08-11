@@ -1,10 +1,9 @@
 /**
- * Data Service - Abstraction layer for hybrid architecture
- * Reads from extension-api, writes to Supabase directly
+ * Data Service - Architecture Simplifiée
+ * Lectures via extension-api, écritures via Supabase direct
  */
 
-import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
-import { EXTENSION_API_CONFIG, getExtensionApiUrl, isHybridModeEnabled, getApiConfig } from '@/lib/config/api';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { 
   Marque, 
   Evenement, 
@@ -20,47 +19,33 @@ import {
 
 class DataService {
   private extensionApiUrl: string;
-  private useExtensionApi: boolean;
 
   constructor() {
-    this.extensionApiUrl = EXTENSION_API_CONFIG.url;
-    this.useExtensionApi = isHybridModeEnabled();
+    this.extensionApiUrl = process.env.NEXT_PUBLIC_EXTENSION_API_URL || 'https://odm-api.netlify.app';
   }
 
-  // Helper method to fetch from extension API with fallback
-  private async fetchFromExtensionApi<T>(endpoint: string, fallbackFn?: () => Promise<T>): Promise<T> {
-    if (!this.useExtensionApi && fallbackFn) {
-      return fallbackFn();
-    }
+  // ============= LECTURES (extension-api uniquement) =============
 
-    try {
-      const response = await fetch(getExtensionApiUrl(endpoint), {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        cache: 'no-store' // Ensure fresh data
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Extension API error: ${response.status} ${response.statusText}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.warn(`Extension API failed for ${endpoint}:`, error);
-      
-      // Fallback to direct Supabase if available
-      if (fallbackFn) {
-        console.log(`Falling back to direct Supabase for ${endpoint}`);
-        return fallbackFn();
-      }
-      
-      throw error;
+  /**
+   * Méthode privée pour fetch depuis extension-api
+   */
+  private async fetchFromExtensionApi<T>(endpoint: string): Promise<T> {
+    const url = `${this.extensionApiUrl}/.netlify/functions/${endpoint}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // Ensure fresh data from CDN
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Service temporairement indisponible (${response.status})`);
     }
+    
+    return await response.json();
   }
-
-  // ============= READ OPERATIONS (via extension-api) =============
 
   /**
    * Get all brands with search capability
@@ -72,99 +57,7 @@ class DataService {
     if (offset) params.append('offset', offset.toString());
     
     const endpoint = `marques${params.toString() ? '?' + params.toString() : ''}`;
-    
-    return this.fetchFromExtensionApi(
-      endpoint,
-      // Fallback to direct Supabase
-      async () => {
-        let query = supabase
-          .from('Marque')
-          .select(`
-            *,
-            Marque_beneficiaire!marque_id (
-              id,
-              beneficiaire_id,
-              lien_financier,
-              impact_specifique,
-              created_at,
-              updated_at,
-              beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey (
-                id,
-                nom,
-                controverses,
-                sources,
-                impact_generique,
-                type_beneficiaire
-              )
-            ),
-            SecteurMarque!secteur_marque_id (
-              id,
-              nom,
-              description,
-              message_boycott_tips,
-              created_at,
-              updated_at
-            )
-          `);
-        
-        if (search) {
-          query = query.ilike('nom', `%${search}%`);
-        }
-        
-        if (limit && offset !== undefined) {
-          query = query.range(offset, offset + limit - 1);
-        }
-        
-        const { data: marques, error } = await query;
-        if (error) throw error;
-        
-        // Transform to match frontend expectations
-        const transformedMarques = await Promise.all(
-          (marques || []).map(async (marque) => {
-            let dirigeant_controverse = null;
-            const dirigeantLiaison = marque.Marque_beneficiaire?.[0];
-            
-            if (dirigeantLiaison && dirigeantLiaison.beneficiaire) {
-              // Récupérer toutes les marques pour ce bénéficiaire
-              const { data: toutesMarquesDuBeneficiaire } = await supabase
-                .from('Marque_beneficiaire')
-                .select(`
-                  marque:Marque!marque_id (id, nom)
-                `)
-                .eq('beneficiaire_id', dirigeantLiaison.beneficiaire.id);
-              
-              const toutesMarques = toutesMarquesDuBeneficiaire?.map(m => {
-                const marqueData = m.marque as unknown as { id: number; nom: string };
-                return { id: marqueData.id, nom: marqueData.nom };
-              }) || [];
-              
-              dirigeant_controverse = {
-                id: dirigeantLiaison.id,
-                marque_id: marque.id,
-                dirigeant_id: dirigeantLiaison.beneficiaire.id,
-                dirigeant_nom: dirigeantLiaison.beneficiaire.nom,
-                controverses: dirigeantLiaison.beneficiaire.controverses,
-                lien_financier: dirigeantLiaison.lien_financier,
-                impact_description: dirigeantLiaison.impact_specifique || dirigeantLiaison.beneficiaire.impact_generique || '',
-                sources: dirigeantLiaison.beneficiaire.sources,
-                created_at: dirigeantLiaison.created_at,
-                updated_at: dirigeantLiaison.updated_at,
-                toutes_marques: toutesMarques,
-                type_beneficiaire: dirigeantLiaison.beneficiaire.type_beneficiaire || 'individu'
-              };
-            }
-            
-            return {
-              ...marque,
-              dirigeant_controverse,
-              secteur_marque: marque.SecteurMarque || null
-            };
-          })
-        );
-        
-        return transformedMarques;
-      }
-    );
+    return this.fetchFromExtensionApi<Marque[]>(endpoint);
   }
 
   /**
@@ -176,161 +69,22 @@ class DataService {
     if (offset) params.append('offset', offset.toString());
     
     const endpoint = `evenements${params.toString() ? '?' + params.toString() : ''}`;
-    
-    return this.fetchFromExtensionApi(
-      endpoint,
-      // Fallback to direct Supabase
-      async () => {
-        let query = supabase
-          .from('Evenement')
-          .select(`
-            *,
-            Marque!Evenement_marque_id_fkey (
-              id,
-              nom,
-              secteur_marque_id,
-              message_boycott_tips,
-              SecteurMarque!secteur_marque_id (
-                id,
-                nom,
-                message_boycott_tips
-              )
-            ),
-            Categorie!Evenement_categorie_id_fkey (
-              id,
-              nom,
-              emoji,
-              couleur,
-              ordre
-            )
-          `)
-          .order('date', { ascending: false });
-        
-        if (limit && offset !== undefined) {
-          query = query.range(offset, offset + limit - 1);
-        }
-        
-        const { data: evenements, error } = await query;
-        if (error) throw error;
-        
-        return evenements?.map(evt => ({
-          id: evt.id,
-          marque_id: evt.marque_id,
-          titre: evt.titre || evt.description,
-          description: evt.description,
-          date: evt.date,
-          categorie_id: evt.categorie_id,
-          source_url: evt.source_url || evt.source,
-          reponse: evt.reponse,
-          condamnation_judiciaire: evt.condamnation_judiciaire || false,
-          created_at: evt.created_at,
-          updated_at: evt.updated_at,
-          marque: evt.Marque ? {
-            id: evt.Marque.id,
-            nom: evt.Marque.nom,
-            secteur_marque_id: evt.Marque.secteur_marque_id,
-            message_boycott_tips: evt.Marque.message_boycott_tips,
-            secteur_marque: evt.Marque.SecteurMarque
-          } as Marque : undefined,
-          categorie: evt.Categorie
-        })) || [];
-      }
-    );
+    return this.fetchFromExtensionApi<Evenement[]>(endpoint);
   }
 
   /**
    * Get all categories
    */
   async getCategories(): Promise<Categorie[]> {
-    return this.fetchFromExtensionApi(
-      'categories',
-      // Fallback to direct Supabase
-      async () => {
-        const { data: categories, error } = await supabase
-          .from('Categorie')
-          .select('*')
-          .eq('actif', true)
-          .order('ordre', { ascending: true });
-        
-        if (error) throw error;
-        return categories || [];
-      }
-    );
+    return this.fetchFromExtensionApi<Categorie[]>('categories');
   }
 
   /**
    * Get all leaders with their brand relationships
    */
   async getDirigeants(id?: number): Promise<DirigeantWithMarques[] | DirigeantWithMarques> {
-    const endpoint = id ? `dirigeants?id=${id}` : 'dirigeants';
-    
-    return this.fetchFromExtensionApi(
-      endpoint,
-      // Fallback to direct Supabase
-      async () => {
-        let query = supabase
-          .from('Beneficiaires')
-          .select(`
-            *,
-            Marque_beneficiaire!beneficiaire_id (
-              id,
-              marque_id,
-              lien_financier,
-              impact_specifique,
-              Marque!marque_id (
-                id,
-                nom
-              )
-            )
-          `)
-          .order('nom');
-
-        if (id) {
-          query = query.eq('id', id);
-        }
-
-        const { data: dirigeants, error } = await (id ? query.single() : query);
-        if (error) throw error;
-
-        // Define types for Supabase response
-        interface BeneficiaireSupabaseResponse {
-          id: number;
-          nom: string;
-          controverses: string;
-          sources: string[];
-          impact_generique?: string;
-          type_beneficiaire?: string;
-          Marque_beneficiaire?: {
-            id: number;
-            marque_id: number;
-            lien_financier: string;
-            impact_specifique?: string;
-            Marque: {
-              id: number;
-              nom: string;
-            };
-          }[];
-        }
-
-        const transform = (beneficiaire: BeneficiaireSupabaseResponse) => ({
-          id: beneficiaire.id,
-          nom: beneficiaire.nom,
-          controverses: beneficiaire.controverses,
-          sources: beneficiaire.sources,
-          impact_generique: beneficiaire.impact_generique,
-          type_beneficiaire: beneficiaire.type_beneficiaire || 'individu',
-          marques: beneficiaire.Marque_beneficiaire?.map((liaison) => ({
-            id: liaison.Marque.id,
-            nom: liaison.Marque.nom,
-            lien_financier: liaison.lien_financier,
-            impact_specifique: liaison.impact_specifique,
-            liaison_id: liaison.id
-          })) || []
-        });
-
-        return id ? transform(dirigeants) : dirigeants?.map(transform) || [];
-      }
-    );
+    const endpoint = id ? `beneficiaires?id=${id}` : 'beneficiaires';
+    return this.fetchFromExtensionApi<DirigeantWithMarques[] | DirigeantWithMarques>(endpoint);
   }
 
   /**
@@ -338,26 +92,10 @@ class DataService {
    */
   async getSecteurs(id?: number): Promise<SecteurMarque[] | SecteurMarque> {
     const endpoint = id ? `secteurs-marque?id=${id}` : 'secteurs-marque';
-    
-    return this.fetchFromExtensionApi(
-      endpoint,
-      // Fallback to direct Supabase
-      async () => {
-        let query = supabase.from('SecteurMarque').select('*').order('nom');
-        
-        if (id) {
-          query = query.eq('id', id);
-        }
-        
-        const { data: secteurs, error } = await (id ? query.single() : query);
-        if (error) throw error;
-        
-        return secteurs;
-      }
-    );
+    return this.fetchFromExtensionApi<SecteurMarque[] | SecteurMarque>(endpoint);
   }
 
-  // ============= WRITE OPERATIONS (direct Supabase) =============
+  // ============= ÉCRITURES (Supabase direct uniquement) =============
 
   /**
    * Create a new brand
@@ -574,7 +312,7 @@ class DataService {
     if (error) throw error;
   }
 
-  // ============= UTILITY METHODS =============
+  // ============= UTILITAIRES =============
 
   /**
    * Check if extension API is available
@@ -598,7 +336,10 @@ class DataService {
    * Get service configuration
    */
   getConfig() {
-    return getApiConfig();
+    return {
+      extensionApiUrl: this.extensionApiUrl,
+      mode: 'simplified' // Plus de hybrid mode
+    };
   }
 }
 

@@ -77,16 +77,33 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
   };
   
   const deleteLiaison = async () => {
-    if (!marque?.dirigeant_controverse) return;
+    // Priorité au nouveau système beneficiaires_marque
+    let liaisonId = null;
+    let beneficiaireNom = '';
     
-    const confirmed = confirm(`Êtes-vous sûr de vouloir supprimer la liaison entre ${marque.dirigeant_controverse.dirigeant_nom} et ${marque.nom} ?`);
+    if (marque?.beneficiaires_marque && marque.beneficiaires_marque.length > 0) {
+      liaisonId = marque.beneficiaires_marque[0].id;
+      beneficiaireNom = marque.beneficiaires_marque[0].beneficiaire.nom;
+    } else if (marque?.dirigeant_controverse) {
+      liaisonId = marque.dirigeant_controverse.id;
+      beneficiaireNom = marque.dirigeant_controverse.dirigeant_nom;
+    }
+    
+    if (!liaisonId || !marque) return;
+    
+    const confirmed = confirm(`Êtes-vous sûr de vouloir supprimer la liaison entre ${beneficiaireNom} et ${marque.nom} ?`);
     if (!confirmed) return;
     
     setSaving(true);
     setMessage(null);
     
     try {
-      const response = await fetch(`/api/marque-dirigeant?id=${marque.dirigeant_controverse.id}`, {
+      // Utiliser le bon endpoint selon le système
+      const endpoint = marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0 
+        ? `/api/marque-beneficiaire?id=${liaisonId}`
+        : `/api/marque-dirigeant?id=${liaisonId}`;
+        
+      const response = await fetch(endpoint, {
         method: 'DELETE'
       });
       
@@ -320,7 +337,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             ⚠️ Bénéficiaire controversé
           </h3>
           
-          {marque.dirigeant_controverse && (
+          {((marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0) || marque.dirigeant_controverse) && (
             <button
               onClick={deleteLiaison}
               disabled={saving}
@@ -331,45 +348,99 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
           )}
         </div>
         
-        {marque.dirigeant_controverse ? (
-          <div>
-            <div className="mb-6 p-4 bg-success-light border border-success rounded-lg">
-              <div className="flex items-center space-x-2 mb-2">
-                <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <p className="body-small text-success font-medium">
-                  Dirigeant lié : <strong>{marque.dirigeant_controverse.dirigeant_nom}</strong>
-                </p>
+        {(() => {
+          // Affichage hybride : nouveau système d'abord, puis legacy
+          const nouveauSysteme = marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0;
+          const legacySysteme = marque.dirigeant_controverse;
+          
+          if (nouveauSysteme && marque.beneficiaires_marque) {
+            const beneficiaire = marque.beneficiaires_marque[0];
+            return (
+              <div>
+                <div className="mb-6 p-4 bg-success-light border border-success rounded-lg">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <p className="body-small text-success font-medium">
+                      Bénéficiaire lié : <strong>{beneficiaire.beneficiaire.nom}</strong>
+                    </p>
+                  </div>
+                  <div className="body-xs text-success">
+                    <p><strong>Lien financier :</strong> {beneficiaire.lien_financier}</p>
+                    <p><strong>Impact :</strong> {beneficiaire.impact_specifique || beneficiaire.beneficiaire.impact_generique || 'Impact à définir'}</p>
+                    <p><strong>Type :</strong> {beneficiaire.beneficiaire.type_beneficiaire || 'individu'}</p>
+                  </div>
+                  {marque.beneficiaires_marque && marque.beneficiaires_marque.length > 1 && (
+                    <div className="mt-2 p-2 bg-white border border-success rounded">
+                      <p className="body-xs text-success">
+                        <strong>+{marque.beneficiaires_marque.length - 1} autre{marque.beneficiaires_marque.length > 2 ? 's' : ''} bénéficiaire{marque.beneficiaires_marque.length > 2 ? 's' : ''}</strong>
+                      </p>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => router.push(`/admin/beneficiaires/${beneficiaire.beneficiaire.id}`)}
+                    className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
+                  >
+                    Éditer bénéficiaire
+                  </button>
+                  <button
+                    onClick={() => alert('Fonctionnalité d\'édition de liaison à implémenter')}
+                    className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+                  >
+                    Modifier liaison
+                  </button>
+                </div>
               </div>
-              <div className="body-xs text-success">
-                <p><strong>Lien financier :</strong> {marque.dirigeant_controverse.lien_financier}</p>
-                <p><strong>Impact :</strong> {marque.dirigeant_controverse.impact_description}</p>
+            );
+          } else if (legacySysteme && marque.dirigeant_controverse) {
+            return (
+              <div>
+                <div className="mb-6 p-4 bg-warning-light border border-warning rounded-lg">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <svg className="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 14.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <p className="body-small text-warning font-medium">
+                      Dirigeant lié (Legacy) : <strong>{marque.dirigeant_controverse.dirigeant_nom}</strong>
+                      <span className="ml-2 px-2 py-1 bg-warning text-white rounded-full text-xs">LEGACY</span>
+                    </p>
+                  </div>
+                  <div className="body-xs text-warning">
+                    <p><strong>Lien financier :</strong> {marque.dirigeant_controverse.lien_financier}</p>
+                    <p><strong>Impact :</strong> {marque.dirigeant_controverse.impact_description}</p>
+                  </div>
+                </div>
+                
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => {
+                      if (marque.dirigeant_controverse?.dirigeant_id) {
+                        router.push(`/admin/dirigeants/${marque.dirigeant_controverse.dirigeant_id}`);
+                      } else {
+                        alert('ID du dirigeant non trouvé');
+                      }
+                    }}
+                    className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
+                  >
+                    Éditer bénéficiaire (Legacy)
+                  </button>
+                  <button
+                    onClick={() => alert('Fonctionnalité d\'édition de liaison à implémenter')}
+                    className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+                  >
+                    Modifier liaison
+                  </button>
+                </div>
               </div>
-            </div>
-            
-            <div className="flex space-x-3">
-              <button
-                onClick={() => {
-                  if (marque.dirigeant_controverse?.dirigeant_id) {
-                    router.push(`/admin/dirigeants/${marque.dirigeant_controverse.dirigeant_id}`);
-                  } else {
-                    alert('ID du dirigeant non trouvé');
-                  }
-                }}
-                className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
-              >
-                Éditer bénéficiaire
-              </button>
-              <button
-                onClick={() => alert('Fonctionnalité d\'édition de liaison à implémenter')}
-                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
-              >
-                Modifier liaison
-              </button>
-            </div>
-          </div>
-        ) : (
+            );
+          } else {
+            return null; // Sera géré par le else ci-dessous
+          }
+        })() || (
           <div className="text-center py-8">
             <div className="text-neutral-500 mb-4">
               <span className="text-4xl">👤</span>

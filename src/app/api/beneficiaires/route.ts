@@ -5,9 +5,71 @@ import { BeneficiaireCreateRequest, BeneficiaireUpdateRequest, BeneficiaireWithM
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const marqueId = searchParams.get('marqueId');
+  const beneficiaireId = searchParams.get('id');
 
   try {
-    if (marqueId) {
+    if (beneficiaireId) {
+      // Récupérer un bénéficiaire spécifique avec ses marques liées
+      const { data: beneficiaire, error: beneficiaireError } = await supabase
+        .from('Beneficiaires')
+        .select(`
+          id,
+          nom,
+          controverses,
+          sources,
+          impact_generique,
+          type_beneficiaire,
+          created_at,
+          updated_at
+        `)
+        .eq('id', parseInt(beneficiaireId))
+        .single();
+
+      if (beneficiaireError || !beneficiaire) {
+        console.error('Bénéficiaire non trouvé:', beneficiaireError);
+        return NextResponse.json({ error: 'Bénéficiaire non trouvé' }, { status: 404 });
+      }
+
+      // Récupérer les marques liées à ce bénéficiaire
+      const { data: marques, error: marqueError } = await supabase
+        .from('Marque_beneficiaire')
+        .select(`
+          id,
+          lien_financier,
+          impact_specifique,
+          marque:marque_id (
+            id,
+            nom
+          )
+        `)
+        .eq('beneficiaire_id', parseInt(beneficiaireId));
+
+      if (marqueError) {
+        console.error(`Erreur récupération marques pour bénéficiaire ${beneficiaireId}:`, marqueError);
+      }
+
+      const beneficiaireWithMarques: BeneficiaireWithMarques = {
+        id: beneficiaire.id as number,
+        nom: beneficiaire.nom as string,
+        controverses: beneficiaire.controverses as string,
+        sources: beneficiaire.sources as string[],
+        impact_generique: beneficiaire.impact_generique as string || undefined,
+        type_beneficiaire: ((beneficiaire.type_beneficiaire as string) || 'individu') as 'individu' | 'groupe',
+        marques: (marques || []).map((m: unknown) => {
+          const marque = m as Record<string, unknown>;
+          const marqueData = marque.marque as Record<string, unknown> | undefined;
+          return {
+            id: (marqueData?.id as number) || 0,
+            nom: (marqueData?.nom as string) || 'Marque inconnue',
+            lien_financier: marque.lien_financier as string,
+            impact_specifique: marque.impact_specifique as string || undefined,
+            liaison_id: marque.id as number
+          };
+        })
+      };
+
+      return NextResponse.json(beneficiaireWithMarques);
+    } else if (marqueId) {
       // Récupérer les bénéficiaires d'une marque spécifique via les liaisons
       const query = supabase
         .from('Marque_beneficiaire')

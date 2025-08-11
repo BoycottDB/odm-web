@@ -77,7 +77,10 @@ export default function MarquesListPage() {
         </div>
         <div className="bg-primary-light p-4 rounded-lg border border-primary">
           <div className="heading-main font-bold text-primary">
-            {marques.filter(m => m.dirigeant_controverse).length}
+            {marques.filter(m => 
+              (m.dirigeant_controverse) || 
+              (m.beneficiaires_marque && m.beneficiaires_marque.length > 0)
+            ).length}
           </div>
           <div className="body-small text-primary">Avec bénéficiaire controversé</div>
         </div>
@@ -106,22 +109,49 @@ export default function MarquesListPage() {
                         {marque.nom}
                       </h3>
                       
-                      {marque.dirigeant_controverse ? (
-                        <div className="mt-1 flex items-center space-x-2">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary">
-                            ⚠️ Bénéficiaire controversé
-                          </span>
-                          <span className="body-small text-neutral-600">
-                            {marque.dirigeant_controverse.dirigeant_nom}
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="mt-1">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-neutral-100 text-neutral-800">
-                            Aucun bénéficiaire controversé
-                          </span>
-                        </div>
-                      )}
+                      {/* Affichage des bénéficiaires (nouveau système ou legacy) */}
+                      {(() => {
+                        // Priorité au nouveau système beneficiaires_marque
+                        if (marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0) {
+                          const nombreBeneficiaires = marque.beneficiaires_marque.length;
+                          const premierBeneficiaire = marque.beneficiaires_marque[0];
+                          
+                          return (
+                            <div className="mt-1 flex items-center space-x-2">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary">
+                                ⚠️ {nombreBeneficiaires} Bénéficiaire{nombreBeneficiaires > 1 ? 's' : ''} controversé{nombreBeneficiaires > 1 ? 's' : ''}
+                              </span>
+                              <span className="body-small text-neutral-600">
+                                {premierBeneficiaire.beneficiaire.nom}
+                                {nombreBeneficiaires > 1 && ` et ${nombreBeneficiaires - 1} autre${nombreBeneficiaires > 2 ? 's' : ''}`}
+                              </span>
+                            </div>
+                          );
+                        }
+                        
+                        // Fallback vers l'ancien système pour compatibilité
+                        if (marque.dirigeant_controverse) {
+                          return (
+                            <div className="mt-1 flex items-center space-x-2">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary">
+                                ⚠️ Bénéficiaire controversé (legacy)
+                              </span>
+                              <span className="body-small text-neutral-600">
+                                {marque.dirigeant_controverse.dirigeant_nom}
+                              </span>
+                            </div>
+                          );
+                        }
+                        
+                        // Aucun bénéficiaire
+                        return (
+                          <div className="mt-1">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-neutral-100 text-neutral-800">
+                              Aucun bénéficiaire controversé
+                            </span>
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
