@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { DirigeantCreateRequest, DirigeantUpdateRequest, Dirigeant } from '@/types';
+import { DirigeantCreateRequest, DirigeantUpdateRequest } from '@/types';
 
 interface DirigeantFormData {
   nom: string;

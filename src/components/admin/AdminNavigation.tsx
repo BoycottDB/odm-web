@@ -11,7 +11,7 @@ export default function AdminNavigation() {
   const navItems = [
     { path: '/admin/moderation', label: 'Modération', icon: '📋' },
     { path: '/admin/marques', label: 'Marques', icon: '🏢' },
-    { path: '/admin/dirigeants', label: 'Dirigeants', icon: '⚠️' },
+    { path: '/admin/beneficiaires', label: 'Bénéficiaires', icon: '💰' },
     { path: '/admin/secteurs-marque', label: 'Secteurs', icon: '🏷️' },
   ];
   

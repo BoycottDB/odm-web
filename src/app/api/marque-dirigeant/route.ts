@@ -96,6 +96,8 @@ export async function GET(request: NextRequest) {
           marque_id: liaison.marque.id,
           marque_nom: liaison.marque.nom,
           liaison_id: liaison.id,
+          type_beneficiaire: 'individu', // Default value for legacy compatibility
+          type_affichage: 'Dirigeant' as const,
           toutes_marques: marquesArray
         });
       }

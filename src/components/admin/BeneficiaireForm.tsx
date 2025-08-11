@@ -124,7 +124,7 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
           <option value="groupe">🏢 Groupe (entreprise, fonds, etc.)</option>
         </select>
         <p className="text-xs text-neutral-600 mt-1">
-          Choisissez "Individu" pour une personne (PDG, fondateur...) ou "Groupe" pour une entreprise, fonds, etc.
+          Choisissez &quot;Individu&quot; pour une personne (PDG, fondateur...) ou &quot;Groupe&quot; pour une entreprise, fonds, etc.
         </p>
       </div>
 
@@ -204,7 +204,7 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
           rows={3}
         />
         <p className="text-xs text-neutral-600 mt-1">
-          Message d'impact réutilisable pour toutes les marques liées à ce bénéficiaire. Peut être remplacé par un impact spécifique dans chaque liaison.
+          Message d&apos;impact réutilisable pour toutes les marques liées à ce bénéficiaire. Peut être remplacé par un impact spécifique dans chaque liaison.
         </p>
       </div>
 

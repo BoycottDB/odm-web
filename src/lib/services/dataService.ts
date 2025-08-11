@@ -14,7 +14,8 @@ import {
   MarqueCreateRequest,
   EvenementCreateRequest,
   DirigeantCreateRequest,
-  MarqueDirigeantCreateRequest
+  MarqueDirigeantCreateRequest,
+  MarqueBeneficiaireCreateRequest
 } from '@/types';
 
 class DataService {
@@ -489,7 +490,7 @@ class DataService {
     // Transform dirigeant_id to beneficiaire_id for the new schema
     const transformedData = {
       marque_id: data.marque_id,
-      beneficiaire_id: (data as any).dirigeant_id || (data as any).beneficiaire_id,
+      beneficiaire_id: 'dirigeant_id' in data ? (data as { dirigeant_id: number }).dirigeant_id : (data as MarqueBeneficiaireCreateRequest).beneficiaire_id,
       lien_financier: data.lien_financier,
       impact_specifique: data.impact_specifique
     };
@@ -506,9 +507,9 @@ class DataService {
    */
   async updateMarqueDirigeant(id: number, data: Partial<MarqueDirigeantCreateRequest>): Promise<void> {
     // Transform dirigeant_id to beneficiaire_id for the new schema
-    const transformedData: any = { ...data };
-    if ((data as any).dirigeant_id) {
-      transformedData.beneficiaire_id = (data as any).dirigeant_id;
+    const transformedData: Record<string, unknown> = { ...data };
+    if ('dirigeant_id' in data) {
+      transformedData.beneficiaire_id = (data as { dirigeant_id: number }).dirigeant_id;
       delete transformedData.dirigeant_id;
     }
     

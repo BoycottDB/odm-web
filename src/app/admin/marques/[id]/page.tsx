@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Marque, MarqueDirigeantCreateRequest, SecteurMarque, MarqueUpdateRequest } from '@/types';
-import MarqueDirigeantForm from '@/components/admin/MarqueDirigeantForm';
+import { Marque, SecteurMarque, MarqueUpdateRequest } from '@/types';
 
 interface MarqueEditPageProps {
   params: Promise<{ id: string }>;

@@ -1,7 +1,6 @@
 'use client';
 
 import { Marque, Evenement, Proposition, SimilarityScore } from '@/types';
-import { Badge } from '../ui/Badge';
 
 interface SimilarResults {
   marques: Array<Marque & { score: SimilarityScore }>;

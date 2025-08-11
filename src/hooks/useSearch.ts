@@ -93,6 +93,7 @@ export function useSearch() {
         id: `dirigeant-${marque.id}`,
         type: 'dirigeant' as const,
         marque: marque,
+        beneficiaire: marque.dirigeant_controverse!, // Required by BeneficiaireResult interface
         dirigeant: marque.dirigeant_controverse!
       }));
       

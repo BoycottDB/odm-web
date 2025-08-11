@@ -120,7 +120,7 @@ export async function PUT(request: NextRequest) {
   try {
     const body: MarqueBeneficiaireUpdateRequest = await request.json();
 
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     if (body.lien_financier !== undefined) updateData.lien_financier = body.lien_financier;
     if (body.impact_specifique !== undefined) updateData.impact_specifique = body.impact_specifique;
     
