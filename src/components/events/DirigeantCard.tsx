@@ -1,6 +1,7 @@
 'use client';
 
-import { DirigeantComplet } from '@/types';
+import { User, Building2 } from 'lucide-react';
+import { DirigeantComplet, TypeBeneficiaire } from '@/types';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
 
 interface DirigeantCardProps {
@@ -9,16 +10,28 @@ interface DirigeantCardProps {
 
 export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
 
+  // Fonction helper pour les labels
+  const getTypeLabel = (type: TypeBeneficiaire): string => {
+    return type === 'groupe' ? 'groupe' : 'dirigeant';
+  };
+
+  const getTypeIcon = (type: TypeBeneficiaire) => {
+    return type === 'groupe' ? Building2 : User;
+  };
+
+  const Icon = getTypeIcon(dirigeant.type_beneficiaire);
+  const typeLabel = getTypeLabel(dirigeant.type_beneficiaire);
+
   return (
-    <div className="bg-gradient-to-r from-primary-light to-orange-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+    <div className="bg-gradient-to-r from-primary-light to-berry-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* En-tête bénéficiaire controversé */}
       <div className="flex items-center mb-6">
         <div className="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mr-4">
-          <span className="heading-main">{dirigeant.type_beneficiaire=="groupe" ? "🏣" : "👤" }</span>
+        <Icon className="w-7 h-7 text-primary flex-shrink-0" />
         </div>
         <div>         
           <div className="text-primary body-small">
-            Un bénéficiaire controversé est associé à la marque <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong>
+            Un {typeLabel} controversé est associé à la marque <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong>
           </div>
           {/* Nom du dirigeant */}
           <h3 className="heading-sub font-bold text-neutral-900">

@@ -83,19 +83,55 @@ export function useSearch() {
       );
       
       // Trouver les marques avec bénéficiaires controversés qui correspondent à la recherche
-      const marquesWithDirigeants = allMarques.filter((marque: Marque) => 
+      const marquesWithBeneficiaires = allMarques.filter((marque: Marque) => 
         marque.nom.toLowerCase().includes(normalizedQuery) &&
-        marque.dirigeant_controverse
+        marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0
       );
       
-      // Créer des résultats spécifiques pour les dirigeants
-      const dirigeantResults: DirigeantResult[] = marquesWithDirigeants.map((marque: Marque) => ({
-        id: `dirigeant-${marque.id}`,
-        type: 'dirigeant' as const,
-        marque: marque,
-        beneficiaire: marque.dirigeant_controverse!, // Required by BeneficiaireResult interface
-        dirigeant: marque.dirigeant_controverse!
-      }));
+      // Créer des résultats spécifiques pour les bénéficiaires (compatibilité dirigeant)
+      const dirigeantResults: DirigeantResult[] = [];
+      
+      marquesWithBeneficiaires.forEach((marque: Marque) => {
+        if (marque.beneficiaires_marque) {
+          marque.beneficiaires_marque.forEach((liaison) => {
+            if (liaison.beneficiaire) {
+              dirigeantResults.push({
+                id: `beneficiaire-${liaison.id}`,
+                type: 'dirigeant' as const,
+                marque: marque,
+                beneficiaire: {
+                  id: liaison.id, // ID de la liaison
+                  marque_id: marque.id,
+                  dirigeant_id: liaison.beneficiaire.id,
+                  dirigeant_nom: liaison.beneficiaire.nom,
+                  controverses: liaison.beneficiaire.controverses,
+                  lien_financier: liaison.lien_financier,
+                  impact_description: liaison.impact_specifique || liaison.beneficiaire.impact_generique || 'Impact à définir',
+                  sources: liaison.beneficiaire.sources || [],
+                  created_at: liaison.beneficiaire.created_at || new Date().toISOString(),
+                  updated_at: liaison.beneficiaire.updated_at || new Date().toISOString(),
+                  toutes_marques: [{ id: marque.id, nom: marque.nom }],
+                  type_beneficiaire: liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe' | undefined
+                },
+                dirigeant: {
+                  id: liaison.id, // ID de la liaison
+                  marque_id: marque.id,
+                  dirigeant_id: liaison.beneficiaire.id,
+                  dirigeant_nom: liaison.beneficiaire.nom,
+                  controverses: liaison.beneficiaire.controverses,
+                  lien_financier: liaison.lien_financier,
+                  impact_description: liaison.impact_specifique || liaison.beneficiaire.impact_generique || 'Impact à définir',
+                  sources: liaison.beneficiaire.sources || [],
+                  created_at: liaison.beneficiaire.created_at || new Date().toISOString(),
+                  updated_at: liaison.beneficiaire.updated_at || new Date().toISOString(),
+                  toutes_marques: [{ id: marque.id, nom: marque.nom }],
+                  type_beneficiaire: liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe' | undefined
+                }
+              });
+            }
+          });
+        }
+      });
       
 
       const hasResults = filteredEvents.length > 0 || dirigeantResults.length > 0;

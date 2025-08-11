@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dataService } from '@/lib/services/dataService';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { validateMarqueCreate } from '@/lib/validation/schemas';
 import { getErrorMessage } from '@/lib/utils/helpers';
 
@@ -10,12 +10,40 @@ export async function GET(request: NextRequest) {
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
     const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : undefined;
     
-    // Use dataService for hybrid approach (extension-api with fallback to Supabase)
-    const marques = await dataService.getMarques(search || undefined, limit, offset);
+    // Query Supabase directly - API endpoints should not use dataService
+    let query = supabaseAdmin
+      .from('Marque')
+      .select(`
+        *,
+        evenements:Evenement(*),
+        secteur_marque:SecteurMarque(*),
+        beneficiaires_marque:Marque_beneficiaire(
+          id,
+          lien_financier,
+          impact_specifique,
+          beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey(*)
+        )
+      `);
     
-    return NextResponse.json(marques, {
+    if (search) {
+      query = query.ilike('nom', `%${search}%`);
+    }
+    
+    if (limit) {
+      query = query.limit(limit);
+    }
+    
+    if (offset) {
+      query = query.range(offset, offset + (limit || 50) - 1);
+    }
+    
+    const { data: marques, error } = await query;
+    
+    if (error) throw error;
+    
+    return NextResponse.json(marques || [], {
       headers: {
-        'X-Data-Source': 'hybrid-service'
+        'X-Data-Source': 'direct-supabase'
       }
     });
   } catch (error) {
@@ -43,8 +71,15 @@ export async function PUT(request: NextRequest) {
     if (secteur_marque_id !== undefined) updateData.secteur_marque_id = secteur_marque_id;
     if (message_boycott_tips !== undefined) updateData.message_boycott_tips = message_boycott_tips;
 
-    // Update using dataService (direct Supabase for writes)
-    const updatedMarque = await dataService.updateMarque(id, updateData);
+    // Update directly via Supabase
+    const { data: updatedMarque, error } = await supabaseAdmin
+      .from('Marque')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json(updatedMarque, {
       headers: {
@@ -73,9 +108,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Vérifier si la marque existe déjà (using read operation via dataService)
-    const existingMarques = await dataService.getMarques(validation.data!.nom);
-    const existingMarque = existingMarques.find(m => m.nom.toLowerCase() === validation.data!.nom.toLowerCase());
+    // Vérifier si la marque existe déjà (direct Supabase query)
+    const { data: existingMarques, error: searchError } = await supabaseAdmin
+      .from('Marque')
+      .select('id, nom')
+      .ilike('nom', validation.data!.nom);
+
+    if (searchError) throw searchError;
+
+    const existingMarque = existingMarques?.find(m => 
+      m.nom.toLowerCase() === validation.data!.nom.toLowerCase()
+    );
 
     if (existingMarque) {
       return NextResponse.json(
@@ -84,8 +127,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Créer la marque (using write operation - direct Supabase)
-    const marque = await dataService.createMarque(validation.data!);
+    // Créer la marque (direct Supabase)
+    const { data: marque, error } = await supabaseAdmin
+      .from('Marque')
+      .insert([validation.data!])
+      .select()
+      .single();
+
+    if (error) throw error;
+
     return NextResponse.json(marque, { 
       status: 201,
       headers: {

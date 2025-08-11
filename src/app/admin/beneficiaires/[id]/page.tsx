@@ -161,7 +161,7 @@ export default function BeneficiaireDetailPage() {
                     {typeLabel}
                   </span>
                   <span className="text-neutral-500">•</span>
-                  <span className="text-neutral-600">{beneficiaire.marques.length} marque(s) liée(s)</span>
+                  <span className="text-neutral-600">{beneficiaire.marques?.length || 0} marque(s) liée(s)</span>
                 </div>
               </div>
             </div>
@@ -184,7 +184,7 @@ export default function BeneficiaireDetailPage() {
         )}
 
         {/* Marques liées */}
-        {beneficiaire.marques.length > 0 && (
+        {beneficiaire.marques && beneficiaire.marques.length > 0 && (
           <div className="bg-primary-light border border-primary rounded-lg p-4 mb-6">
             <h3 className="font-medium text-primary mb-3">Marques liées :</h3>
             <div className="flex flex-wrap gap-2">
