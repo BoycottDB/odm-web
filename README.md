@@ -29,7 +29,7 @@ Ce projet a pour but d’informer les consommateurs sur les pratiques éthiques,
 ### Modèles Principaux
 - **Marque** : Marques et entreprises référencées avec secteur d'activité
 - **Événement** : Controverses et pratiques documentées
-- **Dirigeant** : Dirigeants controversés avec liens vers marques
+- **Bénéficiaire** : Bénéficiaires controversés avec liens vers marques
 - **SecteurMarque** : Secteurs d'activité pour conseils de boycott ciblés
 - **Proposition** : Système de modération collaborative
 - **Décision** : Historique transparent des validations/rejets
@@ -90,7 +90,7 @@ Proposition (1) ←→ (1) Décision
 
 ### Système de Données
 - **📊 Affichage Enrichi** : Chronologie, catégories, condamnations judiciaires
-- **🔗 Dirigeants Controversés** : Liens entre dirigeants et marques
+- **🔗 Bénéficiaires Controversés** : Liens entre bénéficiaires et marques
 - **📋 Sources Vérifiées** : Liens directs vers sources officielles
 - **⚖️ Notices Légales** : Disclaimers pour condamnations judiciaires
 - **🎯 BoycottTips** : Conseils personnalisés par marque et secteur d'activité

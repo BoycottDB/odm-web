@@ -52,7 +52,7 @@ export default function DirigeantListPage() {
       <AdminNavigation />
       <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="heading-main font-bold text-neutral-900">Dirigeants controversés</h2>
+        <h2 className="heading-main font-bold text-neutral-900">Bénéficiaires controversés</h2>
         <button
           onClick={() => router.push('/admin/dirigeants/create')}
           className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
@@ -76,7 +76,7 @@ export default function DirigeantListPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-primary-light p-4 rounded-lg border border-primary">
           <div className="heading-main font-bold text-primary">{dirigeants.length}</div>
-          <div className="body-small text-primary">Dirigeants controversés</div>
+          <div className="body-small text-primary">Bénéficiaires controversés</div>
         </div>
         <div className="bg-white p-4 rounded-lg border border-neutral">
           <div className="heading-main font-bold text-neutral-900">
@@ -93,8 +93,8 @@ export default function DirigeantListPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
             </svg>
           </div>
-          <h3 className="body-large font-medium text-neutral-900 mb-2">Aucun dirigeant controversé</h3>
-          <p className="text-neutral-600 mb-6">Commencez par ajouter un dirigeant controversé pour traquer les marques liées.</p>
+          <h3 className="body-large font-medium text-neutral-900 mb-2">Aucun bénéficiaire controversé</h3>
+          <p className="text-neutral-600 mb-6">Commencez par ajouter un bénéficiaire controversé pour traquer les marques liées.</p>
           <button
             onClick={() => router.push('/admin/dirigeants/create')}
             className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-hover"

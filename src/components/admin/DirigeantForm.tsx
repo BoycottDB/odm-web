@@ -179,7 +179,7 @@ export default function DirigeantForm({
         <div className="mt-6 p-4 bg-white border border-primary rounded-lg">
           <h4 className="body-small font-medium text-neutral-700 mb-2">Aperçu dirigeant :</h4>
           <div className="body-small">
-            <div className="font-semibold text-primary mb-2">⚠️ DIRIGEANT CONTROVERSÉ</div>
+            <div className="font-semibold text-primary mb-2">⚠️ BÉNÉFICIAIRE CONTROVERSÉ</div>
             <div className="font-medium text-primary mb-1">{data.nom}</div>
             {data.impactGenerique && (
               <div className="text-primary mb-2">

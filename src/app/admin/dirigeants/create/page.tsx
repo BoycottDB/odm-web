@@ -63,7 +63,7 @@ export default function CreateDirigeantPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="heading-main font-bold text-neutral-900">Nouveau dirigeant controversé</h1>
+          <h1 className="heading-main font-bold text-neutral-900">Nouveau bénéficiaire controversé</h1>
         </div>
 
         {message && (
@@ -81,7 +81,7 @@ export default function CreateDirigeantPage() {
             Informations du dirigeant
           </h2>
           <p className="body-small text-neutral-600 mb-6">
-            Créez un nouveau dirigeant controversé. Vous pourrez ensuite le lier à une ou plusieurs marques.
+            Créez un nouveau bénéficiaire controversé. Vous pourrez ensuite le lier à une ou plusieurs marques.
           </p>
           
           <DirigeantForm

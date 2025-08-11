@@ -34,7 +34,7 @@ export default function LierDirigeantPage() {
         }
         
         if (foundMarque.dirigeant_controverse) {
-          setMessage({ type: 'error', text: 'Cette marque a déjà un dirigeant controversé associé' });
+          setMessage({ type: 'error', text: 'Cette marque a déjà un bénéficiaire controversé associé' });
           return;
         }
         
@@ -114,7 +114,7 @@ export default function LierDirigeantPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <h1 className="heading-hero font-bold text-neutral-900">Lier dirigeant controversé</h1>
+            <h1 className="heading-hero font-bold text-neutral-900">Lier bénéficiaire controversé</h1>
           </div>
 
           <div className="bg-error-light border border-error text-error p-4 rounded-lg">
@@ -139,7 +139,7 @@ export default function LierDirigeantPage() {
             </svg>
           </button>
           <h1 className="heading-hero font-bold text-neutral-900">
-            Lier dirigeant controversé
+            Lier bénéficiaire controversé
           </h1>
         </div>
 
@@ -158,7 +158,7 @@ export default function LierDirigeantPage() {
             Liaison dirigeant-marque
           </h2>
           <p className="body-small text-neutral-600 mb-6">
-            Sélectionnez un dirigeant controversé existant et définissez son lien avec cette marque.
+            Sélectionnez un bénéficiaire controversé existant et définissez son lien avec cette marque.
           </p>
           
           <MarqueDirigeantForm

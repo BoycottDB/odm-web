@@ -302,7 +302,7 @@ CREATE INDEX idx_dirigeant_nom ON "Dirigeant" USING gin(to_tsvector('french', no
 ### **Architecture V2 - Dirigeants Normalisés**
 
 #### **Évolution Architecturale (2024-08)**
-Migration d'un système monolithique vers une architecture normalisée pour les dirigeants controversés :
+Migration d'un système monolithique vers une architecture normalisée pour les bénéficiaires controversés :
 
 **V1 (Legacy)** : Données dirigeant dupliquées pour chaque marque
 ```sql
