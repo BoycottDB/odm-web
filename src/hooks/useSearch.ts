@@ -82,7 +82,7 @@ export function useSearch() {
         event.categorie?.nom.toLowerCase().includes(normalizedQuery)
       );
       
-      // Trouver les marques avec dirigeants controversés qui correspondent à la recherche
+      // Trouver les marques avec bénéficiaires controversés qui correspondent à la recherche
       const marquesWithDirigeants = allMarques.filter((marque: Marque) => 
         marque.nom.toLowerCase().includes(normalizedQuery) &&
         marque.dirigeant_controverse

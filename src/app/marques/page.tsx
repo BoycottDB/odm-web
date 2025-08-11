@@ -119,11 +119,11 @@ export default function MarquesPage() {
                         </h3>
 
                         <div className="flex md:flex-row space-between justify-between w-full md:mr-50">
-                          {/* Indicateur dirigeant controversé */}
+                          {/* Indicateur bénéficiaire controversé */}
                           {marque.nbDirigeantsControverses > 0 && (
                             <div className="text-center">
                               <div className="body-large font-semibold text-neutral-600 items-center flex">
-                              <span className="body-small text-berry-600 ml-1">Dirigeant{marque.nbDirigeantsControverses > 1 ? 's' : ''} controversé{marque.nbDirigeantsControverses > 1 ? 's' : ''}</span>
+                              <span className="body-small text-berry-600 ml-1">Bénéficiaire{marque.nbDirigeantsControverses > 1 ? 's' : ''} controversé{marque.nbDirigeantsControverses > 1 ? 's' : ''}</span>
                               </div>
                             </div>
                           )}

@@ -79,7 +79,7 @@ export default function MarquesListPage() {
           <div className="heading-main font-bold text-primary">
             {marques.filter(m => m.dirigeant_controverse).length}
           </div>
-          <div className="body-small text-primary">Avec dirigeant controversé</div>
+          <div className="body-small text-primary">Avec bénéficiaire controversé</div>
         </div>
       </div>
       
@@ -109,7 +109,7 @@ export default function MarquesListPage() {
                       {marque.dirigeant_controverse ? (
                         <div className="mt-1 flex items-center space-x-2">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary">
-                            ⚠️ Dirigeant controversé
+                            ⚠️ Bénéficiaire controversé
                           </span>
                           <span className="body-small text-neutral-600">
                             {marque.dirigeant_controverse.dirigeant_nom}
@@ -118,7 +118,7 @@ export default function MarquesListPage() {
                       ) : (
                         <div className="mt-1">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-neutral-100 text-neutral-800">
-                            Aucun dirigeant controversé
+                            Aucun bénéficiaire controversé
                           </span>
                         </div>
                       )}

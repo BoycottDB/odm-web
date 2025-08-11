@@ -138,7 +138,7 @@ export default function MarqueDirigeantForm({
       
       <div>
         <label className="block body-small font-medium text-neutral-700 mb-2">
-          Dirigeant controversé *
+Bénéficiaire controversé *
         </label>
         {loadingDirigeants ? (
           <div className="p-2 text-neutral-500">Chargement des dirigeants...</div>
@@ -220,9 +220,9 @@ export default function MarqueDirigeantForm({
         <div className="mt-6 p-4 bg-white border border-primary rounded-lg">
           <h4 className="body-small font-medium text-neutral-700 mb-2">Aperçu public :</h4>
           <div className="body-small">
-            <div className="font-semibold text-primary mb-2">⚠️ DIRIGEANT CONTROVERSÉ</div>
+            <div className="font-semibold text-primary mb-2">⚠️ BÉNÉFICIAIRE CONTROVERSÉ</div>
             <div className="text-primary body-small mb-1">
-              Un dirigeant controversé est associé à la marque <strong>{marqueNom}</strong>
+              Un bénéficiaire controversé est associé à la marque <strong>{marqueNom}</strong>
             </div>
             <div className="font-medium text-primary mb-1">{selectedDirigeant.nom}</div>
             <div className="text-primary mb-2">

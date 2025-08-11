@@ -82,7 +82,7 @@ function SearchPageContent() {
             Rechercher une marque
           </h1>
           <p className="heading-sub font-light text-neutral-700 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Explorez notre base de données collaborative de controverses et dirigeants controversés.
+            Explorez notre base de données collaborative de controverses et bénéficiaires controversés.
           </p>
 
           {/* Barre de recherche */}

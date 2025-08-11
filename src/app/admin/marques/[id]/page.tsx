@@ -313,11 +313,11 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
         </div>
       )}
 
-      {/* Section dirigeant controversé */}
+      {/* Section bénéficiaire controversé */}
       <div className="mb-8 p-6 bg-primary-light rounded-lg border border-primary">
         <div className="flex items-center justify-between mb-4">
           <h3 className="heading-sub font-semibold text-neutral-900">
-            ⚠️ Dirigeant controversé
+            ⚠️ Bénéficiaire controversé
           </h3>
           
           {marque.dirigeant_controverse && (
@@ -359,7 +359,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
                 }}
                 className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
               >
-                Éditer dirigeant
+                Éditer bénéficiaire
               </button>
               <button
                 onClick={() => alert('Fonctionnalité d\'édition de liaison à implémenter')}
@@ -375,10 +375,10 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
               <span className="text-4xl">👤</span>
             </div>
             <h4 className="body-large font-medium text-neutral-900 mb-2">
-              Aucun dirigeant controversé associé
+              Aucun bénéficiaire controversé associé
             </h4>
             <p className="text-neutral-600 mb-4">
-              Vous pouvez lier un dirigeant controversé existant à cette marque.
+              Vous pouvez lier un bénéficiaire controversé existant à cette marque.
             </p>
             <button
               onClick={() => router.push(`/admin/marques/${marque.id}/lier-dirigeant`)}

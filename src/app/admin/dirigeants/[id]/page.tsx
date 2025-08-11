@@ -168,7 +168,7 @@ export default function DirigeantDetailPage() {
           </button>
           <div>
             <h1 className="heading-main font-bold text-neutral-900">{dirigeant.nom}</h1>
-            <p className="body-small text-neutral-600">Dirigeant controversé</p>
+            <p className="body-small text-neutral-600">Bénéficiaire controversé</p>
           </div>
         </div>
 

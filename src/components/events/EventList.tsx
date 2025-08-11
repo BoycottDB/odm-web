@@ -130,11 +130,8 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
         {hasDirigeants && (
           <div>
             <h3 className="heading-sub font-medium text-neutral-900 mb-6 text-center">
-              Qui bénéficie de vos achats ?
+              À qui profitent vos achats ?
             </h3>
-            <p className="text-center text-neutral-600 mb-8 max-w-2xl mx-auto">
-              Découvrez les individus et groupes controversés qui reçoivent une partie de votre argent quand vous achetez cette marque.
-            </p>
             
             {/* Navigation entre bénéficiaires avec transformation des données */}
             <BeneficiaireNavigation 
