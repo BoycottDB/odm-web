@@ -196,7 +196,7 @@ export function MarqueBeneficiaireForm({ liaison, marque, onSubmit, onCancel, lo
           rows={3}
         />
         <p className="text-xs text-neutral-600 mt-1">
-          Impact spécifique à cette relation. Si vide, l'impact générique du bénéficiaire sera utilisé.
+          Impact spécifique à cette relation. Si vide, l&apos;impact générique du bénéficiaire sera utilisé.
           {selectedBeneficiaire && selectedBeneficiaire.impact_generique && (
             <>
               <br />

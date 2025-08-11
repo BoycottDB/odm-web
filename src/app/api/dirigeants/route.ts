@@ -1,31 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
-import { DirigeantCreateRequest, DirigeantUpdateRequest, DirigeantWithMarques, Dirigeant } from '@/types';
+import { DirigeantCreateRequest, DirigeantUpdateRequest, DirigeantWithMarques, BeneficiaireCreateRequest } from '@/types';
 
 export async function GET() {
   try {
-    // Récupérer tous les dirigeants avec leurs liaisons marque
+    // Récupérer tous les bénéficiaires avec leurs liaisons marque
     const { data: dirigeants, error: dirigeantError } = await supabase
-      .from('dirigeants')
+      .from('Beneficiaires')
       .select(`
         id,
         nom,
         controverses,
         sources,
         impact_generique,
+        type_beneficiaire,
         created_at,
         updated_at
       `);
       
     if (dirigeantError) throw dirigeantError;
     
-    // Récupérer toutes les liaisons marque-dirigeant
+    // Récupérer toutes les liaisons marque-bénéficiaire
     const { data: liaisons, error: liaisonError } = await supabase
-      .from('marque_dirigeant')
+      .from('Marque_beneficiaire')
       .select(`
         id,
         marque_id,
-        dirigeant_id,
+        beneficiaire_id,
         lien_financier,
         impact_specifique,
         marque:Marque!marque_id (id, nom)
@@ -37,7 +38,7 @@ export async function GET() {
     type LiaisonRow = {
       id: number;
       marque_id: number;
-      dirigeant_id: number;
+      beneficiaire_id: number;
       lien_financier: string;
       impact_specifique?: string | null;
       marque: { id: number; nom: string } | Array<{ id: number; nom: string }>;
@@ -51,8 +52,9 @@ export async function GET() {
       controverses: dirigeant.controverses,
       sources: dirigeant.sources,
       impact_generique: dirigeant.impact_generique,
+      type_beneficiaire: dirigeant.type_beneficiaire || 'individu',
       marques: liaisonsTyped
-        .filter(liaison => liaison.dirigeant_id === dirigeant.id)
+        .filter(liaison => liaison.beneficiaire_id === dirigeant.id)
         .map(liaison => {
           const marqueObj = Array.isArray(liaison.marque) ? liaison.marque[0] : liaison.marque;
           return {
@@ -118,9 +120,9 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Vérifier qu'un dirigeant avec ce nom n'existe pas déjà
+    // Vérifier qu'un bénéficiaire avec ce nom n'existe pas déjà
     const { data: existing, error: checkError } = await supabaseAdmin
-      .from('dirigeants')
+      .from('Beneficiaires')
       .select('id')
       .eq('nom', data.nom.trim())
       .single();
@@ -133,12 +135,13 @@ export async function POST(request: NextRequest) {
     }
     
     const { data: dirigeant, error } = await supabaseAdmin
-      .from('dirigeants')
+      .from('Beneficiaires')
       .insert({
         nom: data.nom.trim(),
         controverses: data.controverses.trim(),
         sources: data.sources,
-        impact_generique: data.impact_generique?.trim()
+        impact_generique: data.impact_generique?.trim(),
+        type_beneficiaire: (data as BeneficiaireCreateRequest).type_beneficiaire || 'individu'
       })
       .select()
       .single();
@@ -192,7 +195,7 @@ export async function PUT(request: NextRequest) {
     // Vérifier unicité du nom si modifié
     if (updateData.nom) {
       const { data: existing, error: checkError } = await supabaseAdmin
-        .from('dirigeants')
+        .from('Beneficiaires')
         .select('id')
         .eq('nom', updateData.nom.trim())
         .neq('id', id)
@@ -217,7 +220,7 @@ export async function PUT(request: NextRequest) {
     }, {} as Record<string, unknown>);
     
     const { data: dirigeant, error } = await supabaseAdmin
-      .from('dirigeants')
+      .from('Beneficiaires')
       .update(cleanedData)
       .eq('id', id)
       .select()
@@ -247,11 +250,11 @@ export async function DELETE(request: NextRequest) {
       );
     }
     
-    // Vérifier s'il existe des liaisons avec ce dirigeant
+    // Vérifier s'il existe des liaisons avec ce bénéficiaire
     const { data: liaisons, error: checkError } = await supabaseAdmin
-      .from('marque_dirigeant')
+      .from('Marque_beneficiaire')
       .select('id')
-      .eq('dirigeant_id', id);
+      .eq('beneficiaire_id', id);
     
     if (checkError) throw checkError;
     
@@ -263,7 +266,7 @@ export async function DELETE(request: NextRequest) {
     }
     
     const { error } = await supabaseAdmin
-      .from('dirigeants')
+      .from('Beneficiaires')
       .delete()
       .eq('id', id);
       

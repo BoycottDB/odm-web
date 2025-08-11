@@ -41,17 +41,21 @@ export async function GET(request: NextRequest) {
       }
 
       // Transformer pour compatibilité avec frontend existant (format DirigeantResult)
-      const beneficiairesTransformes = liaisons.map(liaison => ({
-        id: liaison.id,
-        dirigeant_id: liaison.beneficiaire.id, // Alias pour compatibilité
-        dirigeant_nom: liaison.beneficiaire.nom,
-        controverses: liaison.beneficiaire.controverses,
-        sources: liaison.beneficiaire.sources,
-        lien_financier: liaison.lien_financier,
-        impact_description: liaison.impact_specifique || liaison.beneficiaire.impact_generique || 'Impact à définir',
-        type_beneficiaire: liaison.beneficiaire.type_beneficiaire || 'individu',
-        marque_id: liaison.marque_id
-      }));
+      const beneficiairesTransformes = (liaisons || []).map((liaison: unknown) => {
+        const l = liaison as Record<string, unknown>;
+        const beneficiaire = l.beneficiaire as Record<string, unknown> | undefined;
+        return {
+          id: l.id as number,
+          dirigeant_id: beneficiaire?.id as number, // Alias pour compatibilité
+          dirigeant_nom: (beneficiaire?.nom as string) || 'Nom inconnu',
+          controverses: (beneficiaire?.controverses as string) || '',
+          sources: (beneficiaire?.sources as string[]) || [],
+          lien_financier: l.lien_financier as string,
+          impact_description: (l.impact_specifique as string) || (beneficiaire?.impact_generique as string) || 'Impact à définir',
+          type_beneficiaire: (beneficiaire?.type_beneficiaire as string) || 'individu',
+          marque_id: l.marque_id as number
+        };
+      });
 
       return NextResponse.json(beneficiairesTransformes);
     } else {
@@ -77,7 +81,8 @@ export async function GET(request: NextRequest) {
 
       // Pour chaque bénéficiaire, récupérer ses marques liées
       const beneficiairesWithMarques: BeneficiaireWithMarques[] = await Promise.all(
-        beneficiaires.map(async (beneficiaire) => {
+        (beneficiaires || []).map(async (beneficiaire: unknown) => {
+          const b = beneficiaire as Record<string, unknown>;
           const { data: marques, error: marqueError } = await supabase
             .from('Marque_beneficiaire')
             .select(`
@@ -89,21 +94,29 @@ export async function GET(request: NextRequest) {
                 nom
               )
             `)
-            .eq('beneficiaire_id', beneficiaire.id);
+            .eq('beneficiaire_id', b.id as number);
 
           if (marqueError) {
-            console.error(`Erreur récupération marques pour bénéficiaire ${beneficiaire.id}:`, marqueError);
+            console.error(`Erreur récupération marques pour bénéficiaire ${b.id}:`, marqueError);
           }
-
           return {
-            ...beneficiaire,
-            marques: marques?.map(m => ({
-              id: m.marque.id,
-              nom: m.marque.nom,
-              lien_financier: m.lien_financier,
-              impact_specifique: m.impact_specifique,
-              liaison_id: m.id
-            })) || []
+            id: b.id as number,
+            nom: b.nom as string,
+            controverses: b.controverses as string,
+            sources: b.sources as string[],
+            impact_generique: b.impact_generique as string || undefined,
+            type_beneficiaire: ((b.type_beneficiaire as string) || 'individu') as 'individu' | 'groupe',
+            marques: (marques || []).map((m: unknown) => {
+              const marque = m as Record<string, unknown>;
+              const marqueData = marque.marque as Record<string, unknown> | undefined;
+              return {
+                id: (marqueData?.id as number) || 0,
+                nom: (marqueData?.nom as string) || 'Marque inconnue',
+                lien_financier: marque.lien_financier as string,
+                impact_specifique: marque.impact_specifique as string || undefined,
+                liaison_id: marque.id as number
+              };
+            })
           };
         })
       );
@@ -148,7 +161,7 @@ export async function PUT(request: NextRequest) {
   try {
     const body: BeneficiaireUpdateRequest = await request.json();
 
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     if (body.nom !== undefined) updateData.nom = body.nom;
     if (body.controverses !== undefined) updateData.controverses = body.controverses;
     if (body.sources !== undefined) updateData.sources = body.sources;

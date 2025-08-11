@@ -81,9 +81,14 @@ export interface BeneficiaireResult {
   };
 }
 
-// Alias pour rétrocompatibilité
-export interface DirigeantResult extends BeneficiaireResult {
+// Alias pour rétrocompatibilité - même structure que BeneficiaireResult
+export interface DirigeantResult {
+  id: string;
   type: 'dirigeant';
+  marque: Marque;
+  beneficiaire: MarqueDirigeantLegacy & {
+    type_beneficiaire?: TypeBeneficiaire;
+  };
   dirigeant: MarqueDirigeantLegacy & {
     type_beneficiaire?: TypeBeneficiaire;
   };
@@ -210,11 +215,11 @@ export interface MarqueBeneficiaire {
   marque?: { id: number; nom: string };
 }
 
-// Alias pour rétrocompatibilité
-export interface Dirigeant extends Beneficiaire {}
-export interface MarqueDirigeant extends Omit<MarqueBeneficiaire, 'beneficiaire_id'> {
+// Types alias pour rétrocompatibilité
+export type Dirigeant = Beneficiaire;
+export type MarqueDirigeant = Omit<MarqueBeneficiaire, 'beneficiaire_id'> & {
   dirigeant_id: number;
-}
+};
 
 // Interface pour la vue bénéficiaire-centrique
 export interface BeneficiaireWithMarques {
@@ -252,9 +257,9 @@ export interface BeneficiaireComplet {
   }>;
 }
 
-// Aliases pour rétrocompatibilité
-export interface DirigeantWithMarques extends BeneficiaireWithMarques {}
-export interface DirigeantComplet extends BeneficiaireComplet {}
+// Types alias pour rétrocompatibilité
+export type DirigeantWithMarques = BeneficiaireWithMarques;
+export type DirigeantComplet = BeneficiaireComplet;
 
 // Requests pour l'API bénéficiaires
 export interface BeneficiaireCreateRequest {
@@ -288,13 +293,13 @@ export interface MarqueBeneficiaireUpdateRequest {
   impact_specifique?: string;
 }
 
-// Aliases pour rétrocompatibilité
-export interface DirigeantCreateRequest extends BeneficiaireCreateRequest {}
-export interface DirigeantUpdateRequest extends BeneficiaireUpdateRequest {}
-export interface MarqueDirigeantCreateRequest extends Omit<MarqueBeneficiaireCreateRequest, 'beneficiaire_id'> {
+// Types alias pour rétrocompatibilité
+export type DirigeantCreateRequest = BeneficiaireCreateRequest;
+export type DirigeantUpdateRequest = BeneficiaireUpdateRequest;
+export type MarqueDirigeantCreateRequest = Omit<MarqueBeneficiaireCreateRequest, 'beneficiaire_id'> & {
   dirigeant_id: number;
-}
-export interface MarqueDirigeantUpdateRequest extends MarqueBeneficiaireUpdateRequest {}
+};
+export type MarqueDirigeantUpdateRequest = MarqueBeneficiaireUpdateRequest;
 
 // Interface simplifiée pour les catégories dans les stats
 export interface CategorieStats {

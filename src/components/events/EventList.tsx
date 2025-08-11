@@ -153,11 +153,11 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
                   toutes_marques: dirigeantResult.dirigeant.toutes_marques || [],
                   
                   // NOUVEAU - Type bénéficiaire avec fallback
-                  type_beneficiaire: (dirigeantResult.beneficiaire as any)?.type_beneficiaire || 
-                                   (dirigeantResult.dirigeant as any)?.type_beneficiaire || 
+                  type_beneficiaire: dirigeantResult.beneficiaire?.type_beneficiaire || 
+                                   dirigeantResult.dirigeant?.type_beneficiaire || 
                                    'individu',
-                  type_affichage: ((dirigeantResult.beneficiaire as any)?.type_beneficiaire || 
-                                  (dirigeantResult.dirigeant as any)?.type_beneficiaire || 
+                  type_affichage: (dirigeantResult.beneficiaire?.type_beneficiaire || 
+                                  dirigeantResult.dirigeant?.type_beneficiaire || 
                                   'individu') === 'groupe' ? 'Groupe' : 'Dirigeant'
                 };
                 
