@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dataService } from '@/lib/services/dataService';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { validateEvenementCreate } from '@/lib/validation/schemas';
 import { getErrorMessage } from '@/lib/utils/helpers';
 
@@ -9,12 +9,31 @@ export async function GET(request: NextRequest) {
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
     const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : undefined;
     
-    // Use dataService for hybrid approach (extension-api with fallback to Supabase)
-    const evenements = await dataService.getEvenements(limit, offset);
+    // Direct Supabase query - API routes should not use dataService
+    let query = supabaseAdmin
+      .from('Evenement')
+      .select(`
+        *,
+        marque:Marque!inner(*),
+        categorie:Categorie!Evenement_categorie_id_fkey(*)
+      `)
+      .order('date', { ascending: false });
     
-    return NextResponse.json(evenements, {
+    if (limit) {
+      query = query.limit(limit);
+    }
+    
+    if (offset) {
+      query = query.range(offset, offset + (limit || 50) - 1);
+    }
+    
+    const { data: evenements, error } = await query;
+    
+    if (error) throw error;
+    
+    return NextResponse.json(evenements || [], {
       headers: {
-        'X-Data-Source': 'hybrid-service'
+        'X-Data-Source': 'direct-supabase'
       }
     });
   } catch (error) {
@@ -39,19 +58,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Vérifier que la marque existe (using read operation via dataService)
-    const marques = await dataService.getMarques();
-    const marque = marques.find(m => m.id === validation.data!.marque_id);
+    // Vérifier que la marque existe - Direct Supabase query
+    const { data: marque, error: marqueError } = await supabaseAdmin
+      .from('Marque')
+      .select('id, nom')
+      .eq('id', validation.data!.marque_id)
+      .single();
 
-    if (!marque) {
+    if (marqueError || !marque) {
       return NextResponse.json(
         { error: 'Marque introuvable' },
         { status: 404 }
       );
     }
 
-    // Créer l'événement (using write operation - direct Supabase)
-    const evenement = await dataService.createEvenement(validation.data!);
+    // Créer l'événement - Direct Supabase
+    const { data: evenement, error: evenementError } = await supabaseAdmin
+      .from('Evenement')
+      .insert([validation.data!])
+      .select()
+      .single();
+    
+    if (evenementError) throw evenementError;
 
     return NextResponse.json(evenement, { 
       status: 201,

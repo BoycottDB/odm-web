@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { apiService } from '@/lib/services/api';
+import { dataService } from '@/lib/services/dataService';
 import { validateHoneypot, validateSubmissionTime } from '@/lib/security/honeypot';
 import Captcha from '@/components/ui/Captcha';
 import HoneypotField from '@/components/ui/HoneypotField';
@@ -50,7 +50,7 @@ export default function SignalementForm() {
     if (type === 'evenement' && formData.marque_nom.length > 1) {
       const searchMarques = async () => {
         try {
-          const suggestions = await apiService.searchMarques(formData.marque_nom);
+          const suggestions = await dataService.getMarques(formData.marque_nom);
           setMarquesSuggestions(suggestions);
           setShowSuggestions(suggestions.length > 0);
         } catch (error) {
@@ -84,7 +84,16 @@ export default function SignalementForm() {
         source_url: formData.source_url.length > 0 ? formData.source_url : undefined
       };
 
-      const results = await apiService.searchSimilaire(query);
+      const params = new URLSearchParams();
+      params.append('type', query.type);
+      if (query.marque_nom) params.append('marque_nom', query.marque_nom);
+      if (query.description) params.append('description', query.description);
+      if (query.date) params.append('date', query.date);
+      if (query.source_url) params.append('source_url', query.source_url);
+
+      const response = await fetch(`/api/search-similaire?${params.toString()}`);
+      if (!response.ok) throw new Error('Erreur lors de la recherche de similarité');
+      const results = await response.json();
       if (results.marques.length > 0 || results.evenements.length > 0 || results.propositions.length > 0) {
         setSimilarResults(results);
         setShowSimilar(true);
@@ -127,7 +136,16 @@ export default function SignalementForm() {
         source_url: formData.source_url
       };
 
-      await apiService.createProposition(propositionData);
+      const response = await fetch('/api/propositions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(propositionData)
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erreur lors de la soumission');
+      }
       setIsSuccess(true);
     } catch (error: unknown) {
       if (error && typeof error === 'object' && 'response' in error) {

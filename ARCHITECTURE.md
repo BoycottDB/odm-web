@@ -114,7 +114,7 @@ src/
 ### **Recherche Unifiée (Marques + Dirigeants)**
 1. `SearchBar` → `handleSearchChange` avec debouncing
 2. `useSearch` → `performSearch` (événements + dirigeants)
-3. `apiService` → `GET /api/evenements` + `GET /api/dirigeants`
+3. `dataService` → Lectures via extension-api avec cache CDN
 4. `EventList` → Affichage résultats mixtes avec état de chargement
 5. Synchronisation avec URL pour partage/navigation
 
@@ -127,14 +127,14 @@ src/
 
 ### **Système de Modération Collaborative**
 1. `SignalementForm` → Validation + détection doublons
-2. `apiService` → `POST /api/propositions` avec sécurité
+2. API directe → `POST /api/propositions` avec sécurité
 3. Interface admin → `PropositionList` avec workflow
 4. `moderation.ts` → Conversion propositions → événements
 5. `GET /api/decisions` → Transparence des décisions
 
 ### **Détection de Doublons**
 1. `SimilarItems` → Recherche similarité en temps réel
-2. `apiService` → `GET /api/search-similaire` avec fuzzy matching
+2. API directe → `GET /api/search-similaire` avec fuzzy matching
 3. Affichage suggestions avec scores de similarité
 4. Prévention création doublons automatique
 

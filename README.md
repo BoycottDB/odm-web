@@ -174,14 +174,14 @@ npm run build       # Production build
 - **Code Comments** : JSDoc pour fonctions complexes uniquement
 
 ### Architecture des Données
-L'application utilise une **architecture hybride** pour optimiser performances et maintenance :
+L'application utilise une **architecture simplifiée** pour optimiser performances et maintenance :
 
-- **Lectures** : Via [extension-api](../extension-api/) avec cache CDN (15min-1h)
+- **Lectures** : Via [extension-api](../extension-api/) avec cache CDN (5-30min)
 - **Écritures** : Direct vers Supabase pour fiabilité transactionnelle
-- **Fallback** : Basculement automatique vers Supabase si extension-api indisponible
-- **Configuration** : Variables d'environnement pour activer/désactiver le mode hybride
+- **Performance** : Temps de réponse constant (~50ms) grâce au cache CDN
+- **Configuration** : Une seule variable d'environnement (`NEXT_PUBLIC_EXTENSION_API_URL`)
 
-Cette architecture résout le problème de duplication de maintenance entre les applications web et extension tout en améliorant les performances grâce au cache CDN.
+Cette architecture simplifie la maintenance en éliminant la complexité des fallbacks tout en conservant les avantages du cache CDN et la fiabilité de Netlify (99.9% uptime).
 
 ---
 
