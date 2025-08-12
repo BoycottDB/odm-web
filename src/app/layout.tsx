@@ -84,7 +84,7 @@ function MobileNav() {
           </button>
         </div>
         
-        <nav className="flex flex-col gap-4 p-4 bg-white border-b border-neutral-200 rounded-b-2xl">
+        <nav className="flex flex-col gap-4 p-4 bg-white border-b border-neutral-200 rounded-b-2xl" role="navigation" aria-label="Navigation mobile">
           {/* Contraste renforcé sur le menu mobile */}
           <Link href="/" className={getLinkClass('/')} onClick={() => setOpen(false)}>
             Accueil
@@ -156,7 +156,7 @@ export default function RootLayout({
               <strong>ODM</strong>
             </Link>
             {/* Menu desktop */}
-            <nav className="hidden md:flex gap-8 body-base font-medium">
+            <nav className="hidden md:flex gap-8 body-base font-medium" role="navigation" aria-label="Navigation principale">
               <Link href="/" className={getDesktopLinkClass('/')}>
                 Accueil
               </Link>
@@ -177,11 +177,11 @@ export default function RootLayout({
             <MobileNav />
           </div>
         </header>
-        <main className="min-h-[calc(100vh-80px)] w-full">
+        <main className="min-h-[calc(100vh-80px)] w-full" role="main">
           {children}
         </main>
         {/* Footer */}
-        <footer className="bg-neutral-900 text-white section-padding">
+        <footer className="bg-neutral-900 text-white section-padding" role="contentinfo">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <div className="mb-6">
               <p className="body-large text-neutral-300 mb-2">

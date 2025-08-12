@@ -255,25 +255,34 @@ export default function SignalementForm() {
         {/* Champs pour la controverse */}
             {/* Marque pour controverse */}
             <div className="relative">
-              <label className="block body-small font-medium text-neutral-700 mb-2">
+              <label htmlFor="marque-nom" className="block body-small font-medium text-neutral-700 mb-2">
                 Marque concernée *
               </label>
               <input
+                id="marque-nom"
                 type="text"
                 value={formData.marque_nom}
                 onChange={(e) => setFormData({ ...formData, marque_nom: e.target.value, marque_id: undefined })}
                 className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Tapez le nom de la marque..."
+                aria-autocomplete="list"
+                aria-expanded={showSuggestions}
+                aria-owns={showSuggestions ? "marque-suggestions" : undefined}
                 required
               />
               
               {/* Suggestions */}
               {showSuggestions && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-neutral rounded-lg shadow-lg">
+                <div 
+                  id="marque-suggestions"
+                  role="listbox"
+                  className="absolute z-10 w-full mt-1 bg-white border border-neutral rounded-lg shadow-lg"
+                >
                   {marquesSuggestions.map((marque) => (
                     <button
                       key={marque.id}
                       type="button"
+                      role="option"
                       onClick={() => {
                         setFormData({ ...formData, marque_nom: marque.nom, marque_id: marque.id });
                         setShowSuggestions(false);
@@ -290,10 +299,11 @@ export default function SignalementForm() {
 
             {/* Date */}
             <div>
-              <label className="block body-small font-medium text-neutral-700 mb-2">
+              <label htmlFor="date-controverse" className="block body-small font-medium text-neutral-700 mb-2">
                 Date *
               </label>
               <input
+                id="date-controverse"
                 type="date"
                 value={formData.date}
                 max={new Date().toISOString().split('T')[0]} // Empêche les dates futures
@@ -309,10 +319,11 @@ export default function SignalementForm() {
 
             {/* URL source (obligatoire) */}
             <div>
-              <label className="block body-small font-medium text-neutral-700 mb-2">
+              <label htmlFor="source-url" className="block body-small font-medium text-neutral-700 mb-2">
                 URL de la source *
               </label>
               <input
+                id="source-url"
                 type="url"
                 value={formData.source_url}
                 onChange={(e) => setFormData({ ...formData, source_url: e.target.value })}
@@ -327,10 +338,11 @@ export default function SignalementForm() {
 
         {/* Message aux modérateurs */}
         <div>
-          <label className="block body-small font-medium text-neutral-700 mb-2">
+          <label htmlFor="message-moderateurs" className="block body-small font-medium text-neutral-700 mb-2">
             Message aux modérateurs *
           </label>
           <textarea
+            id="message-moderateurs"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"

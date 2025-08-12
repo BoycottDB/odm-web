@@ -35,14 +35,18 @@ export function SearchBar({
 
   return (
     <div className="relative w-full max-w-2xl mx-auto">
-      <form onSubmit={handleSubmit} className="relative">
+      <form onSubmit={handleSubmit} className="relative" role="search">
         <div className="relative">
+          <label htmlFor="search-input" className="sr-only">
+            Rechercher une marque
+          </label>
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg className="h-6 w-6 text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-6 w-6 text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
           <input
+            id="search-input"
             type="text"
             value={value}
             onChange={handleChange}
@@ -50,6 +54,10 @@ export function SearchBar({
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
+            aria-label="Rechercher une marque"
+            aria-autocomplete="list"
+            aria-expanded={suggestions.visible && suggestions.items.length > 0}
+            aria-owns={suggestions.visible && suggestions.items.length > 0 ? "search-suggestions" : undefined}
             className="w-full pl-12 pr-4 py-4 body-large font-light border-2 border-primary rounded-2xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary-light transition-all duration-300 bg-white shadow-lg"
           />
         </div>
@@ -57,11 +65,17 @@ export function SearchBar({
 
       {/* Suggestions dropdown */}
       {suggestions.visible && suggestions.items.length > 0 && (
-        <div className="absolute z-10 w-full mt-2 bg-white border-2 border-primary rounded-2xl shadow-xl max-h-60 overflow-y-auto">
+        <div 
+          id="search-suggestions"
+          role="listbox"
+          className="absolute z-10 w-full mt-2 bg-white border-2 border-primary rounded-2xl shadow-xl max-h-60 overflow-y-auto"
+        >
           {suggestions.items.map((marque, index) => (
             <button
               key={marque.id}
               type="button"
+              role="option"
+              aria-selected={index === suggestions.highlighted}
               onMouseDown={() => onSuggestionSelect(marque)}
               className={`w-full px-4 py-3 text-left hover:bg-primary-light transition-colors duration-200 ${
                 index === suggestions.highlighted ? 'bg-primary-light' : ''
