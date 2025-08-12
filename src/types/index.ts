@@ -116,6 +116,7 @@ export interface SearchState {
   dirigeantResults: DirigeantResult[];
   notFound: boolean;
   loading: boolean;
+  hasPerformedSearch: boolean; // True quand une recherche a été effectivement exécutée
 }
 
 export interface SuggestionState {

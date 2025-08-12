@@ -12,7 +12,8 @@ export function useSearch() {
     results: [],
     dirigeantResults: [],
     notFound: false,
-    loading: true
+    loading: true,
+    hasPerformedSearch: false
   });
 
   // Fonction helper pour charger les événements (sans dirigeants pour l'affichage initial)
@@ -44,7 +45,8 @@ export function useSearch() {
           results: events,
           dirigeantResults: [],
           notFound: false,
-          isSearching: false
+          isSearching: false,
+          hasPerformedSearch: false
         }));
       } catch (error) {
         setSearchState(prev => ({
@@ -52,7 +54,8 @@ export function useSearch() {
           results: [],
           dirigeantResults: [],
           notFound: true,
-          isSearching: false
+          isSearching: false,
+          hasPerformedSearch: false
         }));
       }
       return;
@@ -75,12 +78,19 @@ export function useSearch() {
       
       const normalizedQuery = query.toLowerCase().trim();
       
-      // Filtrer les événements existants
+      // Filtrer les événements existants et enrichir avec les données complètes des marques
       const filteredEvents = allEvenements.filter(event =>
         event.marque?.nom.toLowerCase().includes(normalizedQuery) ||
         event.titre.toLowerCase().includes(normalizedQuery) ||
         event.categorie?.nom.toLowerCase().includes(normalizedQuery)
-      );
+      ).map(event => {
+        // Trouver la marque complète correspondante dans allMarques
+        const marqueComplete = allMarques.find(m => m.id === event.marque?.id);
+        return {
+          ...event,
+          marque: marqueComplete || event.marque
+        };
+      });
       
       // Trouver les marques avec bénéficiaires controversés qui correspondent à la recherche
       const marquesWithBeneficiaires = allMarques.filter((marque: Marque) => 
@@ -142,7 +152,8 @@ export function useSearch() {
         dirigeantResults: dirigeantResults,
         notFound: !hasResults,
         isSearching: false,
-        loading: false
+        loading: false,
+        hasPerformedSearch: true
       }));
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
@@ -152,7 +163,8 @@ export function useSearch() {
         notFound: true,
         loading: false,
         results: [],
-        dirigeantResults: []
+        dirigeantResults: [],
+        hasPerformedSearch: true
       }));
     }
   }, [loadEvents]);
@@ -174,14 +186,16 @@ export function useSearch() {
             ...prev,
             results: events,
             dirigeantResults: [],
-            loading: false
+            loading: false,
+            hasPerformedSearch: false
           }));
         } catch (error) {
           setSearchState(prev => ({
             ...prev,
             loading: false,
             notFound: true,
-            dirigeantResults: []
+            dirigeantResults: [],
+            hasPerformedSearch: false
           }));
         }
       }
@@ -218,7 +232,8 @@ export function useSearch() {
       results: [],
       dirigeantResults: [],
       notFound: false,
-      loading: false
+      loading: false,
+      hasPerformedSearch: false
     });
   }, [router]);
 

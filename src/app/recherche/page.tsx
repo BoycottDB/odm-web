@@ -69,9 +69,9 @@ function SearchPageContent() {
     hideSuggestions();
   };
 
-  // Au démarrage, on considère qu'une "recherche" a été effectuée (chargement initial)
-  // Sinon, on vérifie si l'utilisateur a tapé quelque chose
-  const hasSearched = searchState.query.length > 0 || (!searchState.loading && searchState.results.length > 0);
+  // Une recherche a été effectuée si elle a été effectivement exécutée
+  // (pas seulement quand on tape dans la barre de recherche)
+  const hasSearched = searchState.hasPerformedSearch;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-primary-light">
