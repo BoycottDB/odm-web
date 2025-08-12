@@ -141,6 +141,7 @@ export function ShareButton({
         ${className}
       `}
       title="Partager"
+      aria-label={copied ? "Lien copié dans le presse-papiers" : "Partager cette page"}
     >
       {copied ? (
         <>
