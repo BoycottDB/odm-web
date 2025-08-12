@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       .select(`
         *,
         evenements:Evenement(*),
-        secteur_marque:SecteurMarque(*),
+        secteur_marque:SecteurMarque!secteur_marque_id(*),
         beneficiaires_marque:Marque_beneficiaire(
           id,
           lien_financier,
