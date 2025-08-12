@@ -1,16 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dataService } from '@/lib/services/dataService';
 import { supabaseAdmin } from '@/lib/supabaseClient';
 import { validateAdminToken } from '@/lib/auth/admin';
 
 export async function GET() {
   try {
-    // Use dataService for hybrid approach (extension-api with fallback to Supabase)
-    const categories = await dataService.getCategories();
+    // Direct Supabase query - API routes should not use dataService
+    const { data: categories, error } = await supabaseAdmin
+      .from('Categorie')
+      .select('*')
+      .eq('actif', true)
+      .order('ordre', { ascending: true });
     
-    return NextResponse.json(categories, {
+    if (error) throw error;
+    
+    return NextResponse.json(categories || [], {
       headers: {
-        'X-Data-Source': 'hybrid-service'
+        'X-Data-Source': 'direct-supabase'
       }
     });
   } catch (error) {

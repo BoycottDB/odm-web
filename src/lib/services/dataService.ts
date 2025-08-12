@@ -21,7 +21,7 @@ class DataService {
   private extensionApiUrl: string;
 
   constructor() {
-    this.extensionApiUrl = process.env.NEXT_PUBLIC_EXTENSION_API_URL || 'https://odm-api.netlify.app';
+    this.extensionApiUrl = process.env.NEXT_PUBLIC_EXTENSION_API_URL!;
   }
 
   // ============= LECTURES (extension-api uniquement) =============
@@ -30,21 +30,16 @@ class DataService {
    * Méthode privée pour fetch depuis extension-api
    */
   private async fetchFromExtensionApi<T>(endpoint: string): Promise<T> {
-    const url = `${this.extensionApiUrl}/.netlify/functions/${endpoint}`;
-    
-    const response = await fetch(url, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      cache: 'no-store' // Ensure fresh data from CDN
+    const response = await fetch(`${this.extensionApiUrl}/${endpoint}`, {
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store'
     });
     
     if (!response.ok) {
-      throw new Error(`Service temporairement indisponible (${response.status})`);
+      throw new Error(`Service indisponible (${response.status})`);
     }
     
-    return await response.json();
+    return response.json();
   }
 
   /**
@@ -319,7 +314,7 @@ class DataService {
    */
   async checkExtensionApiHealth(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.extensionApiUrl}/.netlify/functions/health`, {
+      const response = await fetch(`${this.extensionApiUrl}/health`, {
         method: 'GET',
         headers: { 'Accept': 'application/json' },
         cache: 'no-store'

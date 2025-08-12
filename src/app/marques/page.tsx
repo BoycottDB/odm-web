@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { MarqueWithStats } from '@/types';
-import { apiService } from '@/lib/services/api';
 import { Badge } from '@/components/ui/Badge';
 
 export default function MarquesPage() {
@@ -15,7 +14,9 @@ export default function MarquesPage() {
   useEffect(() => {
     const loadMarques = async () => {
       try {
-        const data = await apiService.getMarquesWithStats();
+        const response = await fetch('/api/marques/stats', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Erreur lors du chargement');
+        const data = await response.json();
         setMarques(data);
       } catch (error) {
         console.error('Erreur lors du chargement des marques:', error);
