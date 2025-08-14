@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { Decision } from '@/types';
 
 export async function GET(request: NextRequest) {
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0');
 
     // Récupérer toutes les propositions approuvées ou rejetées
-    const { data: propositions, error } = await supabase
+    const { data: propositions, error } = await supabaseAdmin
       .from('Proposition')
       .select(`
         id,

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { dataService } from '@/lib/services/dataService';
 import { validateHoneypot, validateSubmissionTime } from '@/lib/security/honeypot';
 import Captcha from '@/components/ui/Captcha';
 import HoneypotField from '@/components/ui/HoneypotField';
@@ -45,12 +44,17 @@ export default function SignalementForm() {
 
 
 
-  // Recherche de marques pour auto-complétion
+  // Recherche de marques pour auto-complétion - Pattern admin cohérent
   useEffect(() => {
     if (type === 'evenement' && formData.marque_nom.length > 1) {
       const searchMarques = async () => {
         try {
-          const suggestions = await dataService.getMarques(formData.marque_nom);
+          // Utilise le même pattern que les pages admin : fetch direct vers API route
+          const response = await fetch(`/api/marques?search=${encodeURIComponent(formData.marque_nom)}&limit=10`);
+          if (!response.ok) {
+            throw new Error(`Erreur ${response.status}`);
+          }
+          const suggestions = await response.json();
           setMarquesSuggestions(suggestions);
           setShowSuggestions(suggestions.length > 0);
         } catch (error) {

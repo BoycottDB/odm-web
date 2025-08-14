@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { MarqueDirigeantCreateRequest, MarqueDirigeantUpdateRequest, Marque } from '@/types';
+import { MarqueBeneficiaireCreateRequest, MarqueDirigeantUpdateRequest, Marque } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
 import MarqueDirigeantForm from '@/components/admin/MarqueDirigeantForm';
 
@@ -48,7 +48,7 @@ export default function LierDirigeantPage() {
     }
   };
 
-  const handleSave = async (data: MarqueDirigeantCreateRequest | MarqueDirigeantUpdateRequest) => {
+  const handleSave = async (data: MarqueBeneficiaireCreateRequest | MarqueDirigeantUpdateRequest) => {
     setSaving(true);
     setMessage(null);
 

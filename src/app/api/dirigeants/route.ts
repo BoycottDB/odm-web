@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { DirigeantCreateRequest, DirigeantUpdateRequest, DirigeantWithMarques, BeneficiaireCreateRequest } from '@/types';
 
 export async function GET() {
   try {
     // Récupérer tous les bénéficiaires avec leurs liaisons marque
-    const { data: dirigeants, error: dirigeantError } = await supabase
+    const { data: dirigeants, error: dirigeantError } = await supabaseAdmin
       .from('Beneficiaires')
       .select(`
         id,
@@ -21,7 +21,7 @@ export async function GET() {
     if (dirigeantError) throw dirigeantError;
     
     // Récupérer toutes les liaisons marque-bénéficiaire
-    const { data: liaisons, error: liaisonError } = await supabase
+    const { data: liaisons, error: liaisonError } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .select(`
         id,

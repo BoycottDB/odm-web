@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { MarqueWithStats, CategorieStats } from '@/types';
 
 
 export async function GET() {
   try {
     // Récupérer toutes les marques avec leurs événements et bénéficiaires
-    const { data: marques, error: marquesError } = await supabase
+    const { data: marques, error: marquesError } = await supabaseAdmin
       .from('Marque')
       .select(`
         id,

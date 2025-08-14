@@ -139,7 +139,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
               beneficiaires={dirigeantResults.map(dirigeantResult => {
                 // Transformation existante + nouveaux champs bénéficiaires
                 const beneficiaireComplet: BeneficiaireComplet = {
-                  id: dirigeantResult.dirigeant.dirigeant_id || parseInt(dirigeantResult.id.replace('dirigeant-', '')),
+                  id: dirigeantResult.dirigeant.beneficiaire_id || parseInt(dirigeantResult.id.replace('dirigeant-', '')),
                   nom: dirigeantResult.dirigeant.dirigeant_nom,
                   controverses: dirigeantResult.dirigeant.controverses,
                   sources: dirigeantResult.dirigeant.sources,

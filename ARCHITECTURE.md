@@ -80,7 +80,7 @@ src/
 │   │   └── helpers.ts    # Fonctions utilitaires
 │   ├── validation/       # Validation robuste
 │   │   └── schemas.ts    # Schémas avec messages français
-│   └── supabaseClient.ts # Configuration Supabase
+│   └── supabaseClient.ts # Configuration Supabase (supabaseAdmin uniquement)
 ├── middleware.ts         # Protection routes admin
 └── types/                # Types TypeScript complets
     └── index.ts          # Types métier centralisés
@@ -183,9 +183,10 @@ SecteurMarque (1) ←→ (N) Marque
 - **CSP Headers** : Content Security Policy strict
 
 ### **Base de Données (Supabase)**
-- **Row Level Security** : Permissions granulaires par table
+- **API-First Security** : `supabaseAdmin` uniquement côté serveur avec validation applicative
+- **Aucun accès client** : Pas de RLS, toute sécurité dans les API routes
 - **Requêtes optimisées** : Index sur colonnes de recherche
-- **Relations normalisées** : Foreign keys avec CASCADE
+- **Relations normalisées** : Foreign keys avec CASCADE  
 - **Backup automatique** : Supabase managed backups
 
 ## 📊 Base de données
@@ -485,13 +486,15 @@ npm run clean           # Nettoie .next et node_modules/.cache
 
 ### **Environment Variables**
 ```env
-# Supabase Configuration
+# Supabase Configuration (Server-side only)
 SUPABASE_URL="https://your-project.supabase.co"
-SUPABASE_ANON_KEY="your-anon-key"
 SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
 
 # Admin Authentication
 ADMIN_TOKEN="your-secure-admin-token"
+
+# Extension API Configuration (Required)
+NEXT_PUBLIC_EXTENSION_API_URL="https://odm-api.netlify.app"
 
 # Next.js Configuration
 NEXT_PUBLIC_SITE_URL="https://your-domain.com"

@@ -137,9 +137,9 @@ npm install
 # Configuration environnement
 cp .env.example .env.local
 # Variables requises :
-# SUPABASE_URL et SUPABASE_ANON_KEY (obligatoire)
-# NEXT_PUBLIC_EXTENSION_API_URL=https://odm-api.netlify.app (optionnel)
-# NEXT_PUBLIC_USE_EXTENSION_API_FOR_READS=true (production) ou false (debug)
+# SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY (obligatoire)
+# NEXT_PUBLIC_EXTENSION_API_URL=https://odm-api.netlify.app (obligatoire)
+# ADMIN_TOKEN=your_admin_token (pour l'interface admin)
 
 # Lancement développement
 npm run dev
