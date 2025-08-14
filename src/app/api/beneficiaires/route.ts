@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { BeneficiaireCreateRequest, BeneficiaireUpdateRequest, BeneficiaireWithMarques } from '@/types';
 
 export async function GET(request: NextRequest) {
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   try {
     if (beneficiaireId) {
       // Récupérer un bénéficiaire spécifique avec ses marques liées
-      const { data: beneficiaire, error: beneficiaireError } = await supabase
+      const { data: beneficiaire, error: beneficiaireError } = await supabaseAdmin
         .from('Beneficiaires')
         .select(`
           id,
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       }
 
       // Récupérer les marques liées à ce bénéficiaire
-      const { data: marques, error: marqueError } = await supabase
+      const { data: marques, error: marqueError } = await supabaseAdmin
         .from('Marque_beneficiaire')
         .select(`
           id,
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(beneficiaireWithMarques);
     } else if (marqueId) {
       // Récupérer les bénéficiaires d'une marque spécifique via les liaisons
-      const query = supabase
+      const query = supabaseAdmin
         .from('Marque_beneficiaire')
         .select(`
           id,
@@ -122,7 +122,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(beneficiairesTransformes);
     } else {
       // Récupérer tous les bénéficiaires avec leurs marques liées
-      const { data: beneficiaires, error } = await supabase
+      const { data: beneficiaires, error } = await supabaseAdmin
         .from('Beneficiaires')
         .select(`
           id,
@@ -145,7 +145,7 @@ export async function GET(request: NextRequest) {
       const beneficiairesWithMarques: BeneficiaireWithMarques[] = await Promise.all(
         (beneficiaires || []).map(async (beneficiaire: unknown) => {
           const b = beneficiaire as Record<string, unknown>;
-          const { data: marques, error: marqueError } = await supabase
+          const { data: marques, error: marqueError } = await supabaseAdmin
             .from('Marque_beneficiaire')
             .select(`
               id,
@@ -195,7 +195,7 @@ export async function POST(request: NextRequest) {
   try {
     const body: BeneficiaireCreateRequest = await request.json();
 
-    const { data: beneficiaire, error } = await supabase
+    const { data: beneficiaire, error } = await supabaseAdmin
       .from('Beneficiaires')
       .insert([{
         nom: body.nom,
@@ -232,7 +232,7 @@ export async function PUT(request: NextRequest) {
     
     updateData.updated_at = new Date().toISOString();
 
-    const { data: beneficiaire, error } = await supabase
+    const { data: beneficiaire, error } = await supabaseAdmin
       .from('Beneficiaires')
       .update(updateData)
       .eq('id', body.id)
@@ -260,7 +260,7 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('Beneficiaires')
       .delete()
       .eq('id', parseInt(id));

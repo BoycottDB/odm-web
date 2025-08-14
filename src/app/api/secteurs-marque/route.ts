@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { validateAdminToken } from '@/lib/auth/admin';
 import { SecteurMarqueCreateRequest, SecteurMarqueUpdateRequest } from '@/types';
 
 export async function GET() {
   try {
-    const { data: secteurs, error } = await supabase
+    const { data: secteurs, error } = await supabaseAdmin
       .from('SecteurMarque')
       .select('*')
       .order('nom');

@@ -3,7 +3,7 @@
 export interface MarqueDirigeantLegacy {
   id: number; // ID de la liaison
   marque_id: number;
-  dirigeant_id: number; // ID du dirigeant (nouveau)
+  beneficiaire_id: number; // ID du bénéficiaire
   dirigeant_nom: string;
   controverses: string;
   lien_financier: string;

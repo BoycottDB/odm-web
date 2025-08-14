@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MarqueDirigeantCreateRequest, MarqueDirigeantUpdateRequest, Dirigeant } from '@/types';
+import { MarqueDirigeantCreateRequest, MarqueDirigeantUpdateRequest, MarqueBeneficiaireCreateRequest, Dirigeant } from '@/types';
 
 interface MarqueDirigeantFormData {
   dirigeantId: number | null;
@@ -13,7 +13,7 @@ interface MarqueDirigeantFormProps {
   marqueId: number;
   marqueNom: string;
   initialData?: Partial<MarqueDirigeantFormData>;
-  onSave: (data: MarqueDirigeantCreateRequest | MarqueDirigeantUpdateRequest) => Promise<void>;
+  onSave: (data: MarqueBeneficiaireCreateRequest | MarqueDirigeantUpdateRequest) => Promise<void>;
   isLoading?: boolean;
   isEditing?: boolean;
   liaisonId?: number;
@@ -102,10 +102,10 @@ export default function MarqueDirigeantForm({
       impact_specifique: data.impactSpecifique.trim() || undefined
     } as MarqueDirigeantUpdateRequest : {
       marque_id: marqueId,
-      dirigeant_id: data.dirigeantId!,
+      beneficiaire_id: data.dirigeantId!,
       lien_financier: data.lienFinancier.trim(),
       impact_specifique: data.impactSpecifique.trim() || undefined
-    } as MarqueDirigeantCreateRequest;
+    } as MarqueBeneficiaireCreateRequest;
     
     try {
       await onSave(payload);

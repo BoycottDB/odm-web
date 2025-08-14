@@ -418,8 +418,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
                 <div className="flex space-x-3">
                   <button
                     onClick={() => {
-                      if (marque.dirigeant_controverse?.dirigeant_id) {
-                        router.push(`/admin/dirigeants/${marque.dirigeant_controverse.dirigeant_id}`);
+                      if (marque.dirigeant_controverse?.beneficiaire_id) {
+                        router.push(`/admin/beneficiaires/${marque.dirigeant_controverse.beneficiaire_id}`);
                       } else {
                         alert('ID du dirigeant non trouvé');
                       }

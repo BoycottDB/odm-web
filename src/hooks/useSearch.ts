@@ -112,7 +112,7 @@ export function useSearch() {
                 beneficiaire: {
                   id: liaison.id, // ID de la liaison
                   marque_id: marque.id,
-                  dirigeant_id: liaison.beneficiaire.id,
+                  beneficiaire_id: liaison.beneficiaire.id,
                   dirigeant_nom: liaison.beneficiaire.nom,
                   controverses: liaison.beneficiaire.controverses,
                   lien_financier: liaison.lien_financier,
@@ -126,7 +126,7 @@ export function useSearch() {
                 dirigeant: {
                   id: liaison.id, // ID de la liaison
                   marque_id: marque.id,
-                  dirigeant_id: liaison.beneficiaire.id,
+                  beneficiaire_id: liaison.beneficiaire.id,
                   dirigeant_nom: liaison.beneficiaire.nom,
                   controverses: liaison.beneficiaire.controverses,
                   lien_financier: liaison.lien_financier,

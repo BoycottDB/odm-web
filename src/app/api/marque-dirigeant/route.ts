@@ -1,27 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
-import { MarqueDirigeantCreateRequest, MarqueDirigeantUpdateRequest, DirigeantComplet } from '@/types';
+import { supabaseAdmin } from '@/lib/supabaseClient';
+import { MarqueBeneficiaireCreateRequest, MarqueBeneficiaireUpdateRequest, DirigeantComplet } from '@/types';
 
 // GET /api/marque-dirigeant - Récupérer toutes les liaisons avec données complètes
 // Optionnel: ?marque_id=X pour filtrer par marque
-// Optionnel: ?dirigeant_id=X pour filtrer par dirigeant
+// Optionnel: ?beneficiaire_id=X pour filtrer par dirigeant
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const marqueId = searchParams.get('marque_id');
-    const dirigeantId = searchParams.get('dirigeant_id');
+    const dirigeantId = searchParams.get('beneficiaire_id');
     
-    let query = supabase
-      .from('marque_dirigeant')
+    let query = supabaseAdmin
+      .from('Marque_beneficiaire')
       .select(`
         id,
         marque_id,
-        dirigeant_id,
+        beneficiaire_id,
         lien_financier,
         impact_specifique,
         created_at,
         updated_at,
-        dirigeant:dirigeants!dirigeant_id (
+        beneficiaire:Beneficiaires!beneficiaire_id (
           id,
           nom,
           controverses,
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     }
     
     if (dirigeantId) {
-      query = query.eq('dirigeant_id', dirigeantId);
+      query = query.eq('beneficiaire_id', dirigeantId);
     }
     
     const { data: liaisons, error } = await query;
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     type LiaisonRow = {
       id: number;
       marque_id: number;
-      dirigeant_id: number;
+      beneficiaire_id: number;
       lien_financier: string;
       impact_specifique?: string | null;
       dirigeant: {
@@ -73,12 +73,12 @@ export async function GET(request: NextRequest) {
       
       if (!dirigeantsMap.has(dirigeantId)) {
         // Premier dirigeant, récupérer toutes ses marques
-        const { data: toutesMarques } = await supabase
-          .from('marque_dirigeant')
+        const { data: toutesMarques } = await supabaseAdmin
+          .from('Marque_beneficiaire')
           .select(`
             marque:Marque!marque_id (id, nom)
           `)
-          .eq('dirigeant_id', dirigeantId);
+          .eq('beneficiaire_id', dirigeantId);
         
         const marquesArray = toutesMarques?.map(m => {
           const marqueData = m.marque as unknown as { id: number; nom: string };
@@ -118,18 +118,18 @@ export async function GET(request: NextRequest) {
 // POST /api/marque-dirigeant - Créer nouvelle liaison marque-dirigeant
 export async function POST(request: NextRequest) {
   try {
-    const data: MarqueDirigeantCreateRequest = await request.json();
+    const data: MarqueBeneficiaireCreateRequest = await request.json();
     
     // Validation des champs obligatoires
-    if (!data.marque_id || !data.dirigeant_id || !data.lien_financier) {
+    if (!data.marque_id || !data.beneficiaire_id || !data.lien_financier) {
       return NextResponse.json(
-        { error: 'marque_id, dirigeant_id et lien_financier sont obligatoires' },
+        { error: 'marque_id, beneficiaire_id et lien_financier sont obligatoires' },
         { status: 400 }
       );
     }
     
     // Vérifier que la marque existe
-    const { data: marque, error: marqueError } = await supabase
+    const { data: marque, error: marqueError } = await supabaseAdmin
       .from('Marque')
       .select('id, nom')
       .eq('id', data.marque_id)
@@ -142,11 +142,11 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Vérifier que le dirigeant existe
-    const { data: dirigeant, error: dirigeantError } = await supabase
-      .from('dirigeants')
+    // Vérifier que le bénéficiaire existe
+    const { data: dirigeant, error: dirigeantError } = await supabaseAdmin
+      .from('Beneficiaires')
       .select('id, nom')
-      .eq('id', data.dirigeant_id)
+      .eq('id', data.beneficiaire_id)
       .single();
     
     if (dirigeantError || !dirigeant) {
@@ -157,11 +157,11 @@ export async function POST(request: NextRequest) {
     }
     
     // Vérifier qu'il n'y a pas déjà une liaison entre cette marque et ce dirigeant
-    const { data: existing, error: checkError } = await supabase
-      .from('marque_dirigeant')
+    const { data: existing, error: checkError } = await supabaseAdmin
+      .from('Marque_beneficiaire')
       .select('id')
       .eq('marque_id', data.marque_id)
-      .eq('dirigeant_id', data.dirigeant_id)
+      .eq('beneficiaire_id', data.beneficiaire_id)
       .single();
     
     if (existing) {
@@ -172,10 +172,10 @@ export async function POST(request: NextRequest) {
     }
     
     const { data: liaison, error } = await supabaseAdmin
-      .from('marque_dirigeant')
+      .from('Marque_beneficiaire')
       .insert({
         marque_id: data.marque_id,
-        dirigeant_id: data.dirigeant_id,
+        beneficiaire_id: data.beneficiaire_id,
         lien_financier: data.lien_financier.trim(),
         impact_specifique: data.impact_specifique?.trim() || null
       })
@@ -197,7 +197,7 @@ export async function POST(request: NextRequest) {
 // PUT /api/marque-dirigeant - Modifier liaison existante
 export async function PUT(request: NextRequest) {
   try {
-    const data: MarqueDirigeantUpdateRequest = await request.json();
+    const data: MarqueBeneficiaireUpdateRequest = await request.json();
     const { id, ...updateData } = data;
     
     if (!id) {
@@ -208,8 +208,8 @@ export async function PUT(request: NextRequest) {
     }
     
     // Vérifier que la liaison existe
-    const { data: existing, error: checkError } = await supabase
-      .from('marque_dirigeant')
+    const { data: existing, error: checkError } = await supabaseAdmin
+      .from('Marque_beneficiaire')
       .select('id')
       .eq('id', id)
       .single();
@@ -233,7 +233,7 @@ export async function PUT(request: NextRequest) {
     }, {} as Record<string, unknown>);
     
     const { data: liaison, error } = await supabaseAdmin
-      .from('marque_dirigeant')
+      .from('Marque_beneficiaire')
       .update(cleanedData)
       .eq('id', id)
       .select()
@@ -265,8 +265,8 @@ export async function DELETE(request: NextRequest) {
     }
     
     // Vérifier que la liaison existe
-    const { data: existing, error: checkError } = await supabase
-      .from('marque_dirigeant')
+    const { data: existing, error: checkError } = await supabaseAdmin
+      .from('Marque_beneficiaire')
       .select('id')
       .eq('id', id)
       .single();
@@ -279,7 +279,7 @@ export async function DELETE(request: NextRequest) {
     }
     
     const { error } = await supabaseAdmin
-      .from('marque_dirigeant')
+      .from('Marque_beneficiaire')
       .delete()
       .eq('id', id);
     

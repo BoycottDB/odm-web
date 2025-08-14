@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { MarqueBeneficiaireCreateRequest, MarqueBeneficiaireUpdateRequest } from '@/types';
 
 export async function GET(request: NextRequest) {
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const beneficiaireId = searchParams.get('beneficiaireId');
 
   try {
-    let query = supabase
+    let query = supabaseAdmin
       .from('Marque_beneficiaire')
       .select(`
         id,
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     const body: MarqueBeneficiaireCreateRequest = await request.json();
 
     // Vérifier que la liaison n'existe pas déjà
-    const { data: existing } = await supabase
+    const { data: existing } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .select('id')
       .eq('marque_id', body.marque_id)
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data: liaison, error } = await supabase
+    const { data: liaison, error } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .insert([{
         marque_id: body.marque_id,
@@ -126,7 +126,7 @@ export async function PUT(request: NextRequest) {
     
     updateData.updated_at = new Date().toISOString();
 
-    const { data: liaison, error } = await supabase
+    const { data: liaison, error } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .update(updateData)
       .eq('id', body.id)
@@ -174,7 +174,7 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .delete()
       .eq('id', parseInt(id));

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { getErrorMessage, normalizeString } from '@/lib/utils/helpers';
 import { SimilarityScore, Marque, Evenement } from '@/types';
 
@@ -179,7 +179,7 @@ export async function GET(req: NextRequest) {
     };
 
     // Recherche de marques similaires
-    const { data: marques, error: marquesError } = await supabase
+    const { data: marques, error: marquesError } = await supabaseAdmin
       .from('Marque')
       .select('*');
     
@@ -204,7 +204,7 @@ export async function GET(req: NextRequest) {
 
     // Si on cherche des événements, rechercher aussi dans les événements
     if (type === 'evenement') {
-      const { data: evenements, error: evenementsError } = await supabase
+      const { data: evenements, error: evenementsError } = await supabaseAdmin
         .from('Evenement')
         .select(`
           *,
@@ -240,7 +240,7 @@ export async function GET(req: NextRequest) {
 
     // Rechercher dans les propositions en attente
     if (type === 'evenement') {
-      const { data: propositions, error: propositionsError } = await supabase
+      const { data: propositions, error: propositionsError } = await supabaseAdmin
         .from('Proposition')
         .select('*')
         .eq('statut', 'en_attente')
