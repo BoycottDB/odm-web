@@ -35,6 +35,10 @@ export interface Marque {
       type_beneficiaire?: string;
       created_at: string;
       updated_at: string;
+      toutes_marques?: Array<{
+        id: number;
+        nom: string;
+      }>; // Toutes les marques liées à ce bénéficiaire (ajouté par l'API)
     };
   }>;
   // Champs spécifiques au contexte dirigeant-marque
@@ -215,6 +219,10 @@ export interface Beneficiaire {
   type_beneficiaire: TypeBeneficiaire;
   created_at: string;
   updated_at: string;
+  toutes_marques?: Array<{
+    id: number;
+    nom: string;
+  }>; // Toutes les marques liées à ce bénéficiaire (ajouté par l'API)
 }
 
 // Table liaisons marque-bénéficiaire (ex-marque_dirigeant)

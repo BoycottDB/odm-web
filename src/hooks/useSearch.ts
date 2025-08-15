@@ -19,13 +19,17 @@ export function useSearch() {
   // Fonction helper pour charger les événements (sans dirigeants pour l'affichage initial)
   const loadEvents = useCallback(async (limit: number = 10) => {
     try {
-      const response = await fetch('/api/evenements', { cache: 'no-store' });
+      // Utiliser directement l'extension-api
+      const extensionApiUrl = process.env.NEXT_PUBLIC_EXTENSION_API_URL;
+      const response = await fetch(`${extensionApiUrl}/.netlify/functions/evenements`, { 
+        cache: 'no-store' 
+      });
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      const allEvenements: Evenement[] = await response.json();
+      const allEvenements = await response.json();
       return allEvenements.slice(0, limit);
     } catch (error) {
       console.error('Erreur lors du chargement des événements:', error);
@@ -64,17 +68,19 @@ export function useSearch() {
     setSearchState(prev => ({ ...prev, isSearching: true, notFound: false }));
 
     try {
+      // Utiliser directement l'extension-api
+      const extensionApiUrl = process.env.NEXT_PUBLIC_EXTENSION_API_URL;
       const [evenementsResponse, marquesResponse] = await Promise.all([
-        fetch('/api/evenements', { cache: 'no-store' }),
-        fetch('/api/marques', { cache: 'no-store' })
+        fetch(`${extensionApiUrl}/.netlify/functions/evenements`, { cache: 'no-store' }),
+        fetch(`${extensionApiUrl}/.netlify/functions/marques`, { cache: 'no-store' })
       ]);
       
       if (!evenementsResponse.ok || !marquesResponse.ok) {
         throw new Error('Erreur lors du chargement des données');
       }
       
-      const allEvenements: Evenement[] = await evenementsResponse.json();
-      const allMarques: Marque[] = await marquesResponse.json();
+      const allEvenements = await evenementsResponse.json();
+      const allMarques = await marquesResponse.json();
       
       const normalizedQuery = query.toLowerCase().trim();
       
@@ -120,7 +126,7 @@ export function useSearch() {
                   sources: liaison.beneficiaire.sources || [],
                   created_at: liaison.beneficiaire.created_at || new Date().toISOString(),
                   updated_at: liaison.beneficiaire.updated_at || new Date().toISOString(),
-                  toutes_marques: [{ id: marque.id, nom: marque.nom }],
+                  toutes_marques: liaison.beneficiaire.toutes_marques || [{ id: marque.id, nom: marque.nom }],
                   type_beneficiaire: liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe' | undefined
                 },
                 dirigeant: {
@@ -134,7 +140,7 @@ export function useSearch() {
                   sources: liaison.beneficiaire.sources || [],
                   created_at: liaison.beneficiaire.created_at || new Date().toISOString(),
                   updated_at: liaison.beneficiaire.updated_at || new Date().toISOString(),
-                  toutes_marques: [{ id: marque.id, nom: marque.nom }],
+                  toutes_marques: liaison.beneficiaire.toutes_marques || [{ id: marque.id, nom: marque.nom }],
                   type_beneficiaire: liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe' | undefined
                 }
               });
