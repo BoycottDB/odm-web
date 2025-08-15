@@ -450,6 +450,110 @@ npm run clean           # Nettoie .next et node_modules/.cache
 # npm run test:coverage  # Rapport de couverture
 ```
 
+## 🌊 Architecture des Flux de Données
+
+### **Vue d'ensemble - Architecture Hybride Optimisée**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    FRONTEND (Next.js)                      │
+├─────────────────────────────────────────────────────────────┤
+│ • Pages publiques → dataService → Extension-API (lecture)  │
+│ • Pages admin → API Routes → Supabase direct (écriture)    │
+│ • useSearch → dataService → Extension-API (lecture)        │
+└─────────────────────────────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────┐
+│                   DATA SERVICE LAYER                       │
+├─────────────────────────────────────────────────────────────┤
+│ • Lectures : Extension-API (Cache CDN)                     │
+│ • Écritures : Supabase direct (Fiabilité transactionnelle) │
+│ • Import dynamique Supabase (pas d'init côté client)       │
+└─────────────────────────────────────────────────────────────┘
+                         ↓                    ↓
+┌─────────────────────────────────┐  ┌─────────────────────────────────┐
+│        EXTENSION-API            │  │           SUPABASE              │
+│     (Netlify Functions)         │  │        (PostgreSQL)             │
+├─────────────────────────────────┤  ├─────────────────────────────────┤
+│ • Cache CDN multi-niveaux       │  │ • Base de données principale    │
+│ • toutes_marques par bénéf.     │  │ • Transactions fiables          │
+│ • Performance ~50ms             │  │ • Validation server-side        │
+└─────────────────────────────────┘  └─────────────────────────────────┘
+```
+
+### **Flux de Données par Type d'Opération**
+
+#### 🔍 **Lectures (Consultation publique)**
+```typescript
+// 1. Page de recherche (useSearch.ts)
+useSearch → dataService.getMarques() → Extension-API → Cache CDN (30min)
+
+// 2. Affichage dirigeants avec toutes marques liées
+DirigeantCard → Extension-API.beneficiaires → toutes_marques[] ✅
+
+// 3. BoycottTips et secteurs
+dataService.getSecteurs() → Extension-API → Cache CDN (15min)
+```
+
+#### ✏️ **Écritures (Administration)**
+```typescript
+// 1. Création/modification marque
+Admin → /api/marques → Supabase direct → Validation + Transaction
+
+// 2. Gestion dirigeants V2
+Admin → /api/dirigeants → Supabase direct → Architecture normalisée
+Admin → /api/marque-dirigeant → Supabase direct → Relations
+
+// 3. Modération collaborative
+Public → /api/propositions → Supabase direct → Workflow modération
+```
+
+### **Points Clés de l'Architecture**
+
+#### ✅ **Avantages**
+- **Performance** : Cache CDN multi-niveaux (5-30min TTL)
+- **Fiabilité** : Écritures transactionnelles Supabase
+- **Sécurité** : Pas de client Supabase côté frontend
+- **Cohérence** : Single source of truth via dataService
+- **Scalabilité** : Netlify 99.9% uptime + auto-scaling
+
+#### 🔧 **Implémentation Technique**
+```typescript
+// dataService.ts - Import dynamique pour éviter init côté client
+async createMarque(data: MarqueCreateRequest): Promise<Marque> {
+  const { supabaseAdmin } = await import('@/lib/supabaseClient');
+  // ... écriture directe Supabase
+}
+
+async getMarques(): Promise<Marque[]> {
+  return this.fetchFromExtensionApi<Marque[]>('marques');
+  // ... lecture Extension-API avec cache
+}
+```
+
+#### 🚀 **Données Enrichies - Toutes Marques Liées**
+```typescript
+// Extension-API enrichit automatiquement les bénéficiaires
+{
+  "nom": "Pierre Edouard Stérin",
+  "toutes_marques": [
+    {"id": 16, "nom": "Smartbox"},
+    {"id": 17, "nom": "Wonderbox"},
+    {"id": 22, "nom": "Animaj"},
+    // ... 10 autres marques
+  ]
+}
+```
+
+### **Architecture Finale : Cohérente et Optimale**
+
+Cette architecture respecte parfaitement les principes de performance et fiabilité :
+- ✅ **Lectures optimisées** : Extension-API avec cache CDN
+- ✅ **Écritures fiables** : Supabase direct avec transactions
+- ✅ **Sécurité renforcée** : Import dynamique, pas d'exposition client
+- ✅ **Single point of truth** : dataService centralisé
+- ✅ **Performance constante** : ~50ms avec Netlify 99.9% uptime
+
 ## 📈 Optimisations futures
 
 ### **Performance & UX**

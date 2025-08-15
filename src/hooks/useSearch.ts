@@ -19,17 +19,9 @@ export function useSearch() {
   // Fonction helper pour charger les événements (sans dirigeants pour l'affichage initial)
   const loadEvents = useCallback(async (limit: number = 10) => {
     try {
-      // Utiliser directement l'extension-api
-      const extensionApiUrl = process.env.NEXT_PUBLIC_EXTENSION_API_URL;
-      const response = await fetch(`${extensionApiUrl}/.netlify/functions/evenements`, { 
-        cache: 'no-store' 
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const allEvenements: Evenement[] = await response.json();
+      // Utiliser dataService pour cohérence architecturale
+      const { dataService } = await import('@/lib/services/dataService');
+      const allEvenements = await dataService.getEvenements();
       return allEvenements.slice(0, limit);
     } catch (error) {
       console.error('Erreur lors du chargement des événements:', error);
@@ -68,19 +60,12 @@ export function useSearch() {
     setSearchState(prev => ({ ...prev, isSearching: true, notFound: false }));
 
     try {
-      // Utiliser directement l'extension-api
-      const extensionApiUrl = process.env.NEXT_PUBLIC_EXTENSION_API_URL;
-      const [evenementsResponse, marquesResponse] = await Promise.all([
-        fetch(`${extensionApiUrl}/.netlify/functions/evenements`, { cache: 'no-store' }),
-        fetch(`${extensionApiUrl}/.netlify/functions/marques`, { cache: 'no-store' })
+      // Utiliser dataService pour cohérence architecturale
+      const { dataService } = await import('@/lib/services/dataService');
+      const [allEvenements, allMarques] = await Promise.all([
+        dataService.getEvenements(),
+        dataService.getMarques()
       ]);
-      
-      if (!evenementsResponse.ok || !marquesResponse.ok) {
-        throw new Error('Erreur lors du chargement des données');
-      }
-      
-      const allEvenements: Evenement[] = await evenementsResponse.json();
-      const allMarques: Marque[] = await marquesResponse.json();
       
       const normalizedQuery = query.toLowerCase().trim();
       

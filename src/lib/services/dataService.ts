@@ -3,7 +3,8 @@
  * Lectures via extension-api, écritures via Supabase direct
  */
 
-import { supabaseAdmin } from '@/lib/supabaseClient';
+// Import dynamique pour éviter l'initialisation côté client
+// import { supabaseAdmin } from '@/lib/supabaseClient';
 import { 
   Marque, 
   Evenement, 
@@ -30,7 +31,7 @@ class DataService {
    * Méthode privée pour fetch depuis extension-api
    */
   private async fetchFromExtensionApi<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${this.extensionApiUrl}/${endpoint}`, {
+    const response = await fetch(`${this.extensionApiUrl}/.netlify/functions/${endpoint}`, {
       headers: { 'Accept': 'application/json' },
       cache: 'no-store'
     });
@@ -96,6 +97,7 @@ class DataService {
    * Create a new brand
    */
   async createMarque(data: MarqueCreateRequest): Promise<Marque> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { data: marque, error } = await supabaseAdmin
       .from('Marque')
       .insert([data])
@@ -110,6 +112,7 @@ class DataService {
    * Update a brand
    */
   async updateMarque(id: number, data: Partial<Marque>): Promise<Marque> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { data: marque, error } = await supabaseAdmin
       .from('Marque')
       .update(data)
@@ -125,6 +128,7 @@ class DataService {
    * Delete a brand
    */
   async deleteMarque(id: number): Promise<void> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('Marque')
       .delete()
@@ -137,6 +141,7 @@ class DataService {
    * Create a new event
    */
   async createEvenement(data: EvenementCreateRequest): Promise<Evenement> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { data: evenement, error } = await supabaseAdmin
       .from('Evenement')
       .insert([data])
@@ -151,6 +156,7 @@ class DataService {
    * Update an event
    */
   async updateEvenement(id: number, data: Partial<Evenement>): Promise<Evenement> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { data: evenement, error } = await supabaseAdmin
       .from('Evenement')
       .update(data)
@@ -166,6 +172,7 @@ class DataService {
    * Delete an event
    */
   async deleteEvenement(id: number): Promise<void> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('Evenement')
       .delete()
@@ -178,6 +185,7 @@ class DataService {
    * Create a new leader
    */
   async createDirigeant(data: DirigeantCreateRequest): Promise<DirigeantWithMarques> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { data: beneficiaire, error } = await supabaseAdmin
       .from('Beneficiaires')
       .insert([data])
@@ -196,6 +204,7 @@ class DataService {
    * Update a leader
    */
   async updateDirigeant(id: number, data: Partial<DirigeantCreateRequest>): Promise<void> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('Beneficiaires')
       .update(data)
@@ -208,6 +217,7 @@ class DataService {
    * Delete a leader
    */
   async deleteDirigeant(id: number): Promise<void> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('Beneficiaires')
       .delete()
@@ -228,6 +238,7 @@ class DataService {
       impact_specifique: data.impact_specifique
     };
     
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .insert([transformedData]);
@@ -246,6 +257,7 @@ class DataService {
       delete transformedData.dirigeant_id;
     }
     
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .update(transformedData)
@@ -258,6 +270,7 @@ class DataService {
    * Delete a brand-leader relationship
    */
   async deleteMarqueDirigeant(id: number): Promise<void> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .delete()
@@ -270,6 +283,7 @@ class DataService {
    * Create a new sector
    */
   async createSecteur(data: Omit<SecteurMarque, 'id' | 'created_at' | 'updated_at'>): Promise<SecteurMarque> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { data: secteur, error } = await supabaseAdmin
       .from('SecteurMarque')
       .insert([data])
@@ -284,6 +298,7 @@ class DataService {
    * Update a sector
    */
   async updateSecteur(id: number, data: Partial<SecteurMarque>): Promise<SecteurMarque> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { data: secteur, error } = await supabaseAdmin
       .from('SecteurMarque')
       .update(data)
@@ -299,6 +314,7 @@ class DataService {
    * Delete a sector
    */
   async deleteSecteur(id: number): Promise<void> {
+    const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('SecteurMarque')
       .delete()
