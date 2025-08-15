@@ -29,7 +29,7 @@ export function useSearch() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      const allEvenements = await response.json();
+      const allEvenements: Evenement[] = await response.json();
       return allEvenements.slice(0, limit);
     } catch (error) {
       console.error('Erreur lors du chargement des événements:', error);
@@ -79,8 +79,8 @@ export function useSearch() {
         throw new Error('Erreur lors du chargement des données');
       }
       
-      const allEvenements = await evenementsResponse.json();
-      const allMarques = await marquesResponse.json();
+      const allEvenements: Evenement[] = await evenementsResponse.json();
+      const allMarques: Marque[] = await marquesResponse.json();
       
       const normalizedQuery = query.toLowerCase().trim();
       
