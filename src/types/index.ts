@@ -1,14 +1,14 @@
 // Types centralisés pour toute l'application
-// Type pour la compatibilité avec l'ancienne structure (API marques)
+// Type pour la compatibilité avec l'ancienne structure (API marques et extension)
 export interface MarqueDirigeantLegacy {
   id: number; // ID de la liaison
   marque_id: number;
   beneficiaire_id: number; // ID du bénéficiaire
   dirigeant_nom: string;
-  controverses: string;
+  controverses: string; // ✅ Format legacy : titres concaténés pour extension
   lien_financier: string;
   impact_description: string;
-  sources: string[];
+  sources: string[]; // ✅ Format legacy : URLs extraites pour extension
   created_at: string;
   updated_at: string;
   toutes_marques: Array<{
@@ -29,8 +29,8 @@ export interface Marque {
     beneficiaire: {
       id: number;
       nom: string;
-      controverses: string;
-      sources: string[];
+      // ✅ NOUVEAU : Controverses structurées
+      controverses: ControverseBeneficiaire[];
       impact_generique?: string;
       type_beneficiaire?: string;
       created_at: string;
@@ -209,12 +209,23 @@ export interface PropositionUpdateRequest {
 // Types pour la gestion des bénéficiaires controversés - Version 2 (ex-dirigeants)
 export type TypeBeneficiaire = 'individu' | 'groupe';
 
+// Nouvelle interface pour une controverse individuelle
+export interface ControverseBeneficiaire {
+  id: number;
+  beneficiaire_id: number;
+  titre: string;
+  source_url: string;
+  ordre: number;
+  created_at: string;
+  updated_at: string;
+}
+
 // Table bénéficiaires centralisée (ex-dirigeants)
 export interface Beneficiaire {
   id: number;
   nom: string;
-  controverses: string;
-  sources: string[];
+  // ✅ NOUVEAU : Controverses structurées
+  controverses: ControverseBeneficiaire[];
   impact_generique?: string; // Template réutilisable
   type_beneficiaire: TypeBeneficiaire;
   created_at: string;
@@ -249,8 +260,8 @@ export type MarqueDirigeant = Omit<MarqueBeneficiaire, 'beneficiaire_id'> & {
 export interface BeneficiaireWithMarques {
   id: number;
   nom: string;
-  controverses: string;
-  sources: string[];
+  // ✅ NOUVEAU : Controverses structurées
+  controverses: ControverseBeneficiaire[];
   impact_generique?: string;
   type_beneficiaire: TypeBeneficiaire;
   marques: Array<{
@@ -266,8 +277,8 @@ export interface BeneficiaireWithMarques {
 export interface BeneficiaireComplet {
   id: number;
   nom: string;
-  controverses: string;
-  sources: string[];
+  // ✅ NOUVEAU : Controverses structurées
+  controverses: ControverseBeneficiaire[];
   lien_financier: string;
   impact_description: string; // impact_specifique || impact_generique
   marque_id: number;
@@ -288,8 +299,7 @@ export type DirigeantComplet = BeneficiaireComplet;
 // Requests pour l'API bénéficiaires
 export interface BeneficiaireCreateRequest {
   nom: string;
-  controverses: string;
-  sources: string[];
+  // ✅ SUPPRIMER : controverses et sources (gérés via API séparée)
   impact_generique?: string;
   type_beneficiaire: TypeBeneficiaire;
 }
@@ -297,8 +307,7 @@ export interface BeneficiaireCreateRequest {
 export interface BeneficiaireUpdateRequest {
   id: number;
   nom?: string;
-  controverses?: string;
-  sources?: string[];
+  // ✅ SUPPRIMER : controverses et sources (gérés via API séparée)
   impact_generique?: string;
   type_beneficiaire?: TypeBeneficiaire;
 }
@@ -324,6 +333,21 @@ export type MarqueDirigeantCreateRequest = Omit<MarqueBeneficiaireCreateRequest,
   dirigeant_id: number;
 };
 export type MarqueDirigeantUpdateRequest = MarqueBeneficiaireUpdateRequest;
+
+// Requests pour l'API controverses-beneficiaire
+export interface ControverseBeneficiaireCreateRequest {
+  beneficiaire_id: number;
+  titre: string;
+  source_url: string;
+  ordre?: number;
+}
+
+export interface ControverseBeneficiaireUpdateRequest {
+  id: number;
+  titre?: string;
+  source_url?: string;
+  ordre?: number;
+}
 
 // Interface simplifiée pour les catégories dans les stats
 export interface CategorieStats {

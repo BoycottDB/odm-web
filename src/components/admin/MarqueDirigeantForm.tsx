@@ -63,8 +63,7 @@ export default function MarqueDirigeantForm({
         const uniqueDirigeants: Dirigeant[] = dirigeantsList.map((d: Dirigeant) => ({
           id: d.id,
           nom: d.nom,
-          controverses: d.controverses,
-          sources: d.sources,
+          controverses: d.controverses || [],
           impact_generique: d.impact_generique,
           created_at: '',
           updated_at: ''
@@ -171,7 +170,10 @@ Bénéficiaire controversé *
           <div className="body-small">
             <div className="font-medium text-neutral-900 mb-1">{selectedDirigeant.nom}</div>
             <div className="text-neutral-600 body-xs mb-2">
-              {selectedDirigeant.controverses.substring(0, 100)}...
+              {selectedDirigeant.controverses && selectedDirigeant.controverses.length > 0
+                ? selectedDirigeant.controverses.map(c => c.titre).join(' • ').substring(0, 100) + '...'
+                : 'Aucune controverse documentée'
+              }
             </div>
             {selectedDirigeant.impact_generique && (
               <div className="text-neutral-600 body-xs">
@@ -232,7 +234,10 @@ Bénéficiaire controversé *
               <strong>Impact :</strong> {data.impactSpecifique || selectedDirigeant.impact_generique || 'Impact à définir'}
             </div>
             <div className="text-primary body-xs">
-              {selectedDirigeant.controverses.substring(0, 150)}...
+              {selectedDirigeant.controverses && selectedDirigeant.controverses.length > 0
+                ? selectedDirigeant.controverses.map(c => c.titre).join(' • ').substring(0, 150) + '...'
+                : 'Aucune controverse documentée'
+              }
             </div>
           </div>
         </div>

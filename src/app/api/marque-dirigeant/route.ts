@@ -24,9 +24,9 @@ export async function GET(request: NextRequest) {
         beneficiaire:Beneficiaires!beneficiaire_id (
           id,
           nom,
-          controverses,
-          sources,
-          impact_generique
+          impact_generique,
+          type_beneficiaire,
+          controverses:controverse_beneficiaire(*)
         ),
         marque:Marque!marque_id (
           id,
@@ -53,12 +53,17 @@ export async function GET(request: NextRequest) {
       beneficiaire_id: number;
       lien_financier: string;
       impact_specifique?: string | null;
-      dirigeant: {
+      beneficiaire: {
         id: number;
         nom: string;
-        controverses: string;
-        sources: string[];
+        controverses: Array<{
+          id: number;
+          titre: string;
+          source_url: string;
+          ordre: number;
+        }>;
         impact_generique?: string | null;
+        type_beneficiaire: string;
       };
       marque: { id: number; nom: string };
     };
@@ -69,7 +74,7 @@ export async function GET(request: NextRequest) {
     const dirigeantsMap = new Map<number, DirigeantComplet>();
     
     for (const liaison of liaisonsTyped) {
-      const dirigeantId = liaison.dirigeant.id;
+      const dirigeantId = liaison.beneficiaire.id;
       
       if (!dirigeantsMap.has(dirigeantId)) {
         // Premier dirigeant, récupérer toutes ses marques
@@ -86,18 +91,18 @@ export async function GET(request: NextRequest) {
         }) || [];
         
         dirigeantsMap.set(dirigeantId, {
-          id: liaison.dirigeant.id,
-          nom: liaison.dirigeant.nom,
-          controverses: liaison.dirigeant.controverses,
-          sources: liaison.dirigeant.sources,
+          id: liaison.beneficiaire.id,
+          nom: liaison.beneficiaire.nom,
+          // ✅ NOUVEAU : Controverses structurées
+          controverses: liaison.beneficiaire.controverses || [],
           lien_financier: liaison.lien_financier,
           // Priorité à l'impact spécifique, sinon impact générique
-          impact_description: liaison.impact_specifique || liaison.dirigeant.impact_generique || '',
+          impact_description: liaison.impact_specifique || liaison.beneficiaire.impact_generique || '',
           marque_id: liaison.marque.id,
           marque_nom: liaison.marque.nom,
           liaison_id: liaison.id,
-          type_beneficiaire: 'individu', // Default value for legacy compatibility
-          type_affichage: 'Dirigeant' as const,
+          type_beneficiaire: (liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe') || 'individu',
+          type_affichage: (liaison.beneficiaire.type_beneficiaire === 'groupe' ? 'Groupe' : 'Dirigeant') as const,
           toutes_marques: marquesArray
         });
       }

@@ -15,12 +15,11 @@ export async function GET(request: NextRequest) {
         .select(`
           id,
           nom,
-          controverses,
-          sources,
           impact_generique,
           type_beneficiaire,
           created_at,
-          updated_at
+          updated_at,
+          controverses:controverse_beneficiaire(*)
         `)
         .eq('id', parseInt(beneficiaireId))
         .single();
@@ -51,8 +50,7 @@ export async function GET(request: NextRequest) {
       const beneficiaireWithMarques: BeneficiaireWithMarques = {
         id: beneficiaire.id as number,
         nom: beneficiaire.nom as string,
-        controverses: beneficiaire.controverses as string,
-        sources: beneficiaire.sources as string[],
+        controverses: (beneficiaire as any).controverses || [],
         impact_generique: beneficiaire.impact_generique as string || undefined,
         type_beneficiaire: ((beneficiaire.type_beneficiaire as string) || 'individu') as 'individu' | 'groupe',
         marques: (marques || []).map((m: unknown) => {
@@ -84,12 +82,11 @@ export async function GET(request: NextRequest) {
           beneficiaire:beneficiaire_id (
             id,
             nom,
-            controverses,
-            sources,
             impact_generique,
             type_beneficiaire,
             created_at,
-            updated_at
+            updated_at,
+            controverses:controverse_beneficiaire(*)
           )
         `)
         .eq('marque_id', parseInt(marqueId))
@@ -110,8 +107,12 @@ export async function GET(request: NextRequest) {
           id: l.id as number,
           dirigeant_id: beneficiaire?.id as number, // Alias pour compatibilité
           dirigeant_nom: (beneficiaire?.nom as string) || 'Nom inconnu',
-          controverses: (beneficiaire?.controverses as string) || '',
-          sources: (beneficiaire?.sources as string[]) || [],
+          // ✅ Transformer controverses pour compatibilité legacy
+          controverses: ((beneficiaire as any)?.controverses || [])
+            .map((c: any) => c.titre)
+            .join(' | ') || '',
+          sources: ((beneficiaire as any)?.controverses || [])
+            .map((c: any) => c.source_url) || [],
           lien_financier: l.lien_financier as string,
           impact_description: (l.impact_specifique as string) || (beneficiaire?.impact_generique as string) || 'Impact à définir',
           type_beneficiaire: (beneficiaire?.type_beneficiaire as string) || 'individu',
@@ -127,12 +128,11 @@ export async function GET(request: NextRequest) {
         .select(`
           id,
           nom,
-          controverses,
-          sources,
           impact_generique,
           type_beneficiaire,
           created_at,
-          updated_at
+          updated_at,
+          controverses:controverse_beneficiaire(*)
         `)
         .order('nom', { ascending: true });
 
@@ -164,8 +164,7 @@ export async function GET(request: NextRequest) {
           return {
             id: b.id as number,
             nom: b.nom as string,
-            controverses: b.controverses as string,
-            sources: b.sources as string[],
+            controverses: (b as any).controverses || [],
             impact_generique: b.impact_generique as string || undefined,
             type_beneficiaire: ((b.type_beneficiaire as string) || 'individu') as 'individu' | 'groupe',
             marques: (marques || []).map((m: unknown) => {
@@ -199,8 +198,6 @@ export async function POST(request: NextRequest) {
       .from('Beneficiaires')
       .insert([{
         nom: body.nom,
-        controverses: body.controverses,
-        sources: body.sources,
         impact_generique: body.impact_generique,
         type_beneficiaire: body.type_beneficiaire
       }])
@@ -225,8 +222,7 @@ export async function PUT(request: NextRequest) {
 
     const updateData: Record<string, unknown> = {};
     if (body.nom !== undefined) updateData.nom = body.nom;
-    if (body.controverses !== undefined) updateData.controverses = body.controverses;
-    if (body.sources !== undefined) updateData.sources = body.sources;
+    // ❌ SUPPRIMER : controverses et sources (gérés via API séparée)
     if (body.impact_generique !== undefined) updateData.impact_generique = body.impact_generique;
     if (body.type_beneficiaire !== undefined) updateData.type_beneficiaire = body.type_beneficiaire;
     

@@ -4,18 +4,17 @@ import { DirigeantCreateRequest, DirigeantUpdateRequest, DirigeantWithMarques, B
 
 export async function GET() {
   try {
-    // Récupérer tous les bénéficiaires avec leurs liaisons marque
+    // Récupérer tous les bénéficiaires avec leurs controverses structurées
     const { data: dirigeants, error: dirigeantError } = await supabaseAdmin
       .from('Beneficiaires')
       .select(`
         id,
         nom,
-        controverses,
-        sources,
         impact_generique,
         type_beneficiaire,
         created_at,
-        updated_at
+        updated_at,
+        controverses:controverse_beneficiaire(*)
       `);
       
     if (dirigeantError) throw dirigeantError;
@@ -49,8 +48,7 @@ export async function GET() {
     const dirigeantsWithMarques: DirigeantWithMarques[] = dirigeants.map(dirigeant => ({
       id: dirigeant.id,
       nom: dirigeant.nom,
-      controverses: dirigeant.controverses,
-      sources: dirigeant.sources,
+      controverses: (dirigeant as any).controverses || [],
       impact_generique: dirigeant.impact_generique,
       type_beneficiaire: dirigeant.type_beneficiaire || 'individu',
       marques: liaisonsTyped
@@ -81,47 +79,23 @@ export async function POST(request: NextRequest) {
   try {
     const data: DirigeantCreateRequest = await request.json();
     
-    // Validation des champs obligatoires
-    const requiredFields = ['nom', 'controverses', 'sources'];
-    for (const field of requiredFields) {
-      if (!data[field as keyof DirigeantCreateRequest]) {
-        return NextResponse.json(
-          { error: `Le champ ${field} est obligatoire` },
-          { status: 400 }
-        );
-      }
-    }
-    
-    // Validation des sources
-    if (!Array.isArray(data.sources) || data.sources.length === 0) {
+    // Validation des champs obligatoires (version simplifiée)
+    if (!data.nom?.trim()) {
       return NextResponse.json(
-        { error: 'Au moins une source est obligatoire' },
+        { error: 'Le nom est obligatoire' },
         { status: 400 }
       );
     }
     
-    // Validation des URLs
-    for (const source of data.sources) {
-      try {
-        new URL(source);
-      } catch {
-        return NextResponse.json(
-          { error: `URL invalide : ${source}` },
-          { status: 400 }
-        );
-      }
-    }
-    
-    // Validation de la longueur des controverses
-    if (data.controverses.length < 20) {
+    if (data.nom.trim().length < 2) {
       return NextResponse.json(
-        { error: 'La description des controverses doit faire au moins 20 caractères' },
+        { error: 'Le nom doit faire au moins 2 caractères' },
         { status: 400 }
       );
     }
     
     // Vérifier qu'un bénéficiaire avec ce nom n'existe pas déjà
-    const { data: existing, error: checkError } = await supabaseAdmin
+    const { data: existing } = await supabaseAdmin
       .from('Beneficiaires')
       .select('id')
       .eq('nom', data.nom.trim())
@@ -138,8 +112,6 @@ export async function POST(request: NextRequest) {
       .from('Beneficiaires')
       .insert({
         nom: data.nom.trim(),
-        controverses: data.controverses.trim(),
-        sources: data.sources,
         impact_generique: data.impact_generique?.trim(),
         type_beneficiaire: (data as BeneficiaireCreateRequest).type_beneficiaire || 'individu'
       })
@@ -170,31 +142,9 @@ export async function PUT(request: NextRequest) {
       );
     }
     
-    // Validation des URLs si sources modifiées
-    if (updateData.sources && Array.isArray(updateData.sources)) {
-      for (const source of updateData.sources) {
-        try {
-          new URL(source);
-        } catch {
-          return NextResponse.json(
-            { error: `URL invalide : ${source}` },
-            { status: 400 }
-          );
-        }
-      }
-    }
-    
-    // Validation longueur controverses si modifiées
-    if (updateData.controverses && updateData.controverses.length < 20) {
-      return NextResponse.json(
-        { error: 'La description des controverses doit faire au moins 20 caractères' },
-        { status: 400 }
-      );
-    }
-    
     // Vérifier unicité du nom si modifié
     if (updateData.nom) {
-      const { data: existing, error: checkError } = await supabaseAdmin
+      const { data: existing } = await supabaseAdmin
         .from('Beneficiaires')
         .select('id')
         .eq('nom', updateData.nom.trim())
@@ -209,15 +159,12 @@ export async function PUT(request: NextRequest) {
       }
     }
     
-    // Nettoyer les données avant mise à jour
-    const cleanedData = Object.keys(updateData).reduce((acc, key) => {
-      if (typeof updateData[key as keyof typeof updateData] === 'string') {
-        acc[key] = (updateData[key as keyof typeof updateData] as string).trim();
-      } else {
-        acc[key] = updateData[key as keyof typeof updateData];
-      }
-      return acc;
-    }, {} as Record<string, unknown>);
+    // Préparer les données pour la mise à jour (seulement les champs de base)
+    const cleanedData: Record<string, unknown> = {};
+    if (updateData.nom !== undefined) cleanedData.nom = updateData.nom.trim();
+    if (updateData.impact_generique !== undefined) cleanedData.impact_generique = updateData.impact_generique?.trim();
+    if (updateData.type_beneficiaire !== undefined) cleanedData.type_beneficiaire = updateData.type_beneficiaire;
+    cleanedData.updated_at = new Date().toISOString();
     
     const { data: dirigeant, error } = await supabaseAdmin
       .from('Beneficiaires')
