@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { BeneficiaireWithMarques, BeneficiaireUpdateRequest, BeneficiaireCreateRequest } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
 import { BeneficiaireForm } from '@/components/admin/BeneficiaireForm';
+import { ControversesManager } from '@/components/admin/ControversesManager';
 import { User, Building2, Trash2 } from 'lucide-react';
 
 export default function BeneficiaireDetailPage() {
@@ -200,8 +201,9 @@ export default function BeneficiaireDetailPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6">
-          <h2 className="text-xl font-semibold text-neutral-900 mb-6">Modifier les informations</h2>
+        {/* Informations de base */}
+        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 mb-6">
+          <h2 className="text-xl font-semibold text-neutral-900 mb-6">Informations générales</h2>
           <BeneficiaireForm
             beneficiaire={{
               ...beneficiaire,
@@ -215,6 +217,17 @@ export default function BeneficiaireDetailPage() {
             }}
             onCancel={() => router.back()}
             loading={updating}
+          />
+        </div>
+
+        {/* Gestion des controverses */}
+        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6">
+          <h2 className="text-xl font-semibold text-neutral-900 mb-6">Controverses documentées</h2>
+          <ControversesManager 
+            beneficiaireId={parseInt(beneficiaireId)}
+            onUpdate={() => {
+              loadBeneficiaire(); // Recharger les données du bénéficiaire
+            }}
           />
         </div>
 

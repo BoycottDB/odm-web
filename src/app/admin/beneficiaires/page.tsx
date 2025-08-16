@@ -168,9 +168,9 @@ function BeneficiaireCard({ beneficiaire, onEdit }: BeneficiaireCardProps) {
       </div>
       
       <p className="body-small text-neutral-600 mb-4 line-clamp-3">
-        {beneficiaire.controverses.length > 200 
-          ? `${beneficiaire.controverses.substring(0, 200)}...`
-          : beneficiaire.controverses
+        {beneficiaire.controverses && beneficiaire.controverses.length > 0
+          ? beneficiaire.controverses.map(c => c.titre).join(' • ')
+          : 'Aucune controverse documentée'
         }
       </p>
       
@@ -196,7 +196,7 @@ function BeneficiaireCard({ beneficiaire, onEdit }: BeneficiaireCardProps) {
       </div>
       
       <div className="body-xs text-neutral-500">
-        {beneficiaire.sources.length} source(s) documentée(s)
+        {beneficiaire.controverses ? beneficiaire.controverses.length : 0} controverse(s) documentée(s)
       </div>
     </div>
   );

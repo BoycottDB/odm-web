@@ -213,12 +213,14 @@ export function MarqueBeneficiaireForm({ liaison, marque, onSubmit, onCancel, lo
             {selectedBeneficiaire.type_beneficiaire === 'groupe' ? '🏢' : '👤'} {selectedBeneficiaire.nom}
           </h4>
           <div className="text-sm text-neutral-700">
-            <strong>Controverses :</strong> {selectedBeneficiaire.controverses.substring(0, 200)}
-            {selectedBeneficiaire.controverses.length > 200 && '...'}
+            <strong>Controverses :</strong> {selectedBeneficiaire.controverses && selectedBeneficiaire.controverses.length > 0
+              ? selectedBeneficiaire.controverses.map(c => c.titre).join(' • ').substring(0, 200) + (selectedBeneficiaire.controverses.map(c => c.titre).join(' • ').length > 200 ? '...' : '')
+              : 'Aucune controverse documentée'
+            }
           </div>
-          {selectedBeneficiaire.sources && selectedBeneficiaire.sources.length > 0 && (
+          {selectedBeneficiaire.controverses && selectedBeneficiaire.controverses.length > 0 && (
             <div className="text-sm text-neutral-600 mt-2">
-              <strong>Sources :</strong> {selectedBeneficiaire.sources.length} source(s) documentée(s)
+              <strong>Sources :</strong> {selectedBeneficiaire.controverses.length} controverse(s) documentée(s)
             </div>
           )}
         </div>

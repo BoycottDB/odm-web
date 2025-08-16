@@ -1,15 +1,54 @@
 'use client';
 
-import { User, Building2 } from 'lucide-react';
-import { DirigeantComplet, TypeBeneficiaire } from '@/types';
+import { User, Building2, ExternalLink } from 'lucide-react';
+import { DirigeantComplet, TypeBeneficiaire, ControverseBeneficiaire } from '@/types';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
 
 interface DirigeantCardProps {
   dirigeant: DirigeantComplet;
 }
 
-export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
+// Nouveau composant pour afficher toutes les controverses
+const ControversesSection = ({ 
+  controverses 
+}: { 
+  controverses: ControverseBeneficiaire[];
+}) => {
+  if (!controverses || controverses.length === 0) {
+    return (
+      <div className="text-neutral-500 italic text-sm">
+        Aucune controverse documentée
+      </div>
+    );
+  }
 
+  return (
+    <div className="space-y-3">
+      {controverses.map((controverse) => (
+        <div key={controverse.id} className="bg-neutral-50/50 rounded-lg p-3 border border-neutral-200">
+          <div className="text-sm font-medium text-neutral-900 mb-2 leading-tight">
+            {controverse.titre}
+          </div>
+          <a 
+            href={controverse.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-xs text-primary hover:text-primary-600 hover:underline transition-colors"
+          >
+            <ExternalLink className="w-3 h-3 mr-1 flex-shrink-0" />
+            <span className="truncate">
+              {controverse.source_url.includes('://') 
+                ? new URL(controverse.source_url).hostname 
+                : controverse.source_url}
+            </span>
+          </a>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
   // Fonction helper pour les labels
   const getTypeLabel = (type: TypeBeneficiaire): string => {
     return type === 'groupe' ? 'groupe' : 'dirigeant';
@@ -62,47 +101,14 @@ export function DirigeantCard({ dirigeant }: DirigeantCardProps) {
         </div>
       </div>
 
-      {/* Controverses */}
+      {/* Controverses - NOUVEAU composant */}
       <div className="mb-6">
-        <div className="font-semibold text-primary body-small mb-2">
+        <div className="font-semibold text-primary body-small mb-3">
           Controverses documentées :
         </div>
-        <div className="text-neutral-700 leading-relaxed body-small">
-          {dirigeant.controverses.length > 200 
-            ? `${dirigeant.controverses.substring(0, 200)}...`
-            : dirigeant.controverses
-          }
-        </div>
-      </div>
-
-
-      {/* Sources */}
-      <div className="pt-4 border-t border-primary">
-        <div className="font-semibold text-primary body-small mb-2">
-          Sources :
-        </div>
-        <div className="space-y-1">
-          {dirigeant.sources.slice(0, 3).map((source, index) => (
-            <div key={index}>
-              <a 
-                href={source} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center body-small text-primary hover:text-primary underline"
-                >
-                <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                {source.includes('://') ? new URL(source).hostname : source}
-              </a>
-            </div>
-          ))}
-          {dirigeant.sources.length > 3 && (
-            <div className="body-xs text-primary">
-              +{dirigeant.sources.length - 3} source(s) supplémentaire(s)
-            </div>
-          )}
-        </div>
+        <ControversesSection 
+          controverses={dirigeant.controverses}
+        />
       </div>
 
       {/* Toutes les marques liées */}

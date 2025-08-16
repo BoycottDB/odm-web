@@ -13,8 +13,6 @@ interface BeneficiaireFormProps {
 export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: BeneficiaireFormProps) {
   const [formData, setFormData] = useState({
     nom: beneficiaire?.nom || '',
-    controverses: beneficiaire?.controverses || '',
-    sources: beneficiaire?.sources || [''],
     impact_generique: beneficiaire?.impact_generique || '',
     type_beneficiaire: (beneficiaire?.type_beneficiaire || 'individu') as TypeBeneficiaire
   });
@@ -28,12 +26,8 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
       newErrors.nom = 'Le nom est requis';
     }
 
-    if (!formData.controverses.trim()) {
-      newErrors.controverses = 'Les controverses sont requises';
-    }
-
-    if (formData.sources.filter(s => s.trim()).length === 0) {
-      newErrors.sources = 'Au moins une source est requise';
+    if (formData.nom.trim().length < 2) {
+      newErrors.nom = 'Le nom doit faire au moins 2 caractères';
     }
 
     setErrors(newErrors);
@@ -46,13 +40,9 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
     if (!validateForm()) {
       return;
     }
-
-    const cleanedSources = formData.sources.filter(s => s.trim()).map(s => s.trim());
     
     const submitData = {
       nom: formData.nom.trim(),
-      controverses: formData.controverses.trim(),
-      sources: cleanedSources,
       impact_generique: formData.impact_generique.trim() || undefined,
       type_beneficiaire: formData.type_beneficiaire
     };
@@ -64,46 +54,27 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
     }
   };
 
-  const addSource = () => {
-    setFormData(prev => ({
-      ...prev,
-      sources: [...prev.sources, '']
-    }));
-  };
-
-  const removeSource = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      sources: prev.sources.filter((_, i) => i !== index)
-    }));
-  };
-
-  const updateSource = (index: number, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      sources: prev.sources.map((s, i) => i === index ? value : s)
-    }));
-  };
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Nom */}
       <div>
         <label htmlFor="nom" className="block text-sm font-medium text-neutral-900 mb-2">
-          Nom *
+          Nom du bénéficiaire *
         </label>
         <input
           type="text"
           id="nom"
           value={formData.nom}
           onChange={(e) => setFormData(prev => ({ ...prev, nom: e.target.value }))}
-          placeholder="Ex: Elon Musk ou Nestlé SA"
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.nom ? 'border-red-500' : 'border-neutral-300'
+          placeholder="Ex: Pierre-Édouard Stérin, Nestlé SA"
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary ${
+            errors.nom ? 'border-error' : 'border-neutral'
           }`}
           required
+          maxLength={255}
+          disabled={loading}
         />
-        {errors.nom && <p className="text-red-500 text-sm mt-1">{errors.nom}</p>}
+        {errors.nom && <p className="text-error text-sm mt-1">{errors.nom}</p>}
       </div>
 
       {/* Type de bénéficiaire */}
@@ -118,7 +89,8 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
             ...prev, 
             type_beneficiaire: e.target.value as TypeBeneficiaire
           }))}
-          className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="w-full px-3 py-2 border border-neutral rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          disabled={loading}
         >
           <option value="individu">👤 Individu (personne physique)</option>
           <option value="groupe">🏢 Groupe (entreprise, fonds, etc.)</option>
@@ -126,68 +98,6 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
         <p className="text-xs text-neutral-600 mt-1">
           Choisissez &quot;Individu&quot; pour une personne (PDG, fondateur...) ou &quot;Groupe&quot; pour une entreprise, fonds, etc.
         </p>
-      </div>
-
-      {/* Controverses */}
-      <div>
-        <label htmlFor="controverses" className="block text-sm font-medium text-neutral-900 mb-2">
-          Controverses documentées *
-        </label>
-        <textarea
-          id="controverses"
-          value={formData.controverses}
-          onChange={(e) => setFormData(prev => ({ ...prev, controverses: e.target.value }))}
-          placeholder={
-            formData.type_beneficiaire === 'individu'
-              ? "Décrivez les controverses de cette personne..."
-              : "Décrivez les controverses de cette organisation..."
-          }
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.controverses ? 'border-red-500' : 'border-neutral-300'
-          }`}
-          rows={5}
-          required
-        />
-        {errors.controverses && <p className="text-red-500 text-sm mt-1">{errors.controverses}</p>}
-      </div>
-
-      {/* Sources */}
-      <div>
-        <div className="flex justify-between items-center mb-2">
-          <label className="block text-sm font-medium text-neutral-900">
-            Sources *
-          </label>
-          <button
-            type="button"
-            onClick={addSource}
-            className="text-sm text-primary-600 hover:text-primary-700"
-          >
-            + Ajouter une source
-          </button>
-        </div>
-        <div className="space-y-2">
-          {formData.sources.map((source, index) => (
-            <div key={index} className="flex gap-2">
-              <input
-                type="url"
-                value={source}
-                onChange={(e) => updateSource(index, e.target.value)}
-                placeholder="https://example.com/source"
-                className="flex-1 px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
-              {formData.sources.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeSource(index)}
-                  className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
-                >
-                  Supprimer
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
-        {errors.sources && <p className="text-red-500 text-sm mt-1">{errors.sources}</p>}
       </div>
 
       {/* Impact générique */}
@@ -199,29 +109,63 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
           id="impact_generique"
           value={formData.impact_generique}
           onChange={(e) => setFormData(prev => ({ ...prev, impact_generique: e.target.value }))}
-          placeholder="Description de l'impact général sur les consommateurs..."
-          className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+          placeholder="Vos achats contribuent à la fortune de [NOM] et financent ses projets controversés..."
+          className="w-full px-3 py-2 border border-neutral rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           rows={3}
+          maxLength={500}
+          disabled={loading}
         />
         <p className="text-xs text-neutral-600 mt-1">
-          Message d&apos;impact réutilisable pour toutes les marques liées à ce bénéficiaire. Peut être remplacé par un impact spécifique dans chaque liaison.
+          Message d&apos;impact réutilisable pour toutes les marques liées à ce bénéficiaire. Laissez vide pour auto-génération.
         </p>
       </div>
+
+      {/* Note sur les controverses */}
+      {beneficiaire && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="text-sm text-blue-800">
+            <strong>Note :</strong> Les controverses sont maintenant gérées dans la section dédiée ci-dessous. 
+            Vous pouvez ajouter, modifier et supprimer chaque controverse individuellement avec sa source spécifique.
+          </div>
+        </div>
+      )}
+
+      {/* Aperçu en temps réel */}
+      {formData.nom && (
+        <div className="mt-6 p-4 bg-white border border-primary rounded-lg">
+          <h4 className="text-sm font-medium text-neutral-700 mb-2">Aperçu bénéficiaire :</h4>
+          <div className="text-sm">
+            <div className="font-semibold text-primary mb-2">⚠️ BÉNÉFICIAIRE CONTROVERSÉ</div>
+            <div className="font-medium text-primary mb-1">{formData.nom}</div>
+            <div className="text-neutral-600 text-xs mb-2">Type: {formData.type_beneficiaire}</div>
+            {formData.impact_generique && (
+              <div className="text-primary mb-2">
+                <strong>Impact générique :</strong> {formData.impact_generique}
+              </div>
+            )}
+            {!beneficiaire && (
+              <div className="text-neutral-500 text-xs">
+                Les controverses pourront être ajoutées après création du bénéficiaire.
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Boutons */}
       <div className="flex gap-3 pt-6 border-t">
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 bg-primary-600 text-white py-2 px-4 rounded-md font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-primary text-white py-2 px-4 rounded-md font-medium hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? 'Enregistrement...' : (beneficiaire ? 'Mettre à jour' : 'Créer')}
+          {loading ? 'Enregistrement...' : (beneficiaire ? 'Mettre à jour les informations' : 'Créer le bénéficiaire')}
         </button>
         <button
           type="button"
           onClick={onCancel}
           disabled={loading}
-          className="flex-1 bg-neutral-200 text-neutral-800 py-2 px-4 rounded-md font-medium hover:bg-neutral-300 disabled:opacity-50"
+          className="flex-1 bg-neutral-light text-neutral-dark py-2 px-4 rounded-md font-medium hover:bg-neutral disabled:opacity-50"
         >
           Annuler
         </button>
