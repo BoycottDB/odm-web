@@ -135,16 +135,16 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
   // Messages génériques hardcodés (option 3)
   const messagesGeneriques = [
     {
-      titre: "Emploi et carrière",
-      contenu: "**Ne pas travailler pour cette marque.** Si vous cherchez un emploi, privilégiez les entreprises dont les valeurs correspondent aux vôtres."
+      // titre: "Emploi et carrière",
+      contenu: "**Ne travaillez pas pour cette marque.** <br> Si vous cherchez un emploi, privilégiez les entreprises dont les valeurs correspondent aux vôtres. <br>Si vous êtes déjà en poste dans cette boîte, ne prenez pas une décision hâtive qui pourrait vous mettre dans une galère financière. Prenez le temps de trouver une porte de sortie et n'hésitez pas à demander à vos dirigeants de rendre des comptes en attendant. Cœur sur vous, le marché du travail est dur."
     },
     {
-      titre: "Alternatives responsables", 
-      contenu: "**Privilégiez les petites enseignes locales.** Même si elles ne sont pas parfaitement \"clean\", elles causeront toujours moins de tort à leur échelle que les grandes multinationales."
+      // titre: "Alternatives responsables", 
+      contenu: "**Privilégiez les petites enseignes locales.** <br>Même si elles ne sont pas parfaitement \"clean\", elles causeront toujours moins de tort à leur échelle que les grandes multinationales."
     },
     {
-      titre: "Réflexion sur le besoin",
-      contenu: "**Remettez en question votre besoin d'achat.** Avant tout achat, demandez-vous : \"Ai-je vraiment besoin de ce produit aujourd'hui ?\""
+      // titre: "Réflexion sur le besoin",
+      contenu: "**Remettez en question votre besoin d'achat.** <br> Avant tout achat, demandez-vous : \"Ai-je vraiment besoin de ce produit aujourd'hui ?\""
     }
   ];
 
@@ -251,7 +251,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
             <div className="p-4 bg-primary-light border border-primary rounded-xl">
               <div className="flex items-center mb-3">
                 <h3 className="body-large font-semibold text-neutral-900">
-                  Conseils généraux pour le secteur {marque.secteur_marque.nom}
+                  Conseils pour le secteur {marque.secteur_marque.nom}
                 </h3>
               </div>
               <div 
@@ -270,15 +270,15 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                 </svg>
               </div>
               <h3 className="body-large font-semibold text-neutral-900">
-                Conseils généraux pour tout boycott
+                Conseils généraux pour toutes marques
               </h3>
             </div>
             
             {messagesGeneriques.map((message, index) => (
               <div key={index} className="p-4 bg-neutral-50 border border-neutral-200 rounded-xl">
-                <h4 className="body-base font-medium text-neutral-900 mb-2">
+                {/* <h4 className="body-base font-medium text-neutral-900 mb-2">
                   {message.titre}
-                </h4>
+                </h4> */}
                 <div 
                   className="body-small text-neutral-700 leading-relaxed boycott-content"
                   dangerouslySetInnerHTML={{ __html: formatMarkdown(message.contenu) }}
