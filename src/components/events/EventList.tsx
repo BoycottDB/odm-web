@@ -138,11 +138,24 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
             <BeneficiaireNavigation 
               beneficiaires={dirigeantResults.map(dirigeantResult => {
                 // Transformation existante + nouveaux champs bénéficiaires
+                // Transform legacy format back to structured format
+                const controversesStructured = dirigeantResult.dirigeant.sources?.map((url, index) => {
+                  const titles = (dirigeantResult.dirigeant.controverses as string).split(' | ');
+                  return {
+                    id: index + 1, // Fake ID for display
+                    beneficiaire_id: dirigeantResult.dirigeant.beneficiaire_id,
+                    titre: titles[index] || `Controverse ${index + 1}`,
+                    source_url: url,
+                    ordre: index + 1,
+                    created_at: '',
+                    updated_at: ''
+                  };
+                }) || [];
+
                 const beneficiaireComplet: BeneficiaireComplet = {
                   id: dirigeantResult.dirigeant.beneficiaire_id || parseInt(dirigeantResult.id.replace('dirigeant-', '')),
                   nom: dirigeantResult.dirigeant.dirigeant_nom,
-                  controverses: dirigeantResult.dirigeant.controverses,
-                  sources: dirigeantResult.dirigeant.sources,
+                  controverses: controversesStructured,
                   lien_financier: dirigeantResult.dirigeant.lien_financier,
                   impact_description: dirigeantResult.dirigeant.impact_description,
                   marque_id: dirigeantResult.marque.id,

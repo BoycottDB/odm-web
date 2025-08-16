@@ -29,7 +29,6 @@ export async function GET() {
           beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey (
             id,
             nom,
-            controverses,
             type_beneficiaire
           )
         )
@@ -49,7 +48,7 @@ export async function GET() {
       id: number;
       beneficiaire_id: number;
       lien_financier: string;
-      beneficiaire: { id: number; nom: string; controverses: string; type_beneficiaire?: string } | Array<{ id: number; nom: string; controverses: string; type_beneficiaire?: string }>;
+      beneficiaire: { id: number; nom: string; type_beneficiaire?: string } | Array<{ id: number; nom: string; type_beneficiaire?: string }>;
     };
 
     type MarqueRow = {

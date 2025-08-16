@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
-import { DirigeantCreateRequest, DirigeantUpdateRequest, DirigeantWithMarques, BeneficiaireCreateRequest } from '@/types';
+import { DirigeantCreateRequest, DirigeantUpdateRequest, DirigeantWithMarques, BeneficiaireCreateRequest, ControverseBeneficiaire } from '@/types';
+
+interface DirigeantDatabase {
+  id: number;
+  nom: string;
+  impact_generique?: string;
+  type_beneficiaire: string;
+  created_at: string;
+  updated_at: string;
+  controverses?: ControverseBeneficiaire[];
+}
 
 export async function GET() {
   try {
@@ -48,7 +58,7 @@ export async function GET() {
     const dirigeantsWithMarques: DirigeantWithMarques[] = dirigeants.map(dirigeant => ({
       id: dirigeant.id,
       nom: dirigeant.nom,
-      controverses: (dirigeant as any).controverses || [],
+      controverses: (dirigeant as unknown as DirigeantDatabase).controverses || [],
       impact_generique: dirigeant.impact_generique,
       type_beneficiaire: dirigeant.type_beneficiaire || 'individu',
       marques: liaisonsTyped
