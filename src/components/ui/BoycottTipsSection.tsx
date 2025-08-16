@@ -148,7 +148,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
     }
   ];
 
-  // Fonction pour formater le markdown basique avec gestion des clics sur images
+  // Fonction pour formater le markdown basique avec gestion des clics sur images et liens
   const formatMarkdown = (text: string) => {
     let imageIndex = 0;
     let groupIndex = 0;
@@ -167,6 +167,14 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
         const currentIndex = imageIndex++;
         return `<img src="${src}" alt="${alt}" class="max-w-full h-auto rounded-lg my-2" onclick="handleImageClick('${src}')" style="cursor: pointer;" data-image-index="${currentIndex}" />`;
       }) // images individuelles ![alt](url)
+      .replace(/(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, (match: string, text: string, url: string) => {
+        // Valider que l'URL commence par http:// ou https://
+        const isValidUrl = /^https?:\/\//.test(url);
+        if (isValidUrl) {
+          return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-hover underline font-medium">${text}</a>`;
+        }
+        return match; // Retourner le texte original si l'URL n'est pas valide
+      }) // liens [texte](url) - negative lookbehind pour éviter les images ![alt](url)
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **gras**
       .replace(/\*(.*?)\*/g, '<em>$1</em>') // *italique*
       .replace(/^• (.+)$/gm, '<div class="flex items-start"><span class="text-primary mr-2">•</span><span>$1</span></div>') // listes avec •
