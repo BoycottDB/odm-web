@@ -235,9 +235,8 @@ export default function DirigeantDetailPage() {
           <DirigeantForm
             initialData={{
               nom: dirigeant.nom,
-              controverses: dirigeant.controverses,
               impactGenerique: dirigeant.impact_generique || '',
-              sources: dirigeant.sources
+              typeBeneficiaire: (dirigeant.type_beneficiaire as 'individu' | 'groupe') || 'individu'
             }}
             onSave={handleSave}
             isLoading={saving}

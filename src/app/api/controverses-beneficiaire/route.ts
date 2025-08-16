@@ -115,7 +115,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Construire l'objet de mise à jour
-    const updates: any = { updated_at: new Date().toISOString() };
+    const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
     
     if (titre !== undefined) {
       if (titre.trim().length < 10) {

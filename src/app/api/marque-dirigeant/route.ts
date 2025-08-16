@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
+import { ControverseBeneficiaire } from '@/types';
 import { MarqueBeneficiaireCreateRequest, MarqueBeneficiaireUpdateRequest, DirigeantComplet } from '@/types';
 
 // GET /api/marque-dirigeant - Récupérer toutes les liaisons avec données complètes
@@ -94,7 +95,7 @@ export async function GET(request: NextRequest) {
           id: liaison.beneficiaire.id,
           nom: liaison.beneficiaire.nom,
           // ✅ NOUVEAU : Controverses structurées
-          controverses: liaison.beneficiaire.controverses || [],
+          controverses: (liaison.beneficiaire.controverses as ControverseBeneficiaire[]) || [],
           lien_financier: liaison.lien_financier,
           // Priorité à l'impact spécifique, sinon impact générique
           impact_description: liaison.impact_specifique || liaison.beneficiaire.impact_generique || '',
@@ -102,7 +103,7 @@ export async function GET(request: NextRequest) {
           marque_nom: liaison.marque.nom,
           liaison_id: liaison.id,
           type_beneficiaire: (liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe') || 'individu',
-          type_affichage: (liaison.beneficiaire.type_beneficiaire === 'groupe' ? 'Groupe' : 'Dirigeant') as const,
+          type_affichage: (liaison.beneficiaire.type_beneficiaire === 'groupe' ? 'Groupe' : 'Dirigeant') as 'Dirigeant' | 'Groupe',
           toutes_marques: marquesArray
         });
       }

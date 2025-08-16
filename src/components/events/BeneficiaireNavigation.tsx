@@ -10,16 +10,14 @@ interface BeneficiaireNavigationProps {
 }
 
 export function BeneficiaireNavigation({ beneficiaires }: BeneficiaireNavigationProps) {
-  const [beneficiaireActif, setBeneficiaireActif] = useState(0);
+  const [beneficiaireActif, setBeneficiaireActif] = useState<number | null>(null);
 
-  // Si un seul bénéficiaire, pas d'onglets
-  if (beneficiaires.length <= 1) {
-    return beneficiaires.length === 1 ? (
-      <DirigeantCard dirigeant={beneficiaires[0]} />
-    ) : null;
+  // Si aucun bénéficiaire, ne rien afficher
+  if (beneficiaires.length === 0) {
+    return null;
   }
 
-  const beneficiaireCourant = beneficiaires[beneficiaireActif];
+  const beneficiaireCourant = beneficiaireActif !== null ? beneficiaires[beneficiaireActif] : null;
 
   // Fonction helper pour les labels
   const getTypeLabel = (type: TypeBeneficiaire): string => {
@@ -32,8 +30,8 @@ export function BeneficiaireNavigation({ beneficiaires }: BeneficiaireNavigation
 
   return (
     <div>
-      {/* Navigation simple entre bénéficiaires */}
-      <div className="flex flex-wrap justify-center gap-2 mb-6">
+      {/* Navigation entre bénéficiaires - toujours visible */}
+      <div className="flex flex-wrap justify-center gap-4">
         {beneficiaires.map((beneficiaire, index) => {
           const isActive = index === beneficiaireActif;
           const Icon = getTypeIcon(beneficiaire.type_beneficiaire);
@@ -42,16 +40,16 @@ export function BeneficiaireNavigation({ beneficiaires }: BeneficiaireNavigation
           return (
             <button
               key={`${beneficiaire.id}-${index}`}
-              onClick={() => setBeneficiaireActif(index)}
+              onClick={() => setBeneficiaireActif(isActive ? null : index)}
               className={`
-                flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all text-sm max-w-48
+                flex items-center gap-2 px-4 md:px-6 py-4 rounded-lg font-medium transition-all text-sm md:text-base max-w-48
                 ${isActive 
                   ? 'bg-primary text-white shadow-lg' 
                   : 'bg-white text-primary hover:bg-primary-light border border-primary'
                 }
               `}
             >
-              <Icon className="w-4 h-4 flex-shrink-0" />
+              <Icon className="md:w-8 md:h-8 flex-shrink-0" />
               <div className="text-left min-w-0">
                 <div className="font-medium truncate">{beneficiaire.nom}</div>
                 <div className="text-xs opacity-75">{typeLabel}</div>
@@ -61,8 +59,13 @@ export function BeneficiaireNavigation({ beneficiaires }: BeneficiaireNavigation
         })}
       </div>
 
-      {/* DirigeantCard existante (inchangée, juste les props adaptées) */}
-      <DirigeantCard dirigeant={beneficiaireCourant} />
+      {/* DirigeantCard avec bouton de fermeture intégré - seulement si sélectionnée */}
+      {beneficiaireCourant && (
+        <DirigeantCard 
+          dirigeant={beneficiaireCourant} 
+          onClose={() => setBeneficiaireActif(null)}
+        />
+      )}
     </div>
   );
 }

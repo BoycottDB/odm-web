@@ -1,6 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
-import { BeneficiaireCreateRequest, BeneficiaireUpdateRequest, BeneficiaireWithMarques } from '@/types';
+import { BeneficiaireCreateRequest, BeneficiaireUpdateRequest, BeneficiaireWithMarques, ControverseBeneficiaire } from '@/types';
+
+interface BeneficiaireDatabase {
+  id: number;
+  nom: string;
+  impact_generique?: string;
+  type_beneficiaire: string;
+  created_at: string;
+  updated_at: string;
+  controverses?: ControverseBeneficiaire[];
+}
+
+interface LiaisonDatabase {
+  id: number;
+  marque_id: number;
+  beneficiaire_id: number;
+  lien_financier: string;
+  impact_specifique?: string;
+  created_at: string;
+  updated_at: string;
+  beneficiaire?: BeneficiaireDatabase;
+}
+
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -50,7 +72,7 @@ export async function GET(request: NextRequest) {
       const beneficiaireWithMarques: BeneficiaireWithMarques = {
         id: beneficiaire.id as number,
         nom: beneficiaire.nom as string,
-        controverses: (beneficiaire as any).controverses || [],
+        controverses: (beneficiaire as BeneficiaireDatabase).controverses || [],
         impact_generique: beneficiaire.impact_generique as string || undefined,
         type_beneficiaire: ((beneficiaire.type_beneficiaire as string) || 'individu') as 'individu' | 'groupe',
         marques: (marques || []).map((m: unknown) => {
@@ -108,11 +130,11 @@ export async function GET(request: NextRequest) {
           dirigeant_id: beneficiaire?.id as number, // Alias pour compatibilité
           dirigeant_nom: (beneficiaire?.nom as string) || 'Nom inconnu',
           // ✅ Transformer controverses pour compatibilité legacy
-          controverses: ((beneficiaire as any)?.controverses || [])
-            .map((c: any) => c.titre)
+          controverses: ((beneficiaire as unknown as BeneficiaireDatabase)?.controverses || [])
+            .map((c: ControverseBeneficiaire) => c.titre)
             .join(' | ') || '',
-          sources: ((beneficiaire as any)?.controverses || [])
-            .map((c: any) => c.source_url) || [],
+          sources: ((beneficiaire as unknown as BeneficiaireDatabase)?.controverses || [])
+            .map((c: ControverseBeneficiaire) => c.source_url) || [],
           lien_financier: l.lien_financier as string,
           impact_description: (l.impact_specifique as string) || (beneficiaire?.impact_generique as string) || 'Impact à définir',
           type_beneficiaire: (beneficiaire?.type_beneficiaire as string) || 'individu',
@@ -164,7 +186,7 @@ export async function GET(request: NextRequest) {
           return {
             id: b.id as number,
             nom: b.nom as string,
-            controverses: (b as any).controverses || [],
+            controverses: (b as unknown as BeneficiaireDatabase).controverses || [],
             impact_generique: b.impact_generique as string || undefined,
             type_beneficiaire: ((b.type_beneficiaire as string) || 'individu') as 'individu' | 'groupe',
             marques: (marques || []).map((m: unknown) => {

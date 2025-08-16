@@ -147,9 +147,11 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
       </div>
       
       <p className="body-small text-neutral-600 mb-4 line-clamp-3">
-        {dirigeant.controverses.length > 200 
-          ? `${dirigeant.controverses.substring(0, 200)}...`
-          : dirigeant.controverses
+        {dirigeant.controverses && dirigeant.controverses.length > 0
+          ? dirigeant.controverses.map(c => c.titre).join(' • ').length > 200
+            ? `${dirigeant.controverses.map(c => c.titre).join(' • ').substring(0, 200)}...`
+            : dirigeant.controverses.map(c => c.titre).join(' • ')
+          : 'Aucune controverse documentée'
         }
       </p>
       
@@ -175,7 +177,7 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
       </div>
       
       <div className="body-xs text-neutral-500">
-        {dirigeant.sources.length} source(s) documentée(s)
+        {dirigeant.controverses ? dirigeant.controverses.length : 0} controverse(s) documentée(s)
       </div>
     </div>
   );
