@@ -103,7 +103,6 @@ export async function GET(request: NextRequest) {
           marque_nom: liaison.marque.nom,
           liaison_id: liaison.id,
           type_beneficiaire: (liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe') || 'individu',
-          type_affichage: (liaison.beneficiaire.type_beneficiaire === 'groupe' ? 'Groupe' : 'Dirigeant') as 'Dirigeant' | 'Groupe',
           toutes_marques: marquesArray
         });
       }

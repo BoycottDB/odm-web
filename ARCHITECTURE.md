@@ -200,6 +200,7 @@ CREATE TABLE "Marque" (
   nom VARCHAR(255) UNIQUE NOT NULL,
   secteur_marque_id INTEGER REFERENCES "SecteurMarque"(id),
   message_boycott_tips TEXT,
+  marque_parent_id INTEGER REFERENCES "Marque"(id),
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -315,6 +316,7 @@ CREATE TABLE "SecteurMarque" (
 -- Index pour les performances
 CREATE INDEX idx_marque_nom ON "Marque" USING gin(to_tsvector('french', nom));
 CREATE INDEX idx_marque_secteur ON "Marque"(secteur_marque_id);
+CREATE INDEX idx_marque_parent ON "Marque"(marque_parent_id);
 CREATE INDEX idx_evenement_categorie ON "Evenement"(categorie_id);
 CREATE INDEX idx_evenement_date ON "Evenement"(date DESC);
 CREATE INDEX idx_evenement_titre ON "Evenement" USING gin(to_tsvector('french', titre));
@@ -398,6 +400,35 @@ const getImpactMessage = (liaison: MarqueBeneficiaire) => {
 - **Migration SQL** : Script `migration-beneficiaires-v2.sql` avec transformation automatique
 - **Types TypeScript** : `MarqueBeneficiaireLegacy` et `BeneficiaireComplet` enrichis avec `toutes_marques`
 - **Extension API** : Format `beneficiaires_controverses` maintenu pour extensions
+
+## ⚠️ Dette Technique
+
+### **MarqueDirigeantLegacy - Compatibilité Extension**
+
+**Problème :** Couche de compatibilité temporaire pour l'extension browser qui double la complexité du code.
+
+**Impact actuel :**
+- Double maintenance des formats (V2 moderne + legacy)
+- Transformations constantes entre les formats
+- Code plus complexe dans `useSearch.ts`, `EventList.tsx`
+- Types alias inutiles (`Dirigeant`, `MarqueDirigeant`, etc.)
+
+**Plan de nettoyage :**
+1. **Phase 1** : Migrer extension browser vers format `beneficiaires_marque`
+2. **Phase 2** : Supprimer `MarqueDirigeantLegacy` et toute la logique `dirigeant_controverse`
+3. **Phase 3** : Simplifier `useSearch` pour utiliser directement le format V2
+
+**Bénéfices attendus :**
+- Code 30% plus simple
+- Performances améliorées (moins de transformations)
+- Un seul format de données partout
+- Maintenance facilitée
+
+**Fichiers concernés :**
+- `src/types/index.ts` : Types legacy
+- `src/hooks/useSearch.ts` : Transformations
+- `extension-api/netlify/functions/marques.js` : Double format
+- `src/components/events/EventList.tsx` : Logique de transformation
 
 ## 🎨 Design System
 

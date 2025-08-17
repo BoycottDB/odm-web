@@ -36,6 +36,9 @@ export function BeneficiaireNavigation({ beneficiaires }: BeneficiaireNavigation
           const isActive = index === beneficiaireActif;
           const Icon = getTypeIcon(beneficiaire.type_beneficiaire);
           const typeLabel = getTypeLabel(beneficiaire.type_beneficiaire);
+          
+          // Extraire la mention "via [parent]" pour les liens transitifs
+          const isTransitif = beneficiaire.source_lien === 'transitif';
 
           return (
             <button
@@ -44,15 +47,22 @@ export function BeneficiaireNavigation({ beneficiaires }: BeneficiaireNavigation
               className={`
                 flex items-center gap-2 px-4 md:px-6 py-4 rounded-lg font-medium transition-all text-sm md:text-base max-w-48
                 ${isActive 
-                  ? 'bg-primary text-white shadow-lg' 
-                  : 'bg-white text-primary hover:bg-primary-light border border-primary'
+                  ? (isTransitif ? 'bg-blue-500 text-white shadow-lg' : 'bg-primary text-white shadow-lg')
+                  : (isTransitif 
+                      ? 'bg-white text-blue-500 hover:bg-blue-50 border border-blue-300' 
+                      : 'bg-white text-primary hover:bg-primary-light border border-primary'
+                    )
                 }
               `}
             >
-              <Icon className="md:w-8 md:h-8 flex-shrink-0" />
+              <Icon className={`md:w-8 md:h-8 flex-shrink-0 ${
+                isActive 
+                  ? 'text-white' 
+                  : (isTransitif ? 'text-blue-500' : 'text-primary')
+              }`} />
               <div className="text-left min-w-0">
                 <div className="font-medium truncate">{beneficiaire.nom}</div>
-                <div className="text-xs opacity-75">{typeLabel}</div>
+                <div className="text-xs opacity-75">{isTransitif ? typeLabel + ' indirect': typeLabel}</div>
               </div>
             </button>
           );
