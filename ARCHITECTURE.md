@@ -206,36 +206,59 @@ CREATE TABLE "Marque" (
 
 CREATE TABLE "Evenement" (
   id SERIAL PRIMARY KEY,
-  "marqueId" INTEGER REFERENCES "Marque"(id) ON DELETE CASCADE,
-  description TEXT NOT NULL,
-  date DATE NOT NULL,
-  categorie VARCHAR(100) NOT NULL,
-  source TEXT NOT NULL,
-  "condamnationJudiciaire" BOOLEAN DEFAULT FALSE,
+  marque_id INTEGER REFERENCES "Marque"(id) ON DELETE CASCADE,
+  titre TEXT NOT NULL,
+  description TEXT,
+  date TIMESTAMP NOT NULL,
+  reponse TEXT,
+  categorie_id INTEGER REFERENCES "Categorie"(id),
+  proposition_source_id INTEGER,
+  source_url TEXT NOT NULL,
+  condamnation_judiciaire BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ARCHITECTURE V2 - Dirigeants Normalisés
-CREATE TABLE "dirigeants" (
+CREATE TABLE "Categorie" (
+  id SERIAL PRIMARY KEY,
+  nom TEXT NOT NULL,
+  description TEXT,
+  emoji TEXT,
+  couleur TEXT,
+  actif BOOLEAN DEFAULT TRUE,
+  ordre INTEGER NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- ARCHITECTURE V2 - Bénéficiaires Normalisés
+CREATE TABLE "Beneficiaires" (
   id SERIAL PRIMARY KEY,
   nom VARCHAR(255) NOT NULL,
-  controverses TEXT NOT NULL,
-  sources JSONB NOT NULL,
   impact_generique TEXT,
+  type_beneficiaire VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE "marque_dirigeant" (
+CREATE TABLE "controverse_beneficiaire" (
+  id SERIAL PRIMARY KEY,
+  beneficiaire_id INTEGER REFERENCES "Beneficiaires"(id) ON DELETE CASCADE,
+  titre TEXT NOT NULL,
+  source_url TEXT NOT NULL,
+  ordre INTEGER NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE "Marque_beneficiaire" (
   id SERIAL PRIMARY KEY,
   marque_id INTEGER REFERENCES "Marque"(id) ON DELETE CASCADE,
-  dirigeant_id INTEGER REFERENCES "dirigeants"(id) ON DELETE CASCADE,
-  lien_financier VARCHAR(500) NOT NULL,
+  beneficiaire_id INTEGER REFERENCES "Beneficiaires"(id) ON DELETE CASCADE,
+  lien_financier TEXT NOT NULL,
   impact_specifique TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW(),
-  UNIQUE(marque_id, dirigeant_id)
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 -- Tables legacy (rétrocompatibilité - peuvent être supprimées après migration)
@@ -258,11 +281,17 @@ CREATE TABLE "DirigeantMarque" (
 
 CREATE TABLE "Proposition" (
   id SERIAL PRIMARY KEY,
-  type VARCHAR(20) NOT NULL, -- 'marque' | 'evenement' | 'dirigeant'
-  data JSONB NOT NULL,
-  status VARCHAR(20) DEFAULT 'en_attente', -- 'approuvee' | 'rejetee'
-  "raisonRejet" TEXT,
-  created_at TIMESTAMP DEFAULT NOW()
+  marque_nom TEXT NOT NULL,
+  marque_id INTEGER REFERENCES "Marque"(id),
+  description TEXT NOT NULL,
+  date TEXT NOT NULL,
+  categorie_id INTEGER REFERENCES "Categorie"(id),
+  source_url TEXT NOT NULL,
+  statut VARCHAR(20) DEFAULT 'en_attente', -- 'approuvee' | 'rejetee'
+  commentaire_admin TEXT,
+  titre_controverse TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "Decision" (
@@ -286,21 +315,27 @@ CREATE TABLE "SecteurMarque" (
 -- Index pour les performances
 CREATE INDEX idx_marque_nom ON "Marque" USING gin(to_tsvector('french', nom));
 CREATE INDEX idx_marque_secteur ON "Marque"(secteur_marque_id);
-CREATE INDEX idx_evenement_categorie ON "Evenement"(categorie);
+CREATE INDEX idx_evenement_categorie ON "Evenement"(categorie_id);
 CREATE INDEX idx_evenement_date ON "Evenement"(date DESC);
-CREATE INDEX idx_proposition_status ON "Proposition"(status);
--- Index V2 - Dirigeants normalisés
-CREATE INDEX idx_dirigeants_nom ON "dirigeants" USING gin(to_tsvector('french', nom));
-CREATE INDEX idx_dirigeants_controverses ON "dirigeants" USING gin(to_tsvector('french', controverses));
-CREATE INDEX idx_marque_dirigeant_marque ON "marque_dirigeant"(marque_id);
-CREATE INDEX idx_marque_dirigeant_dirigeant ON "marque_dirigeant"(dirigeant_id);
+CREATE INDEX idx_evenement_titre ON "Evenement" USING gin(to_tsvector('french', titre));
+CREATE INDEX idx_proposition_statut ON "Proposition"(statut);
+CREATE INDEX idx_proposition_marque ON "Proposition"(marque_id);
+CREATE INDEX idx_categorie_actif ON "Categorie"(actif);
+CREATE INDEX idx_categorie_ordre ON "Categorie"(ordre);
+-- Index V2 - Bénéficiaires normalisés
+CREATE INDEX idx_beneficiaires_nom ON "Beneficiaires" USING gin(to_tsvector('french', nom));
+CREATE INDEX idx_beneficiaires_type ON "Beneficiaires"(type_beneficiaire);
+CREATE INDEX idx_controverse_beneficiaire_id ON "controverse_beneficiaire"(beneficiaire_id);
+CREATE INDEX idx_controverse_titre ON "controverse_beneficiaire" USING gin(to_tsvector('french', titre));
+CREATE INDEX idx_marque_beneficiaire_marque ON "Marque_beneficiaire"(marque_id);
+CREATE INDEX idx_marque_beneficiaire_beneficiaire ON "Marque_beneficiaire"(beneficiaire_id);
 CREATE INDEX idx_secteur_nom ON "SecteurMarque"(nom);
 
 -- Index legacy (rétrocompatibilité)
 CREATE INDEX idx_dirigeant_nom ON "Dirigeant" USING gin(to_tsvector('french', nom || ' ' || COALESCE(prenom, '')));
 ```
 
-### **Architecture V2 - Dirigeants Normalisés**
+### **Architecture V2 - Bénéficiaires Normalisés**
 
 #### **Évolution Architecturale (2024-08)**
 Migration d'un système monolithique vers une architecture normalisée pour les bénéficiaires controversés :
@@ -317,46 +352,52 @@ DirigeantMarque: {
 **V2 (Actuel)** : Architecture normalisée avec réutilisabilité
 ```sql
 -- Structure V2 (actuelle)
-dirigeants: {
-  id, nom, controverses, sources[], impact_generique
+Beneficiaires: {
+  id, nom, impact_generique, type_beneficiaire
   -- ✅ Données centralisées et réutilisables
 }
 
-marque_dirigeant: {
-  marque_id, dirigeant_id, lien_financier, impact_specifique
+controverse_beneficiaire: {
+  beneficiaire_id, titre, source_url, ordre
+  -- ✅ Controverses liées aux bénéficiaires
+}
+
+Marque_beneficiaire: {
+  marque_id, beneficiaire_id, lien_financier, impact_specifique
   -- ✅ Relation pure avec spécificités par marque
 }
 ```
 
 #### **Avantages Architecture V2**
-- **Réutilisabilité** : Un dirigeant lié à plusieurs marques
+- **Réutilisabilité** : Un bénéficiaire lié à plusieurs marques
 - **Consistance** : Mise à jour centralisée des controverses
 - **Performance** : Moins de duplication, requêtes optimisées
-- **Évolutivité** : Ajout de nouveaux champs dirigeant sans impact
-- **Flexibilité** : Impact générique + spécifique par marque
+- **Évolutivité** : Ajout de nouveaux champs bénéficiaire sans impact sur relations
+- **Flexibilité** : Système d'impact hybride (spécifique + générique + fallback)
 
 #### **Logique Métier - Impact Hybride**
 ```typescript
 // Priorité des messages d'impact
-const getImpactMessage = (liaison: MarqueDirigeant) => {
-  return liaison.impact_specifique        // 1. Spécifique marque (priorité)
-      || liaison.dirigeant.impact_generique // 2. Générique dirigeant
-      || "Impact à définir"               // 3. Fallback par défaut
+const getImpactMessage = (liaison: MarqueBeneficiaire) => {
+  return liaison.impact_specifique                    // 1. Spécifique marque (priorité)
+      || liaison.beneficiaire.impact_generique        // 2. Générique bénéficiaire
+      || "Impact à définir"                          // 3. Fallback par défaut
 }
 ```
 
 #### **Composants Frontend V2**
-- **`DirigeantForm`** : CRUD dirigeants centralisés (nom, controverses, sources)
-- **`MarqueDirigeantForm`** : Gestion liaisons marque-dirigeant (lien, impact)
-- **`DirigeantCard`** : Affichage public avec toutes marques liées et navigation cliquable
-- **API `/dirigeants`** : Endpoint dirigeant-centrique avec marques liées
-- **API `/marque-dirigeant`** : Endpoint relation pure CRUD
+- **`BeneficiaireForm`** : CRUD bénéficiaires centralisés (nom, impact_generique, type_beneficiaire)
+- **`ControverseBeneficiaireForm`** : CRUD controversies (titre, source_url, beneficiaire_id)
+- **`MarqueBeneficiaireForm`** : Gestion liaisons marque-bénéficiaire (lien, impact)
+- **`BeneficiaireCard`** : Affichage public avec système d'impact hybride et toutes marques liées
+- **API `/beneficiaires`** : Endpoint bénéficiaire-centrique avec controverses et marques liées
+- **API `/marque-beneficiaire`** : Endpoint relation pure CRUD
 
 #### **Migration et Compatibilité**
-- **Rétrocompatibilité** : Interface publique identique (`DirigeantResult`)  
-- **Migration SQL** : Script `migration-dirigeants-v2.sql` avec transformation automatique
-- **Types TypeScript** : `MarqueDirigeantLegacy` et `DirigeantComplet` enrichis avec `toutes_marques`
-- **Extension API** : Format `dirigeants_controverses` maintenu pour extensions
+- **Rétrocompatibilité** : Interface publique identique (`BeneficiaireResult`)  
+- **Migration SQL** : Script `migration-beneficiaires-v2.sql` avec transformation automatique
+- **Types TypeScript** : `MarqueBeneficiaireLegacy` et `BeneficiaireComplet` enrichis avec `toutes_marques`
+- **Extension API** : Format `beneficiaires_controverses` maintenu pour extensions
 
 ## 🎨 Design System
 
