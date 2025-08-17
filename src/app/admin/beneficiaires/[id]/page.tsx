@@ -6,6 +6,7 @@ import { BeneficiaireWithMarques, BeneficiaireUpdateRequest, BeneficiaireCreateR
 import AdminNavigation from '@/components/admin/AdminNavigation';
 import { BeneficiaireForm } from '@/components/admin/BeneficiaireForm';
 import { ControversesManager } from '@/components/admin/ControversesManager';
+import RelationsManager from '@/components/admin/RelationsManager';
 import { User, Building2, Trash2 } from 'lucide-react';
 
 export default function BeneficiaireDetailPage() {
@@ -217,6 +218,17 @@ export default function BeneficiaireDetailPage() {
             }}
             onCancel={() => router.back()}
             loading={updating}
+          />
+        </div>
+
+        {/* Gestion des relations */}
+        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 mb-6">
+          <RelationsManager 
+            beneficiaireId={parseInt(beneficiaireId)}
+            beneficiaireNom={beneficiaire.nom}
+            onUpdate={() => {
+              loadBeneficiaire(); // Recharger les données du bénéficiaire
+            }}
           />
         </div>
 

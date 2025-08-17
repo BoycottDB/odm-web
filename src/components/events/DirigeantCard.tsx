@@ -67,18 +67,39 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
 
   const Icon = getTypeIcon(dirigeant.type_beneficiaire);
   const typeLabel = getTypeLabel(dirigeant.type_beneficiaire);
+  
+  // Déterminer si c'est un lien transitif
+  const isTransitif = dirigeant.source_lien === 'transitif';
+  let nomParent = dirigeant.nom;
+  if (isTransitif && dirigeant.lien_financier.includes(' de ')) {
+    const partieVia = dirigeant.lien_financier.split(' de ').pop();
+    if (partieVia) {
+      nomParent = `${partieVia}`;
+    }
+  }
+  
+  // Classes CSS selon le type de lien
+  const cardClasses = isTransitif 
+    ? "mt-6 bg-gradient-to-r from-primary-light to-berry-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+    : "mt-6 bg-gradient-to-r from-primary-light to-berry-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300";
 
   return (
-    <div className="mt-6 bg-gradient-to-r from-primary-light to-berry-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+    <div className={cardClasses}>
       {/* En-tête bénéficiaire controversé */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <div className="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mr-4">
-          <Icon className="w-7 h-7 text-primary flex-shrink-0" />
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
+            isTransitif ? 'bg-blue-100' : 'bg-primary-light'
+          }`}>
+          <Icon className={`w-7 h-7 flex-shrink-0 ${
+            isTransitif ? 'text-blue-500' : 'text-primary'
+          }`} />
           </div>
           <div>         
-            <div className="text-primary body-small">
-              Un {typeLabel} controversé est associé à la marque <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong>
+            <div className={`body-small ${
+             isTransitif ? 'text-blue-500' : 'text-primary'
+            }`}>
+              Un {typeLabel} controversé est associé à la marque <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong>{isTransitif && ' indirectement, via '}<strong className="body-large font-semibold">{isTransitif && nomParent}</strong>
             </div>
             {/* Nom du dirigeant */}
             <h3 className="heading-sub font-bold text-neutral-900">
@@ -101,9 +122,11 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
 
 
       {/* Informations financières */}
-      <div className="space-y-3 mb-6">
+      <div className="space-y-4 mb-6">
         <div>
-          <div className="font-semibold text-primary body-small mb-1">
+          <div className={`font-semibold body-small mb-1 ${
+              isTransitif ? 'text-blue-500' : 'text-primary'
+            }`}>
             Lien financier :
           </div>
           <div className="text-neutral-700">
@@ -112,7 +135,7 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
         </div>
         
         <div>
-          <div className="font-semibold text-primary body-small mb-1">
+          <div className={`font-semibold body-small mb-1 text-primary`}>
             Impact de vos achats :
           </div>
           <div className="text-neutral-900">
@@ -123,7 +146,7 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
 
       {/* Controverses - NOUVEAU composant */}
       <div className="mb-6">
-        <div className="font-semibold text-primary body-small mb-3">
+        <div className={`font-semibold body-small mb-3 text-primary`}>
           Controverses documentées :
         </div>
         <ControversesSection 
@@ -133,9 +156,9 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
 
       {/* Toutes les marques liées */}
       {dirigeant.toutes_marques && dirigeant.toutes_marques.length > 1 && (
-        <div className="mt-6 pt-4 border-t border-primary">
+        <div className="mt-6 pt-4 border-t border-sprimary">
           <div className="font-semibold text-black body-small mb-3">
-            Autres marques également liées à {dirigeant.nom} ({dirigeant.toutes_marques.length - 1}) :
+            Autres marques également liées à {dirigeant.nom} ({isTransitif ? dirigeant.toutes_marques.length : dirigeant.toutes_marques.length - 1}) :
           </div>
           <MarquesBadges 
             marques={dirigeant.toutes_marques.filter(m => m.id !== dirigeant.marque_id)}

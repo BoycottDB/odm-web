@@ -167,9 +167,9 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
                   type_beneficiaire: dirigeantResult.beneficiaire?.type_beneficiaire || 
                                    dirigeantResult.dirigeant?.type_beneficiaire || 
                                    'individu',
-                  type_affichage: (dirigeantResult.beneficiaire?.type_beneficiaire || 
-                                  dirigeantResult.dirigeant?.type_beneficiaire || 
-                                  'individu') === 'groupe' ? 'Groupe' : 'Dirigeant'
+                  
+                  // NOUVEAU - Source du lien pour distinction visuelle
+                  source_lien: dirigeantResult.dirigeant?.source_lien || 'direct'
                 };
                 
                 return beneficiaireComplet;

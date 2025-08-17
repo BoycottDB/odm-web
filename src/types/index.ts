@@ -1,4 +1,9 @@
 // Types centralisés pour toute l'application
+
+// TODO: DETTE TECHNIQUE - Supprimer quand extension browser mise à jour
+// MarqueDirigeantLegacy sert uniquement à la compatibilité extension browser
+// Plan: migrer extension vers beneficiaires_marque puis supprimer cette couche legacy
+// Impact: suppression de toute la logique dirigeant_controverse, useSearch simplifié
 // Type pour la compatibilité avec l'ancienne structure (API marques et extension)
 export interface MarqueDirigeantLegacy {
   id: number; // ID de la liaison
@@ -15,6 +20,7 @@ export interface MarqueDirigeantLegacy {
     id: number;
     nom: string;
   }>;
+  source_lien?: 'direct' | 'transitif'; // NOUVEAU : origine du lien
 }
 
 export interface Marque {
@@ -26,6 +32,7 @@ export interface Marque {
     id: number;
     lien_financier: string;
     impact_specifique?: string;
+    source_lien?: 'direct' | 'transitif'; // NOUVEAU : origine du lien
     beneficiaire: {
       id: number;
       nom: string;
@@ -48,6 +55,10 @@ export interface Marque {
   // Champs pour les Boycott Tips
   secteur_marque_id?: number;
   message_boycott_tips?: string;
+  // Hierarchical structure for inheritance
+  marque_parent_id?: number;
+  marque_parent?: Marque;
+  filiales?: Marque[];
   secteur_marque?: SecteurMarque;
 }
 
@@ -250,7 +261,8 @@ export interface MarqueBeneficiaire {
   marque?: { id: number; nom: string };
 }
 
-// Types alias pour rétrocompatibilité
+// TODO: DETTE TECHNIQUE - Types alias pour rétrocompatibilité
+// À supprimer avec MarqueDirigeantLegacy
 export type Dirigeant = Beneficiaire;
 export type MarqueDirigeant = Omit<MarqueBeneficiaire, 'beneficiaire_id'> & {
   dirigeant_id: number;
@@ -285,14 +297,15 @@ export interface BeneficiaireComplet {
   marque_nom: string;
   liaison_id: number;
   type_beneficiaire: TypeBeneficiaire;
-  type_affichage: 'Dirigeant' | 'Groupe'; // Computed field for UI
+  source_lien?: 'direct' | 'transitif'; // NOUVEAU : origine du lien
   toutes_marques: Array<{
     id: number;
     nom: string;
   }>;
 }
 
-// Types alias pour rétrocompatibilité
+// TODO: DETTE TECHNIQUE - Types alias pour rétrocompatibilité
+// À supprimer avec MarqueDirigeantLegacy
 export type DirigeantWithMarques = BeneficiaireWithMarques;
 export type DirigeantComplet = BeneficiaireComplet;
 
@@ -326,7 +339,8 @@ export interface MarqueBeneficiaireUpdateRequest {
   impact_specifique?: string;
 }
 
-// Types alias pour rétrocompatibilité
+// TODO: DETTE TECHNIQUE - Types alias pour rétrocompatibilité
+// À supprimer avec MarqueDirigeantLegacy
 export type DirigeantCreateRequest = BeneficiaireCreateRequest;
 export type DirigeantUpdateRequest = BeneficiaireUpdateRequest;
 export type MarqueDirigeantCreateRequest = Omit<MarqueBeneficiaireCreateRequest, 'beneficiaire_id'> & {
@@ -379,4 +393,17 @@ export interface SecteurMarqueUpdateRequest {
   nom?: string;
   description?: string;
   message_boycott_tips?: string;
+}
+
+// Types pour les relations entre bénéficiaires
+export interface BeneficiaireRelation {
+  id: number;
+  beneficiaire_source_id: number;
+  beneficiaire_cible_id: number;
+  description_relation: string;
+  created_at: string;
+  updated_at: string;
+  // Relations populées
+  beneficiaire_source?: Beneficiaire;
+  beneficiaire_cible?: Beneficiaire;
 }
