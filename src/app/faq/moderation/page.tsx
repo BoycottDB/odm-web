@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useDecisions } from '@/hooks/useDecisions';
 import { Decision } from '@/types';
 
@@ -104,15 +105,47 @@ export default function Moderation() {
               </div>
               <div className="flex-1">
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Principe de modération</h2>
-                <p className="body-large font-lsight text-neutral-700 leading-relaxed mb-4">
+                <p className="body-base font-light text-neutral-700 leading-relaxed mb-4">
                   Chaque ajout, correction ou suppression d&apos;entrée est soumis à validation par des modérateurs. Toutes les décisions sont publiques, justifiées et consultables ici.
                 </p>
-                <p className="body-large font-light text-neutral-700 leading-relaxed">
+                <p className="body-base font-light text-neutral-700 leading-relaxed">
                   Cette transparence garantit la fiabilité des informations et permet à chacun de comprendre les critères de validation utilisés.
                 </p>
               </div>
             </div>
           </div>
+
+          {/* Critères de validation */}
+          <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 mb-8">
+            <div className="flex items-start mb-4">
+              <div className="bg-success-light rounded-lg p-3 mr-4">
+                <svg className="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h2 className="heading-main font-bold text-neutral-900 mb-4">Critères de validation</h2>
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div className="border-l-4 border-success pl-4">
+                    <h3 className="font-semibold body-base text-neutral-900 mb-2">✅ Accepté si :</h3>
+                    <ul className="text-neutral-700 space-y-2">
+                      <li>• Source vérifiable</li>
+                      <li>• Information factuelle et datée</li>
+                      <li>• Pertinence pour les consommateurs</li>
+                    </ul>
+                  </div>
+                  <div className="border-l-4 border-error pl-4">
+                    <h3 className="font-semibold body-base text-neutral-900 mb-2">❌ Refusé si :</h3>
+                    <ul className="text-neutral-700 space-y-2">
+                      <li>• Source douteuse ou inexistante</li>
+                      <li>• Information non vérifiée</li>
+                      <li>• Hors sujet ou non pertinent</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+             </div>
+            </div>
 
           {/* Historique des décisions */}
           <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 mb-8">
@@ -196,6 +229,19 @@ export default function Moderation() {
                 )}
               </div>
             </div>
+          </div>
+
+          {/* Navigation */}
+          <div className="mt-8 text-center">
+            <Link 
+              href="/faq"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Retour aux questions fréquentes
+            </Link>
           </div>
         </div>
       </section>
