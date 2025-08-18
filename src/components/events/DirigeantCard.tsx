@@ -154,16 +154,33 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
         />
       </div>
 
-      {/* Toutes les marques liées */}
-      {dirigeant.toutes_marques && dirigeant.toutes_marques.length > 1 && (
-        <div className="mt-6 pt-4 border-t border-sprimary">
+      {/* Section marques directement liées */}
+      {dirigeant.marques_directes && dirigeant.marques_directes.length > 0 && (
+        <div className="mt-6 pt-4 border-t border-primary">
           <div className="font-semibold text-black body-small mb-3">
-            Autres marques également liées à {dirigeant.nom} ({isTransitif ? dirigeant.toutes_marques.length : dirigeant.toutes_marques.length - 1}) :
+            Autres marques directement liées à {dirigeant.nom} ({dirigeant.marques_directes.length}) :
           </div>
           <MarquesBadges 
-            marques={dirigeant.toutes_marques.filter(m => m.id !== dirigeant.marque_id)}
+            marques={dirigeant.marques_directes}
             variant="public"
           />
+        </div>
+      )}
+
+      {/* Sections marques indirectement liées */}
+      {dirigeant.marques_indirectes && Object.keys(dirigeant.marques_indirectes).length > 0 && (
+        <div className="mt-6 pt-4 border-t border-primary space-y-4">
+          {Object.entries(dirigeant.marques_indirectes).map(([beneficiaireIntermediaire, marques]) => (
+            <div key={beneficiaireIntermediaire}>
+              <div className="font-semibold text-black body-small mb-3">
+                Autres marques indirectement liées à {dirigeant.nom} via {beneficiaireIntermediaire} ({marques.length}) :
+              </div>
+              <MarquesBadges 
+                marques={marques}
+                variant="indirect"
+              />
+            </div>
+          ))}
         </div>
       )}
 

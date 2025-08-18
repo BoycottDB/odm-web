@@ -113,7 +113,9 @@ export function useSearch() {
                   updated_at: liaison.beneficiaire.updated_at || new Date().toISOString(),
                   toutes_marques: liaison.beneficiaire.toutes_marques || [{ id: marque.id, nom: marque.nom }],
                   type_beneficiaire: liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe' | undefined,
-                  source_lien: liaison.source_lien || 'direct'
+                  source_lien: liaison.source_lien || 'direct',
+                  marques_directes: liaison.beneficiaire.marques_directes,
+                  marques_indirectes: liaison.beneficiaire.marques_indirectes
                 },
                 dirigeant: {
                   id: liaison.id, // ID de la liaison
@@ -128,7 +130,9 @@ export function useSearch() {
                   updated_at: liaison.beneficiaire.updated_at || new Date().toISOString(),
                   toutes_marques: liaison.beneficiaire.toutes_marques || [{ id: marque.id, nom: marque.nom }],
                   type_beneficiaire: liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe' | undefined,
-                  source_lien: liaison.source_lien || 'direct'
+                  source_lien: liaison.source_lien || 'direct',
+                  marques_directes: liaison.beneficiaire.marques_directes,
+                  marques_indirectes: liaison.beneficiaire.marques_indirectes
                 }
               });
             }

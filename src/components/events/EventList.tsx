@@ -169,7 +169,11 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
                                    'individu',
                   
                   // NOUVEAU - Source du lien pour distinction visuelle
-                  source_lien: dirigeantResult.dirigeant?.source_lien || 'direct'
+                  source_lien: dirigeantResult.dirigeant?.source_lien || 'direct',
+
+                  // NOUVEAU - Sections séparées pour marques directes et indirectes
+                  marques_directes: dirigeantResult.dirigeant?.marques_directes || [],
+                  marques_indirectes: dirigeantResult.dirigeant?.marques_indirectes || {}
                 };
                 
                 return beneficiaireComplet;

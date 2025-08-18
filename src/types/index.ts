@@ -21,6 +21,17 @@ export interface MarqueDirigeantLegacy {
     nom: string;
   }>;
   source_lien?: 'direct' | 'transitif'; // NOUVEAU : origine du lien
+  // ✅ NOUVEAU : Sections séparées pour marques directes et indirectes
+  marques_directes?: Array<{
+    id: number;
+    nom: string;
+  }>; // Marques directement liées à ce bénéficiaire (exclut la marque actuelle)
+  marques_indirectes?: {
+    [beneficiaireIntermediaire: string]: Array<{
+      id: number;
+      nom: string;
+    }>;
+  }; // Marques indirectement liées via d'autres bénéficiaires
 }
 
 export interface Marque {
@@ -46,6 +57,17 @@ export interface Marque {
         id: number;
         nom: string;
       }>; // Toutes les marques liées à ce bénéficiaire (ajouté par l'API)
+      // ✅ NOUVEAU : Sections séparées pour marques directes et indirectes
+      marques_directes?: Array<{
+        id: number;
+        nom: string;
+      }>; // Marques directement liées à ce bénéficiaire (exclut la marque actuelle)
+      marques_indirectes?: {
+        [beneficiaireIntermediaire: string]: Array<{
+          id: number;
+          nom: string;
+        }>;
+      }; // Marques indirectement liées via d'autres bénéficiaires
     };
   }>;
   // Champs spécifiques au contexte dirigeant-marque
@@ -245,6 +267,17 @@ export interface Beneficiaire {
     id: number;
     nom: string;
   }>; // Toutes les marques liées à ce bénéficiaire (ajouté par l'API)
+  // ✅ NOUVEAU : Sections séparées pour marques directes et indirectes
+  marques_directes?: Array<{
+    id: number;
+    nom: string;
+  }>; // Marques directement liées à ce bénéficiaire (exclut la marque actuelle)
+  marques_indirectes?: {
+    [beneficiaireIntermediaire: string]: Array<{
+      id: number;
+      nom: string;
+    }>;
+  }; // Marques indirectement liées via d'autres bénéficiaires
 }
 
 // Table liaisons marque-bénéficiaire (ex-marque_dirigeant)
@@ -302,6 +335,17 @@ export interface BeneficiaireComplet {
     id: number;
     nom: string;
   }>;
+  // ✅ NOUVEAU : Sections séparées pour marques directes et indirectes
+  marques_directes?: Array<{
+    id: number;
+    nom: string;
+  }>; // Marques directement liées à ce bénéficiaire (exclut la marque actuelle)
+  marques_indirectes?: {
+    [beneficiaireIntermediaire: string]: Array<{
+      id: number;
+      nom: string;
+    }>;
+  }; // Marques indirectement liées via d'autres bénéficiaires
 }
 
 // TODO: DETTE TECHNIQUE - Types alias pour rétrocompatibilité
