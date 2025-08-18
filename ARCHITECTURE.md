@@ -384,6 +384,33 @@ Nestlé → BlackRock  (description_relation: "BlackRock actionnaire principal")
 - Recherche "Herta" → Affichage Nestlé (direct) + BlackRock (transitif via Nestlé)
 - Distinction visuelle : direct (orange) vs transitif (bleu)
 
+#### **Sections Marques Directes vs Indirectes (2025-01)**
+Chaque bénéficiaire affiche maintenant ses marques liées en sections séparées :
+
+**Marques directement liées :**
+- Marques directement associées au bénéficiaire (excluant la marque de recherche)
+- Style : badges orange standard
+
+**Marques indirectement liées :**
+- Marques des bénéficiaires qui profitent au bénéficiaire via relations transitives
+- Groupées par bénéficiaire intermédiaire
+- Style : badges bleus pour distinction visuelle
+
+**Exemples concrets :**
+```
+Recherche "Herta" :
+├── Nestlé (direct)
+│   └── Marques directes: [Nescafé] (orange)
+└── BlackRock (transitif)
+    ├── Marques directes: [Nike, Starbucks] (orange)
+    └── Marques indirectes via Nestlé: [Herta, Nescafé] (bleu)
+
+Recherche "Starbucks" :
+└── BlackRock (direct)
+    ├── Marques directes: [Nike] (orange)
+    └── Marques indirectes via Nestlé: [Herta, Nescafé] (bleu)
+```
+
 **V1 (Legacy)** : Données dirigeant dupliquées pour chaque marque
 ```sql
 -- Structure V1 (obsolète)
@@ -433,9 +460,29 @@ const getImpactMessage = (liaison: MarqueBeneficiaire) => {
 - **`BeneficiaireForm`** : CRUD bénéficiaires centralisés (nom, impact_generique, type_beneficiaire)
 - **`ControverseBeneficiaireForm`** : CRUD controversies (titre, source_url, beneficiaire_id)
 - **`MarqueBeneficiaireForm`** : Gestion liaisons marque-bénéficiaire (lien, impact)
-- **`BeneficiaireCard`** : Affichage public avec système d'impact hybride et toutes marques liées
+- **`DirigeantCard`** : Affichage public avec sections séparées marques directes/indirectes
+- **`MarquesBadges`** : Badges avec variants `public`, `admin`, et `indirect` (style bleu)
 - **API `/beneficiaires`** : ~~Endpoint bénéficiaire-centrique~~ *(Supprimé - logique intégrée dans `/marques`)*
 - **API `/marque-beneficiaire`** : Endpoint relation pure CRUD
+
+#### **Types TypeScript - Sections Marques**
+```typescript
+interface Beneficiaire {
+  // ... propriétés existantes
+  marques_directes?: Array<{id: number, nom: string}>; 
+  marques_indirectes?: {
+    [beneficiaireIntermediaire: string]: Array<{id: number, nom: string}>;
+  };
+}
+
+interface BeneficiaireComplet {
+  // ... propriétés existantes  
+  marques_directes?: Array<{id: number, nom: string}>;
+  marques_indirectes?: {
+    [beneficiaireIntermediaire: string]: Array<{id: number, nom: string}>;
+  };
+}
+```
 
 #### **Migration et Compatibilité**
 - **Rétrocompatibilité** : Interface publique identique (`BeneficiaireResult`)  
