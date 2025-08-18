@@ -4,6 +4,26 @@ import { User, Building2, ExternalLink, X } from 'lucide-react';
 import { DirigeantComplet, TypeBeneficiaire, ControverseBeneficiaire } from '@/types';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
 
+// Fonction pour formater le markdown basique avec gestion des liens
+const formatMarkdown = (text: string) => {
+  if (!text) return '';
+  
+  return text
+    .replace(/(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, (match: string, text: string, url: string) => {
+      // Valider que l'URL commence par http:// ou https://
+      const isValidUrl = /^https?:\/\//.test(url);
+      if (isValidUrl) {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-hover underline font-medium">${text}</a>`;
+      }
+      return match; // Retourner le texte original si l'URL n'est pas valide
+    }) // liens [texte](url) - negative lookbehind pour éviter les images ![alt](url)
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **gras**
+    .replace(/\*(.*?)\*/g, '<em>$1</em>') // *italique*
+    .replace(/^• (.+)$/gm, '<div class="flex items-start"><span class="text-primary mr-2">•</span><span>$1</span></div>') // listes avec •
+    .replace(/\n/g, '<br />') // tous les retours à la ligne
+    .replace(/(<\/div>)<br \/>/g, '$1'); // supprimer les <br /> immédiatement après les éléments de liste
+};
+
 interface DirigeantCardProps {
   dirigeant: DirigeantComplet;
   onClose?: () => void;
@@ -138,9 +158,10 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
           <div className={`font-semibold body-small mb-1 text-primary`}>
             Impact de vos achats :
           </div>
-          <div className="text-neutral-900">
-            {dirigeant.impact_description}
-          </div>
+          <div 
+            className="text-neutral-900"
+            dangerouslySetInnerHTML={{ __html: formatMarkdown(dirigeant.impact_description) }}
+          />
         </div>
       </div>
 

@@ -108,9 +108,16 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
         </div>
       )}
 
-      {isSearchResults || <h2 className="heading-main font-light text-neutral-900 mb-12 text-center">
-        Derniers signalements
-      </h2>}
+      {isSearchResults || (
+        <>
+          <h2 className="heading-main font-light text-neutral-900 mb-2 text-center">
+            Derniers signalements
+          </h2>
+          <p className="body-small text-neutral-600 text-center mb-12">
+            Consultez les controverses récemment ajoutées à notre base de données collaborative.
+          </p>
+        </>
+      )}
 
       {/* Bouton flottant desktop & mobile avec adaptation selon le banner PWA */}
       {isSearchResults && searchQuery && (
@@ -130,9 +137,12 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
         {/* Bénéficiaires controversés (seulement lors de recherche) */}
         {hasDirigeants && (
           <div className="mb-20">
-            <h3 className="heading-main font-medium text-neutral-900 mb-6 text-center">
+            <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
               À qui profitent vos achats ?
             </h3>
+            <p className="body-small text-neutral-600 text-center mb-6">
+              Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
+            </p>
             
             {/* Navigation entre bénéficiaires avec transformation des données */}
             <BeneficiaireNavigation 
@@ -185,9 +195,16 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
         {/* Événements */}
         {hasEvents && (
           <div>
-            {isSearchResults && <h3 className="heading-main font-medium text-neutral-900 mb-6 text-center">
-              Controverses signalées
-            </h3>}
+            {isSearchResults && (
+              <>
+                <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
+                  Controverses signalées
+                </h3>
+                <p className="body-small text-neutral-600 text-center mb-6">
+                  Liste des controverses documentées et sourcées
+                </p>
+              </>
+            )}
             <div className="grid gap-10 sm:gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
               {events.map((event) => (
                 <EventCard key={event.id} event={event} />

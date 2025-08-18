@@ -188,16 +188,16 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
       <div className="text-center mb-6">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden text-lg font-bold text-white transition-all duration-300 ease-in-out bg-gradient-to-r from-primary via-primary-hover to-primary rounded-2xl hover:scale-105 transform hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-primary/30"
+          className="group relative inline-flex items-center justify-center px-4 py-3 md:px-8 md:py-4 overflow-hidden text-base md:text-lg font-bold text-white transition-all duration-300 ease-in-out bg-gradient-to-r from-primary via-primary-hover to-primary rounded-2xl hover:scale-105 transform hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-primary/30"
         >
           {/* Effet de brillance shiny */}
           <div className="absolute inset-0 w-0 h-full transition-all duration-300 ease-out bg-white opacity-10 group-hover:w-full"></div>
           
           {/* Icône */}
-          <div className="relative flex items-center space-x-3">
-            <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+          <div className="relative flex items-center md:space-x-3">
+            <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
               <svg 
-                className={`w-4 h-4 text-white transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} 
+                className={`w-3 h-3 md:w-4 md:h-4 text-white transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} 
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"

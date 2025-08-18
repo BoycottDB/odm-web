@@ -86,11 +86,11 @@ function MobileNav() {
         
         <nav className="flex flex-col gap-4 p-4 bg-white border-b border-neutral-200 rounded-b-2xl" role="navigation" aria-label="Navigation mobile">
           {/* Contraste renforcé sur le menu mobile */}
-          <Link href="/" className={getLinkClass('/')} onClick={() => setOpen(false)}>
+          {/* <Link href="/" className={getLinkClass('/')} onClick={() => setOpen(false)}>
             Accueil
-          </Link>
+          </Link> */}
           <Link href="/recherche" className={getLinkClass('/recherche')} onClick={() => setOpen(false)}>
-            Recherche
+            Rechercher
           </Link>
           {/* <Link href="/about" className={getLinkClass('/about')} onClick={() => setOpen(false)}>
             À propos
@@ -157,11 +157,11 @@ export default function RootLayout({
             </Link>
             {/* Menu desktop */}
             <nav className="hidden md:flex gap-8 body-base font-medium" role="navigation" aria-label="Navigation principale">
-              <Link href="/" className={getDesktopLinkClass('/')}>
+              {/* <Link href="/" className={getDesktopLinkClass('/')}>
                 Accueil
-              </Link>
+              </Link> */}
               <Link href="/recherche" className={getDesktopLinkClass('/recherche')}>
-                Recherche
+                Rechercher
               </Link>
               {/* <Link href="/about" className={getDesktopLinkClass('/about')}>
                 À propos
