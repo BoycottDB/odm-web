@@ -184,7 +184,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                         <span className="text-neutral-600">autre bénéficiaire</span>
                       </div>
                       <div className="text-sm text-neutral-600 mt-1">
-                        Les profits de <strong>{beneficiaireNom}</strong> profitent à l'autre bénéficiaire
+                        Les profits de <strong>{beneficiaireNom}</strong> profitent à l&apos;autre bénéficiaire
                         <br />
                         <span className="text-xs text-neutral-500">Ex: Les profits de Nestlé profitent à BlackRock (actionnaire)</span>
                       </div>
@@ -208,7 +208,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                         <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">{beneficiaireNom}</span>
                       </div>
                       <div className="text-sm text-neutral-600 mt-1">
-                        Les profits de l'autre bénéficiaire profitent à <strong>{beneficiaireNom}</strong>
+                        Les profits de l&apos;autre bénéficiaire profitent à <strong>{beneficiaireNom}</strong>
                         <br />
                         <span className="text-xs text-neutral-500">Ex: Les profits de Nestlé profitent à BlackRock (actionnaire)</span>
                       </div>
