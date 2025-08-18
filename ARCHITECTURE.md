@@ -262,6 +262,17 @@ CREATE TABLE "Marque_beneficiaire" (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Table pour les relations entre bénéficiaires (relations transitives)
+CREATE TABLE "beneficiaire_relation" (
+  id SERIAL PRIMARY KEY,
+  beneficiaire_source_id INTEGER REFERENCES "Beneficiaires"(id) ON DELETE CASCADE,
+  beneficiaire_cible_id INTEGER REFERENCES "Beneficiaires"(id) ON DELETE CASCADE,
+  description_relation TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(beneficiaire_source_id, beneficiaire_cible_id)
+);
+
 -- Tables legacy (rétrocompatibilité - peuvent être supprimées après migration)
 CREATE TABLE "Dirigeant" (
   id SERIAL PRIMARY KEY,
@@ -331,16 +342,47 @@ CREATE INDEX idx_controverse_beneficiaire_id ON "controverse_beneficiaire"(benef
 CREATE INDEX idx_controverse_titre ON "controverse_beneficiaire" USING gin(to_tsvector('french', titre));
 CREATE INDEX idx_marque_beneficiaire_marque ON "Marque_beneficiaire"(marque_id);
 CREATE INDEX idx_marque_beneficiaire_beneficiaire ON "Marque_beneficiaire"(beneficiaire_id);
+CREATE INDEX idx_beneficiaire_relation_source ON "beneficiaire_relation"(beneficiaire_source_id);
+CREATE INDEX idx_beneficiaire_relation_cible ON "beneficiaire_relation"(beneficiaire_cible_id);
 CREATE INDEX idx_secteur_nom ON "SecteurMarque"(nom);
 
 -- Index legacy (rétrocompatibilité)
 CREATE INDEX idx_dirigeant_nom ON "Dirigeant" USING gin(to_tsvector('french', nom || ' ' || COALESCE(prenom, '')));
 ```
 
-### **Architecture V2 - Bénéficiaires Normalisés**
+### **Architecture V2 - Bénéficiaires Normalisés avec Relations Transitives**
 
 #### **Évolution Architecturale (2024-08)**
-Migration d'un système monolithique vers une architecture normalisée pour les bénéficiaires controversés :
+Migration d'un système monolithique vers une architecture normalisée pour les bénéficiaires controversés avec support des **relations transitives** :
+
+#### **Principe : "À qui profitent vos achats ?"**
+Toutes les relations suivent la logique du **flux d'argent depuis le consommateur** :
+
+```
+Achat consommateur → Marque → Bénéficiaire direct → Bénéficiaire indirect
+```
+
+**Exemples concrets :**
+- `Herta → Nestlé` : Les achats Herta profitent à Nestlé (filiale)
+- `Nestlé → BlackRock` : Les profits Nestlé profitent à BlackRock (actionnaire)
+- **Chaîne complète** : `Achat Herta → Profit Nestlé → Profit BlackRock`
+
+#### **Architecture des Relations**
+
+**Relations Marque → Bénéficiaire** (table `Marque_beneficiaire`)
+```sql
+Herta → Nestlé     (lien_financier: "Filiale à 100%")
+Nike → BlackRock   (lien_financier: "BlackRock actionnaire avec 8%")
+```
+
+**Relations Bénéficiaire → Bénéficiaire** (table `beneficiaire_relation`)
+```sql
+Nestlé → BlackRock  (description_relation: "BlackRock actionnaire principal")
+```
+
+**Résultat pour l'utilisateur :**
+- Recherche "Herta" → Affichage Nestlé (direct) + BlackRock (transitif via Nestlé)
+- Distinction visuelle : direct (orange) vs transitif (bleu)
 
 **V1 (Legacy)** : Données dirigeant dupliquées pour chaque marque
 ```sql
@@ -392,7 +434,7 @@ const getImpactMessage = (liaison: MarqueBeneficiaire) => {
 - **`ControverseBeneficiaireForm`** : CRUD controversies (titre, source_url, beneficiaire_id)
 - **`MarqueBeneficiaireForm`** : Gestion liaisons marque-bénéficiaire (lien, impact)
 - **`BeneficiaireCard`** : Affichage public avec système d'impact hybride et toutes marques liées
-- **API `/beneficiaires`** : Endpoint bénéficiaire-centrique avec controverses et marques liées
+- **API `/beneficiaires`** : ~~Endpoint bénéficiaire-centrique~~ *(Supprimé - logique intégrée dans `/marques`)*
 - **API `/marque-beneficiaire`** : Endpoint relation pure CRUD
 
 #### **Migration et Compatibilité**
@@ -561,7 +603,7 @@ npm run clean           # Nettoie .next et node_modules/.cache
 useSearch → dataService.getMarques() → Extension-API → Cache CDN (30min)
 
 // 2. Affichage dirigeants avec toutes marques liées
-DirigeantCard → Extension-API.beneficiaires → toutes_marques[] ✅
+DirigeantCard → Extension-API.marques → toutes_marques[] ✅ *(beneficiaires endpoint supprimé)*
 
 // 3. BoycottTips et secteurs
 dataService.getSecteurs() → Extension-API → Cache CDN (15min)
