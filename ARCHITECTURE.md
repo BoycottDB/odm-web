@@ -498,9 +498,10 @@ interface BeneficiaireComplet {
 
 **Impact actuel :**
 - Double maintenance des formats (V2 moderne + legacy)
-- Transformations constantes entre les formats
-- Code plus complexe dans `useSearch.ts`, `EventList.tsx`
-- Types alias inutiles (`Dirigeant`, `MarqueDirigeant`, etc.)
+- **Extension API** : `dirigeant_controverse` généré automatiquement pour compatibilité
+- **Web App** : transformations dans `useSearch.ts`, `EventList.tsx`
+- Types alias inutiles (`Dirigeant`, `MarqueDirigeant`, `MarqueDirigeantLegacy`)
+- Code duplicatif dans l'API pour maintenir les deux formats
 
 **Plan de nettoyage :**
 1. **Phase 1** : Migrer extension browser vers format `beneficiaires_marque`
@@ -514,10 +515,31 @@ interface BeneficiaireComplet {
 - Maintenance facilitée
 
 **Fichiers concernés :**
-- `src/types/index.ts` : Types legacy
-- `src/hooks/useSearch.ts` : Transformations
-- `extension-api/netlify/functions/marques.js` : Double format
+- `src/types/index.ts` : Types legacy (`MarqueDirigeantLegacy`)
+- `src/hooks/useSearch.ts` : Transformations format legacy → V2
+- **`extension-api/netlify/functions/marques.js`** : Génération automatique `dirigeant_controverse`
 - `src/components/events/EventList.tsx` : Logique de transformation
+- `Xtension/` : Extension browser utilisant encore le format legacy
+
+**Exemple de dette technique :**
+```javascript
+// Dans extension-api/netlify/functions/marques.js
+// ❌ Code duplicatif pour compatibilité
+dirigeant_controverse = {
+  controverses: controversesStructurees.map(c => c.titre).join(' | '),
+  sources: controversesStructurees.map(c => c.source_url),
+  // ... transformation V2 → legacy
+}
+
+// ✅ Format moderne utilisé par web app
+beneficiaires_marque: [{ 
+  beneficiaire: { 
+    controverses: controversesStructurees, // Format structuré
+    marques_directes: [...],
+    marques_indirectes: {...}
+  }
+}]
+```
 
 ## 🎨 Design System
 

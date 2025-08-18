@@ -16,7 +16,7 @@ interface MarquesBadgesProps {
 
 export function MarquesBadges({ 
   marques, 
-  maxVisible = 23, 
+  maxVisible = 230, 
   onMarqueClick,
   variant = 'public' 
 }: MarquesBadgesProps) {
