@@ -162,32 +162,59 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
           <h4 className="font-medium text-neutral-900 mb-4">Créer une nouvelle relation</h4>
           
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Direction de la relation */}
+            {/* Type de relation */}
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
-                Direction de la relation
+              <label className="block text-sm font-medium text-neutral-700 mb-3">
+                Qui bénéficie des profits de qui ? *
               </label>
-              <div className="flex gap-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    value="sortante"
-                    checked={formData.direction === 'sortante'}
-                    onChange={(e) => setFormData({...formData, direction: e.target.value as 'sortante' | 'entrante'})}
-                    className="mr-2"
-                  />
-                  <span className="text-sm">{beneficiaireNom} &rarr; autre bénéficiaire</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    value="entrante"
-                    checked={formData.direction === 'entrante'}
-                    onChange={(e) => setFormData({...formData, direction: e.target.value as 'sortante' | 'entrante'})}
-                    className="mr-2"
-                  />
-                  <span className="text-sm">Autre bénéficiaire &rarr; {beneficiaireNom}</span>
-                </label>
+              <div className="space-y-3">
+                <div className="border border-neutral-200 rounded-lg p-3 hover:border-primary-300 transition-colors">
+                  <label className="flex items-start cursor-pointer">
+                    <input
+                      type="radio"
+                      value="sortante"
+                      checked={formData.direction === 'sortante'}
+                      onChange={(e) => setFormData({...formData, direction: e.target.value as 'sortante' | 'entrante'})}
+                      className="mr-3 mt-1"
+                    />
+                    <div>
+                      <div className="font-medium text-neutral-900 flex items-center gap-2">
+                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">{beneficiaireNom}</span>
+                        <span className="text-neutral-500">&rarr;</span>
+                        <span className="text-neutral-600">autre bénéficiaire</span>
+                      </div>
+                      <div className="text-sm text-neutral-600 mt-1">
+                        <strong>{beneficiaireNom}</strong> bénéficie des profits de l'autre bénéficiaire
+                        <br />
+                        <span className="text-xs text-neutral-500">Ex: BlackRock bénéficie des profits de Nestlé (actionnaire)</span>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                
+                <div className="border border-neutral-200 rounded-lg p-3 hover:border-primary-300 transition-colors">
+                  <label className="flex items-start cursor-pointer">
+                    <input
+                      type="radio"
+                      value="entrante"
+                      checked={formData.direction === 'entrante'}
+                      onChange={(e) => setFormData({...formData, direction: e.target.value as 'sortante' | 'entrante'})}
+                      className="mr-3 mt-1"
+                    />
+                    <div>
+                      <div className="font-medium text-neutral-900 flex items-center gap-2">
+                        <span className="text-neutral-600">autre bénéficiaire</span>
+                        <span className="text-neutral-500">&rarr;</span>
+                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">{beneficiaireNom}</span>
+                      </div>
+                      <div className="text-sm text-neutral-600 mt-1">
+                        L'autre bénéficiaire bénéficie des profits de <strong>{beneficiaireNom}</strong>
+                        <br />
+                        <span className="text-xs text-neutral-500">Ex: BlackRock bénéficie des profits de Nestlé (actionnaire)</span>
+                      </div>
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
 
@@ -221,7 +248,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                 onChange={(e) => setFormData({...formData, description_relation: e.target.value})}
                 className="w-full px-3 py-2 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                 rows={3}
-                placeholder="Ex: Actionnaire principal avec 15% des parts, Filiale à 100% depuis 2019, Partenaire commercial exclusif..."
+                placeholder="Ex: Actionnaire principal avec 15% des parts DE [Bénéficiaire], Filiale à 100% depuis 2019 DE [Bénéficiaire], Partenaire commercial exclusif DE [Bénéficiaire]..."
                 required
               />
             </div>

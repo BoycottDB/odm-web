@@ -99,7 +99,7 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
             <div className={`body-small ${
              isTransitif ? 'text-blue-500' : 'text-primary'
             }`}>
-              Un {typeLabel} controversé est associé à la marque <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong>{isTransitif && ' indirectement, via '}<strong className="body-large font-semibold">{isTransitif && nomParent}</strong>
+              Vos achats <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong> profitent {isTransitif ? 'indirectement' : 'directement'} à ce {typeLabel.toLowerCase()} controversé{isTransitif && ' via '}<strong className="body-large font-semibold">{isTransitif && nomParent}</strong>
             </div>
             {/* Nom du dirigeant */}
             <h3 className="heading-sub font-bold text-neutral-900">

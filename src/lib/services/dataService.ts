@@ -76,11 +76,11 @@ class DataService {
   }
 
   /**
-   * Get all leaders with their brand relationships
+   * Get all leaders with their brand relationships (deprecated - use getMarques instead)
+   * @deprecated Cette méthode n'est plus utilisée, toutes les données transitent par /marques
    */
   async getDirigeants(id?: number): Promise<DirigeantWithMarques[] | DirigeantWithMarques> {
-    const endpoint = id ? `beneficiaires?id=${id}` : 'beneficiaires';
-    return this.fetchFromExtensionApi<DirigeantWithMarques[] | DirigeantWithMarques>(endpoint);
+    throw new Error('getDirigeants() is deprecated. Use getMarques() instead which includes beneficiaire data.');
   }
 
   /**
