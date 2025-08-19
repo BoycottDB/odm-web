@@ -8,12 +8,17 @@ interface FAQItem {
 
 const faqItems: FAQItem[] = [
   {
-    id: '6',
+    id: '1',
+    question: '"À quoi ça sert ? C\'est peine perdue de toute façon..."',
+    url: '/faq/pourquoi'
+  },
+  {
+    id: '2',
     question: '"Pourquoi ne proposez-vous pas des alternatives ?"',
     url: '/faq/alternatives'
   },
   {
-    id: '2',
+    id: '3',
     question: 'Comment sont modérés les signalements ?',
     url: '/faq/moderation'
   }
