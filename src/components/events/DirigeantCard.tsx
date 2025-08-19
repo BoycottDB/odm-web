@@ -90,13 +90,6 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
   
   // Déterminer si c'est un lien transitif
   const isTransitif = dirigeant.source_lien === 'transitif';
-  let nomParent = dirigeant.nom;
-  if (isTransitif && dirigeant.lien_financier.includes(' de ')) {
-    const partieVia = dirigeant.lien_financier.split(' de ').pop();
-    if (partieVia) {
-      nomParent = `${partieVia}`;
-    }
-  }
   
   // Classes CSS selon le type de lien
   const cardClasses = isTransitif 
@@ -119,7 +112,7 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
             <div className={`body-small ${
              isTransitif ? 'text-blue-500' : 'text-primary'
             }`}>
-              Vos achats <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong> profitent {isTransitif ? 'indirectement' : 'directement'} à ce {typeLabel.toLowerCase()} controversé{isTransitif && ' via '}<strong className="body-large font-semibold">{isTransitif && nomParent}</strong>
+              Vos achats <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong> profitent {isTransitif ? 'indirectement' : 'directement'} à ce {typeLabel.toLowerCase()} controversé{isTransitif ? ' via ' : ''}<strong className="body-large font-semibold">{isTransitif ? dirigeant.beneficiaire_parent_nom : ''}</strong>
             </div>
             {/* Nom du dirigeant */}
             <h3 className="heading-sub font-bold text-neutral-900">
