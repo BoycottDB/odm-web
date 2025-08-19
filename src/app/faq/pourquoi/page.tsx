@@ -24,7 +24,7 @@ export default function EfficaciteFAQ() {
               <div>
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">&quot;À quoi bon ?&quot;</h2>
                 <p className="body-base text-neutral-700 leading-relaxed">
-                  On comprend ce sentiment. Face aux multinationales qui écrasent tout sur leur passage, il est tentant de baisser les bras. Pourtant, les entreprises nous entendent plus qu&apos;on ne le pense et elles surveillent de très près l&apos;opinion publique au regard de l'évolution de leurs ventes.
+                  On comprend ce sentiment. Face aux multinationales qui écrasent tout sur leur passage, il est tentant de baisser les bras. Pourtant, les entreprises nous entendent plus qu&apos;on ne le pense et elles surveillent de très près l&apos;opinion publique au regard de l&apos;évolution de leurs ventes.
                 </p>
               </div>
 
@@ -47,7 +47,7 @@ export default function EfficaciteFAQ() {
                       <h4 className="font-medium text-neutral-900 mb-2">L&apos;émergence d&apos;alternatives grâce aux boycotts :</h4>
                       <div className="space-y-2 ml-4">
                         <p className="body-base text-neutral-700 leading-relaxed">
-                          <strong>🆇 Twitter :</strong> Les utilisateurs ont commencé à migrer vers des alternatives comme <a href="https://kulturegeek.fr/news-322213/bluesky-nombre-dutilisateurs-augmenter-763-2024" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-hover underline">BlueSky qui a vu son nombre d'utilisateurs augmenter de 763% en 2024</a>.
+                          <strong>🆇 Twitter :</strong> Les utilisateurs ont commencé à migrer vers des alternatives comme <a href="https://kulturegeek.fr/news-322213/bluesky-nombre-dutilisateurs-augmenter-763-2024" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-hover underline">BlueSky qui a vu son nombre d&apos;utilisateurs augmenter de 763% en 2024</a>.
                         </p>
                         <p className="body-base text-neutral-700 leading-relaxed">
                           <strong>🥤 Coca-Cola :</strong> Le boycott a permis de lancer ou relancer des marques locales comme <a href="https://atmos.earth/meet-the-palestinian-cola-brands-taking-on-coke/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-hover underline">Chat Cola en Cisjordanie</a> et <a href="https://agencemediapalestine.fr/blog/2024/02/09/guerre-israelienne-a-gaza-le-boycott-fait-il-du-tort-aux-marques-etats-uniennes/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-hover underline">Spiro Spathis en Égypte</a>.
