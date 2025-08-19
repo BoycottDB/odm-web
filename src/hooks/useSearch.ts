@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Evenement, SearchState, Marque, DirigeantResult } from '@/types';
+import { Evenement, SearchState, Marque, DirigeantResult, TypeBeneficiaire, BeneficiaireComplet } from '@/types';
 
 export function useSearch() {
   const router = useRouter();
@@ -98,42 +98,24 @@ export function useSearch() {
             if (liaison.beneficiaire) {
               dirigeantResults.push({
                 id: `beneficiaire-${liaison.id}`,
-                type: 'dirigeant' as const,
+                type: 'beneficiaire' as const,
                 marque: marque,
                 beneficiaire: {
-                  id: liaison.id, // ID de la liaison
-                  marque_id: marque.id,
-                  beneficiaire_id: liaison.beneficiaire.id,
-                  dirigeant_nom: liaison.beneficiaire.nom,
-                  controverses: liaison.beneficiaire.controverses ? liaison.beneficiaire.controverses.map(c => c.titre).join(' | ') : '',
-                  sources: liaison.beneficiaire.controverses ? liaison.beneficiaire.controverses.map(c => c.source_url) : [],
+                  id: liaison.beneficiaire.id,
+                  nom: liaison.beneficiaire.nom,
+                  controverses: liaison.beneficiaire.controverses || [],
                   lien_financier: liaison.lien_financier,
                   impact_description: liaison.impact_specifique || liaison.beneficiaire.impact_generique || 'Impact à définir',
-                  created_at: liaison.beneficiaire.created_at || new Date().toISOString(),
-                  updated_at: liaison.beneficiaire.updated_at || new Date().toISOString(),
-                  toutes_marques: liaison.beneficiaire.toutes_marques || [{ id: marque.id, nom: marque.nom }],
-                  type_beneficiaire: liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe' | undefined,
-                  source_lien: liaison.source_lien || 'direct',
-                  marques_directes: liaison.beneficiaire.marques_directes,
-                  marques_indirectes: liaison.beneficiaire.marques_indirectes
-                },
-                dirigeant: {
-                  id: liaison.id, // ID de la liaison
                   marque_id: marque.id,
-                  beneficiaire_id: liaison.beneficiaire.id,
-                  dirigeant_nom: liaison.beneficiaire.nom,
-                  controverses: liaison.beneficiaire.controverses ? liaison.beneficiaire.controverses.map(c => c.titre).join(' | ') : '',
-                  sources: liaison.beneficiaire.controverses ? liaison.beneficiaire.controverses.map(c => c.source_url) : [],
-                  lien_financier: liaison.lien_financier,
-                  impact_description: liaison.impact_specifique || liaison.beneficiaire.impact_generique || 'Impact à définir',
-                  created_at: liaison.beneficiaire.created_at || new Date().toISOString(),
-                  updated_at: liaison.beneficiaire.updated_at || new Date().toISOString(),
-                  toutes_marques: liaison.beneficiaire.toutes_marques || [{ id: marque.id, nom: marque.nom }],
-                  type_beneficiaire: liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe' | undefined,
+                  marque_nom: marque.nom,
+                  liaison_id: liaison.id,
+                  type_beneficiaire: liaison.beneficiaire.type_beneficiaire as TypeBeneficiaire,
                   source_lien: liaison.source_lien || 'direct',
-                  marques_directes: liaison.beneficiaire.marques_directes,
-                  marques_indirectes: liaison.beneficiaire.marques_indirectes
-                }
+                  toutes_marques: liaison.beneficiaire.toutes_marques || [{ id: marque.id, nom: marque.nom }],
+                  marques_directes: liaison.beneficiaire.marques_directes || [],
+                  marques_indirectes: liaison.beneficiaire.marques_indirectes || {},
+                  beneficiaire_parent_nom: liaison.beneficiaire_parent_nom
+                } as BeneficiaireComplet
               });
             }
           });

@@ -1,49 +1,20 @@
 // Types centralisés pour toute l'application
 
-// TODO: DETTE TECHNIQUE - Supprimer quand extension browser mise à jour
-// MarqueDirigeantLegacy sert uniquement à la compatibilité extension browser
-// Plan: migrer extension vers beneficiaires_marque puis supprimer cette couche legacy
-// Impact: suppression de toute la logique dirigeant_controverse, useSearch simplifié
-// Type pour la compatibilité avec l'ancienne structure (API marques et extension)
-export interface MarqueDirigeantLegacy {
-  id: number; // ID de la liaison
-  marque_id: number;
-  beneficiaire_id: number; // ID du bénéficiaire
-  dirigeant_nom: string;
-  controverses: string; // ✅ Format legacy : titres concaténés pour extension
-  lien_financier: string;
-  impact_description: string;
-  sources: string[]; // ✅ Format legacy : URLs extraites pour extension
-  created_at: string;
-  updated_at: string;
-  toutes_marques: Array<{
-    id: number;
-    nom: string;
-  }>;
-  source_lien?: 'direct' | 'transitif'; // NOUVEAU : origine du lien
-  // ✅ NOUVEAU : Sections séparées pour marques directes et indirectes
-  marques_directes?: Array<{
-    id: number;
-    nom: string;
-  }>; // Marques directement liées à ce bénéficiaire (exclut la marque actuelle)
-  marques_indirectes?: {
-    [beneficiaireIntermediaire: string]: Array<{
-      id: number;
-      nom: string;
-    }>;
-  }; // Marques indirectement liées via d'autres bénéficiaires
-}
+// ✅ SUPPRIMÉ : MarqueDirigeantLegacy n'est plus nécessaire
 
 export interface Marque {
   id: number;
   nom: string;
   evenements?: Evenement[];
-  dirigeant_controverse?: MarqueDirigeantLegacy; // Legacy compatibility
+  // ✅ TEMPORAIRE : Compatibilité admin jusqu'à migration complète
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dirigeant_controverse?: any;
   beneficiaires_marque?: Array<{
     id: number;
     lien_financier: string;
     impact_specifique?: string;
     source_lien?: 'direct' | 'transitif'; // NOUVEAU : origine du lien
+    beneficiaire_parent_nom?: string; // ✅ NOUVEAU : Nom du bénéficiaire intermédiaire pour relations transitives
     beneficiaire: {
       id: number;
       nom: string;
@@ -128,23 +99,11 @@ export interface BeneficiaireResult {
   id: string;
   type: 'beneficiaire';
   marque: Marque;
-  beneficiaire: MarqueDirigeantLegacy & {
-    type_beneficiaire?: TypeBeneficiaire;
-  };
+  beneficiaire: BeneficiaireComplet;
 }
 
 // Alias pour rétrocompatibilité - même structure que BeneficiaireResult
-export interface DirigeantResult {
-  id: string;
-  type: 'dirigeant';
-  marque: Marque;
-  beneficiaire: MarqueDirigeantLegacy & {
-    type_beneficiaire?: TypeBeneficiaire;
-  };
-  dirigeant: MarqueDirigeantLegacy & {
-    type_beneficiaire?: TypeBeneficiaire;
-  };
-}
+export type DirigeantResult = BeneficiaireResult;
 
 export interface SearchState {
   query: string;
@@ -346,12 +305,13 @@ export interface BeneficiaireComplet {
       nom: string;
     }>;
   }; // Marques indirectement liées via d'autres bénéficiaires
+  // ✅ NOUVEAU : Nom du bénéficiaire intermédiaire pour relations transitives
+  beneficiaire_parent_nom?: string;
 }
 
-// TODO: DETTE TECHNIQUE - Types alias pour rétrocompatibilité
-// À supprimer avec MarqueDirigeantLegacy
-export type DirigeantWithMarques = BeneficiaireWithMarques;
+// Types alias pour rétrocompatibilité
 export type DirigeantComplet = BeneficiaireComplet;
+export type DirigeantWithMarques = BeneficiaireWithMarques;
 
 // Requests pour l'API bénéficiaires
 export interface BeneficiaireCreateRequest {

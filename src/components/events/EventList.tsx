@@ -1,4 +1,4 @@
-import { Evenement, DirigeantResult, BeneficiaireComplet } from '@/types';
+import { Evenement, DirigeantResult } from '@/types';
 import { EventCard } from './EventCard';
 import BeneficiaireNavigation from './BeneficiaireNavigation';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -144,50 +144,9 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
               Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
             </p>
             
-            {/* Navigation entre bénéficiaires avec transformation des données */}
+            {/* Navigation entre bénéficiaires - données directes */}
             <BeneficiaireNavigation 
-              beneficiaires={dirigeantResults.map(dirigeantResult => {
-                // Transformation existante + nouveaux champs bénéficiaires
-                // Transform legacy format back to structured format
-                const controversesStructured = dirigeantResult.dirigeant.sources?.map((url, index) => {
-                  const titles = (dirigeantResult.dirigeant.controverses as string).split(' | ');
-                  return {
-                    id: index + 1, // Fake ID for display
-                    beneficiaire_id: dirigeantResult.dirigeant.beneficiaire_id,
-                    titre: titles[index] || `Controverse ${index + 1}`,
-                    source_url: url,
-                    ordre: index + 1,
-                    created_at: '',
-                    updated_at: ''
-                  };
-                }) || [];
-
-                const beneficiaireComplet: BeneficiaireComplet = {
-                  id: dirigeantResult.dirigeant.beneficiaire_id || parseInt(dirigeantResult.id.replace('dirigeant-', '')),
-                  nom: dirigeantResult.dirigeant.dirigeant_nom,
-                  controverses: controversesStructured,
-                  lien_financier: dirigeantResult.dirigeant.lien_financier,
-                  impact_description: dirigeantResult.dirigeant.impact_description,
-                  marque_id: dirigeantResult.marque.id,
-                  marque_nom: dirigeantResult.marque.nom,
-                  liaison_id: dirigeantResult.dirigeant.id,
-                  toutes_marques: dirigeantResult.dirigeant.toutes_marques || [],
-                  
-                  // NOUVEAU - Type bénéficiaire avec fallback
-                  type_beneficiaire: dirigeantResult.beneficiaire?.type_beneficiaire || 
-                                   dirigeantResult.dirigeant?.type_beneficiaire || 
-                                   'individu',
-                  
-                  // NOUVEAU - Source du lien pour distinction visuelle
-                  source_lien: dirigeantResult.dirigeant?.source_lien || 'direct',
-
-                  // NOUVEAU - Sections séparées pour marques directes et indirectes
-                  marques_directes: dirigeantResult.dirigeant?.marques_directes || [],
-                  marques_indirectes: dirigeantResult.dirigeant?.marques_indirectes || {}
-                };
-                
-                return beneficiaireComplet;
-              })}
+              beneficiaires={dirigeantResults.map(result => result.beneficiaire)}
             />
           </div>
         )}
