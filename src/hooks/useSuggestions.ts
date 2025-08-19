@@ -13,8 +13,9 @@ export function useSuggestions() {
   useEffect(() => {
     const loadMarques = async () => {
       try {
-        const response = await fetch('/api/marques', { cache: 'no-store' });
-        const data: Marque[] = await response.json();
+        // Utiliser dataService pour cohérence architecturale
+        const { dataService } = await import('@/lib/services/dataService');
+        const data = await dataService.getMarques();
         setAllMarques(data);
       } catch (error) {
         console.error('Erreur lors du chargement des marques:', error);
