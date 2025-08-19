@@ -88,7 +88,7 @@ export default function AlternativesFAQ() {
               <div className="mb-8">
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Notre position sur les alternatives</h2>
                 <p className="body-base text-neutral-700 leading-relaxed mb-6">
-                  Nous avons fait le choix délibéré de ne pas proposer d&apos;alternatives, et voici pourquoi :
+                  Nous avons fait le choix délibéré de ne pas proposer d&apos;alternatives pour le moment, et voici pourquoi :
                 </p>
               </div>
 
@@ -150,7 +150,7 @@ export default function AlternativesFAQ() {
                 <div className="bg-white rounded-lg p-6 border border-neutral-200">
                   <h4 className="font-semibold text-neutral-900 mb-4">💬 Votre avis nous intéresse !</h4>
                   <p className="body-base text-neutral-700 mb-4">
-                    Seriez-vous intéressé(e) par une telle plateforme ? Aidez-nous à valider ce concept :
+                    Seriez-vous intéressé·e par une telle plateforme ? Aidez-nous à valider ce concept :
                   </p>
 
                   <div className="space-y-3">
