@@ -33,7 +33,7 @@ export default function LierDirigeantPage() {
           return;
         }
         
-        if (foundMarque.dirigeant_controverse) {
+        if (foundMarque.beneficiaires_marque && foundMarque.beneficiaires_marque.length > 0) {
           setMessage({ type: 'error', text: 'Cette marque a déjà un bénéficiaire controversé associé' });
           return;
         }

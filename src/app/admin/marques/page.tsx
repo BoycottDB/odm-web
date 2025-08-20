@@ -78,7 +78,6 @@ export default function MarquesListPage() {
         <div className="bg-primary-light p-4 rounded-lg border border-primary">
           <div className="heading-main font-bold text-primary">
             {marques.filter(m => 
-              (m.dirigeant_controverse) || 
               (m.beneficiaires_marque && m.beneficiaires_marque.length > 0)
             ).length}
           </div>
@@ -129,19 +128,7 @@ export default function MarquesListPage() {
                           );
                         }
                         
-                        // Fallback vers l'ancien système pour compatibilité
-                        if (marque.dirigeant_controverse) {
-                          return (
-                            <div className="mt-1 flex items-center space-x-2">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary">
-                                ⚠️ Bénéficiaire controversé (legacy)
-                              </span>
-                              <span className="body-small text-neutral-600">
-                                {marque.dirigeant_controverse.dirigeant_nom}
-                              </span>
-                            </div>
-                          );
-                        }
+                        // Plus de fallback legacy nécessaire
                         
                         // Aucun bénéficiaire
                         return (

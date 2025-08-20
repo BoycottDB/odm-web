@@ -6,9 +6,6 @@ export interface Marque {
   id: number;
   nom: string;
   evenements?: Evenement[];
-  // ✅ TEMPORAIRE : Compatibilité admin jusqu'à migration complète
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dirigeant_controverse?: any;
   beneficiaires_marque?: Array<{
     id: number;
     lien_financier: string;

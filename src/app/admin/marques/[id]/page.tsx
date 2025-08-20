@@ -77,17 +77,13 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
   };
   
   const deleteLiaison = async () => {
-    // Priorité au nouveau système beneficiaires_marque
-    let liaisonId = null;
-    let beneficiaireNom = '';
-    
-    if (marque?.beneficiaires_marque && marque.beneficiaires_marque.length > 0) {
-      liaisonId = marque.beneficiaires_marque[0].id;
-      beneficiaireNom = marque.beneficiaires_marque[0].beneficiaire.nom;
-    } else if (marque?.dirigeant_controverse) {
-      liaisonId = marque.dirigeant_controverse.id;
-      beneficiaireNom = marque.dirigeant_controverse.dirigeant_nom;
+    // Utilisation du système beneficiaires_marque uniquement
+    if (!marque?.beneficiaires_marque || marque.beneficiaires_marque.length === 0) {
+      return;
     }
+    
+    const liaisonId = marque.beneficiaires_marque[0].id;
+    const beneficiaireNom = marque.beneficiaires_marque[0].beneficiaire.nom;
     
     if (!liaisonId || !marque) return;
     
@@ -98,10 +94,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
     setMessage(null);
     
     try {
-      // Utiliser le bon endpoint selon le système
-      const endpoint = marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0 
-        ? `/api/marque-beneficiaire?id=${liaisonId}`
-        : `/api/marque-dirigeant?id=${liaisonId}`;
+      // Utiliser l'endpoint beneficiaires uniquement
+      const endpoint = `/api/marque-beneficiaire?id=${liaisonId}`;
         
       const response = await fetch(endpoint, {
         method: 'DELETE'
@@ -337,7 +331,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             ⚠️ Bénéficiaire controversé
           </h3>
           
-          {((marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0) || marque.dirigeant_controverse) && (
+          {(marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0) && (
             <button
               onClick={deleteLiaison}
               disabled={saving}
@@ -349,11 +343,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
         </div>
         
         {(() => {
-          // Affichage hybride : nouveau système d'abord, puis legacy
-          const nouveauSysteme = marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0;
-          const legacySysteme = marque.dirigeant_controverse;
-          
-          if (nouveauSysteme && marque.beneficiaires_marque) {
+          // Système beneficiaires_marque uniquement
+          if (marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0) {
             const beneficiaire = marque.beneficiaires_marque[0];
             return (
               <div>
@@ -386,47 +377,6 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
                     className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
                   >
                     Éditer bénéficiaire
-                  </button>
-                  <button
-                    onClick={() => alert('Fonctionnalité d\'édition de liaison à implémenter')}
-                    className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
-                  >
-                    Modifier liaison
-                  </button>
-                </div>
-              </div>
-            );
-          } else if (legacySysteme && marque.dirigeant_controverse) {
-            return (
-              <div>
-                <div className="mb-6 p-4 bg-warning-light border border-warning rounded-lg">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <svg className="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 14.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                    <p className="body-small text-warning font-medium">
-                      Dirigeant lié (Legacy) : <strong>{marque.dirigeant_controverse.dirigeant_nom}</strong>
-                      <span className="ml-2 px-2 py-1 bg-warning text-white rounded-full text-xs">LEGACY</span>
-                    </p>
-                  </div>
-                  <div className="body-xs text-warning">
-                    <p><strong>Lien financier :</strong> {marque.dirigeant_controverse.lien_financier}</p>
-                    <p><strong>Impact :</strong> {marque.dirigeant_controverse.impact_description}</p>
-                  </div>
-                </div>
-                
-                <div className="flex space-x-3">
-                  <button
-                    onClick={() => {
-                      if (marque.dirigeant_controverse?.beneficiaire_id) {
-                        router.push(`/admin/beneficiaires/${marque.dirigeant_controverse.beneficiaire_id}`);
-                      } else {
-                        alert('ID du dirigeant non trouvé');
-                      }
-                    }}
-                    className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
-                  >
-                    Éditer bénéficiaire (Legacy)
                   </button>
                   <button
                     onClick={() => alert('Fonctionnalité d\'édition de liaison à implémenter')}
