@@ -76,19 +76,19 @@ class DataService {
   }
 
   /**
-   * Get all leaders with their brand relationships (deprecated - use getMarques instead)
-   * @deprecated Cette méthode n'est plus utilisée, toutes les données transitent par /marques
-   */
-  async getDirigeants(id?: number): Promise<DirigeantWithMarques[] | DirigeantWithMarques> {
-    throw new Error('getDirigeants() is deprecated. Use getMarques() instead which includes beneficiaire data.');
-  }
-
-  /**
    * Get all brand sectors
    */
   async getSecteurs(id?: number): Promise<SecteurMarque[] | SecteurMarque> {
     const endpoint = id ? `secteurs-marque?id=${id}` : 'secteurs-marque';
     return this.fetchFromExtensionApi<SecteurMarque[] | SecteurMarque>(endpoint);
+  }
+
+  /**
+   * Get beneficiary chain for a brand
+   */
+  async getBeneficiairesChaine(marqueId: number, profondeurMax: number = 5): Promise<unknown> {
+    const endpoint = `beneficiaires-chaine?marqueId=${marqueId}&profondeur=${profondeurMax}`;
+    return this.fetchFromExtensionApi<unknown>(endpoint);
   }
 
   // ============= ÉCRITURES (Supabase direct uniquement) =============

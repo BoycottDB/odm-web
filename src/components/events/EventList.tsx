@@ -1,6 +1,6 @@
 import { Evenement, DirigeantResult } from '@/types';
 import { EventCard } from './EventCard';
-import BeneficiaireNavigation from './BeneficiaireNavigation';
+import ChaineBeneficiaires from './ChaineBeneficiaires';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import BoycottTipsSection from '@/components/ui/BoycottTipsSection';
 import { ShareButton } from '@/components/ui/ShareButton';
@@ -134,20 +134,16 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
       )}
       
       <div className="max-w-4xl mx-auto px-2 sm:px-0 space-y-10">
-        {/* Bénéficiaires controversés (seulement lors de recherche) */}
-        {hasDirigeants && (
+        {/* Chaîne de bénéficiaires (seulement lors de recherche avec marque) */}
+        {isSearchResults && marque && (
           <div className="mb-20">
             <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
               À qui profitent vos achats ?
             </h3>
             <p className="body-small text-neutral-600 text-center mb-6">
-              Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
+            Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
             </p>
-            
-            {/* Navigation entre bénéficiaires - données directes */}
-            <BeneficiaireNavigation 
-              beneficiaires={dirigeantResults.map(result => result.beneficiaire)}
-            />
+            <ChaineBeneficiaires marqueId={marque.id} profondeurMax={5} />
           </div>
         )}
 

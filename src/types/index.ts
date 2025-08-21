@@ -401,10 +401,26 @@ export interface BeneficiaireRelation {
   id: number;
   beneficiaire_source_id: number;
   beneficiaire_cible_id: number;
-  description_relation: string;
+  type_relation: string; // 'actionnaire', 'filiale', 'partenaire', 'controleur'
+  description_relation?: string;
+  pourcentage_participation?: number;
   created_at: string;
   updated_at: string;
   // Relations populées
   beneficiaire_source?: Beneficiaire;
   beneficiaire_cible?: Beneficiaire;
+}
+
+// Types pour la chaîne de bénéficiaires
+export interface ChaineNode {
+  beneficiaire: Beneficiaire;
+  niveau: number;
+  relations_suivantes: BeneficiaireRelation[];
+}
+
+export interface ChaineBeneficiaires {
+  marque_nom: string;
+  marque_id: number;
+  chaine: ChaineNode[];
+  profondeur_max: number;
 }

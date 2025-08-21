@@ -46,8 +46,9 @@ src/
 │   │   └── SearchBar.tsx  # Barre avec auto-complétion
 │   ├── events/           # Affichage des événements
 │   │   ├── EventCard.tsx  # Carte d'événement enrichie
-│   │   ├── EventList.tsx  # Liste avec gestion d'état
-│   │   └── DirigeantCard.tsx # Carte dirigeant avec toutes marques liées
+│   │   ├── EventList.tsx  # Liste avec chaîne de bénéficiaires intégrée
+│   │   ├── ChaineBeneficiaires.tsx # Chaîne financière accordéon avec fermeture extérieure
+│   │   └── DirigeantCard.tsx # Carte bénéficiaire avec toutes marques liées (directes + indirectes)
 │   ├── forms/            # Formulaires complexes
 │   │   ├── SignalementForm.tsx # Formulaire de signalement
 │   │   └── SimilarItems.tsx # Détection de doublons UI
@@ -66,6 +67,7 @@ src/
 │   └── useMobileDetection.ts # Détection mobile
 ├── lib/                  # Utilitaires et services
 │   ├── services/         # Services métier
+│   │   ├── dataService.ts # Service principal (architecture simplifiée)
 │   │   ├── api.ts        # Service API principal (singleton)
 │   │   ├── marquesService.ts # Service marques legacy
 │   │   └── moderation.ts # Service de modération
@@ -137,6 +139,24 @@ src/
 2. API directe → `GET /api/search-similaire` avec fuzzy matching
 3. Affichage suggestions avec scores de similarité
 4. Prévention création doublons automatique
+
+### **Chaîne de Bénéficiaires**
+1. `ChaineBeneficiaires` → Récupération via `dataService.getBeneficiairesChaine()`
+2. Extension-API → `GET /api/beneficiaires/chaine?marqueId=X&profondeur=5`
+3. Algorithme récursif → Construction chaîne avec protection cycles
+4. Enrichissement marques → Marques directes/indirectes pour chaque bénéficiaire
+5. **Interface accordéon** → Headers cliquables avec contenu expansible pleine largeur
+6. **UX optimisée** → Un seul élément ouvert, fermeture au clic extérieur
+7. **Espacement adaptatif** → mb-6 entre directs/indirects, mb-3 entre niveaux indirects
+
+#### **Architecture Chaîne Financière**
+```
+Maybelline → Groupe L'Oréal → Nestlé SA → BlackRock + Vanguard
+ (niveau 0)     (niveau 1)    (niveau 2)    (niveau 3)
+     ↓              ↓             ↓             ↓
+  Marques        Marques       Marques      Marques
+  directes       indirectes    transitives   finales
+```
 
 ### **Système BoycottTips (Conseils de Boycott)**
 1. `BoycottTipsSection` → Affichage conditionnel selon disponibilité
@@ -382,14 +402,14 @@ Nestlé → BlackRock  (description_relation: "BlackRock actionnaire principal")
 
 **Résultat pour l'utilisateur :**
 - Recherche "Herta" → Affichage Nestlé (direct) + BlackRock (transitif via Nestlé)
-- Distinction visuelle : direct (orange) vs transitif (bleu)
+- Distinction visuelle : direct (berry) vs transitif (bleu)
 
-#### **Sections Marques Directes vs Indirectes (2025-01)**
+#### **Sections Marques Directes vs Indirectes**
 Chaque bénéficiaire affiche maintenant ses marques liées en sections séparées :
 
 **Marques directement liées :**
 - Marques directement associées au bénéficiaire (excluant la marque de recherche)
-- Style : badges orange standard
+- Style : badges berry standard
 
 **Marques indirectement liées :**
 - Marques des bénéficiaires qui profitent au bénéficiaire via relations transitives
@@ -400,14 +420,14 @@ Chaque bénéficiaire affiche maintenant ses marques liées en sections séparé
 ```
 Recherche "Herta" :
 ├── Nestlé (direct)
-│   └── Marques directes: [Nescafé] (orange)
+│   └── Marques directes: [Nescafé] (berry)
 └── BlackRock (transitif)
-    ├── Marques directes: [Nike, Starbucks] (orange)
+    ├── Marques directes: [Nike, Starbucks] (berry)
     └── Marques indirectes via Nestlé: [Herta, Nescafé] (bleu)
 
 Recherche "Starbucks" :
 └── BlackRock (direct)
-    ├── Marques directes: [Nike] (orange)
+    ├── Marques directes: [Nike] (berry)
     └── Marques indirectes via Nestlé: [Herta, Nescafé] (bleu)
 ```
 
@@ -559,9 +579,9 @@ beneficiaires_marque: [{
 :root {
   /* Palette principale */
   --primary-50: #fff7ed;   /* Backgrounds légers */
-  --primary-500: #f97316;  /* Orange principal */
-  --primary-600: #ea580c;  /* Orange hover */
-  --primary-900: #9a3412;  /* Orange foncé */
+  --primary-500: #f97316;  /* berry principal */
+  --primary-600: #ea580c;  /* berry hover */
+  --primary-900: #9a3412;  /* berry foncé */
   
   /* Palette secondaire */
   --secondary-50: #fffbeb; /* Amber léger */
@@ -570,7 +590,7 @@ beneficiaires_marque: [{
   
   /* Couleurs sémantiques */
   --success: #10b981;     /* Vert validation */
-  --warning: #f59e0b;     /* Orange alerte */
+  --warning: #f59e0b;     /* berry alerte */
   --error: #ef4444;       /* Rouge erreur */
   --info: #3b82f6;        /* Bleu information */
 }
@@ -604,7 +624,7 @@ xl: 1280px  /* Large desktop */
 
 #### **États Interactifs**
 - **Hover** : Élévation subtile + changement couleur
-- **Focus** : Ring orange avec offset pour accessibilité
+- **Focus** : Ring berry avec offset pour accessibilité
 - **Active** : Scale légère (scale-95) pour feedback tactile
 - **Loading** : Skeleton screens + spinners contextuels
 - **Error** : Bordures rouges + messages inline
