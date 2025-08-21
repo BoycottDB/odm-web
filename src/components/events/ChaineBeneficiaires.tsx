@@ -284,7 +284,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
   };
 
   // Convertir les nodes en format BeneficiaireComplet pour réutiliser DirigeantCard
-  const convertNodeToBeneficiaire = (node: ChaineNode, niveau: number): BeneficiaireComplet => ({
+  const convertNodeToBeneficiaire = (node: ChaineNode, _niveau: number): BeneficiaireComplet => ({
     id: node.beneficiaire.id,
     nom: node.beneficiaire.nom,
     controverses: node.beneficiaire.controverses,
@@ -294,7 +294,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
     marque_nom: chaine!.marque_nom,
     liaison_id: 0, // Pas pertinent ici
     type_beneficiaire: node.beneficiaire.type_beneficiaire as TypeBeneficiaire,
-    source_lien: 'niveau',
+    source_lien: node.niveau === 0 ? 'direct' : 'transitif',
     toutes_marques: [],
     beneficiaire_parent_nom: trouverBeneficiaireParent(node),
     marques_directes: node.marques_directes || [],
@@ -319,7 +319,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
   return (
     <div ref={containerRef}>
       {/* Affichage par niveau avec headers seulement */}
-      {niveaux.map((niveau, index) => {
+      {niveaux.map((niveau) => {
         // Espacement uniforme entre tous les niveaux
         const marginClass = "mb-3";
         
