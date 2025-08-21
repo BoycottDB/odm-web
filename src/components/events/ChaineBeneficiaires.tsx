@@ -54,10 +54,10 @@ interface ChaineBeneficiairesProps {
   profondeurMax?: number;
 }
 
-// Utilitaires pour éviter la duplication
-const getTransitifStyles = (isTransitif: boolean) => ({
-  background: isTransitif ? 'bg-white border-blue-200' : 'bg-white border-primary',
-  iconColor: isTransitif ? 'text-blue-500' : 'text-primary'
+// Styles uniformes pour tous les niveaux
+const getUniformStyles = () => ({
+  background: 'bg-white border-primary',
+  iconColor: 'text-primary'
 });
 
 const getGridColumns = (count: number): string => {
@@ -149,8 +149,7 @@ const BeneficiaireHeader = ({
   beneficiaireIndex 
 }: BeneficiaireHeaderProps) => {
   const Icon = beneficiaire.type_beneficiaire === 'groupe' ? Building2 : User;
-  const isTransitif = beneficiaire.source_lien === 'transitif';
-  const styles = getTransitifStyles(isTransitif);
+  const styles = getUniformStyles();
   
   return (
     <button
@@ -160,18 +159,18 @@ const BeneficiaireHeader = ({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-white">
-            <Icon className={`w-4 h-4 ${styles.iconColor}`} />
+          <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+            <Icon className={`w-8 h-8 ${styles.iconColor}`} />
           </div>
           
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1">
               <div className="font-semibold text-base truncate">{beneficiaire.nom}</div>
-              {beneficiaire.beneficiaire_parent_nom && (
+              {/* {beneficiaire.beneficiaire_parent_nom && (
                 <div className="text-xs opacity-75 flex-shrink-0">
                   via {beneficiaire.beneficiaire_parent_nom}
                 </div>
-              )}
+              )} */}
             </div>
             <div className="text-xs opacity-75 truncate">
               {beneficiaire.lien_financier}
@@ -295,7 +294,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
     marque_nom: chaine!.marque_nom,
     liaison_id: 0, // Pas pertinent ici
     type_beneficiaire: node.beneficiaire.type_beneficiaire as TypeBeneficiaire,
-    source_lien: niveau === 0 ? 'direct' : 'transitif',
+    source_lien: 'niveau',
     toutes_marques: [],
     beneficiaire_parent_nom: trouverBeneficiaireParent(node),
     marques_directes: node.marques_directes || [],
@@ -321,21 +320,11 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
     <div ref={containerRef}>
       {/* Affichage par niveau avec headers seulement */}
       {niveaux.map((niveau, index) => {
-        // Espacement : mb-6 après niveau 0 (directs), mb-3 entre niveaux indirects
-        const marginClass = niveau === 0 ? "mb-6" : "mb-3";
+        // Espacement uniforme entre tous les niveaux
+        const marginClass = "mb-3";
         
         return (
         <div key={niveau} className={marginClass}>
-          {/* Label du niveau - seulement pour niveau 0 et premier niveau indirect */}
-          {(niveau === 0 || (niveau > 0 && index === 1)) && (
-            <div className={`px-3 py-1 rounded-full text-xs font-medium inline-block mb-4 mt-3 ${
-              niveau === 0 
-                ? 'bg-primary text-white' 
-                : 'bg-blue-500 text-white'
-            }`}>
-              {niveau === 0 ? 'Bénéficiaires directs' : 'Bénéficiaires indirects'}
-            </div>
-          )}
 
           {/* Bénéficiaires de ce niveau */}
           <div className={`grid gap-4 ${getGridColumns(beneficiairesParNiveauConverti[niveau].length)}`}>
@@ -360,13 +349,12 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
           {beneficiairesParNiveauConverti[niveau].map((beneficiaire, beneficiaireIndex) => {
             const uniqueId = `${niveau}-${beneficiaireIndex}`;
             const isExpanded = expandedBeneficiaire === uniqueId;
-            const isTransitif = beneficiaire.source_lien === 'transitif';
             
             if (!isExpanded) return null;
             
             return (
               <div key={`expanded-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`} className="w-full">
-                <div className={`${getTransitifStyles(isTransitif).background} border-2 border-t-0 rounded-b-2xl px-6 pb-6 pt-2`}>
+                <div className={`${getUniformStyles().background} border-2 border-t-0 rounded-b-2xl px-6 pb-6 pt-2`}>
 
                   {/* Informations financières */}
                   <div className="space-y-4 mb-6">
