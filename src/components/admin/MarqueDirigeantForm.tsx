@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MarqueDirigeantCreateRequest, MarqueDirigeantUpdateRequest, MarqueBeneficiaireCreateRequest, Dirigeant } from '@/types';
+import { MarqueDirigeantUpdateRequest, MarqueBeneficiaireCreateRequest, Dirigeant } from '@/types';
 
 interface MarqueDirigeantFormData {
   dirigeantId: number | null;
@@ -109,7 +109,7 @@ export default function MarqueDirigeantForm({
     try {
       await onSave(payload);
       setErrors([]);
-    } catch (error) {
+    } catch (_error) {
       setErrors(['Erreur lors de la sauvegarde']);
     }
   };

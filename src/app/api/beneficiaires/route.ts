@@ -12,7 +12,7 @@ interface BeneficiaireDatabase {
   controverses?: ControverseBeneficiaire[];
 }
 
-interface LiaisonDatabase {
+interface _LiaisonDatabase {
   id: number;
   marque_id: number;
   beneficiaire_id: number;

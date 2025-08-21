@@ -29,7 +29,8 @@ Ce projet a pour but d’informer les consommateurs sur les pratiques éthiques,
 ### Modèles Principaux
 - **Marque** : Marques et entreprises référencées avec secteur d'activité
 - **Événement** : Controverses et pratiques documentées
-- **Bénéficiaire** : Bénéficiaires controversés avec liens vers marques
+- **Bénéficiaire** : Bénéficiaires controversés avec liens financiers vers marques
+- **BeneficiaireRelation** : Relations financières entre bénéficiaires (chaîne récursive)
 - **SecteurMarque** : Secteurs d'activité pour conseils de boycott ciblés
 - **Proposition** : Système de modération collaborative
 - **Décision** : Historique transparent des validations/rejets
@@ -37,7 +38,8 @@ Ce projet a pour but d’informer les consommateurs sur les pratiques éthiques,
 ### Relations
 ```
 Marque (1) ←→ (N) Événement
-Marque (N) ←→ (N) Dirigeant (via DirigeantMarque)
+Marque (N) ←→ (N) Bénéficiaire (via MarqueBénéficiaire)
+Bénéficiaire (N) ←→ (N) Bénéficiaire (via BeneficiaireRelation - chaîne récursive)
 Marque (N) ←→ (1) SecteurMarque (optionnel)
 Proposition (1) ←→ (1) Décision
 ```
@@ -61,6 +63,7 @@ Proposition (1) ←→ (1) Décision
 - **Architecture Hybride** : Lectures via extension-api (cache CDN), écritures directes Supabase
 - **BaaS** : Supabase (PostgreSQL + API REST)
 - **Extension API** : Netlify Functions pour cache optimisé et performance
+- **Algorithmes Avancés** : Chaîne récursive de bénéficiaires avec détection de cycles
 - **ORM** : Client Supabase TypeScript avec DataService abstraction layer
 - **Auth** : Authentification admin par token
 - **Storage** : Assets et images via Supabase Storage
@@ -90,7 +93,9 @@ Proposition (1) ←→ (1) Décision
 
 ### Système de Données
 - **📊 Affichage Enrichi** : Chronologie, catégories, condamnations judiciaires
-- **🔗 Bénéficiaires Controversés** : Liens entre bénéficiaires et marques
+- **🔗 Chaîne de Bénéficiaires** : Traçabilité financière complète (ex: Maybelline → L'Oréal → Nestlé → BlackRock)
+- **💰 Relations Financières** : Algorithme récursif pour découvrir les bénéficiaires indirects
+- **🏢 Marques Liées** : "Autres marques" directes et indirectes pour chaque bénéficiaire
 - **📋 Sources Vérifiées** : Liens directs vers sources officielles
 - **⚖️ Notices Légales** : Disclaimers pour condamnations judiciaires
 - **🎯 BoycottTips** : Conseils personnalisés par marque et secteur d'activité

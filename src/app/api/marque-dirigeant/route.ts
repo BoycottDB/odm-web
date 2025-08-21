@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Vérifier qu'il n'y a pas déjà une liaison entre cette marque et ce dirigeant
-    const { data: existing, error: checkError } = await supabaseAdmin
+    const { data: existing } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .select('id')
       .eq('marque_id', data.marque_id)
