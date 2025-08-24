@@ -1,4 +1,4 @@
-import { Evenement, DirigeantResult } from '@/types';
+import { Evenement, BeneficiaireResult } from '@/types';
 import { EventCard } from './EventCard';
 import ChaineBeneficiaires from './ChaineBeneficiaires';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -10,14 +10,14 @@ import { useAddToHomeScreen } from '@/hooks/useAddToHomeScreen';
 
 interface EventListProps {
   events: Evenement[];
-  dirigeantResults: DirigeantResult[];
+  beneficiaireResults: BeneficiaireResult[];
   loading: boolean;
   searching: boolean;
   notFound: boolean;
   hasSearched: boolean;
 }
 
-export function EventList({ events, dirigeantResults, loading, searching, notFound, hasSearched }: EventListProps) {
+export function EventList({ events, beneficiaireResults, loading, searching, notFound, hasSearched }: EventListProps) {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q') || '';
   // Récupérer la valeur brute encodée depuis l'URL
@@ -72,7 +72,7 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
   }
 
   // Pas encore de recherche effectuée ET pas de données à afficher
-  if (!hasSearched && events.length === 0 && dirigeantResults.length === 0 && !loading) {
+  if (!hasSearched && events.length === 0 && beneficiaireResults.length === 0 && !loading) {
     return (
       <div className="text-center py-16">
         <div className="w-20 h-20 mx-auto mb-6 bg-primary-light rounded-full flex items-center justify-center">
@@ -90,13 +90,13 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
 
   // Affichage des résultats
   const hasEvents = events.length > 0;
-  const hasDirigeants = dirigeantResults.length > 0;
+  const hasBeneficiaires = beneficiaireResults.length > 0;
   // Considérer comme résultats de recherche si une recherche a été effectuée (même sans résultats)
   const isSearchResults = hasSearched;
   
 
   // Extraire la marque des résultats pour afficher les Boycott Tips
-  const marque = hasEvents ? events[0].marque : (hasDirigeants ? dirigeantResults[0].marque : null);
+  const marque = hasEvents ? events[0].marque : (hasBeneficiaires ? beneficiaireResults[0].marque : null);
 
   return (
     <div>
@@ -134,14 +134,14 @@ export function EventList({ events, dirigeantResults, loading, searching, notFou
       )}
       
       <div className="max-w-4xl mx-auto px-2 sm:px-0 space-y-10">
-        {/* Chaîne de bénéficiaires (seulement lors de recherche avec marque) */}
-        {isSearchResults && marque && (
+        {/* Chaîne de bénéficiaires (seulement lors de recherche avec marque ET si il y a des bénéficiaires) */}
+        {isSearchResults && marque && hasBeneficiaires && (
           <div className="mb-20">
             <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
               À qui profitent vos achats ?
             </h3>
             <p className="body-small text-neutral-600 text-center mb-6">
-            Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
+              Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
             </p>
             <ChaineBeneficiaires marqueId={marque.id} profondeurMax={5} />
           </div>

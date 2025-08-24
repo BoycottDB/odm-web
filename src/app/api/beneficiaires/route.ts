@@ -121,7 +121,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
       }
 
-      // Transformer pour compatibilité avec frontend existant (format DirigeantResult)
+      // Transformer pour compatibilité avec frontend existant (format BeneficiaireResult)
       const beneficiairesTransformes = (liaisons || []).map((liaison: unknown) => {
         const l = liaison as Record<string, unknown>;
         const beneficiaire = l.beneficiaire as Record<string, unknown> | undefined;

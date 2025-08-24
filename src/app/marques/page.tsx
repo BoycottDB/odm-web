@@ -14,9 +14,8 @@ export default function MarquesPage() {
   useEffect(() => {
     const loadMarques = async () => {
       try {
-        const response = await fetch('/api/marques/stats', { cache: 'no-store' });
-        if (!response.ok) throw new Error('Erreur lors du chargement');
-        const data = await response.json();
+        const { dataService } = await import('@/lib/services/dataService');
+        const data = await dataService.getMarquesStats();
         setMarques(data);
       } catch (error) {
         console.error('Erreur lors du chargement des marques:', error);
