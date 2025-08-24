@@ -99,14 +99,11 @@ export interface BeneficiaireResult {
   beneficiaire: BeneficiaireComplet;
 }
 
-// Alias pour rétrocompatibilité - même structure que BeneficiaireResult
-export type DirigeantResult = BeneficiaireResult;
-
 export interface SearchState {
   query: string;
   isSearching: boolean;
   results: Evenement[];
-  dirigeantResults: DirigeantResult[];
+  beneficiaireResults: BeneficiaireResult[];
   notFound: boolean;
   loading: boolean;
   hasPerformedSearch: boolean; // True quand une recherche a été effectivement exécutée

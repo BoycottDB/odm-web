@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Evenement, SearchState, Marque, DirigeantResult, TypeBeneficiaire, BeneficiaireComplet } from '@/types';
+import { Evenement, SearchState, Marque, BeneficiaireResult, TypeBeneficiaire, BeneficiaireComplet } from '@/types';
 
 export function useSearch() {
   const router = useRouter();
@@ -10,7 +10,7 @@ export function useSearch() {
     query: '',
     isSearching: false,
     results: [],
-    dirigeantResults: [],
+    beneficiaireResults: [],
     notFound: false,
     loading: true,
     hasPerformedSearch: false
@@ -39,7 +39,7 @@ export function useSearch() {
         setSearchState(prev => ({
           ...prev,
           results: events,
-          dirigeantResults: [],
+          beneficiaireResults: [],
           notFound: false,
           isSearching: false,
           hasPerformedSearch: false
@@ -48,7 +48,7 @@ export function useSearch() {
         setSearchState(prev => ({
           ...prev,
           results: [],
-          dirigeantResults: [],
+          beneficiaireResults: [],
           notFound: true,
           isSearching: false,
           hasPerformedSearch: false
@@ -89,14 +89,14 @@ export function useSearch() {
         marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0
       );
       
-      // Créer des résultats spécifiques pour les bénéficiaires (compatibilité dirigeant)
-      const dirigeantResults: DirigeantResult[] = [];
+      // Créer des résultats spécifiques pour les bénéficiaires
+      const beneficiaireResults: BeneficiaireResult[] = [];
       
       marquesWithBeneficiaires.forEach((marque: Marque) => {
         if (marque.beneficiaires_marque) {
           marque.beneficiaires_marque.forEach((liaison) => {
             if (liaison.beneficiaire) {
-              dirigeantResults.push({
+              beneficiaireResults.push({
                 id: `beneficiaire-${liaison.id}`,
                 type: 'beneficiaire' as const,
                 marque: marque,
@@ -123,12 +123,12 @@ export function useSearch() {
       });
       
 
-      const hasResults = filteredEvents.length > 0 || dirigeantResults.length > 0;
+      const hasResults = filteredEvents.length > 0 || beneficiaireResults.length > 0;
 
       setSearchState(prev => ({
         ...prev,
         results: filteredEvents,
-        dirigeantResults: dirigeantResults,
+        beneficiaireResults: beneficiaireResults,
         notFound: !hasResults,
         isSearching: false,
         loading: false,
@@ -142,7 +142,7 @@ export function useSearch() {
         notFound: true,
         loading: false,
         results: [],
-        dirigeantResults: [],
+        beneficiaireResults: [],
         hasPerformedSearch: true
       }));
     }
@@ -164,7 +164,7 @@ export function useSearch() {
           setSearchState(prev => ({
             ...prev,
             results: events,
-            dirigeantResults: [],
+            beneficiaireResults: [],
             loading: false,
             hasPerformedSearch: false
           }));
@@ -173,7 +173,7 @@ export function useSearch() {
             ...prev,
             loading: false,
             notFound: true,
-            dirigeantResults: [],
+            beneficiaireResults: [],
             hasPerformedSearch: false
           }));
         }
@@ -209,7 +209,7 @@ export function useSearch() {
       query: '',
       isSearching: false,
       results: [],
-      dirigeantResults: [],
+      beneficiaireResults: [],
       notFound: false,
       loading: false,
       hasPerformedSearch: false

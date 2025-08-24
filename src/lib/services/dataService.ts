@@ -84,6 +84,27 @@ class DataService {
   }
 
   /**
+   * Get brand statistics (for /marques page)
+   */
+  async getMarquesStats(): Promise<{
+    id: number;
+    nom: string;
+    nbControverses: number;
+    categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
+    nbCondamnations: number;
+    nbDirigeantsControverses: number;
+  }[]> {
+    return this.fetchFromExtensionApi<{
+      id: number;
+      nom: string;
+      nbControverses: number;
+      categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
+      nbCondamnations: number;
+      nbDirigeantsControverses: number;
+    }[]>('marques-stats');
+  }
+
+  /**
    * Get beneficiary chain for a brand
    */
   async getBeneficiairesChaine(marqueId: number, profondeurMax: number = 5): Promise<unknown> {
