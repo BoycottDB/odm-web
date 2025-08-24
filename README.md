@@ -60,9 +60,9 @@ Proposition (1) ←→ (1) Décision
 - **PWA** : Installation native iOS/Android
 
 ### Backend & Base de Données
-- **Architecture Hybride** : Lectures via extension-api (cache CDN), écritures directes Supabase
+- **Architecture Hybride** : Lectures via odm-api (cache CDN), écritures directes Supabase
 - **BaaS** : Supabase (PostgreSQL + API REST)
-- **Extension API** : Netlify Functions pour cache optimisé et performance
+- **ODM API** : Netlify Functions pour cache optimisé et performance
 - **Algorithmes Avancés** : Chaîne récursive de bénéficiaires avec détection de cycles
 - **ORM** : Client Supabase TypeScript avec DataService abstraction layer
 - **Auth** : Authentification admin par token
@@ -75,7 +75,7 @@ Proposition (1) ←→ (1) Décision
 - **CORS** : Configuration sécurisée pour production
 
 ### Performance & SEO
-- **Architecture Hybride** : Cache CDN multi-niveaux (15min-1h TTL) via extension-api
+- **Architecture Hybride** : Cache CDN multi-niveaux (15min-1h TTL) via odm-api
 - **Fallback Automatique** : Basculement transparent vers Supabase direct si API indisponible
 - **SSR/SSG** : Pre-rendering Next.js pour SEO optimal
 - **Image Optimization** : Next.js Image avec WebP
@@ -181,7 +181,7 @@ npm run build       # Production build
 ### Architecture des Données
 L'application utilise une **architecture simplifiée** pour optimiser performances et maintenance :
 
-- **Lectures** : Via [extension-api](../extension-api/) avec cache CDN (5-30min)
+- **Lectures** : Via [odm-api](../odm-api/) avec cache CDN (5-30min)
 - **Écritures** : Direct vers Supabase pour fiabilité transactionnelle
 - **Performance** : Temps de réponse constant (~50ms) grâce au cache CDN
 - **Configuration** : Une seule variable d'environnement (`NEXT_PUBLIC_EXTENSION_API_URL`)

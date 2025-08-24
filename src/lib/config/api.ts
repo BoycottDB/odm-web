@@ -1,5 +1,5 @@
 /**
- * API Configuration - Configuration simplifiée pour extension-api
+ * API Configuration - Configuration simplifiée pour odm-api
  */
 
 // Extension API Configuration
@@ -24,7 +24,7 @@ export function getExtensionApiUrl(endpoint?: string): string {
 // Configuration pour debugging
 export function getApiConfig() {
   return {
-    extensionApiUrl: EXTENSION_API_CONFIG.url,
+    odmApiUrl: EXTENSION_API_CONFIG.url,
     mode: 'simplified',
     environment: process.env.NODE_ENV || 'development',
     timeout: EXTENSION_API_CONFIG.timeout

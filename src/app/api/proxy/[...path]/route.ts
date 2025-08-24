@@ -1,6 +1,6 @@
 /**
- * Proxy routes to extension API
- * Allows seamless transition between direct Supabase and extension API
+ * Proxy routes to ODM API
+ * Allows seamless transition between direct Supabase and ODM API
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -21,12 +21,12 @@ export async function GET(
     const searchParams = request.nextUrl.searchParams;
     const queryString = searchParams.toString();
     
-    // Build the full URL to extension API
+    // Build the full URL to ODM API
     const extensionApiUrl = `${getExtensionApiUrl(path)}${queryString ? '?' + queryString : ''}`;
     
     console.log(`Proxying request to: ${extensionApiUrl}`);
     
-    // Forward the request to extension API
+    // Forward the request to ODM API
     const response = await fetch(extensionApiUrl, {
       method: 'GET',
       headers: {
@@ -39,10 +39,10 @@ export async function GET(
     });
 
     if (!response.ok) {
-      console.error(`Extension API error: ${response.status} ${response.statusText}`);
+      console.error(`ODM API error: ${response.status} ${response.statusText}`);
       return NextResponse.json(
         { 
-          error: 'Extension API unavailable',
+          error: 'ODM API unavailable',
           status: response.status,
           details: process.env.NODE_ENV === 'development' ? response.statusText : undefined
         },
@@ -56,7 +56,7 @@ export async function GET(
     return NextResponse.json(data, {
       headers: {
         'Cache-Control': 'no-store, max-age=0',
-        'X-Data-Source': 'extension-api'
+        'X-Data-Source': 'odm-api'
       }
     });
 

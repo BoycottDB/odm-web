@@ -12,16 +12,6 @@ interface BeneficiaireDatabase {
   controverses?: ControverseBeneficiaire[];
 }
 
-interface _LiaisonDatabase {
-  id: number;
-  marque_id: number;
-  beneficiaire_id: number;
-  lien_financier: string;
-  impact_specifique?: string;
-  created_at: string;
-  updated_at: string;
-  beneficiaire?: BeneficiaireDatabase;
-}
 
 
 export async function GET(request: NextRequest) {
