@@ -1,6 +1,6 @@
 /**
  * Data Service - Architecture Simplifiée
- * Lectures via extension-api, écritures via Supabase direct
+ * Lectures via odm-api, écritures via Supabase direct
  */
 
 // Import dynamique pour éviter l'initialisation côté client
@@ -25,10 +25,10 @@ class DataService {
     this.extensionApiUrl = process.env.NEXT_PUBLIC_EXTENSION_API_URL!;
   }
 
-  // ============= LECTURES (extension-api uniquement) =============
+  // ============= LECTURES (odm-api uniquement) =============
 
   /**
-   * Méthode privée pour fetch depuis extension-api
+   * Méthode privée pour fetch depuis odm-api
    */
   private async fetchFromExtensionApi<T>(endpoint: string): Promise<T> {
     const response = await fetch(`${this.extensionApiUrl}/.netlify/functions/${endpoint}`, {

@@ -116,7 +116,7 @@ src/
 ### **Recherche Unifiée (Marques + Dirigeants)**
 1. `SearchBar` → `handleSearchChange` avec debouncing
 2. `useSearch` → `performSearch` (événements + dirigeants)
-3. `dataService` → Lectures via extension-api avec cache CDN
+3. `dataService` → Lectures via odm-api avec cache CDN
 4. `EventList` → Affichage résultats mixtes avec état de chargement
 5. Synchronisation avec URL pour partage/navigation
 
@@ -537,13 +537,13 @@ interface BeneficiaireComplet {
 **Fichiers concernés :**
 - `src/types/index.ts` : Types legacy (`MarqueDirigeantLegacy`)
 - `src/hooks/useSearch.ts` : Transformations format legacy → V2
-- **`extension-api/netlify/functions/marques.js`** : Génération automatique `dirigeant_controverse`
+- **`odm-api/netlify/functions/marques.js`** : Génération automatique `dirigeant_controverse`
 - `src/components/events/EventList.tsx` : Logique de transformation
 - `Xtension/` : Extension browser utilisant encore le format legacy
 
 **Exemple de dette technique :**
 ```javascript
-// Dans extension-api/netlify/functions/marques.js
+// Dans odm-api/netlify/functions/marques.js
 // ❌ Code duplicatif pour compatibilité
 dirigeant_controverse = {
   controverses: controversesStructurees.map(c => c.titre).join(' | '),
