@@ -1,6 +1,6 @@
-# Architecture du Projet
+# Architecture du Projet ODM-Web
 
-## 📁 Structure des dossiers
+## 📁 Structure des Dossiers
 
 ```
 src/
@@ -10,15 +10,15 @@ src/
 │   │   ├── evenements/    # CRUD événements
 │   │   ├── propositions/  # Système de modération
 │   │   ├── decisions/     # Décisions de modération
-│   │   ├── dirigeants/    # CRUD dirigeants V2 (centralisés)
-│   │   ├── marque-dirigeant/ # API liaisons marque-dirigeant V2
+│   │   ├── dirigeants/    # CRUD dirigeants (centralisés)
+│   │   ├── marque-dirigeant/ # API liaisons marque-dirigeant
 │   │   ├── categories/    # Catégories d'événements
 │   │   ├── secteurs-marque/ # CRUD secteurs BoycottTips
 │   │   └── search-similaire/ # Détection de doublons
 │   ├── about/             # Page À propos
 │   ├── admin/             # Interface d'administration
 │   │   ├── marques/       # Gestion des marques
-│   │   ├── dirigeants/    # Gestion des dirigeants
+│   │   ├── beneficiaires/ # Gestion des beneficiaires
 │   │   ├── moderation/    # Interface de modération
 │   │   ├── secteurs-marque/ # Gestion secteurs BoycottTips
 │   │   └── login/         # Authentification admin
@@ -54,8 +54,8 @@ src/
 │   │   └── SimilarItems.tsx # Détection de doublons UI
 │   ├── admin/            # Interface d'administration
 │   │   ├── AdminNavigation.tsx # Navigation admin
-│   │   ├── DirigeantForm.tsx # Formulaire dirigeant V2 (centralisé)
-│   │   ├── MarqueDirigeantForm.tsx # Formulaire liaison V2
+│   │   ├── DirigeantForm.tsx # Formulaire dirigeant (centralisé)
+│   │   ├── MarqueDirigeantForm.tsx # Formulaire liaison
 │   │   ├── PropositionDetail.tsx # Détail proposition
 │   │   └── PropositionList.tsx # Liste propositions
 │   └── index.ts          # Export centralisé
@@ -111,45 +111,77 @@ src/
 - Lazy loading des composants
 - Optimisation des requêtes
 
-## 🔄 Flux de données
+## 🔄 Architecture des Flux de Données
 
-### **Recherche Unifiée (Marques + Dirigeants)**
-1. `SearchBar` → `handleSearchChange` avec debouncing
-2. `useSearch` → `performSearch` (événements + dirigeants)
-3. `dataService` → Lectures via odm-api avec cache CDN
-4. `EventList` → Affichage résultats mixtes avec état de chargement
-5. Synchronisation avec URL pour partage/navigation
+### **Vue d'Ensemble - Architecture Hybride Optimisée**
 
-### **Auto-complétion Intelligente**
-1. `SearchBar` → `handleInputChange` en temps réel
-2. `useSuggestions` → `updateSuggestions` avec filtrage
-3. Navigation clavier (↑↓ Enter Escape)
-4. `SearchBar` → Dropdown avec highlighting
-5. Sélection automatique et complétion
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    FRONTEND (Next.js)                      │
+├─────────────────────────────────────────────────────────────┤
+│ • Pages publiques → dataService → Extension-API (lecture)  │
+│ • Pages admin → API Routes → Supabase direct (écriture)    │
+│ • useSearch → dataService → Extension-API (lecture)        │
+└─────────────────────────────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────┐
+│                   DATA SERVICE LAYER                       │
+├─────────────────────────────────────────────────────────────┤
+│ • Lectures : Extension-API (Cache CDN)                     │
+│ • Écritures : Supabase direct (Fiabilité transactionnelle) │
+│ • Import dynamique Supabase (pas d'init côté client)       │
+└─────────────────────────────────────────────────────────────┘
+                         ↓                    ↓
+┌─────────────────────────────────┐  ┌─────────────────────────────────┐
+│        EXTENSION-API            │  │           SUPABASE              │
+│     (Netlify Functions)         │  │        (PostgreSQL)             │
+├─────────────────────────────────┤  ├─────────────────────────────────┤
+│ • Cache CDN multi-niveaux       │  │ • Base de données principale    │
+│ • toutes_marques par bénéf.     │  │ • Transactions fiables          │
+│ • Performance ~50ms             │  │ • Validation server-side        │
+└─────────────────────────────────┘  └─────────────────────────────────┘
+```
 
-### **Système de Modération Collaborative**
-1. `SignalementForm` → Validation + détection doublons
-2. API directe → `POST /api/propositions` avec sécurité
-3. Interface admin → `PropositionList` avec workflow
-4. `moderation.ts` → Conversion propositions → événements
-5. `GET /api/decisions` → Transparence des décisions
+### **Flux par Type d'Opération**
 
-### **Détection de Doublons**
-1. `SimilarItems` → Recherche similarité en temps réel
-2. API directe → `GET /api/search-similaire` avec fuzzy matching
-3. Affichage suggestions avec scores de similarité
-4. Prévention création doublons automatique
+#### 🔍 **Lectures (Consultation publique)**
+```typescript
+// 1. Recherche unifiée (Marques + Bénéficiaires)
+SearchBar → handleSearchChange (debouncing) → useSearch → performSearch
+  → dataService.getMarques() → Extension-API → Cache CDN (30min)
+  → EventList → Affichage résultats mixtes + état chargement
 
-### **Chaîne de Bénéficiaires**
-1. `ChaineBeneficiaires` → Récupération via `dataService.getBeneficiairesChaine()`
-2. Extension-API → `GET /api/beneficiaires/chaine?marqueId=X&profondeur=5`
-3. Algorithme récursif → Construction chaîne avec protection cycles
-4. Enrichissement marques → Marques directes/indirectes pour chaque bénéficiaire
-5. **Interface accordéon** → Headers cliquables avec contenu expansible pleine largeur
-6. **UX optimisée** → Un seul élément ouvert, fermeture au clic extérieur
-7. **Espacement adaptatif** → mb-6 entre directs/indirects, mb-3 entre niveaux indirects
+// 2. Auto-complétion intelligente
+SearchBar → handleInputChange (temps réel) → useSuggestions
+  → updateSuggestions (filtrage) → Navigation clavier (↑↓ Enter Escape)
+  → Dropdown highlighting → Sélection automatique
 
-#### **Architecture Chaîne Financière**
+// 3. Chaîne de bénéficiaires
+ChaineBeneficiaires → dataService.getBeneficiairesChaine()
+  → Extension-API /beneficiaires/chaine?marqueId=X&profondeur=5
+  → Algorithme récursif (protection cycles)
+  → Interface accordéon (un seul élément ouvert)
+```
+
+#### ✏️ **Écritures (Administration & Modération)**
+```typescript
+// 1. Administration marques/bénéficiaires
+Admin → /api/marques → Supabase direct → Validation + Transaction
+Admin → /api/beneficiaires → Supabase direct → Architecture normalisée
+Admin → /api/marque-beneficiaire → Supabase direct → Relations
+
+// 2. Modération collaborative
+Public → SignalementForm → Validation + détection doublons
+  → /api/propositions → Supabase direct → Workflow modération
+  → Interface admin PropositionList → moderation.ts
+  → Conversion propositions → événements
+
+// 3. Détection de doublons
+SimilarItems → /api/search-similaire (temps réel)
+  → Fuzzy matching → Scores similarité → Prévention automatique
+```
+
+### **Architecture Chaîne Financière**
 ```
 Maybelline → Groupe L'Oréal → Nestlé SA → BlackRock + Vanguard
  (niveau 0)     (niveau 1)    (niveau 2)    (niveau 3)
@@ -209,12 +241,13 @@ SecteurMarque (1) ←→ (N) Marque
 - **Relations normalisées** : Foreign keys avec CASCADE  
 - **Backup automatique** : Supabase managed backups
 
-## 📊 Base de données
+## 📊 Architecture de Données
 
-### **Modèles Supabase**
+### **Base de Données Unifiée (Supabase PostgreSQL)**
+
+#### **Tables Principales**
 ```sql
--- Structure Supabase actuelle
-
+-- Marques et secteurs
 CREATE TABLE "Marque" (
   id SERIAL PRIMARY KEY,
   nom VARCHAR(255) UNIQUE NOT NULL,
@@ -225,6 +258,16 @@ CREATE TABLE "Marque" (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE "SecteurMarque" (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(255) UNIQUE NOT NULL,
+  description TEXT,
+  message_boycott_tips TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Événements et catégories
 CREATE TABLE "Evenement" (
   id SERIAL PRIMARY KEY,
   marque_id INTEGER REFERENCES "Marque"(id) ON DELETE CASCADE,
@@ -251,8 +294,22 @@ CREATE TABLE "Categorie" (
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
+```
 
--- ARCHITECTURE V2 - Bénéficiaires Normalisés
+#### **Architecture Bénéficiaires Normalisés**
+
+**Principe central : "À qui profitent vos achats ?"**
+
+L'architecture suit le flux d'argent depuis le consommateur :
+```
+Achat consommateur → Marque → Bénéficiaire direct → Bénéficiaire indirect
+```
+
+**Exemple concret :**
+- `Herta → Nestlé → BlackRock` : Les achats Herta profitent à Nestlé (filiale), puis à BlackRock (actionnaire)
+
+```sql
+-- Bénéficiaires centralisés
 CREATE TABLE "Beneficiaires" (
   id SERIAL PRIMARY KEY,
   nom VARCHAR(255) NOT NULL,
@@ -262,6 +319,7 @@ CREATE TABLE "Beneficiaires" (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Controverses liées aux bénéficiaires
 CREATE TABLE "controverse_beneficiaire" (
   id SERIAL PRIMARY KEY,
   beneficiaire_id INTEGER REFERENCES "Beneficiaires"(id) ON DELETE CASCADE,
@@ -272,6 +330,7 @@ CREATE TABLE "controverse_beneficiaire" (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Relations marque → bénéficiaire
 CREATE TABLE "Marque_beneficiaire" (
   id SERIAL PRIMARY KEY,
   marque_id INTEGER REFERENCES "Marque"(id) ON DELETE CASCADE,
@@ -282,7 +341,7 @@ CREATE TABLE "Marque_beneficiaire" (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- Table pour les relations entre bénéficiaires (relations transitives)
+-- Relations transitives entre bénéficiaires
 CREATE TABLE "beneficiaire_relation" (
   id SERIAL PRIMARY KEY,
   beneficiaire_source_id INTEGER REFERENCES "Beneficiaires"(id) ON DELETE CASCADE,
@@ -292,8 +351,35 @@ CREATE TABLE "beneficiaire_relation" (
   updated_at TIMESTAMP DEFAULT NOW(),
   UNIQUE(beneficiaire_source_id, beneficiaire_cible_id)
 );
+```
 
--- Tables legacy (rétrocompatibilité - peuvent être supprimées après migration)
+#### **Tables Système (Modération & Legacy)**
+```sql
+-- Système de modération collaborative
+CREATE TABLE "Proposition" (
+  id SERIAL PRIMARY KEY,
+  marque_nom TEXT NOT NULL,
+  marque_id INTEGER REFERENCES "Marque"(id),
+  description TEXT NOT NULL,
+  date TEXT NOT NULL,
+  categorie_id INTEGER REFERENCES "Categorie"(id),
+  source_url TEXT NOT NULL,
+  statut VARCHAR(20) DEFAULT 'en_attente',
+  commentaire_admin TEXT,
+  titre_controverse TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE "Decision" (
+  id SERIAL PRIMARY KEY,
+  "propositionId" INTEGER REFERENCES "Proposition"(id) ON DELETE CASCADE,
+  action VARCHAR(20) NOT NULL,
+  raison TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Tables legacy (rétrocompatibilité)
 CREATE TABLE "Dirigeant" (
   id SERIAL PRIMARY KEY,
   nom VARCHAR(255) NOT NULL,
@@ -310,205 +396,80 @@ CREATE TABLE "DirigeantMarque" (
   "dateFin" DATE,
   UNIQUE("dirigeantId", "marqueId")
 );
+```
 
-CREATE TABLE "Proposition" (
-  id SERIAL PRIMARY KEY,
-  marque_nom TEXT NOT NULL,
-  marque_id INTEGER REFERENCES "Marque"(id),
-  description TEXT NOT NULL,
-  date TEXT NOT NULL,
-  categorie_id INTEGER REFERENCES "Categorie"(id),
-  source_url TEXT NOT NULL,
-  statut VARCHAR(20) DEFAULT 'en_attente', -- 'approuvee' | 'rejetee'
-  commentaire_admin TEXT,
-  titre_controverse TEXT,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE TABLE "Decision" (
-  id SERIAL PRIMARY KEY,
-  "propositionId" INTEGER REFERENCES "Proposition"(id) ON DELETE CASCADE,
-  action VARCHAR(20) NOT NULL, -- 'approuvee' | 'rejetee'
-  raison TEXT,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-
--- Table pour les secteurs de marques (BoycottTips)
-CREATE TABLE "SecteurMarque" (
-  id SERIAL PRIMARY KEY,
-  nom VARCHAR(255) UNIQUE NOT NULL,
-  description TEXT,
-  message_boycott_tips TEXT,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- Index pour les performances
+#### **Index de Performance**
+```sql
+-- Index principaux
 CREATE INDEX idx_marque_nom ON "Marque" USING gin(to_tsvector('french', nom));
 CREATE INDEX idx_marque_secteur ON "Marque"(secteur_marque_id);
-CREATE INDEX idx_marque_parent ON "Marque"(marque_parent_id);
-CREATE INDEX idx_evenement_categorie ON "Evenement"(categorie_id);
 CREATE INDEX idx_evenement_date ON "Evenement"(date DESC);
 CREATE INDEX idx_evenement_titre ON "Evenement" USING gin(to_tsvector('french', titre));
-CREATE INDEX idx_proposition_statut ON "Proposition"(statut);
-CREATE INDEX idx_proposition_marque ON "Proposition"(marque_id);
-CREATE INDEX idx_categorie_actif ON "Categorie"(actif);
-CREATE INDEX idx_categorie_ordre ON "Categorie"(ordre);
--- Index V2 - Bénéficiaires normalisés
+
 CREATE INDEX idx_beneficiaires_nom ON "Beneficiaires" USING gin(to_tsvector('french', nom));
-CREATE INDEX idx_beneficiaires_type ON "Beneficiaires"(type_beneficiaire);
-CREATE INDEX idx_controverse_beneficiaire_id ON "controverse_beneficiaire"(beneficiaire_id);
-CREATE INDEX idx_controverse_titre ON "controverse_beneficiaire" USING gin(to_tsvector('french', titre));
 CREATE INDEX idx_marque_beneficiaire_marque ON "Marque_beneficiaire"(marque_id);
-CREATE INDEX idx_marque_beneficiaire_beneficiaire ON "Marque_beneficiaire"(beneficiaire_id);
 CREATE INDEX idx_beneficiaire_relation_source ON "beneficiaire_relation"(beneficiaire_source_id);
-CREATE INDEX idx_beneficiaire_relation_cible ON "beneficiaire_relation"(beneficiaire_cible_id);
-CREATE INDEX idx_secteur_nom ON "SecteurMarque"(nom);
-
--- Index legacy (rétrocompatibilité)
-CREATE INDEX idx_dirigeant_nom ON "Dirigeant" USING gin(to_tsvector('french', nom || ' ' || COALESCE(prenom, '')));
 ```
 
-### **Architecture V2 - Bénéficiaires Normalisés avec Relations Transitives**
+### **Évolution Architecturale**
 
-#### **Évolution Architecturale (2024-08)**
-Migration d'un système monolithique vers une architecture normalisée pour les bénéficiaires controversés avec support des **relations transitives** :
-
-#### **Principe : "À qui profitent vos achats ?"**
-Toutes les relations suivent la logique du **flux d'argent depuis le consommateur** :
-
-```
-Achat consommateur → Marque → Bénéficiaire direct → Bénéficiaire indirect
-```
-
-**Exemples concrets :**
-- `Herta → Nestlé` : Les achats Herta profitent à Nestlé (filiale)
-- `Nestlé → BlackRock` : Les profits Nestlé profitent à BlackRock (actionnaire)
-- **Chaîne complète** : `Achat Herta → Profit Nestlé → Profit BlackRock`
-
-#### **Architecture des Relations**
-
-**Relations Marque → Bénéficiaire** (table `Marque_beneficiaire`)
+**Ancien système** : Données dupliquées
 ```sql
-Herta → Nestlé     (lien_financier: "Filiale à 100%")
-Nike → BlackRock   (lien_financier: "BlackRock actionnaire avec 8%")
+DirigeantMarque: { dirigeantId, marqueId, poste }
+-- ❌ Pas de controverses centralisées
 ```
 
-**Relations Bénéficiaire → Bénéficiaire** (table `beneficiaire_relation`)
+**Architecture normalisée** :
 ```sql
-Nestlé → BlackRock  (description_relation: "BlackRock actionnaire principal")
+Beneficiaires: { nom, impact_generique, type_beneficiaire }
+-- ✅ Données centralisées et réutilisables
 ```
 
-**Résultat pour l'utilisateur :**
-- Recherche "Herta" → Affichage Nestlé (direct) + BlackRock (transitif via Nestlé)
-- Distinction visuelle : direct (berry) vs transitif (bleu)
+**Avantages :**
+- **Réutilisabilité** : Un bénéficiaire → Plusieurs marques
+- **Consistance** : Controverses centralisées
+- **Performance** : Requêtes optimisées, moins de duplication
+- **Relations transitives** : Support des chaînes financières complexes
 
-#### **Sections Marques Directes vs Indirectes**
-Chaque bénéficiaire affiche maintenant ses marques liées en sections séparées :
+### **Types TypeScript Unifiés**
 
-**Marques directement liées :**
-- Marques directement associées au bénéficiaire (excluant la marque de recherche)
-- Style : badges berry standard
-
-**Marques indirectement liées :**
-- Marques des bénéficiaires qui profitent au bénéficiaire via relations transitives
-- Groupées par bénéficiaire intermédiaire
-- Style : badges bleus pour distinction visuelle
-
-**Exemples concrets :**
-```
-Recherche "Herta" :
-├── Nestlé (direct)
-│   └── Marques directes: [Nescafé] (berry)
-└── BlackRock (transitif)
-    ├── Marques directes: [Nike, Starbucks] (berry)
-    └── Marques indirectes via Nestlé: [Herta, Nescafé] (bleu)
-
-Recherche "Starbucks" :
-└── BlackRock (direct)
-    ├── Marques directes: [Nike] (berry)
-    └── Marques indirectes via Nestlé: [Herta, Nescafé] (bleu)
-```
-
-**V1 (Legacy)** : Données dirigeant dupliquées pour chaque marque
-```sql
--- Structure V1 (obsolète)
-DirigeantMarque: {
-  dirigeantId, marqueId, poste, dateDebut, dateFin
-  -- ❌ Pas de controverses ni sources centralisées
-}
-```
-
-**V2 (Actuel)** : Architecture normalisée avec réutilisabilité
-```sql
--- Structure V2 (actuelle)
-Beneficiaires: {
-  id, nom, impact_generique, type_beneficiaire
-  -- ✅ Données centralisées et réutilisables
-}
-
-controverse_beneficiaire: {
-  beneficiaire_id, titre, source_url, ordre
-  -- ✅ Controverses liées aux bénéficiaires
-}
-
-Marque_beneficiaire: {
-  marque_id, beneficiaire_id, lien_financier, impact_specifique
-  -- ✅ Relation pure avec spécificités par marque
-}
-```
-
-#### **Avantages Architecture V2**
-- **Réutilisabilité** : Un bénéficiaire lié à plusieurs marques
-- **Consistance** : Mise à jour centralisée des controverses
-- **Performance** : Moins de duplication, requêtes optimisées
-- **Évolutivité** : Ajout de nouveaux champs bénéficiaire sans impact sur relations
-- **Flexibilité** : Système d'impact hybride (spécifique + générique + fallback)
-
-#### **Logique Métier - Impact Hybride**
 ```typescript
-// Priorité des messages d'impact
-const getImpactMessage = (liaison: MarqueBeneficiaire) => {
-  return liaison.impact_specifique                    // 1. Spécifique marque (priorité)
-      || liaison.beneficiaire.impact_generique        // 2. Générique bénéficiaire
-      || "Impact à définir"                          // 3. Fallback par défaut
+// Types principaux
+interface Marque {
+  id: number;
+  nom: string;
+  secteur_marque_id?: number;
+  message_boycott_tips?: string;
+  marque_parent_id?: number;
 }
-```
 
-#### **Composants Frontend V2**
-- **`BeneficiaireForm`** : CRUD bénéficiaires centralisés (nom, impact_generique, type_beneficiaire)
-- **`ControverseBeneficiaireForm`** : CRUD controversies (titre, source_url, beneficiaire_id)
-- **`MarqueBeneficiaireForm`** : Gestion liaisons marque-bénéficiaire (lien, impact)
-- **`DirigeantCard`** : Affichage public avec sections séparées marques directes/indirectes
-- **`MarquesBadges`** : Badges avec variants `public`, `admin`, et `indirect` (style bleu)
-- **API `/beneficiaires`** : ~~Endpoint bénéficiaire-centrique~~ *(Supprimé - logique intégrée dans `/marques`)*
-- **API `/marque-beneficiaire`** : Endpoint relation pure CRUD
-
-#### **Types TypeScript - Sections Marques**
-```typescript
 interface Beneficiaire {
-  // ... propriétés existantes
-  marques_directes?: Array<{id: number, nom: string}>; 
-  marques_indirectes?: {
-    [beneficiaireIntermediaire: string]: Array<{id: number, nom: string}>;
-  };
-}
-
-interface BeneficiaireComplet {
-  // ... propriétés existantes  
+  id: number;
+  nom: string;
+  impact_generique?: string;
+  type_beneficiaire: string;
+  controverses?: ControverseBeneficiaire[];
   marques_directes?: Array<{id: number, nom: string}>;
   marques_indirectes?: {
     [beneficiaireIntermediaire: string]: Array<{id: number, nom: string}>;
   };
 }
-```
 
-#### **Migration et Compatibilité**
-- **Rétrocompatibilité** : Interface publique identique (`BeneficiaireResult`)  
-- **Migration SQL** : Script `migration-beneficiaires-v2.sql` avec transformation automatique
-- **Types TypeScript** : `MarqueBeneficiaireLegacy` et `BeneficiaireComplet` enrichis avec `toutes_marques`
-- **Extension API** : Format `beneficiaires_controverses` maintenu pour extensions
+interface MarqueBeneficiaire {
+  marque_id: number;
+  beneficiaire_id: number;
+  lien_financier: string;
+  impact_specifique?: string;
+  beneficiaire: Beneficiaire;
+}
+
+// Système d'impact hybride
+const getImpactMessage = (liaison: MarqueBeneficiaire) => {
+  return liaison.impact_specifique                    // 1. Spécifique marque (priorité)
+      || liaison.beneficiaire.impact_generique        // 2. Générique bénéficiaire  
+      || "Impact à définir";                         // 3. Fallback par défaut
+};
+```
 
 ## ⚠️ Dette Technique
 
@@ -516,17 +477,17 @@ interface BeneficiaireComplet {
 
 **Problème :** Couche de compatibilité temporaire pour l'extension browser qui double la complexité du code.
 
-**Impact actuel :**
-- Double maintenance des formats (V2 moderne + legacy)
+**Impact :**
+- Double maintenance des formats (unifié + legacy)
 - **Extension API** : `dirigeant_controverse` généré automatiquement pour compatibilité
 - **Web App** : transformations dans `useSearch.ts`, `EventList.tsx`
 - Types alias inutiles (`Dirigeant`, `MarqueDirigeant`, `MarqueDirigeantLegacy`)
 - Code duplicatif dans l'API pour maintenir les deux formats
 
 **Plan de nettoyage :**
-1. **Phase 1** : Migrer extension browser vers format `beneficiaires_marque`
-2. **Phase 2** : Supprimer `MarqueDirigeantLegacy` et toute la logique `dirigeant_controverse`
-3. **Phase 3** : Simplifier `useSearch` pour utiliser directement le format V2
+1. Migrer extension browser vers format `beneficiaires_marque`
+2. Supprimer `MarqueDirigeantLegacy` et toute la logique `dirigeant_controverse`
+3. Simplifier `useSearch` pour utiliser directement le format unifié
 
 **Bénéfices attendus :**
 - Code 30% plus simple
@@ -536,7 +497,7 @@ interface BeneficiaireComplet {
 
 **Fichiers concernés :**
 - `src/types/index.ts` : Types legacy (`MarqueDirigeantLegacy`)
-- `src/hooks/useSearch.ts` : Transformations format legacy → V2
+- `src/hooks/useSearch.ts` : Transformations format legacy → unifié
 - **`odm-api/netlify/functions/marques.js`** : Génération automatique `dirigeant_controverse`
 - `src/components/events/EventList.tsx` : Logique de transformation
 - `Xtension/` : Extension browser utilisant encore le format legacy
@@ -548,10 +509,10 @@ interface BeneficiaireComplet {
 dirigeant_controverse = {
   controverses: controversesStructurees.map(c => c.titre).join(' | '),
   sources: controversesStructurees.map(c => c.source_url),
-  // ... transformation V2 → legacy
+  // ... transformation unifié → legacy
 }
 
-// ✅ Format moderne utilisé par web app
+// ✅ Format unifié utilisé par web app
 beneficiaires_marque: [{ 
   beneficiaire: { 
     controverses: controversesStructurees, // Format structuré
@@ -653,64 +614,6 @@ npm run clean           # Nettoie .next et node_modules/.cache
 # npm run test:coverage  # Rapport de couverture
 ```
 
-## 🌊 Architecture des Flux de Données
-
-### **Vue d'ensemble - Architecture Hybride Optimisée**
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    FRONTEND (Next.js)                      │
-├─────────────────────────────────────────────────────────────┤
-│ • Pages publiques → dataService → Extension-API (lecture)  │
-│ • Pages admin → API Routes → Supabase direct (écriture)    │
-│ • useSearch → dataService → Extension-API (lecture)        │
-└─────────────────────────────────────────────────────────────┘
-                                ↓
-┌─────────────────────────────────────────────────────────────┐
-│                   DATA SERVICE LAYER                       │
-├─────────────────────────────────────────────────────────────┤
-│ • Lectures : Extension-API (Cache CDN)                     │
-│ • Écritures : Supabase direct (Fiabilité transactionnelle) │
-│ • Import dynamique Supabase (pas d'init côté client)       │
-└─────────────────────────────────────────────────────────────┘
-                         ↓                    ↓
-┌─────────────────────────────────┐  ┌─────────────────────────────────┐
-│        EXTENSION-API            │  │           SUPABASE              │
-│     (Netlify Functions)         │  │        (PostgreSQL)             │
-├─────────────────────────────────┤  ├─────────────────────────────────┤
-│ • Cache CDN multi-niveaux       │  │ • Base de données principale    │
-│ • toutes_marques par bénéf.     │  │ • Transactions fiables          │
-│ • Performance ~50ms             │  │ • Validation server-side        │
-└─────────────────────────────────┘  └─────────────────────────────────┘
-```
-
-### **Flux de Données par Type d'Opération**
-
-#### 🔍 **Lectures (Consultation publique)**
-```typescript
-// 1. Page de recherche (useSearch.ts)
-useSearch → dataService.getMarques() → Extension-API → Cache CDN (30min)
-
-// 2. Affichage dirigeants avec toutes marques liées
-DirigeantCard → Extension-API.marques → toutes_marques[] ✅ *(beneficiaires endpoint supprimé)*
-
-// 3. BoycottTips et secteurs
-dataService.getSecteurs() → Extension-API → Cache CDN (15min)
-```
-
-#### ✏️ **Écritures (Administration)**
-```typescript
-// 1. Création/modification marque
-Admin → /api/marques → Supabase direct → Validation + Transaction
-
-// 2. Gestion dirigeants V2
-Admin → /api/dirigeants → Supabase direct → Architecture normalisée
-Admin → /api/marque-dirigeant → Supabase direct → Relations
-
-// 3. Modération collaborative
-Public → /api/propositions → Supabase direct → Workflow modération
-```
-
 ### **Points Clés de l'Architecture**
 
 #### ✅ **Avantages**
@@ -734,90 +637,55 @@ async getMarques(): Promise<Marque[]> {
 }
 ```
 
-#### 🚀 **Données Enrichies - Toutes Marques Liées**
-```typescript
-// Extension-API enrichit automatiquement les bénéficiaires
-{
-  "nom": "Pierre Edouard Stérin",
-  "toutes_marques": [
-    {"id": 16, "nom": "Smartbox"},
-    {"id": 17, "nom": "Wonderbox"},
-    {"id": 22, "nom": "Animaj"},
-    // ... 10 autres marques
-  ]
-}
-```
-
-### **Architecture Finale : Cohérente et Optimale**
-
-Cette architecture respecte parfaitement les principes de performance et fiabilité :
-- ✅ **Lectures optimisées** : Extension-API avec cache CDN
-- ✅ **Écritures fiables** : Supabase direct avec transactions
-- ✅ **Sécurité renforcée** : Import dynamique, pas d'exposition client
-- ✅ **Single point of truth** : dataService centralisé
-- ✅ **Performance constante** : ~50ms avec Netlify 99.9% uptime
-
-## 📈 Optimisations futures
+## 📈 Roadmap & Optimisations
 
 ### **Performance & UX**
-- [ ] **React Query/SWR** : Cache intelligent + synchronisation
-- [ ] **Virtualisation** : `@tanstack/react-virtual` pour listes longues
-- [ ] **Service Worker** : Cache offline + background sync
-- [ ] **Image Optimization** : Next.js Image + WebP + responsive
-- [ ] **Code Splitting** : Dynamic imports par route
-- [ ] **Preloading** : Link prefetching pour navigation instantanée
-- [ ] **Bundle Analysis** : Optimisation des imports tiers
-- [ ] **Web Vitals** : Monitoring CLS, FCP, LCP
+- **React Query/SWR** : Cache intelligent + synchronisation
+- **Virtualisation** : `@tanstack/react-virtual` pour listes longues
+- **Service Worker** : Cache offline + background sync
+- **Image Optimization** : Next.js Image + WebP + responsive
+- **Web Vitals** : Monitoring CLS, FCP, LCP
 
 ### **Fonctionnalités Métier**
-- [ ] **Recherche Avancée** : Full-text search Supabase + filtres
-- [ ] **Système de Votes** : Validation communautaire des événements
-- [ ] **Notifications** : Push notifications pour nouveaux événements
-- [ ] **Export Data** : CSV/JSON des marques et événements
-- [ ] **API Publique** : OpenAPI pour développeurs tiers
-- [ ] **Historique** : Tracking des modifications avec audit log
-- [ ] **Multi-langue** : i18n avec next-intl
-- [ ] **Mode Sombre** : Theme switcher avec persistance
+- **Recherche Avancée** : Full-text search + filtres avancés
+- **API Publique** : OpenAPI pour développeurs tiers
+- **Multi-langue** : i18n avec next-intl
+- **Export Data** : CSV/JSON des données
 
-### **Infrastructure & DevOps**
-- [ ] **Tests Complets** : Jest + Testing Library + Playwright E2E
-- [ ] **CI/CD** : GitHub Actions avec preview deployments
-- [ ] **Monitoring** : Sentry pour error tracking
-- [ ] **Analytics** : Privacy-first avec Plausible/Umami
-- [ ] **Performance** : Lighthouse CI + Core Web Vitals
-- [ ] **Security** : OWASP scanning + dependency auditing
-- [ ] **Scalabilité** : Edge computing + CDN global
-- [ ] **Backup Strategy** : Base données + assets backup automatique
+### **Infrastructure**
+- **Tests** : Jest + Testing Library + E2E Playwright
+- **CI/CD** : GitHub Actions + preview deployments
+- **Monitoring** : Sentry + Analytics privacy-first
+- **Sécurité** : OWASP scanning + dependency auditing
 
 ## 🔧 Configuration
 
-### **Environment Variables**
+### **Variables d'Environnement**
 ```env
-# Supabase Configuration (Server-side only)
+# Supabase (Server-side uniquement)
 SUPABASE_URL="https://your-project.supabase.co"
 SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
 
-# Admin Authentication
-ADMIN_TOKEN="your-secure-admin-token"
-
-# Extension API Configuration (Required)
+# Extension API (Requis)
 NEXT_PUBLIC_EXTENSION_API_URL="https://odm-api.netlify.app"
 
-# Next.js Configuration
+# Authentification admin
+ADMIN_TOKEN="your-secure-admin-token"
+
+# Application
 NEXT_PUBLIC_SITE_URL="https://your-domain.com"
 NEXT_PUBLIC_APP_ENV="production"
 
-# Security
+# Sécurité
 ENCRYPTION_KEY="your-32-char-encryption-key"
 
-# Optional: Analytics & Monitoring
+# Optionnel : Analytics
 NEXT_PUBLIC_PLAUSIBLE_DOMAIN="your-domain.com"
 SENTRY_DSN="your-sentry-dsn"
 ```
 
-### **TypeScript Config**
-- Strict mode activé
-- Path mapping configuré
-- Import optimization
-
-Cette architecture garantit la maintenabilité, la scalabilité et les performances du projet.
+### **Configuration Technique**
+- **TypeScript** : Strict mode, path mapping `@/*` → `./src/*`
+- **Tailwind CSS** : Design system avec breakpoints personnalisés
+- **Next.js 15** : App Router, Turbopack, optimisations
+- **Sécurité** : API-first, validation centralisée, HTTPS only

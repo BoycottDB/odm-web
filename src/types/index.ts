@@ -400,7 +400,6 @@ export interface BeneficiaireRelation {
   beneficiaire_cible_id: number;
   type_relation: string; // 'actionnaire', 'filiale', 'partenaire', 'controleur'
   description_relation?: string;
-  pourcentage_participation?: number;
   created_at: string;
   updated_at: string;
   // Relations populées

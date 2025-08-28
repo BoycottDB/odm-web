@@ -29,7 +29,6 @@ interface ChaineNode {
     beneficiaire_cible_id: number;
     type_relation: string;
     description_relation?: string;
-    pourcentage_participation?: number;
   }>;
   lien_financier: string;
   marques_directes: Array<{
