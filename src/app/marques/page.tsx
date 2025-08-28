@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { MarqueWithStats } from '@/types';
 import { Badge } from '@/components/ui/Badge';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 
 export default function MarquesPage() {
   const [marques, setMarques] = useState<MarqueWithStats[]>([]);
@@ -114,6 +115,7 @@ export default function MarquesPage() {
                     {/* Nom de la marque */}
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
+                        <BrandLogo brandName={marque.nom} size="lg" />
                         <h3 className="heading-main font-semibold text-neutral-900 md:min-w-100">
                           {marque.nom}
                         </h3>
