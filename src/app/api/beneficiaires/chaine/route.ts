@@ -72,7 +72,6 @@ async function construireChaineRecursive(
     beneficiaire_cible_id: rel.beneficiaire_cible_id as number,
     type_relation: 'actionnaire', // Valeur par défaut pour compatibilité
     description_relation: rel.description_relation as string,
-    pourcentage_participation: undefined, // Pas encore disponible
     created_at: rel.created_at as string,
     updated_at: rel.updated_at as string
   }));
