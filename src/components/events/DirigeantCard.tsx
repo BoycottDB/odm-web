@@ -3,6 +3,7 @@
 import { User, Building2, ExternalLink, X } from 'lucide-react';
 import { DirigeantComplet, TypeBeneficiaire, ControverseBeneficiaire } from '@/types';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
+import { BrandLogoWithName } from '@/components/ui/BrandLogoWithName';
 
 // Fonction pour formater le markdown basique avec gestion des liens
 const formatMarkdown = (text: string) => {
@@ -112,7 +113,11 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
             <div className={`body-small ${
              isTransitif ? 'text-blue-500' : 'text-primary'
             }`}>
-              Vos achats <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong> profitent {isTransitif ? 'indirectement' : 'directement'} à ce {typeLabel.toLowerCase()} controversé{isTransitif ? ' via ' : ''}<strong className="body-large font-semibold">{isTransitif ? dirigeant.beneficiaire_parent_nom : ''}</strong>
+              Vos achats <BrandLogoWithName 
+                brandName={dirigeant.marque_nom} 
+                size="sm"
+                className="inline-flex"
+              /> profitent {isTransitif ? 'indirectement' : 'directement'} à ce {typeLabel.toLowerCase()} controversé{isTransitif ? ' via ' : ''}<strong className="body-large font-semibold">{isTransitif ? dirigeant.beneficiaire_parent_nom : ''}</strong>
             </div>
             {/* Nom du dirigeant */}
             <h3 className="heading-sub font-bold text-neutral-900">

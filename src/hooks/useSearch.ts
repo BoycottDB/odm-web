@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Evenement, SearchState, Marque, BeneficiaireResult, TypeBeneficiaire, BeneficiaireComplet } from '@/types';
+import { SearchState, Marque, BeneficiaireResult, TypeBeneficiaire, BeneficiaireComplet } from '@/types';
 
 export function useSearch() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export function useSearch() {
           isSearching: false,
           hasPerformedSearch: false
         }));
-      } catch (error) {
+      } catch {
         setSearchState(prev => ({
           ...prev,
           results: [],
@@ -168,7 +168,7 @@ export function useSearch() {
             loading: false,
             hasPerformedSearch: false
           }));
-        } catch (error) {
+        } catch {
           setSearchState(prev => ({
             ...prev,
             loading: false,

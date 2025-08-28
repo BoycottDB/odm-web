@@ -1,6 +1,7 @@
 import { Evenement } from '@/types';
 import { Badge } from '@/components/ui/Badge';
 import { JudicialCondemnationNotice } from '@/components/ui/JudicialCondemnationNotice';
+import { BrandLogoWithName } from '@/components/ui/BrandLogoWithName';
 
 interface EventCardProps {
   event: Evenement;
@@ -49,10 +50,13 @@ export function EventCard({ event }: EventCardProps) {
           </div>
       </div>
         
-        {/* Nom de la marque en dessous sur mobile, intégré dans la ligne sur desktop */}
-        <h3 className="heading-sub font-bold text-neutral-900 mt-2">
-          {event.marque?.nom}
-        </h3>
+        {/* Nom de la marque avec logo */}
+        <div className="mt-2">
+          <BrandLogoWithName 
+            brandName={event.marque?.nom || ''} 
+            size="md"
+          />
+        </div>
 
       {/* Description */}
       <h4 className="heading-sub font-medium text-neutral-900 mb-4 leading-relaxed">
