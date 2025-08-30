@@ -100,7 +100,14 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
 
   return (
     <div>
-      
+
+      {/* Statistiques */}
+      {isSearchResults && (
+        <p className="body-base text-center mb-14">
+          Nous avons répertorié {beneficiaireResults.length > 0 && <strong>{beneficiaireResults.length} bénéficiaire{beneficiaireResults.length > 1 ? 's' : ''} controversé{beneficiaireResults.length > 1 ? 's' : ''}</strong>} et {events.length > 0 && <strong>{events.length} controverse{events.length > 1 ? 's' : ''}</strong>} pour cette marque pour le moment.
+        </p>
+      )}
+
       {/* Section Boycott Tips - seulement pour les résultats de recherche avec marque spécifique */}
       {isSearchResults && marque && (
         <div className="max-w-4xl mx-auto px-2 sm:px-0 mb-6">
