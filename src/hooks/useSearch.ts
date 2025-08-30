@@ -216,10 +216,20 @@ export function useSearch() {
     });
   }, [router]);
 
+  // Fonction pour scroller vers les résultats quand une recherche a des résultats
+  const scrollToResults = useCallback(() => {
+    // Détection mobile vs desktop basée sur la largeur d'écran
+    const isMobile = window.innerWidth < 768; // breakpoint md de Tailwind
+    const scrollPosition = isMobile ? 320 : 423; // Valeurs différentes mobile/desktop
+    
+    window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+  }, []);
+
   return {
     searchState,
     updateQuery,
     performSearch,
-    clearSearch
+    clearSearch,
+    scrollToResults
   };
 }
