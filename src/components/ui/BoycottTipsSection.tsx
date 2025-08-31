@@ -183,9 +183,9 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
   };
 
   return (
-    <div className="mb-8">
+    <div>
       {/* Bouton pour ouvrir/fermer */}
-      <div className="text-center mb-6">
+      <div className="text-center">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="group relative inline-flex items-center justify-center px-4 py-3 md:px-8 md:py-4 overflow-hidden text-base md:text-lg font-bold text-white transition-all duration-300 ease-in-out bg-gradient-to-r from-primary via-primary-hover to-primary rounded-2xl hover:scale-105 transform hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-primary/30"
@@ -216,7 +216,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
       </div>
 
       {/* Section dépliable avec animation */}
-      <div className={`transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-none opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+      <div className={`transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-none mt-6 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
         <div className="bg-white rounded-2xl shadow-lg border border-neutral-200 p-6">
           {/* Header avec bouton fermer */}
           <div className="flex items-center justify-between pb-4 mb-2">
