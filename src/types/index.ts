@@ -202,8 +202,18 @@ export interface ControverseBeneficiaire {
   titre: string;
   source_url: string;
   ordre: number;
+  
+  // NOUVEAUX champs pour alignement avec Evenement
+  date?: string | null; // Date de la controverse
+  categorie_id?: number | null; // Référence vers Categorie
+  condamnation_judiciaire?: boolean; // Badge condamnation
+  reponse?: string | null; // URL réponse officielle
+  
   created_at: string;
   updated_at: string;
+  
+  // NOUVELLE relation
+  Categorie?: Categorie;
 }
 
 // Table bénéficiaires centralisée (ex-dirigeants)
@@ -352,6 +362,12 @@ export interface ControverseBeneficiaireCreateRequest {
   titre: string;
   source_url: string;
   ordre?: number;
+  
+  // NOUVEAUX champs optionnels
+  date?: string;
+  categorie_id?: number;
+  condamnation_judiciaire?: boolean;
+  reponse?: string;
 }
 
 export interface ControverseBeneficiaireUpdateRequest {
@@ -359,6 +375,12 @@ export interface ControverseBeneficiaireUpdateRequest {
   titre?: string;
   source_url?: string;
   ordre?: number;
+  
+  // NOUVEAUX champs optionnels  
+  date?: string;
+  categorie_id?: number;
+  condamnation_judiciaire?: boolean;
+  reponse?: string;
 }
 
 // Interface simplifiée pour les catégories dans les stats
