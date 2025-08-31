@@ -299,3 +299,239 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
   };
 }
 
+// Validation pour créer une controverse de bénéficiaire
+export function validateControverseBeneficiaireCreate(data: unknown): ValidationResult<{
+  beneficiaire_id: number;
+  titre: string;
+  source_url: string;
+  ordre?: number;
+  date?: string;
+  categorie_id?: number;
+  condamnation_judiciaire?: boolean;
+  reponse?: string;
+}> {
+  const errors: string[] = [];
+
+  if (typeof data !== 'object' || data === null) {
+    errors.push('Les données de la controverse sont invalides');
+    return { success: false, errors };
+  }
+
+  const {
+    beneficiaire_id,
+    titre,
+    source_url,
+    ordre,
+    date,
+    categorie_id,
+    condamnation_judiciaire,
+    reponse
+  } = data as {
+    beneficiaire_id?: unknown;
+    titre?: unknown;
+    source_url?: unknown;
+    ordre?: unknown;
+    date?: unknown;
+    categorie_id?: unknown;
+    condamnation_judiciaire?: unknown;
+    reponse?: unknown;
+  };
+
+  // Validation beneficiaire_id
+  if (beneficiaire_id === undefined || beneficiaire_id === null) {
+    errors.push('L\'ID du bénéficiaire est requis');
+  } else if (typeof beneficiaire_id !== 'number' || !Number.isInteger(beneficiaire_id)) {
+    errors.push('L\'ID du bénéficiaire doit être un nombre entier');
+  }
+
+  // Validation titre
+  if (typeof titre !== 'string' || !titre.trim()) {
+    errors.push('Le titre est requis');
+  } else {
+    if (titre.trim().length < 10) {
+      errors.push('Le titre doit contenir au moins 10 caractères');
+    }
+    if (titre.trim().length > 500) {
+      errors.push('Le titre ne peut pas dépasser 500 caractères');
+    }
+  }
+
+  // Validation source_url
+  if (typeof source_url !== 'string' || !source_url.trim()) {
+    errors.push('L\'URL de la source est requise');
+  } else {
+    try {
+      new URL(source_url.trim());
+    } catch {
+      errors.push('L\'URL de la source n\'est pas valide');
+    }
+  }
+
+  // Validation ordre (optionnel)
+  if (ordre !== undefined && (typeof ordre !== 'number' || !Number.isInteger(ordre))) {
+    errors.push('L\'ordre doit être un nombre entier');
+  }
+
+  // Validation date (optionnelle)
+  if (date !== undefined && typeof date === 'string' && date.trim() && isNaN(Date.parse(date))) {
+    errors.push('La date doit être au format valide');
+  }
+
+  // Validation categorie_id (optionnelle)
+  if (categorie_id !== undefined && (typeof categorie_id !== 'number' || !Number.isInteger(categorie_id))) {
+    errors.push('L\'ID de catégorie doit être un nombre entier');
+  }
+
+  // Validation condamnation_judiciaire (optionnelle)
+  if (condamnation_judiciaire !== undefined && typeof condamnation_judiciaire !== 'boolean') {
+    errors.push('Le champ condamnation judiciaire doit être un booléen');
+  }
+
+  // Validation reponse (optionnelle)
+  if (reponse !== undefined && typeof reponse === 'string' && reponse.trim()) {
+    try {
+      new URL(reponse.trim());
+    } catch {
+      errors.push('L\'URL de réponse n\'est pas valide');
+    }
+  }
+
+  if (errors.length > 0) {
+    return { success: false, errors };
+  }
+
+  return {
+    success: true,
+    data: {
+      beneficiaire_id: Number(beneficiaire_id),
+      titre: (titre as string).trim(),
+      source_url: (source_url as string).trim(),
+      ordre: typeof ordre === 'number' ? ordre : undefined,
+      date: typeof date === 'string' && date.trim() ? date.trim() : undefined,
+      categorie_id: typeof categorie_id === 'number' ? categorie_id : undefined,
+      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined,
+      reponse: typeof reponse === 'string' && reponse.trim() ? reponse.trim() : undefined
+    }
+  };
+}
+
+// Validation pour mettre à jour une controverse de bénéficiaire
+export function validateControverseBeneficiaireUpdate(data: unknown): ValidationResult<{
+  id: number;
+  titre?: string;
+  source_url?: string;
+  ordre?: number;
+  date?: string;
+  categorie_id?: number;
+  condamnation_judiciaire?: boolean;
+  reponse?: string;
+}> {
+  const errors: string[] = [];
+
+  if (typeof data !== 'object' || data === null) {
+    errors.push('Les données de la controverse sont invalides');
+    return { success: false, errors };
+  }
+
+  const {
+    id,
+    titre,
+    source_url,
+    ordre,
+    date,
+    categorie_id,
+    condamnation_judiciaire,
+    reponse
+  } = data as {
+    id?: unknown;
+    titre?: unknown;
+    source_url?: unknown;
+    ordre?: unknown;
+    date?: unknown;
+    categorie_id?: unknown;
+    condamnation_judiciaire?: unknown;
+    reponse?: unknown;
+  };
+
+  // Validation id (requis)
+  if (id === undefined || id === null) {
+    errors.push('L\'ID est requis');
+  } else if (typeof id !== 'number' || !Number.isInteger(id)) {
+    errors.push('L\'ID doit être un nombre entier');
+  }
+
+  // Validation titre (optionnel)
+  if (titre !== undefined) {
+    if (typeof titre !== 'string' || !titre.trim()) {
+      errors.push('Le titre ne peut pas être vide');
+    } else {
+      if (titre.trim().length < 10) {
+        errors.push('Le titre doit contenir au moins 10 caractères');
+      }
+      if (titre.trim().length > 500) {
+        errors.push('Le titre ne peut pas dépasser 500 caractères');
+      }
+    }
+  }
+
+  // Validation source_url (optionnel)
+  if (source_url !== undefined) {
+    if (typeof source_url !== 'string' || !source_url.trim()) {
+      errors.push('L\'URL de la source ne peut pas être vide');
+    } else {
+      try {
+        new URL(source_url.trim());
+      } catch {
+        errors.push('L\'URL de la source n\'est pas valide');
+      }
+    }
+  }
+
+  // Validation ordre (optionnel)
+  if (ordre !== undefined && (typeof ordre !== 'number' || !Number.isInteger(ordre))) {
+    errors.push('L\'ordre doit être un nombre entier');
+  }
+
+  // Validation date (optionnelle)
+  if (date !== undefined && typeof date === 'string' && date.trim() && isNaN(Date.parse(date))) {
+    errors.push('La date doit être au format valide');
+  }
+
+  // Validation categorie_id (optionnelle)
+  if (categorie_id !== undefined && (typeof categorie_id !== 'number' || !Number.isInteger(categorie_id))) {
+    errors.push('L\'ID de catégorie doit être un nombre entier');
+  }
+
+  // Validation condamnation_judiciaire (optionnelle)
+  if (condamnation_judiciaire !== undefined && typeof condamnation_judiciaire !== 'boolean') {
+    errors.push('Le champ condamnation judiciaire doit être un booléen');
+  }
+
+  // Validation reponse (optionnelle)
+  if (reponse !== undefined && typeof reponse === 'string' && reponse.trim()) {
+    try {
+      new URL(reponse.trim());
+    } catch {
+      errors.push('L\'URL de réponse n\'est pas valide');
+    }
+  }
+
+  if (errors.length > 0) {
+    return { success: false, errors };
+  }
+
+  return {
+    success: true,
+    data: {
+      id: Number(id),
+      titre: typeof titre === 'string' && titre.trim() ? titre.trim() : undefined,
+      source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : undefined,
+      ordre: typeof ordre === 'number' ? ordre : undefined,
+      date: typeof date === 'string' && date.trim() ? date.trim() : undefined,
+      categorie_id: typeof categorie_id === 'number' ? categorie_id : undefined,
+      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined,
+      reponse: typeof reponse === 'string' && reponse.trim() ? reponse.trim() : undefined
+    }
+  };
+}
+
