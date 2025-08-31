@@ -91,6 +91,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
   // Affichage des résultats
   const hasEvents = events.length > 0;
   const hasBeneficiaires = beneficiaireResults.length > 0;
+  const hasBoth = hasEvents && hasBeneficiaires;
   // Considérer comme résultats de recherche si une recherche a été effectuée (même sans résultats)
   const isSearchResults = hasSearched;
   
@@ -99,18 +100,18 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
   const marque = hasEvents ? events[0].marque : (hasBeneficiaires ? beneficiaireResults[0].marque : null);
 
   return (
-    <div>
+    <div className="max-w-4xl mx-auto px-2 sm:px-0 space-y-24">
 
       {/* Statistiques */}
       {isSearchResults && (
-        <p className="body-base text-center mb-14">
-          Nous avons répertorié {beneficiaireResults.length > 0 && <strong>{beneficiaireResults.length} bénéficiaire{beneficiaireResults.length > 1 ? 's' : ''} controversé{beneficiaireResults.length > 1 ? 's' : ''}</strong>} et {events.length > 0 && <strong>{events.length} controverse{events.length > 1 ? 's' : ''}</strong>} pour cette marque pour le moment.
+        <p className="body-base text-center">
+          Nous avons répertorié {hasBeneficiaires && <strong>{beneficiaireResults.length} bénéficiaire{beneficiaireResults.length > 1 ? 's' : ''} controversé{beneficiaireResults.length > 1 ? 's' : ''}</strong>}{hasBoth && ' et '}{hasEvents && <strong>{events.length} controverse{events.length > 1 ? 's' : ''}</strong>} pour cette marque pour le moment.
         </p>
       )}
 
       {/* Section Boycott Tips - seulement pour les résultats de recherche avec marque spécifique */}
       {isSearchResults && marque && (
-        <div className="max-w-4xl mx-auto px-2 sm:px-0 mb-6">
+        <div className="max-w-4xl mx-auto px-2 sm:px-0">
           <BoycottTipsSection marque={marque} />
         </div>
       )}
@@ -139,66 +140,63 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
           />
         </div>
       )}
-      
-      <div className="max-w-4xl mx-auto px-2 sm:px-0 space-y-10">
-        {/* Chaîne de bénéficiaires (seulement lors de recherche avec marque ET si il y a des bénéficiaires) */}
-        {isSearchResults && marque && hasBeneficiaires && (
-          <div className="mb-20">
-            <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
-              À qui profitent vos achats ?
-            </h3>
-            <p className="body-small text-neutral-600 text-center mb-6">
-              Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
-            </p>
-            <ChaineBeneficiaires marqueId={marque.id} profondeurMax={5} />
-          </div>
-        )}
 
-        {/* Événements */}
-        {hasEvents && (
-          <div>
-            {isSearchResults && (
-              <>
-                <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
-                  Controverses signalées
-                </h3>
-                <p className="body-small text-neutral-600 text-center mb-6">
-                  Liste des controverses documentées et sourcées
-                </p>
-              </>
-            )}
-            <div className="grid gap-10 sm:gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
-              {events.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </div>
-          </div>
-        )}
-              
-        {/* Fausse controverse d'incitation */}
-        <div className="bg-primary-light/20 border-2 border-dashed border-primary/30 rounded-2xl p-8 text-center">
-          <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-          </div>
-          <h3 className="text-lg font-medium text-neutral-800 mb-3">
-            Une controverse manque ?
+      {/* Chaîne de bénéficiaires (seulement lors de recherche avec marque ET si il y a des bénéficiaires) */}
+      {isSearchResults && marque && hasBeneficiaires && (
+        <div>
+          <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
+            À qui profitent vos achats ?
           </h3>
-          <p className="text-neutral-600 mb-4">
-            <strong>Ce répertoire est collaboratif</strong> : si une controverse n&apos;apparaît pas, c&apos;est que personne ne l&apos;a encore signalée. <br />N&apos;hésitez pas à contribuer pour enrichir cette base de données et aider d&apos;autres consommateurs à faire des choix éclairés !
+          <p className="body-small text-neutral-600 text-center mb-6">
+            Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
           </p>
-          <Link 
-            href="/signaler"
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            Signaler une controverse
-          </Link>
+          <ChaineBeneficiaires marqueId={marque.id} profondeurMax={5} />
         </div>
-        
+      )}
+
+      {/* Événements */}
+      {hasEvents && (
+        <div>
+          {isSearchResults && (
+            <>
+              <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
+                Controverses signalées
+              </h3>
+              <p className="body-small text-neutral-600 text-center mb-6">
+                Liste des controverses documentées et sourcées
+              </p>
+            </>
+          )}
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
+            {events.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        </div>
+      )}
+            
+      {/* Fausse controverse d'incitation */}
+      <div className="bg-primary-light/20 border-2 border-dashed border-primary/30 rounded-2xl p-8 text-center">
+        <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+          <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-medium text-neutral-800 mb-3">
+          Une controverse manque ?
+        </h3>
+        <p className="text-neutral-600 mb-4">
+          <strong>Ce répertoire est collaboratif</strong> : si une controverse n&apos;apparaît pas, c&apos;est que personne ne l&apos;a encore signalée. <br />N&apos;hésitez pas à contribuer pour enrichir cette base de données et aider d&apos;autres consommateurs à faire des choix éclairés !
+        </p>
+        <Link 
+          href="/signaler"
+          className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Signaler une controverse
+        </Link>
       </div>
     </div>
   );
