@@ -67,6 +67,15 @@ body {
   font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
 }
 
+.heading-sub-compact {
+  font-size: 0.875rem;
+  font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
+}
+
+.heading-sub-brackets {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
 .body-large {
   font-size: clamp(1rem, 1.5vw, 1.125rem);
 }
@@ -103,6 +112,7 @@ body {
 .border-berry-200 { border-color: var(--color-berry-200); }
 .border-berry-300 { border-color: var(--color-berry-300); }
 .border-berry-400 { border-color: var(--color-berry-400); }
+.border-berry-500 { border-color: var(--color-berry-500); }
 .hover\:bg-berry-50:hover { background-color: var(--color-berry-50); }
 .hover\:bg-berry-700:hover { background-color: var(--color-berry-700); }
 .hover\:border-berry-400:hover { border-color: var(--color-berry-400); }

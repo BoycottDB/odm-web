@@ -23,36 +23,57 @@ export function EventCard({ event }: EventCardProps) {
     });
   };
 
+  const formatMarqueName = (nom: string) => {
+    const match = nom.match(/^([^(]+)(\(.+\))$/);
+    if (match) {
+      const [, mainName, parentheses] = match;
+      return {
+        mainName: mainName.trim(),
+        parentheses: parentheses.trim()
+      };
+    }
+    return { mainName: nom, parentheses: null };
+  };
+
   return (
     <div className={`relative ${event.condamnation_judiciaire && 'mt-6'}`}>
       {/* Notification de condamnation judiciaire */}
       {event.condamnation_judiciaire && <JudicialCondemnationNotice />}
       <div className="relative z-10 bg-white rounded-3xl card-padding shadow-lg border border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* En-tête principal : Marque et Date */}
-      <div className="flex flex-col gap-3 mb-4">
-          {/* Badges et date alignés sur mobile */}
-          <div className="flex items-center justify-between">
-            {/* Badges */}
-            <div className="flex flex-wrap items-center gap-2">
-              {/* Catégorie */}
-              {event.categorie?.nom && (
-                <Badge variant="category" category={event.categorie}>
-                  {event.categorie.nom}
-                </Badge>
-              )} 
-            </div>
-            {/* Date alignée à droite sur mobile */}
-            <span className="body-small sm:body-base text-neutral-600 font-medium shrink-0 sm:order-2">
-              <span className="sm:hidden">{formatDateCompact(event.date)}</span>
-              <span className="hidden sm:inline">{formatDate(event.date)}</span>
-            </span>
-          </div>
-      </div>
-        
-        {/* Nom de la marque en dessous sur mobile, intégré dans la ligne sur desktop */}
-        <h3 className="heading-sub font-bold text-neutral-900 mt-2">
-          {event.marque?.nom}
+      <div className="flex items-center justify-between mb-2">
+        {/* Nom de la marque */}
+        <h3 className="heading-sub font-bold text-primary-dark">
+          {event.marque?.nom && (() => {
+            const { mainName, parentheses } = formatMarqueName(event.marque.nom);
+            return (
+              <>
+                {mainName}
+                {parentheses && (
+                  <span className="heading-sub-brackets font-normal ml-1">{parentheses}</span>
+                )}
+              </>
+            );
+          })()}
         </h3>
+        
+        {/* Date alignée à droite */}
+        <span className="body-small sm:body-base text-neutral-600 font-medium shrink-0">
+          <span className="sm:hidden">{formatDateCompact(event.date)}</span>
+          <span className="hidden sm:inline">{formatDate(event.date)}</span>
+        </span>
+      </div>
+
+      {/* Badges commentés - peut-être à retirer */}
+      {/* 
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        {event.categorie?.nom && (
+          <Badge variant="category" category={event.categorie}>
+            {event.categorie.nom}
+          </Badge>
+        )}
+      </div>
+      */}
 
       {/* Description */}
       <h4 className="heading-sub font-medium text-neutral-900 mb-4 leading-relaxed">
@@ -83,7 +104,7 @@ export function EventCard({ event }: EventCardProps) {
             href={event.reponse}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center body-small font-medium text-primary hover:text-primary transition-colors duration-200"
+            className="inline-flex items-center body-base font-medium text-primary hover:text-primary transition-colors duration-200"
           >
             <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
