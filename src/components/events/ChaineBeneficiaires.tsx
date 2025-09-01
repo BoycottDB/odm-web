@@ -120,7 +120,7 @@ const ControversesSection = ({
           <div className="bg-white border border-primary rounded-lg p-3 hover:shadow-sm transition-shadow">
             {/* Header : Titre + Date */}
             <div className="flex items-start justify-between mb-2">
-              <h4 className="font-medium text-sm text-neutral-900 leading-tight pr-2">
+              <h4 className="heading-sub-compact font-medium text-sm text-neutral-900 leading-tight pr-2">
                 {controverse.titre}
               </h4>
               {controverse.date && (

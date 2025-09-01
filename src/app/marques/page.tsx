@@ -11,6 +11,18 @@ export default function MarquesPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  const formatMarqueName = (nom: string) => {
+    const match = nom.match(/^([^(]+)(\(.+\))$/);
+    if (match) {
+      const [, mainName, parentheses] = match;
+      return {
+        mainName: mainName.trim(),
+        parentheses: parentheses.trim()
+      };
+    }
+    return { mainName: nom, parentheses: null };
+  };
+
   useEffect(() => {
     const loadMarques = async () => {
       try {
@@ -91,64 +103,73 @@ export default function MarquesPage() {
                   onClick={() => handleMarqueClick(marque.nom)}
                   className="bg-white border-2 border-berry-100 rounded-2xl p-6 hover:bg-berry-50 hover:border-berry-200 cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md"
                 >
-
-                  {/* Affichage des catégories sous forme de tags */}
-                  {marque.categories.length > 0 && (
-                    <div className="mb-4">
-                      <div className="flex flex-wrap gap-2">
-                        {marque.categories.map((categorie) => (
-                          <Badge
-                            key={categorie.id}
-                            variant="category"
-                            category={categorie}
-                          >
-                            {categorie.nom}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     {/* Nom de la marque */}
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="heading-main font-semibold text-neutral-900 md:min-w-100">
-                          {marque.nom}
+                        <h3 className="heading-main font-semibold text-primary-dark md:min-w-100">
+                          {(() => {
+                            const { mainName, parentheses } = formatMarqueName(marque.nom);
+                            return (
+                              <>
+                                {mainName}
+                                {parentheses && (
+                                  <span className="heading-sub-brackets font-normal ml-1">{parentheses}</span>
+                                )}
+                              </>
+                            );
+                          })()}
                         </h3>
 
-                        <div className="flex md:flex-row space-between justify-between w-full md:mr-50">
-                          {/* Indicateur bénéficiaire controversé */}
+                        <div className="flex md:flex-row justify-end space-x-4 w-full">
+                          {/* Indicateur bénéficiaire controversé
                           {marque.nbDirigeantsControverses > 0 && (
-                            <div className="text-center">
-                              <div className="body-large font-semibold text-neutral-600 items-center flex">
-                              <span className="body-small text-berry-600 ml-1">Bénéficiaire{marque.nbDirigeantsControverses > 1 ? 's' : ''} controversé{marque.nbDirigeantsControverses > 1 ? 's' : ''}</span>
-                              </div>
+                            <div className="body-large font-semibold text-neutral-600 items-center flex">
+                              <span className="body-small ml-1">Bénéficiaire{marque.nbDirigeantsControverses > 1 ? 's' : ''} controversé{marque.nbDirigeantsControverses > 1 ? 's' : ''}</span>
                             </div>
-                          )}
+                          )} */}
 
                           {/* Controverses - uniquement si > 0 */}
                           {marque.nbControverses > 0 && (
-                            <div className="text-center">
-                              <div className="body-large font-semibold text-neutral-600 items-center flex">
-                                {marque.nbControverses} <span className="body-small text-berry-600 ml-1">Controverse{marque.nbControverses > 1 ? 's' : ''}</span>
-                              </div>
+                            <div className="body-large font-semibold text-neutral-600 items-center flex">
+                              {marque.nbControverses} <span className="body-small ml-1">Controverse{marque.nbControverses > 1 ? 's' : ''}</span>
                             </div>
                           )}
 
                           {/* Condamnations - uniquement si > 0 */}
                           {marque.nbCondamnations > 0 && (
-                            <div className="text-center">
-                              <div className="body-large font-semibold text-neutral-600 items-center flex">
-                                {marque.nbCondamnations} <span className="body-small text-berry-600 ml-1">Condamnation{marque.nbCondamnations > 1 ? 's' : ''}</span>
-                              </div>
+                            <div className="body-large font-semibold text-neutral-600 items-center flex">
+                              {marque.nbCondamnations} <span className="body-small ml-1">Condamnation{marque.nbCondamnations > 1 ? 's' : ''}</span>
                             </div>
                           )}
                         </div>
+                        
                       </div>
                   </div>
                 </div>
+
+                {/* Affichage des catégories sous forme de tags */}
+                {(marque.categories.length > 0 || marque.nbDirigeantsControverses > 0) && (
+                  <div className="mb-4">
+                    <div className="flex flex-wrap gap-2">
+                      {marque.nbDirigeantsControverses > 0 && (
+                        <Badge variant="beneficiaire">
+                          {Array.from({ length: marque.nbDirigeantsControverses }, () => '🤑').join(' ') } bénéficiaire{marque.nbDirigeantsControverses > 1 ? 's' : ''} controversé{marque.nbDirigeantsControverses > 1 ? 's' : ''}
+                        </Badge>
+                      )}
+                      {marque.categories.map((categorie) => (
+                        <Badge
+                          key={categorie.id}
+                          variant="category"
+                          category={categorie}
+                        >
+                          {categorie.nom}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                   
                   <div className="pt-4 border-t border-neutral">
