@@ -92,7 +92,7 @@ class DataService {
     nbControverses: number;
     categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
     nbCondamnations: number;
-    nbDirigeantsControverses: number;
+    nbBeneficiairesControverses: number;
   }[]> {
     return this.fetchFromExtensionApi<{
       id: number;
@@ -100,7 +100,7 @@ class DataService {
       nbControverses: number;
       categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
       nbCondamnations: number;
-      nbDirigeantsControverses: number;
+      nbBeneficiairesControverses: number;
     }[]>('marques-stats');
   }
 
