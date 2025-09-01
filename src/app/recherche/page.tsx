@@ -1,5 +1,5 @@
 "use client";
-import { KeyboardEvent, Suspense } from "react";
+import { KeyboardEvent, Suspense, useRef, useEffect } from "react";
 import Link from 'next/link';
 import { useSearch } from '@/hooks/useSearch';
 import { useSuggestions } from '@/hooks/useSuggestions';
@@ -18,6 +18,22 @@ function SearchPageContent() {
     hideSuggestions,
     showSuggestions
   } = useSuggestions();
+  
+  const searchBarRef = useRef<HTMLDivElement>(null);
+
+  // Scroll automatique vers la barre de recherche quand les résultats apparaissent
+  useEffect(() => {
+    if (searchState.hasPerformedSearch && searchBarRef.current) {
+      const searchBarElement = searchBarRef.current;
+      const offset = 20; // Quelques pixels au-dessus
+      const elementTop = searchBarElement.offsetTop - offset;
+      
+      window.scrollTo({
+        top: elementTop,
+        behavior: 'smooth'
+      });
+    }
+  }, [searchState.hasPerformedSearch]);
 
   // Synchroniser les suggestions avec la recherche
   const handleSearchChange = (value: string) => {
@@ -86,16 +102,18 @@ function SearchPageContent() {
           </p>
 
           {/* Barre de recherche */}
-          <SearchBar
-            value={searchState.query}
-            onChange={handleSearchChange}
-            onSearch={handleSearch}
-            suggestions={suggestionState}
-            onSuggestionSelect={handleSuggestionSelect}
-            onKeyDown={handleKeyDown}
-            onFocus={showSuggestions}
-            onBlur={hideSuggestions}
-          />
+          <div ref={searchBarRef}>
+            <SearchBar
+              value={searchState.query}
+              onChange={handleSearchChange}
+              onSearch={handleSearch}
+              suggestions={suggestionState}
+              onSuggestionSelect={handleSuggestionSelect}
+              onKeyDown={handleKeyDown}
+              onFocus={showSuggestions}
+              onBlur={hideSuggestions}
+            />
+          </div>
           
           {/* Lien vers la liste des marques */}
           <div className="mt-4 relative w-full max-w-2xl mx-auto flex justify-end">
