@@ -124,9 +124,9 @@ export default function MarquesPage() {
 
                         <div className="flex md:flex-row justify-end space-x-4 w-full">
                           {/* Indicateur bénéficiaire controversé
-                          {marque.nbDirigeantsControverses > 0 && (
+                          {marque.nbBeneficiairesControverses > 0 && (
                             <div className="body-large font-semibold text-neutral-600 items-center flex">
-                              <span className="body-small ml-1">Bénéficiaire{marque.nbDirigeantsControverses > 1 ? 's' : ''} controversé{marque.nbDirigeantsControverses > 1 ? 's' : ''}</span>
+                              <span className="body-small ml-1">Bénéficiaire{marque.nbBeneficiairesControverses > 1 ? 's' : ''} controversé{marque.nbBeneficiairesControverses > 1 ? 's' : ''}</span>
                             </div>
                           )} */}
 
@@ -150,12 +150,12 @@ export default function MarquesPage() {
                 </div>
 
                 {/* Affichage des catégories sous forme de tags */}
-                {(marque.categories.length > 0 || marque.nbDirigeantsControverses > 0) && (
+                {(marque.categories.length > 0 || marque.nbBeneficiairesControverses > 0) && (
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-2">
-                      {marque.nbDirigeantsControverses > 0 && (
+                      {marque.nbBeneficiairesControverses > 0 && (
                         <Badge variant="beneficiaire">
-                          {Array.from({ length: marque.nbDirigeantsControverses }, () => '🤑').join(' ') } bénéficiaire{marque.nbDirigeantsControverses > 1 ? 's' : ''} controversé{marque.nbDirigeantsControverses > 1 ? 's' : ''}
+                          {Array.from({ length: marque.nbBeneficiairesControverses }, () => '🤑').join(' ') } bénéficiaire{marque.nbBeneficiairesControverses > 1 ? 's' : ''} controversé{marque.nbBeneficiairesControverses > 1 ? 's' : ''}
                         </Badge>
                       )}
                       {marque.categories.map((categorie) => (
