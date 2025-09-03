@@ -399,6 +399,7 @@ export interface MarqueWithStats {
   categories: CategorieStats[]; // Catégories uniques de controverses avec émojis et couleurs
   nbCondamnations: number; // Nombre de controverses avec condamnation judiciaire
   nbBeneficiairesControverses: number; // Nombre de bénéficiaires controversés associés (multi-niveaux)
+  beneficiairesControverses: Array<{id: number, nom: string}>; // Noms des bénéficiaires controversés
 }
 
 // Types pour les secteurs marque
