@@ -179,7 +179,7 @@ export default function Home() {
             Une plateforme collaborative qui vous donne les clés d'une consommation éthique et responsable.
           </p> */}
           <p className="heading-sub font-light text-neutral-700 mb-16 max-w-3xl mx-auto leading-relaxed">
-            Découvrez qui bénéficie vraiment de tes achats, retrouvez des conseils pratiques pour adapter votre consommation et rejoignez une communauté engagée pour une consommation éthique et responsable.
+            Découvrez qui bénéficie vraiment de vos achats, retrouvez des conseils pratiques pour adapter votre consommation et rejoignez une communauté engagée pour une consommation éthique et responsable.
           </p>
 
           <div className="space-y-8 md:space-y-16">
@@ -220,7 +220,7 @@ export default function Home() {
             Des questions ? Des doutes ?
           </h2>
           <p className="heading-sub font-light text-neutral-700 mb-12">
-            Rassurez-vous, nous aussi en avons eu et voici nos réponses.
+            Rassurez-vous, nous aussi nous en avons eu et voici nos réponses.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">

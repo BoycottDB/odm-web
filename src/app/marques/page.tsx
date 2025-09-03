@@ -28,7 +28,9 @@ export default function MarquesPage() {
       try {
         const { dataService } = await import('@/lib/services/dataService');
         const data = await dataService.getMarquesStats();
-        setMarques(data);
+        // Tri par ordre alphabétique
+        const sortedData = data.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+        setMarques(sortedData);
       } catch (error) {
         console.error('Erreur lors du chargement des marques:', error);
         setError('Erreur lors du chargement des marques');
@@ -101,7 +103,7 @@ export default function MarquesPage() {
                 <div
                   key={marque.id}
                   onClick={() => handleMarqueClick(marque.nom)}
-                  className="bg-white border-2 border-berry-100 rounded-2xl p-6 hover:bg-berry-50 hover:border-berry-200 cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="bg-white border-2 border-berry-100 rounded-2xl p-6 cursor-pointer transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
                 >
                   
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -149,25 +151,39 @@ export default function MarquesPage() {
                   </div>
                 </div>
 
-                {/* Affichage des catégories sous forme de tags */}
-                {(marque.categories.length > 0 || marque.nbBeneficiairesControverses > 0) && (
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-2">
-                      {marque.nbBeneficiairesControverses > 0 && (
-                        <Badge variant="beneficiaire">
-                          {Array.from({ length: marque.nbBeneficiairesControverses }, () => '🤑').join(' ') } bénéficiaire{marque.nbBeneficiairesControverses > 1 ? 's' : ''} controversé{marque.nbBeneficiairesControverses > 1 ? 's' : ''}
-                        </Badge>
-                      )}
-                      {marque.categories.map((categorie) => (
-                        <Badge
-                          key={categorie.id}
-                          variant="category"
-                          category={categorie}
-                        >
-                          {categorie.nom}
-                        </Badge>
-                      ))}
-                    </div>
+                {/* Affichage séparé des bénéficiaires et catégories */}
+                {((marque.beneficiairesControverses?.length || 0) > 0 || marque.categories.length > 0) && (
+                  <div className="mb-4 space-y-2">
+                    {/* Ligne 1: Bénéficiaires controversés */}
+                    {(marque.beneficiairesControverses?.length || 0) > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        <span className="text-xs font-medium text-neutral-700 mr-1 self-center">Derrière cette marque :</span>
+                        {(marque.beneficiairesControverses || []).map((beneficiaire) => (
+                          <Badge
+                            key={beneficiaire.id}
+                            variant="beneficiaire"
+                          >
+                            {beneficiaire.nom}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Ligne 2: Catégories */}
+                    {marque.categories.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        <span className="text-xs font-medium text-neutral-700 mr-1 self-center">Types de controverses :</span>
+                        {marque.categories.map((categorie) => (
+                          <Badge
+                            key={categorie.id}
+                            variant="category"
+                            category={categorie}
+                          >
+                            {categorie.nom}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
 

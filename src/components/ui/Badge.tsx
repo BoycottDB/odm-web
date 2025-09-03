@@ -10,13 +10,13 @@ interface BadgeProps {
 
 export function Badge({ children, variant = 'category', category }: BadgeProps) {
   const variantClasses = {
-    category: 'bg-white inline-flex items-center px-3 py-1 rounded-full body-small font-medium text-neutral-800 border border-berry-200',
-    condamnation: 'bg-error-light text-error border border-error font-semibold',
-    beneficiaire: 'bg-white inline-flex items-center px-3 py-1 rounded-full body-small font-medium text-neutral-800 border border-berry-500',
+    category: 'inline-flex items-center px-2 py-0.5 text-xs font-medium text-indigo-700 bg-indigo-50 border-l-2 border-indigo-200',
+    condamnation: 'inline-flex items-center px-2 py-0.5 text-xs font-medium text-indigo-700 bg-indigo-50 border-l-2 border-indigo-200',
+    beneficiaire: 'inline-flex items-center px-2 py-0.5 text-xs font-medium text-berry-700 bg-berry-50 border-l-2 border-berry-200',
   };
     return (
       <span className={variantClasses[variant]}>
-        {category?.emoji && <span className="mr-1.5">{category.emoji}</span>}
+        {category?.emoji && <span className="mr-1">{category.emoji}</span>}
         {children}
       </span>
     );
