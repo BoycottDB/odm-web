@@ -105,7 +105,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
       {/* Statistiques */}
       {isSearchResults && (
         <p className="body-base text-center">
-          Nous avons répertorié {hasBeneficiaires && <strong>{beneficiaireResults.length} bénéficiaire{beneficiaireResults.length > 1 ? 's' : ''} controversé{beneficiaireResults.length > 1 ? 's' : ''}</strong>}{hasBoth && ' et '}{hasEvents && <strong>{events.length} controverse{events.length > 1 ? 's' : ''}</strong>} pour cette marque pour le moment.
+          {hasBeneficiaires && <strong>{beneficiaireResults.length} bénéficiaire{beneficiaireResults.length > 1 ? 's' : ''} controversé{beneficiaireResults.length > 1 ? 's' : ''}</strong>}{hasBoth && ' et '}{hasEvents && <strong>{events.length} controverse{events.length > 1 ? 's' : ''}</strong>} ont été signalés pour <strong>{searchQuery}</strong>.
         </p>
       )}
 
@@ -144,12 +144,12 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
       {/* Chaîne de bénéficiaires (seulement lors de recherche avec marque ET si il y a des bénéficiaires) */}
       {isSearchResults && marque && hasBeneficiaires && (
         <div>
-          <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
+          <h3 className="heading-main font-medium text-neutral-900 mb-6 text-center">
             À qui profitent vos achats ?
           </h3>
-          <p className="body-small text-neutral-600 text-center mb-6">
+          {/* <p className="body-small text-neutral-600 text-center mb-6">
             Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
-          </p>
+          </p> */}
           <ChaineBeneficiaires marqueId={marque.id} profondeurMax={5} />
         </div>
       )}
@@ -159,12 +159,12 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
         <div>
           {isSearchResults && (
             <>
-              <h3 className="heading-main font-medium text-neutral-900 mb-2 text-center">
+              <h3 className="heading-main font-medium text-neutral-900 mb-6 text-center">
                 Controverses signalées
               </h3>
-              <p className="body-small text-neutral-600 text-center mb-6">
+              {/* <p className="body-small text-neutral-600 text-center mb-6">
                 Liste des controverses documentées et sourcées
-              </p>
+              </p> */}
             </>
           )}
           <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
