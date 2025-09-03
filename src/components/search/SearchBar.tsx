@@ -58,7 +58,7 @@ export function SearchBar({
             aria-autocomplete="list"
             aria-expanded={suggestions.visible && suggestions.items.length > 0}
             aria-owns={suggestions.visible && suggestions.items.length > 0 ? "search-suggestions" : undefined}
-            className="w-full pl-12 pr-4 py-4 body-large font-light border-2 border-primary rounded-2xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary-light transition-all duration-300 bg-white shadow-lg"
+            className="w-full pl-12 pr-4 py-4 body-large font-bold border-2 border-primary rounded-2xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary-light transition-all duration-300 bg-white shadow-lg"
           />
         </div>
       </form>
