@@ -122,8 +122,8 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
 
       {/* Note sur les controverses */}
       {beneficiaire && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="text-sm text-blue-800">
+        <div className="bg-lavande-50 border border-lavande-200 rounded-lg p-4">
+          <div className="text-sm text-lavande-700">
             <strong>Note :</strong> Les controverses sont maintenant gérées dans la section dédiée ci-dessous. 
             Vous pouvez ajouter, modifier et supprimer chaque controverse individuellement avec sa source spécifique.
           </div>

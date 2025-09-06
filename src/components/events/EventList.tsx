@@ -49,7 +49,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
   if (notFound && hasSearched) {
     return (
       <div className="text-center py-16">
-        <div className="w-20 h-20 mx-auto mb-6 bg-primary-light rounded-full flex items-center justify-center">
+        <div className="w-20 h-20 mx-auto mb-6 bg-primary-50 rounded-full flex items-center justify-center">
           <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
@@ -60,7 +60,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
         </p>
         <Link 
           href="/signaler"
-          className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-2 bg-gradient-odm text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -75,7 +75,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
   if (!hasSearched && events.length === 0 && beneficiaireResults.length === 0 && !loading) {
     return (
       <div className="text-center py-16">
-        <div className="w-20 h-20 mx-auto mb-6 bg-primary-light rounded-full flex items-center justify-center">
+        <div className="w-20 h-20 mx-auto mb-6 bg-primary-50 rounded-full flex items-center justify-center">
           <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -176,8 +176,8 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
       )}
             
       {/* Fausse controverse d'incitation */}
-      <div className="bg-primary-light/20 border-2 border-dashed border-primary/30 rounded-2xl p-8 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+      <div className="bg-white border-2 border-dashed border-primary/30 rounded-2xl p-8 text-center">
+        <div className="w-16 h-16 mx-auto mb-4 bg-primary-50 rounded-full flex items-center justify-center">
           <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
@@ -190,7 +190,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
         </p>
         <Link 
           href="/signaler"
-          className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-2 bg-gradient-odm text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

@@ -75,7 +75,7 @@ export default function MarquesListPage() {
           <div className="heading-main font-bold text-neutral-900">{marques.length}</div>
           <div className="body-small text-neutral-600">Marques total</div>
         </div>
-        <div className="bg-primary-light p-4 rounded-lg border border-primary">
+        <div className="bg-primary-50 p-4 rounded-lg border border-primary">
           <div className="heading-main font-bold text-primary">
             {marques.filter(m => 
               (m.beneficiaires_marque && m.beneficiaires_marque.length > 0)
@@ -117,7 +117,7 @@ export default function MarquesListPage() {
                           
                           return (
                             <div className="mt-1 flex items-center space-x-2">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-50 text-primary">
                                 ⚠️ {nombreBeneficiaires} Bénéficiaire{nombreBeneficiaires > 1 ? 's' : ''} controversé{nombreBeneficiaires > 1 ? 's' : ''}
                               </span>
                               <span className="body-small text-neutral-600">

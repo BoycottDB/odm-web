@@ -61,7 +61,7 @@ export default function CreateBeneficiairePage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-primary-50 border border-primary-200 text-primary-700 px-4 py-3 rounded mb-6">
             {error}
           </div>
         )}

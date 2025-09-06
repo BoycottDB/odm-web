@@ -15,7 +15,7 @@ interface SimilarItemsProps {
 export default function SimilarItems({ results }: SimilarItemsProps) {
   const getSimilarityLabel = (score: number) => {
     if (score >= 0.8) return { label: 'Très similaire', color: 'text-error bg-error-light border-error' };
-    if (score >= 0.6) return { label: 'Similaire', color: 'text-primary bg-primary-light border-primary' };
+    if (score >= 0.6) return { label: 'Similaire', color: 'text-primary bg-primary-50 border-primary' };
     return { label: 'Possiblement similaire', color: 'text-warning bg-warning-light border-warning' };
   };
 
@@ -99,7 +99,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
 
       {/* Section 2: Signalements en attente */}
       {hasPendingPropositions && (
-        <div className="bg-primary-light border border-primary rounded-lg p-6">
+        <div className="bg-primary-50 border border-primary rounded-lg p-6">
           <div className="flex items-start mb-4">
             <svg className="w-6 h-6 text-primary mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

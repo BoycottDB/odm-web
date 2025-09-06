@@ -23,7 +23,7 @@ export const EVENT_CATEGORIES = [
 export const BADGE_COLORS = {
   category: 'bg-accent-category text-neutral-800 border border-info',
   date: 'bg-warning-light text-neutral-800 border border-warning',
-  brand: 'bg-primary-light text-neutral-800 border border-primary'
+  brand: 'bg-primary-50 text-neutral-800 border border-primary'
 } as const;
 
 // Tailles des composants

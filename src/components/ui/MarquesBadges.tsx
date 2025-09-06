@@ -39,9 +39,9 @@ export function MarquesBadges({
   const getBadgeStyles = () => {
     switch (variant) {
       case 'admin':
-        return "inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary cursor-pointer hover:bg-primary hover:text-white transition-colors";
+        return "inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-50 text-primary cursor-pointer hover:bg-primary hover:text-white transition-colors";
       case 'indirect':
-        return "inline-flex items-center px-3 py-1 rounded-full body-xs font-medium bg-white text-blue-600 border border-blue-300 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors";
+        return "inline-flex items-center px-3 py-1 rounded-full body-xs font-medium bg-white text-lavande-600 border border-lavande-300 cursor-pointer hover:bg-lavande-500 hover:text-white transition-colors";
       case 'public':
       default:
         return "inline-flex items-center px-3 py-1 rounded-full body-xs font-medium bg-white text-primary border border-primary cursor-pointer hover:bg-primary hover:text-white transition-colors";

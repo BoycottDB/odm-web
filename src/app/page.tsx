@@ -12,8 +12,8 @@ export default function Home() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
       <div className="text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-berry-100 rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <SearchX className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-berry-600" />
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-accent-medium rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <SearchX className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-accent" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
             Scrutez les marques !
@@ -25,14 +25,14 @@ export default function Home() {
         <div className="flex justify-start md:justify-start">
           <Link
             href="/recherche"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base"
+            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-gradient-odm text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-900 text-sm md:text-base"
           >
             <Search className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Rechercher une marque
           </Link>
         </div>
       </div>
-      <div className="bg-gradient-to-br from-berry-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-berry-100">
+      <div className="bg-gradient-to-br from-lavande-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-lavande-200">
         <img
           src="https://media1.tenor.com/m/j6hODwAA_VQAAAAd/fat-luffy-fat-luffy-rubbing-belly.gif"
           alt="Interface de recherche"
@@ -47,7 +47,7 @@ export default function Home() {
 
   const BoycottTipsSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-      <div className="order-2 lg:order-1 bg-gradient-to-br from-berry-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-berry-100">
+      <div className="order-2 lg:order-1 bg-gradient-to-br from-violet-magenta-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-lavande-200">
         <img
           src="https://media1.tenor.com/m/j6hODwAA_VQAAAAd/fat-luffy-fat-luffy-rubbing-belly.gif"
           alt="Conseils pratiques"
@@ -59,8 +59,8 @@ export default function Home() {
       </div>
       <div className="order-1 lg:order-2 text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-berry-100 rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <Compass className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-berry-600" />
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-accent-medium rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <Compass className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-accent" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
             Changez de cap !
@@ -72,7 +72,7 @@ export default function Home() {
         <div className="flex justify-start md:justify-start">
           <Link
             href="/recherche?q=Nike"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base"
+            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-gradient-odm text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-900 text-sm md:text-base"
           >
             <TextSearch className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Voir des exemples de conseils
@@ -86,8 +86,8 @@ export default function Home() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
       <div className="text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-berry-100 rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <Sailboat className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-berry-600" />
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-accent-medium rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <Sailboat className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-accent" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
             Naviguez librement !
@@ -99,12 +99,12 @@ export default function Home() {
         <div className="flex justify-start md:justify-start">
           <Link
             href="https://chrome.google.com/webstore"
-            className={`inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg transition-colors text-sm md:text-base ${isMobile
-              ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-              : 'bg-berry-600 text-white hover:bg-berry-700'
+            className={`inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg transition-all duration-300 text-sm md:text-base ${isMobile
+              ? 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
+              : 'bg-gradient-odm text-white hover:bg-primary-600 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-900'
               }`}
             {...(isMobile ? { onClick: (e) => e.preventDefault() } : {})}
-          >
+          > 
             <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Installer l&apos;extension
           </Link>
@@ -115,7 +115,7 @@ export default function Home() {
           </p>
         )}
       </div>
-      <div className="bg-gradient-to-br from-berry-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-berry-100">
+      <div className="bg-gradient-to-br from-lavande-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-lavande-200">
         <img
           src="https://media1.tenor.com/m/Nt6Zju-KjTsAAAAC/luffy-one-piece.gif"
           alt="Extension en action"
@@ -130,7 +130,7 @@ export default function Home() {
 
   const SignalementSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-      <div className="order-2 lg:order-1 bg-gradient-to-br from-berry-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-berry-100">
+      <div className="order-2 lg:order-1 bg-gradient-to-br from-primary-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-lavande-200">
         <img
           src="https://media1.tenor.com/m/qanLZ89oReAAAAAC/gear-5-gear-5-luffy.gif"
           alt="Processus de signalement"
@@ -142,8 +142,8 @@ export default function Home() {
       </div>
       <div className="order-1 lg:order-2 text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-berry-100 rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <WavesLadder className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-berry-600" />
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-accent-medium rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <WavesLadder className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-accent" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
             Montez à bord !
@@ -157,7 +157,7 @@ export default function Home() {
         <div className="flex justify-start md:justify-start">
           <Link
             href="/signaler"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-berry-600 text-white font-semibold rounded-lg hover:bg-berry-700 transition-colors text-sm md:text-base"
+            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-gradient-odm text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-900 text-sm md:text-base"
           >
             <FileInput className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Signaler une controverse
@@ -170,7 +170,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary-light via-purple-50 to-indigo-50 section-padding">
+      <section className="relative bg-gradient-to-r from-primary-50 via-violet-magenta-50 to-lavande-50 section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
             L&apos;Observatoire des Marques
@@ -214,7 +214,7 @@ export default function Home() {
       </section>
 
       {/* Section FAQ */}
-      <section className="section-padding bg-gradient-to-r from-primary-light via-purple-50 to-indigo-50">
+      <section className="section-padding bg-gradient-to-r from-primary-50 to-lavande-50">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="heading-main text-neutral-900 mb-4">
             Des questions ? Des doutes ?
@@ -227,11 +227,11 @@ export default function Home() {
             {/* Question efficacité */}
             <Link
               href="/faq/pourquoi"
-              className="bg-white rounded-xl p-6 border border-neutral-200 hover:shadow-md transition-all group text-left"
+              className="bg-white rounded-xl p-6 border border-neutral-200 hover:shadow-secondary shadow-sm hover:shadow-md/60 transition-all duration-300 group text-left"
               draggable={false}
             >
               <div className="flex items-start space-x-4">
-                <CircleQuestionMark className="w-12 h-12 text-info" />
+                <CircleQuestionMark className="w-12 h-12 text-accent" />
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-2 group-hover:text-primary transition-colors">
                     &quot;À quoi ça sert ? C&apos;est peine perdue de toute façon...&quot;
@@ -246,11 +246,11 @@ export default function Home() {
             {/* Question alternatives */}
             <Link
               href="/faq/alternatives"
-              className="bg-white rounded-xl p-6 border border-neutral-200 hover:shadow-md transition-all group text-left"
+              className="bg-white rounded-xl p-6 border border-neutral-200 hover:shadow-secondary shadow-sm hover:shadow-md/60 transition-all duration-300 group text-left"
               draggable={false}
             >
               <div className="flex items-start space-x-4">
-                <Zap className="w-12 h-12 text-info" />
+                <Zap className="w-12 h-12 text-accent" />
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-2 group-hover:text-primary transition-colors">
                     &quot;Pourquoi ne proposez-vous pas des alternatives ?&quot;
@@ -265,7 +265,7 @@ export default function Home() {
           {/* Lien vers FAQ complète */}
           <Link
             href="/faq"
-            className="inline-flex items-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-gradient-odm hover:bg-primary text-white font-semibold rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary"
           >
             Consulter la FAQ complète
             <ChevronRight className="w-4 h-4 ml-2" />

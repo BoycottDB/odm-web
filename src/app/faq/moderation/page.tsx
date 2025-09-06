@@ -81,7 +81,7 @@ export default function Moderation() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-to-r from-primary-light via-purple-50 to-indigo-50 py-20 px-4">
+      <section className="bg-gradient-to-r from-primary-50 via-violet-magenta-50 to-lavande-50 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Modération et validation
@@ -150,7 +150,7 @@ export default function Moderation() {
           {/* Historique des décisions */}
           <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 mb-8">
             <div className="flex items-start mb-6">
-              <div className="bg-primary-light rounded-lg p-3 mr-4">
+              <div className="bg-primary-50 rounded-lg p-3 mr-4">
                 <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>

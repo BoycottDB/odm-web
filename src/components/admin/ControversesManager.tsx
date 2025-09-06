@@ -375,7 +375,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                     {/* Badge condamnation judiciaire */}
                     {controverse.condamnation_judiciaire && (
                       <div className="mb-2">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-700">
                           ⚖️ Condamnation judiciaire
                         </span>
                       </div>
@@ -416,7 +416,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                         href={controverse.source_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                        className="inline-flex items-center text-sm text-lavande-600 hover:text-lavande-700 hover:underline"
                       >
                         <ExternalLink className="w-3 h-3 mr-1" />
                         Source
@@ -438,14 +438,14 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                   <div className="flex gap-2">
                     <button
                       onClick={() => startEdit(controverse)}
-                      className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors"
+                      className="p-2 text-lavande-600 hover:text-lavande-700 hover:bg-lavande-50 rounded transition-colors"
                       title="Modifier cette controverse"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => supprimerControverse(controverse.id)}
-                      className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
+                      className="p-2 text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded transition-colors"
                       title="Supprimer cette controverse"
                     >
                       <Trash2 className="w-4 h-4" />

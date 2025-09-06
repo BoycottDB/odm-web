@@ -90,9 +90,9 @@ function SearchPageContent() {
   const hasSearched = searchState.hasPerformedSearch;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-primary-light">
+    <div className="min-h-screen bg-gradient-to-br from-white to-primary-50">
       {/* Section Hero */}
-      <section className="relative bg-gradient-to-r from-primary-light via-purple-50 to-indigo-50 section-padding">
+      <section className="relative bg-gradient-to-r from-primary-50 via-violet-magenta-50 to-lavande-50 section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
             Rechercher une marque
@@ -119,7 +119,7 @@ function SearchPageContent() {
           <div className="mt-4 relative w-full max-w-2xl mx-auto flex justify-end">
             <Link 
               href="/marques" 
-              className="body-base align-right text-berry-600 underline hover:text-berry-700 transition-colors duration-200"
+              className="body-base align-right text-primary-500 underline hover:text-primary-600 transition-colors duration-200"
             >
               <strong>Consulter toutes les marques &gt;</strong>
             </Link>
@@ -128,7 +128,7 @@ function SearchPageContent() {
       </section>
 
       {/* Section Résultats */}
-      <section className="section-padding bg-gradient-to-b from-white to-primary-light">
+      <section className="section-padding bg-gradient-to-b from-white to-primary-50">
         <div className="max-w-6xl mx-auto px-6">
           <EventList
             events={searchState.results}
@@ -149,7 +149,7 @@ function SearchPageContent() {
 
 export default function RechercherPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-white to-primary-light flex items-center justify-center">
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-white to-primary-50 flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
         <p className="text-neutral-600">Chargement...</p>

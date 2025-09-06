@@ -1,43 +1,80 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fefefe;
-  --foreground: #111827;
+  --background: #f8f6f7;
+  --foreground: #14090f;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   
-  /* Palette Berry - Violet bordeaux avec déclinaisons */
-  --color-berry-50: #fdf2f8;
-  --color-berry-100: #fce7f3;
-  --color-berry-200: #fbcfe8;
-  --color-berry-300: #f9a8d4;
-  --color-berry-400: #f472b6;
-  --color-berry-500: #ec4899;
-  --color-berry-600: #db2777;
-  --color-berry-700: #9d174d;
-  --color-berry-800: #831843;
-  --color-berry-900: #701a75;
-  --color-berry-950: #4a044e;
+  /* Palette Realtime Colors - Couleurs exactes */
   
-  /* Couleurs sémantiques basées sur berry */
-  --color-primary: var(--color-berry-600);
-  --color-primary-hover: var(--color-berry-700);
-  --color-primary-light: var(--color-berry-100);
-  --color-primary-dark: var(--color-berry-800);
+  /* Primary: Rouge bordeaux #990F4B */
+  --color-primary-50: #fef7f9;
+  --color-primary-100: #fce7ef;
+  --color-primary-200: #f9d2df;
+  --color-primary-300: #f4adc4;
+  --color-primary-500: #990f4b;
+  --color-primary-600: #7a0c3c;
+  --color-primary-700: #5c092d;
+  --color-primary-800: #3d061e;
+  --color-primary-900: #2a0414;
   
-  /* Couleurs d'accent complémentaires */
-  --color-accent-category: #e0e7ff; /* jaune doux pour les catégories */
-  --color-accent-date: #fef3c7; /* bleu lavande pour les dates */
+
+  
+  /* Couleurs sémantiques basées sur la nouvelle palette */
+  --color-primary: var(--color-primary-500);
+  --color-primary-hover: var(--color-primary-600);
+  --color-primary-light: var(--color-primary-100);
+  --color-primary-dark: var(--color-primary-700);
+  
+  /* Couleurs Realtime Colors - Usage étendu */
+  
+  /* Lavande #9999d3 - Éléments secondaires */
+  --color-lavande-50: #f5f5fe;
+  --color-lavande-100: #ebebfc;
+  --color-lavande-200: #d6d6f7;
+  --color-lavande-300: #c2c2f0;
+  --color-lavande-500: #9999d3;
+  --color-lavande-600: #8585c7;
+  --color-lavande-700: #7070b3;
+  --color-lavande-800: #5c5cb3;
+  --color-lavande-900: #4848a3;
+
+  /* Couleurs sémantiques héritées (rétrocompatibilité) */
+  --color-secondary-light: var(--color-lavande-50);
+  --color-secondary-medium: var(--color-lavande-100);
+  --color-secondary: var(--color-lavande-500);
+  --color-secondary-hover: var(--color-lavande-600);
+  --color-secondary-dark: var(--color-lavande-700);
+  
+  /* Violet magenta #91159b - Accents et interactions */
+  --color-violet-magenta-50: #faf0fb;
+  --color-violet-magenta-100: #f3e5f4;
+  --color-violet-magenta-200: #e8c5ec;
+  --color-violet-magenta-300: #dca5e4;
+  --color-violet-magenta-500: #91159b;
+  --color-violet-magenta-600: #7d1287;
+  --color-violet-magenta-700: #690f73;
+
+  --color-accent-light: var(--color-violet-magenta-50);
+  --color-accent-medium: var(--color-violet-magenta-100);
+  --color-accent: var(--color-violet-magenta-500);
+  --color-accent-hover: var(--color-violet-magenta-600);
+  --color-accent-dark: var(--color-violet-magenta-700);
+  
+  /* Compatibilité avec l'ancien système */
+  --color-accent-category: var(--color-secondary-medium); /* lavande doux pour catégories */
+  --color-accent-date: var(--color-accent-medium); /* violet magenta doux pour dates */
 }
 
 /* Désactivation du dark mode pour maintenir la cohérence du design */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #fefefe;
-    --foreground: #111827;
+    --background: #f8f6f7;
+    --foreground: #14090f;
   }
 }
 
@@ -96,36 +133,135 @@ body {
 .text-white { color: #FFF; }
 .hover\:text-white:hover { color: #FFF; }
 
+.text-gradient-odm {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.bg-gradient-odm {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+}
+.hover\:bg-gradient-odm:hover {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+}
+
 /* Couleurs de texte principales */
-.text-primary { color: var(--color-berry-600); }
-.text-primary-light { color: var(--color-berry-500); }
-.text-primary-dark { color: var(--color-berry-700); }
+.text-primary { color: var(--color-primary-500); }
+.text-primary-light { color: var(--color-primary-300); }
+.text-primary-dark { color: var(--color-primary-700); }
 
-/* Classes Tailwind pour berry colors */
-.bg-berry-50 { background-color: var(--color-berry-50); }
-.bg-berry-100 { background-color: var(--color-berry-100); }
-.bg-berry-600 { background-color: var(--color-berry-600); }
-.bg-berry-700 { background-color: var(--color-berry-700); }
-.text-berry-600 { color: var(--color-berry-600); }
-.text-berry-700 { color: var(--color-berry-700); }
-.border-berry-100 { border-color: var(--color-berry-100); }
-.border-berry-200 { border-color: var(--color-berry-200); }
-.border-berry-300 { border-color: var(--color-berry-300); }
-.border-berry-400 { border-color: var(--color-berry-400); }
-.border-berry-500 { border-color: var(--color-berry-500); }
-.hover\:bg-berry-50:hover { background-color: var(--color-berry-50); }
-.hover\:bg-berry-700:hover { background-color: var(--color-berry-700); }
-.hover\:border-berry-400:hover { border-color: var(--color-berry-400); }
-.focus\:ring-berry-200:focus { --tw-ring-color: var(--color-berry-200); }
-.focus\:ring-neutral-300:focus { --tw-ring-color: #d1d5db; }
+/* Classes Tailwind pour la nouvelle palette */
+.bg-primary-50 { background-color: var(--color-primary-50); }
+.bg-primary-100 { background-color: var(--color-primary-100); }
+.text-primary-700 { color: var(--color-primary-700); }
+.border-primary-100 { border-color: var(--color-primary-100); }
+.border-primary-200 { border-color: var(--color-primary-200); }
+.border-primary-300 { border-color: var(--color-primary-300); }
+.border-primary-500 { border-color: var(--color-primary-500); }
+.hover\:bg-primary-50:hover { background-color: var(--color-primary-50); }
+.hover\:bg-primary-700:hover { background-color: var(--color-primary-700); }
+.hover\:border-primary-300:hover { border-color: var(--color-primary-300); }
+.focus\:ring-primary-200:focus { --tw-ring-color: var(--color-primary-200); }
 
-/* Couleurs de texte neutres */
-.text-neutral-900 { color: #111827; } /* Titres principaux */
-.text-neutral-800 { color: #1f2937; } /* Texte fort */
-.text-neutral-700 { color: #374151; } /* Texte standard */
-.text-neutral-600 { color: #4b5563; } /* Texte secondaire */
-.text-neutral-500 { color: #6b7280; } /* Texte faible */
-.text-neutral-400 { color: #9ca3af; } /* Placeholder */
+/* Classes complètes pour primary */
+.bg-primary-200 { background-color: var(--color-primary-200); }
+.bg-primary-300 { background-color: var(--color-primary-300); }
+.bg-primary-500 { background-color: var(--color-primary-500); }
+.bg-primary-800 { background-color: var(--color-primary-800); }
+.bg-primary-900 { background-color: var(--color-primary-900); }
+
+.text-primary-500 { color: var(--color-primary-500); }
+.text-primary-600 { color: var(--color-primary-600); }
+.text-primary-800 { color: var(--color-primary-800); }
+
+.border-primary-600 { border-color: var(--color-primary-600); }
+
+.hover\:bg-primary-500:hover { background-color: var(--color-primary-500); }
+.hover\:bg-primary-600:hover { background-color: var(--color-primary-600); }
+.hover\:text-primary-600:hover { color: var(--color-primary-600); }
+
+.focus\:ring-primary-500:focus { --tw-ring-color: var(--color-primary-500); }
+
+/* Classes Lavande - Éléments secondaires */
+.bg-lavande-50 { background-color: var(--color-lavande-50); }
+.bg-lavande-100 { background-color: var(--color-lavande-100); }
+.bg-lavande-500 { background-color: var(--color-lavande-500); }
+.bg-lavande-600 { background-color: var(--color-lavande-600); }
+
+.text-lavande-500 { color: var(--color-lavande-500); }
+.text-lavande-600 { color: var(--color-lavande-600); }
+.text-lavande-700 { color: var(--color-lavande-700); }
+
+.border-lavande-200 { border-color: var(--color-lavande-200); }
+.border-lavande-300 { border-color: var(--color-lavande-300); }
+
+.hover\:bg-lavande-50:hover { background-color: var(--color-lavande-50); }
+.hover\:bg-lavande-600:hover { background-color: var(--color-lavande-600); }
+.hover\:text-lavande-600:hover { color: var(--color-lavande-600); }
+
+/* Classes sémantiques secondary (rétrocompatibilité) */
+.bg-secondary-light { background-color: var(--color-secondary-light); }
+.bg-secondary-medium { background-color: var(--color-secondary-medium); }
+.bg-secondary { background-color: var(--color-secondary); }
+.text-secondary { color: var(--color-secondary); }
+.text-secondary-dark { color: var(--color-secondary-dark); }
+.border-secondary { border-color: var(--color-secondary); }
+.border-secondary-medium { border-color: var(--color-secondary-medium); }
+.hover\:bg-secondary-light:hover { background-color: var(--color-secondary-light); }
+.hover\:bg-secondary:hover { background-color: var(--color-secondary-hover); }
+.hover\:text-secondary:hover { color: var(--color-secondary-hover); }
+.focus\:ring-secondary:focus { --tw-ring-color: var(--color-secondary-medium); }
+
+/* Classes Violet Magenta - Accents et interactions */
+.bg-violet-magenta-50 { background-color: var(--color-violet-magenta-50); }
+.bg-violet-magenta-100 { background-color: var(--color-violet-magenta-100); }
+.bg-violet-magenta-200 { background-color: var(--color-violet-magenta-200); }
+.bg-violet-magenta-500 { background-color: var(--color-violet-magenta-500); }
+.bg-violet-magenta-600 { background-color: var(--color-violet-magenta-600); }
+.bg-violet-magenta-700 { background-color: var(--color-violet-magenta-700); }
+
+.text-violet-magenta-500 { color: var(--color-violet-magenta-500); }
+.text-violet-magenta-600 { color: var(--color-violet-magenta-600); }
+.text-violet-magenta-700 { color: var(--color-violet-magenta-700); }
+
+.border-violet-magenta-200 { border-color: var(--color-violet-magenta-200); }
+.border-violet-magenta-300 { border-color: var(--color-violet-magenta-300); }
+
+.hover\:bg-violet-magenta-50:hover { background-color: var(--color-violet-magenta-50); }
+.hover\:bg-violet-magenta-600:hover { background-color: var(--color-violet-magenta-600); }
+.hover\:text-violet-magenta-600:hover { color: var(--color-violet-magenta-600); }
+.hover\:text-violet-magenta-700:hover { color: var(--color-violet-magenta-700); }
+
+.focus\:ring-violet-magenta-200:focus { --tw-ring-color: var(--color-violet-magenta-200); }
+
+/* Classes sémantiques accent (rétrocompatibilité) */
+.bg-accent-light { background-color: var(--color-accent-light); }
+.bg-accent-medium { background-color: var(--color-accent-medium); }
+.bg-accent { background-color: var(--color-accent); }
+.text-accent { color: var(--color-accent); }
+.text-accent-dark { color: var(--color-accent-dark); }
+.border-accent { border-color: var(--color-accent); }
+.border-accent-medium { border-color: var(--color-accent-medium); }
+.hover\:bg-accent-light:hover { background-color: var(--color-accent-light); }
+.hover\:bg-accent:hover { background-color: var(--color-accent-hover); }
+.hover\:text-accent:hover { color: var(--color-accent-hover); }
+.focus\:ring-accent:focus { --tw-ring-color: var(--color-accent-medium); }
+
+/* Classes spécifiques (compatibilité) */
+.bg-accent-category { background-color: var(--color-accent-category); }
+.bg-accent-date { background-color: var(--color-accent-date); }
+.focus\:ring-neutral-300:focus { --tw-ring-color: #efe9ea; }
+
+/* Couleurs de texte neutres - Palette Realtime Colors */
+.text-neutral-900 { color: #14090f; } /* Foreground principal */
+.text-neutral-800 { color: #2a1a20; } /* Plus clair que foreground */
+.text-neutral-700 { color: #3d2a30; } /* Texte secondaire */
+.text-neutral-600 { color: #503b40; } /* Texte tertiaire */
+.text-neutral-500 { color: #634b50; } /* Texte faible */
+.text-neutral-400 { color: #765b60; } /* Placeholder */
 
 /* Couleurs d'état */
 .text-success { color: #059669; }
@@ -136,16 +272,17 @@ body {
 .text-info { color: #2563eb; }
 .text-info-dark { color: #1d4ed8; }
 
-/* Couleurs de fond principales */
-.bg-primary { background-color: var(--color-berry-600); }
-.bg-primary-hover { background-color: var(--color-berry-700); }
-.bg-primary-light { background-color: var(--color-berry-50); }
-.bg-primary-medium { background-color: var(--color-berry-100); }
 
-/* Couleurs de fond neutres */
-.bg-neutral-50 { background-color: #f9fafb; }
-.bg-neutral-100 { background-color: #f3f4f6; }
-.bg-neutral-200 { background-color: #e5e7eb; }
+/* Couleurs de fond principales */
+.bg-primary { background-color: var(--color-primary-500); }
+.bg-primary-hover { background-color: var(--color-primary-600); }
+.bg-primary-light { background-color: var(--color-primary-50); }
+.bg-primary-medium { background-color: var(--color-primary-100); }
+
+/* Couleurs de fond neutres - Basées sur background */
+.bg-neutral-50 { background-color: #fdfcfc; }
+.bg-neutral-100 { background-color: #fbf9fa; }
+.bg-neutral-200 { background-color: #f6f3f4; }
 
 /* Couleurs d'état - fonds */
 .bg-success { background-color: #059669; }
@@ -159,8 +296,8 @@ body {
 .bg-info { background-color: #006eff; }
 
 /* Couleurs de bordure */
-.border-primary { border-color: var(--color-berry-200); }
-.border-primary-medium { border-color: var(--color-berry-300); }
+.border-primary { border-color: var(--color-primary-200); }
+.border-primary-medium { border-color: var(--color-primary-300); }
 .border-neutral { border-color: #e5e7eb; }
 .border-neutral-light { border-color: #f3f4f6; }
 .border-success { border-color: #10b981; }
@@ -169,14 +306,9 @@ body {
 .border-warning { border-color: #f59e0b; }
 
 /* Couleurs pour les états hover */
-.hover\:text-primary:hover { color: var(--color-berry-700); }
-.hover\:bg-primary:hover { background-color: var(--color-berry-700); }
-.hover\:bg-neutral:hover { background-color: #f3f4f6; }
-
-/* Couleurs pour les états hover */
-.fill-neutral-900 { fill: #111827; }
-.fill-primary { fill: var(--color-berry-600); }
-.hover\:fill-primary:hover { fill: var(--color-berry-700); }
+.hover\:text-primary:hover { color: var(--color-primary-600); }
+.hover\:bg-primary:hover { background-color: var(--color-primary-600); }
+.hover\:bg-neutral:hover { background-color: #f6f3f4; }
 
 /* Espacement responsive pour les cards */
 .card-padding {

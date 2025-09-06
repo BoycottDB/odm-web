@@ -257,7 +257,7 @@ export default function SecteursMarquePage() {
                     )}
                     
                     {secteur.message_boycott_tips && (
-                      <div className="p-3 bg-primary-light rounded-lg">
+                      <div className="p-3 bg-primary-50 rounded-lg">
                         <p className="body-small font-medium text-neutral-700 mb-1">
                           Message Boycott Tips :
                         </p>

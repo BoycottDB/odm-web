@@ -184,7 +184,7 @@ export default function DirigeantDetailPage() {
 
         {/* Marques liées */}
         {dirigeant.marques.length > 0 && (
-          <div className="mb-8 p-6 bg-primary-light rounded-lg border border-primary">
+          <div className="mb-8 p-6 bg-primary-50 rounded-lg border border-primary">
             <h3 className="heading-sub font-semibold text-neutral-900 mb-4">
               Marques liées ({dirigeant.marques.length})
             </h3>
