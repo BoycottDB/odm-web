@@ -391,7 +391,7 @@ export default function SignalementForm() {
           <button
             type="submit"
             disabled={isSubmitting || !captchaVerified}
-            className="bg-gradient-to-r from-primary to-primary text-white px-6 py-3 rounded-lg font-semibold hover:from-primary-hover hover:to-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="bg-gradient-odm text-white px-6 py-3 rounded-lg font-semibold hover:from-primary-hover hover:to-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isSubmitting ? 'Envoi en cours...' : 'Signaler'}
           </button>

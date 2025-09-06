@@ -325,7 +325,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       )}
 
       {/* Section bénéficiaire controversé */}
-      <div className="mb-8 p-6 bg-primary-light rounded-lg border border-primary">
+      <div className="mb-8 p-6 bg-primary-50 rounded-lg border border-primary">
         <div className="flex items-center justify-between mb-4">
           <h3 className="heading-sub font-semibold text-neutral-900">
             ⚠️ Bénéficiaire controversé

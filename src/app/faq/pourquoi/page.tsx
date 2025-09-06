@@ -4,7 +4,7 @@ export default function EfficaciteFAQ() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-to-r from-primary-light via-purple-50 to-indigo-50 py-20 px-4">
+      <section className="bg-gradient-to-r from-primary-50 via-violet-magenta-50 to-lavande-50 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Pourquoi on y croit ?
@@ -70,7 +70,7 @@ export default function EfficaciteFAQ() {
                 </div>
               </div>
 
-              <div className="mt-10 bg-gradient-to-r from-success-light to-primary-light border border-success rounded-xl p-8">
+              <div className="mt-10 bg-primary-light border border-primary rounded-xl p-8">
                 <h3 className="body-large font-bold text-neutral-900 mb-4">🙏 Notre utopie : libérer l&apos;économie des gens d&apos;en bas</h3>
                 <p className="body-base text-neutral-700 leading-relaxed mb-4">
                   Chaque euro que tu ne donnes pas à une multinationale peut aller à un producteur local, un artisan, un créateur éthique.
@@ -94,8 +94,8 @@ export default function EfficaciteFAQ() {
                 </div>
               </div>
 
-              <div className="mt-8 bg-primary-light border border-primary rounded-xl p-6">
-                <p className="body-base text-neutral-700 font-medium text-center">
+              <div className="mt-8 bg-secondary-light border border-accent rounded-xl p-6">
+                <p className="body-base text-accent-dark font-medium text-center">
                   Donc ne lâche pas, ce monde a besoin de toi 🫶
                 </p>
               </div>

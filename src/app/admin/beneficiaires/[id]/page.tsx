@@ -157,8 +157,8 @@ export default function BeneficiaireDetailPage() {
                 <div className="flex items-center gap-2 mt-1">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     isGroupe 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'bg-green-100 text-green-800'
+                      ? 'bg-lavande-100 text-lavande-700' 
+                      : 'bg-lavande-100 text-lavande-700'
                   }`}>
                     {typeLabel}
                   </span>
@@ -171,7 +171,7 @@ export default function BeneficiaireDetailPage() {
             <button
               onClick={() => setShowDeleteConfirm(true)}
               disabled={deleting}
-              className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 px-3 py-2 rounded-lg border border-red-200 hover:bg-red-50 transition-colors"
+              className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 px-3 py-2 rounded-lg border border-primary-200 hover:bg-primary-50 transition-colors"
             >
               <Trash2 className="w-4 h-4" />
               Supprimer
@@ -180,14 +180,14 @@ export default function BeneficiaireDetailPage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-primary-50 border border-primary-200 text-primary-700 px-4 py-3 rounded mb-6">
             {error}
           </div>
         )}
 
         {/* Marques liées */}
         {beneficiaire.marques && beneficiaire.marques.length > 0 && (
-          <div className="bg-primary-light border border-primary rounded-lg p-4 mb-6">
+          <div className="bg-primary-50 border border-primary rounded-lg p-4 mb-6">
             <h3 className="font-medium text-primary mb-3">Marques liées :</h3>
             <div className="flex flex-wrap gap-2">
               {beneficiaire.marques.map((marque) => (

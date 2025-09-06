@@ -25,7 +25,7 @@ export default function AdminNavigation() {
               onClick={() => router.push(item.path)}
               className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium body-small ${
                 isActive(item.path)
-                  ? 'border-primary text-primary'
+                  ? 'border-violet-magenta-500 text-violet-magenta-600'
                   : 'border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral'
               }`}
             >

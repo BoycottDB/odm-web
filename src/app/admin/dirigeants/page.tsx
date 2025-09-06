@@ -74,7 +74,7 @@ export default function DirigeantListPage() {
       
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="bg-primary-light p-4 rounded-lg border border-primary">
+        <div className="bg-primary-50 p-4 rounded-lg border border-primary">
           <div className="heading-main font-bold text-primary">{dirigeants.length}</div>
           <div className="body-small text-primary">Bénéficiaires controversés</div>
         </div>
@@ -163,7 +163,7 @@ function DirigeantCard({ dirigeant, onEdit }: DirigeantCardProps) {
           {dirigeant.marques.slice(0, 6).map((marque) => (
             <span 
               key={marque.id} 
-              className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary"
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-50 text-primary"
             >
               {marque.nom}
             </span>

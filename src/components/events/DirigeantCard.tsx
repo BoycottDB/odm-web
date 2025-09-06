@@ -93,8 +93,8 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
   
   // Classes CSS selon le type de lien
   const cardClasses = isTransitif 
-    ? "mt-6 bg-gradient-to-r from-primary-light to-berry-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-    : "mt-6 bg-gradient-to-r from-primary-light to-berry-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300";
+    ? "mt-6 bg-gradient-to-r from-primary-50 to-primary-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+    : "mt-6 bg-gradient-to-r from-primary-50 to-primary-50 rounded-3xl card-padding shadow-lg border-2 border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300";
 
   return (
     <div className={cardClasses}>
@@ -102,15 +102,15 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
-            isTransitif ? 'bg-blue-100' : 'bg-primary-light'
+            isTransitif ? 'bg-lavande-100' : 'bg-primary-50'
           }`}>
           <Icon className={`w-7 h-7 flex-shrink-0 ${
-            isTransitif ? 'text-blue-500' : 'text-primary'
+            isTransitif ? 'text-lavande-600' : 'text-primary'
           }`} />
           </div>
           <div>         
             <div className={`body-small ${
-             isTransitif ? 'text-blue-500' : 'text-primary'
+             isTransitif ? 'text-lavande-600' : 'text-primary'
             }`}>
               Vos achats <strong className="body-large font-semibold">{dirigeant.marque_nom}</strong> profitent {isTransitif ? 'indirectement' : 'directement'} à ce {typeLabel.toLowerCase()} controversé{isTransitif ? ' via ' : ''}<strong className="body-large font-semibold">{isTransitif ? dirigeant.beneficiaire_parent_nom : ''}</strong>
             </div>
@@ -138,7 +138,7 @@ export function DirigeantCard({ dirigeant, onClose }: DirigeantCardProps) {
       <div className="space-y-4 mb-6">
         <div>
           <div className={`font-semibold body-small mb-1 ${
-              isTransitif ? 'text-blue-500' : 'text-primary'
+              isTransitif ? 'text-lavande-600' : 'text-primary'
             }`}>
             Lien financier :
           </div>

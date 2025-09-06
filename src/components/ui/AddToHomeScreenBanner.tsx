@@ -57,14 +57,14 @@ export function AddToHomeScreenBanner() {
   return (
     <>
       <div 
-        className={`fixed bottom-0 left-0 right-0 bg-white border-t border-primary-light shadow-lg z-50 transform transition-transform duration-300 ${
+        className={`fixed bottom-0 left-0 right-0 bg-white border-t border-primary-50 shadow-lg z-50 transform transition-transform duration-300 ${
           isVisible ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
         <div className="max-w-6xl mx-auto px-3 py-2">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 flex-1 min-w-0">
-              <div className="bg-primary-light rounded-full p-1.5 flex-shrink-0">
+              <div className="bg-primary-50 rounded-full p-1.5 flex-shrink-0">
                 <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
@@ -122,7 +122,7 @@ export function AddToHomeScreenBanner() {
             </button>
 
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-primary-light rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-primary-50 rounded-full flex items-center justify-center">
                 <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
@@ -145,7 +145,7 @@ export function AddToHomeScreenBanner() {
                           Appuyez sur l&apos;icône <strong>Partager</strong> dans la barre de navigation
                         </p>
                         <div className="mt-2 flex items-center justify-center">
-                          <div className="text-blue-500 p-1 mr-8">
+                          <div className="text-lavande-600 p-1 mr-8">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 50 50">
                               <path d="M30 13L25 8l-5 5-1-1L25 5l6 6z"/>
                               <path d="M24 7h2v21h-2z"/>

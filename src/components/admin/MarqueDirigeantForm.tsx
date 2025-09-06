@@ -129,7 +129,7 @@ export default function MarqueDirigeantForm({
       )}
       
       {/* Information marque */}
-      <div className="p-3 bg-primary-light border border-primary rounded-lg">
+      <div className="p-3 bg-primary-50 border border-primary rounded-lg">
         <div className="body-small font-medium text-primary">
           Liaison avec la marque : <strong>{marqueNom}</strong>
         </div>

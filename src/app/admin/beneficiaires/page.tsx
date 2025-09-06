@@ -75,7 +75,7 @@ export default function BeneficiaireListPage() {
       
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-primary-light p-4 rounded-lg border border-primary">
+        <div className="bg-primary-50 p-4 rounded-lg border border-primary">
           <div className="heading-main font-bold text-primary">{beneficiaires.length}</div>
           <div className="body-small text-primary">Bénéficiaires controversés</div>
         </div>
@@ -154,8 +154,8 @@ function BeneficiaireCard({ beneficiaire, onEdit }: BeneficiaireCardProps) {
         <div className="flex items-center space-x-2">
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
             isGroupe 
-              ? 'bg-blue-100 text-blue-800' 
-              : 'bg-green-100 text-green-800'
+              ? 'bg-lavande-100 text-lavande-700' 
+              : 'bg-lavande-100 text-lavande-700'
           }`}>
             {typeLabel}
           </span>
@@ -182,7 +182,7 @@ function BeneficiaireCard({ beneficiaire, onEdit }: BeneficiaireCardProps) {
           {beneficiaire.marques.slice(0, 6).map((marque) => (
             <span 
               key={marque.id} 
-              className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-light text-primary"
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full body-xs font-medium bg-primary-50 text-primary"
             >
               {marque.nom}
             </span>
