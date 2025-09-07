@@ -41,7 +41,7 @@ export function SearchBar({
             Rechercher une marque
           </label>
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg className="h-6 w-6 text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <svg className="h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -58,7 +58,7 @@ export function SearchBar({
             aria-autocomplete="list"
             aria-expanded={suggestions.visible && suggestions.items.length > 0}
             aria-owns={suggestions.visible && suggestions.items.length > 0 ? "search-suggestions" : undefined}
-            className="w-full pl-12 pr-4 py-4 body-large font-bold border-2 border-primary rounded-2xl focus:outline-none focus:border-violet-magenta-500 focus:ring-4 focus:ring-violet-magenta-200 transition-all duration-300 bg-white shadow-lg"
+            className="w-full pl-12 pr-4 py-4 body-large font-bold border-2 border-primary-medium rounded-2xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-medium transition-all duration-300 bg-white shadow-lg"
           />
         </div>
       </form>
@@ -68,7 +68,7 @@ export function SearchBar({
         <div 
           id="search-suggestions"
           role="listbox"
-          className="absolute z-10 w-full mt-2 bg-white border-2 border-violet-magenta-300 rounded-2xl shadow-xl max-h-60 overflow-y-auto"
+          className="absolute z-10 w-full mt-2 bg-white border-2 border-accent-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto"
         >
           {suggestions.items.map((marque, index) => (
             <button
@@ -77,8 +77,8 @@ export function SearchBar({
               role="option"
               aria-selected={index === suggestions.highlighted}
               onMouseDown={() => onSuggestionSelect(marque)}
-              className={`w-full px-4 py-3 text-left hover:bg-violet-magenta-50 transition-colors duration-200 ${
-                index === suggestions.highlighted ? 'bg-violet-magenta-100' : ''
+              className={`w-full px-4 py-3 text-left hover:bg-accent-50 transition-colors duration-200 ${
+                index === suggestions.highlighted ? 'bg-accent-100' : ''
               } ${index === 0 ? 'rounded-t-2xl' : ''} ${
                 index === suggestions.items.length - 1 ? 'rounded-b-2xl' : ''
               }`}

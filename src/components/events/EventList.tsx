@@ -60,7 +60,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
         </p>
         <Link 
           href="/signaler"
-          className="inline-flex items-center gap-2 bg-gradient-odm text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -190,7 +190,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
         </p>
         <Link 
           href="/signaler"
-          className="inline-flex items-center gap-2 bg-gradient-odm text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
+          className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

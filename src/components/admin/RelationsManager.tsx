@@ -149,7 +149,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
         
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors"
+          className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors"
         >
           <Plus className="w-4 h-4" />
           <span>Nouvelle relation</span>
@@ -168,7 +168,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                 Qui bénéficie des profits de qui ? *
               </label>
               <div className="space-y-3">
-                <div className="border border-neutral-200 rounded-lg p-3 hover:border-primary-300 transition-colors">
+                <div className="border border-neutral-200 rounded-lg p-3 hover:border-primary-500 transition-colors">
                   <label className="flex items-start cursor-pointer">
                     <input
                       type="radio"
@@ -179,7 +179,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                     />
                     <div>
                       <div className="font-medium text-neutral-900 flex items-center gap-2">
-                        <span className="bg-lavande-100 text-lavande-700 px-2 py-1 rounded text-xs font-medium">{beneficiaireNom}</span>
+                        <span className="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs font-medium">{beneficiaireNom}</span>
                         <span className="text-neutral-500">&rarr;</span>
                         <span className="text-neutral-600">autre bénéficiaire</span>
                       </div>
@@ -192,7 +192,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                   </label>
                 </div>
                 
-                <div className="border border-neutral-200 rounded-lg p-3 hover:border-primary-300 transition-colors">
+                <div className="border border-neutral-200 rounded-lg p-3 hover:border-primary-500 transition-colors">
                   <label className="flex items-start cursor-pointer">
                     <input
                       type="radio"
@@ -205,7 +205,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                       <div className="font-medium text-neutral-900 flex items-center gap-2">
                         <span className="text-neutral-600">autre bénéficiaire</span>
                         <span className="text-neutral-500">&rarr;</span>
-                        <span className="bg-lavande-100 text-lavande-700 px-2 py-1 rounded text-xs font-medium">{beneficiaireNom}</span>
+                        <span className="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs font-medium">{beneficiaireNom}</span>
                       </div>
                       <div className="text-sm text-neutral-600 mt-1">
                         Les profits de l&apos;autre bénéficiaire profitent à <strong>{beneficiaireNom}</strong>
@@ -256,7 +256,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
             <div className="flex space-x-3">
               <button
                 type="submit"
-                className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors"
+                className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors"
               >
                 Créer la relation
               </button>
@@ -291,7 +291,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                   
                   <button
                     onClick={() => handleDelete(relation.id)}
-                    className="text-primary-600 hover:text-primary-700 p-1 hover:bg-primary-50 rounded transition-colors"
+                    className="text-primary-dark hover:text-primary-700 p-1 hover:bg-primary-50 rounded transition-colors"
                     title="Supprimer la relation"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -327,7 +327,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                   
                   <button
                     onClick={() => handleDelete(relation.id)}
-                    className="text-primary-600 hover:text-primary-700 p-1 hover:bg-primary-50 rounded transition-colors"
+                    className="text-primary-dark hover:text-primary-700 p-1 hover:bg-primary-50 rounded transition-colors"
                     title="Supprimer la relation"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -346,9 +346,9 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
 
       {/* Aperçu des relations transitives */}
       {(relationsSortantes.length > 0 || relationsEntrantes.length > 0) && (
-        <div className="bg-lavande-50 border border-lavande-200 rounded-lg p-4">
-          <h4 className="font-medium text-lavande-700 mb-2">💡 Impact transitif</h4>
-          <p className="text-sm text-lavande-700">
+        <div className="bg-secondary-50 border border-secondary-100 rounded-lg p-4">
+          <h4 className="font-medium text-secondary-700 mb-2">💡 Impact transitif</h4>
+          <p className="text-sm text-secondary-700">
             Ces relations permettent l&apos;affichage transitif : les marques liées à <strong>{beneficiaireNom}</strong> afficheront 
             automatiquement tous les bénéficiaires en relation avec ce dernier, avec une distinction visuelle pour les liens indirects.
           </p>

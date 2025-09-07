@@ -45,7 +45,7 @@ export default function CreateBeneficiairePage() {
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center text-primary hover:text-primary-600 mb-4"
+            className="inline-flex items-center text-primary hover:text-primary-dark mb-4"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -61,7 +61,7 @@ export default function CreateBeneficiairePage() {
         </div>
 
         {error && (
-          <div className="bg-primary-50 border border-primary-200 text-primary-700 px-4 py-3 rounded mb-6">
+          <div className="bg-primary-50 border border-primary-light text-primary-700 px-4 py-3 rounded mb-6">
             {error}
           </div>
         )}

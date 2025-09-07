@@ -29,7 +29,7 @@ export default function FAQ() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-to-r from-primary-50 via-violet-magenta-50 to-lavande-50 py-20 px-4">
+      <section className="bg-gradient-to-r from-primary-100 via-secondary-100 to-accent-100 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Questions fréquentes
