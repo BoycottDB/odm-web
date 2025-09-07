@@ -248,7 +248,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
         <h4 className="text-lg font-medium text-gray-900">Controverses détaillées</h4>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors text-sm"
+          className="flex items-center gap-2 px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm"
         >
           <Plus className="w-4 h-4" />
           Ajouter
@@ -375,7 +375,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                     {/* Badge condamnation judiciaire */}
                     {controverse.condamnation_judiciaire && (
                       <div className="mb-2">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-700">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-medium text-primary-700">
                           ⚖️ Condamnation judiciaire
                         </span>
                       </div>
@@ -416,7 +416,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                         href={controverse.source_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm text-lavande-600 hover:text-lavande-700 hover:underline"
+                        className="inline-flex items-center text-sm text-secondary-500 hover:text-secondary-700 hover:underline"
                       >
                         <ExternalLink className="w-3 h-3 mr-1" />
                         Source
@@ -438,14 +438,14 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                   <div className="flex gap-2">
                     <button
                       onClick={() => startEdit(controverse)}
-                      className="p-2 text-lavande-600 hover:text-lavande-700 hover:bg-lavande-50 rounded transition-colors"
+                      className="p-2 text-secondary-500 hover:text-secondary-700 hover:bg-secondary-50 rounded transition-colors"
                       title="Modifier cette controverse"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => supprimerControverse(controverse.id)}
-                      className="p-2 text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded transition-colors"
+                      className="p-2 text-primary-dark hover:text-primary-700 hover:bg-primary-50 rounded transition-colors"
                       title="Supprimer cette controverse"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -563,7 +563,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
             <div className="flex gap-2 pt-2">
               <button
                 onClick={ajouterControverse}
-                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors text-sm"
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm"
               >
                 Ajouter
               </button>

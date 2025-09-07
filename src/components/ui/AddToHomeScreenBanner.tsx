@@ -145,7 +145,7 @@ export function AddToHomeScreenBanner() {
                           Appuyez sur l&apos;icône <strong>Partager</strong> dans la barre de navigation
                         </p>
                         <div className="mt-2 flex items-center justify-center">
-                          <div className="text-lavande-600 p-1 mr-8">
+                          <div className="text-secondary-500 p-1 mr-8">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 50 50">
                               <path d="M30 13L25 8l-5 5-1-1L25 5l6 6z"/>
                               <path d="M24 7h2v21h-2z"/>

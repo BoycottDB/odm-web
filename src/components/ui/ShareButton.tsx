@@ -101,13 +101,13 @@ export function ShareButton({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-primary text-white hover:bg-primary-600';
+        return 'bg-primary text-white hover:bg-primary-dark';
       case 'secondary':
-        return 'bg-primary-50 text-primary hover:bg-primary-100';
+        return 'bg-primary-50 text-primary hover:bg-primary-medium';
       case 'minimal':
         return 'text-primary hover:bg-primary-50';
       default:
-        return 'bg-primary-50 text-primary hover:bg-primary-100';
+        return 'bg-primary-50 text-primary hover:bg-primary-medium';
     }
   };
 

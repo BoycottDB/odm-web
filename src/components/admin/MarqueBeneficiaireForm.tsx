@@ -231,7 +231,7 @@ export function MarqueBeneficiaireForm({ liaison, marque, onSubmit, onCancel, lo
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 bg-primary-600 text-white py-2 px-4 rounded-md font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-primary-dark text-white py-2 px-4 rounded-md font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Enregistrement...' : (liaison ? 'Mettre à jour' : 'Créer la liaison')}
         </button>

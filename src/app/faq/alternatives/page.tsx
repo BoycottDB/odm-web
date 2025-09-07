@@ -68,7 +68,7 @@ export default function AlternativesFAQ() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-to-r from-primary-50 via-violet-magenta-50 to-lavande-50 py-20 px-4">
+      <section className="bg-gradient-to-r from-primary-100 via-secondary-100 to-accent-100 py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Pourquoi ne proposons-nous pas des alternatives ?
@@ -122,7 +122,7 @@ export default function AlternativesFAQ() {
                 </div>
               </div>
 
-              <div className="mt-10 bg-secondary-light border border-accent rounded-xl p-6">
+              <div className="mt-10 bg-accent-light border border-accent rounded-xl p-6">
                 <h3 className="body-large font-semibold text-accent-dark mb-3">Notre approche</h3>
                 <p className="body-base text-neutral-700 leading-relaxed">
                   Plutôt que de vous orienter vers des marques spécifiques, nous préférons vous donner
@@ -131,7 +131,7 @@ export default function AlternativesFAQ() {
                 </p>
               </div>
 
-              <div className="mt-10 bg-primary-light border border-primary rounded-xl p-8">
+              <div className="mt-10 bg-secondary-light border border-secondary rounded-xl p-8">
                 <h3 className="body-large font-bold text-neutral-900 mb-4">💡 Cela  dit, et si on créait ensemble la solution ?</h3>
                 <p className="body-base text-neutral-700 leading-relaxed mb-6">
                   Nous réfléchissons à développer une plateforme e-commerce éthique : une sorte d&apos;Amazon mais

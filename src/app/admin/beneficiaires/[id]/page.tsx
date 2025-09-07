@@ -120,7 +120,7 @@ export default function BeneficiaireDetailPage() {
             <p className="text-neutral-600 mb-6">Ce bénéficiaire n&apos;existe pas ou a été supprimé.</p>
             <button
               onClick={() => router.push('/admin/beneficiaires')}
-              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-600"
+              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
             >
               Retour à la liste
             </button>
@@ -141,7 +141,7 @@ export default function BeneficiaireDetailPage() {
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center text-primary hover:text-primary-600 mb-4"
+            className="inline-flex items-center text-primary hover:text-primary-dark mb-4"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -157,8 +157,8 @@ export default function BeneficiaireDetailPage() {
                 <div className="flex items-center gap-2 mt-1">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     isGroupe 
-                      ? 'bg-lavande-100 text-lavande-700' 
-                      : 'bg-lavande-100 text-lavande-700'
+                      ? 'bg-secondary-100 text-secondary-700' 
+                      : 'bg-secondary-100 text-secondary-700'
                   }`}>
                     {typeLabel}
                   </span>
@@ -171,7 +171,7 @@ export default function BeneficiaireDetailPage() {
             <button
               onClick={() => setShowDeleteConfirm(true)}
               disabled={deleting}
-              className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 px-3 py-2 rounded-lg border border-primary-200 hover:bg-primary-50 transition-colors"
+              className="inline-flex items-center gap-2 text-primary-dark hover:text-primary-700 px-3 py-2 rounded-lg border border-primary-light hover:bg-primary-50 transition-colors"
             >
               <Trash2 className="w-4 h-4" />
               Supprimer
@@ -180,7 +180,7 @@ export default function BeneficiaireDetailPage() {
         </div>
 
         {error && (
-          <div className="bg-primary-50 border border-primary-200 text-primary-700 px-4 py-3 rounded mb-6">
+          <div className="bg-primary-50 border border-primary-light text-primary-700 px-4 py-3 rounded mb-6">
             {error}
           </div>
         )}

@@ -12,8 +12,8 @@ export default function Home() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
       <div className="text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-accent-medium rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <SearchX className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-accent" />
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <SearchX className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
             Scrutez les marques !
@@ -25,14 +25,14 @@ export default function Home() {
         <div className="flex justify-start md:justify-start">
           <Link
             href="/recherche"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-gradient-odm text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-900 text-sm md:text-base"
+            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
           >
             <Search className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Rechercher une marque
           </Link>
         </div>
       </div>
-      <div className="bg-gradient-to-br from-lavande-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-lavande-200">
+      <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-secondary-100">
         <img
           src="https://media1.tenor.com/m/j6hODwAA_VQAAAAd/fat-luffy-fat-luffy-rubbing-belly.gif"
           alt="Interface de recherche"
@@ -47,7 +47,7 @@ export default function Home() {
 
   const BoycottTipsSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-      <div className="order-2 lg:order-1 bg-gradient-to-br from-violet-magenta-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-lavande-200">
+      <div className="order-2 lg:order-1 bg-gradient-to-r from-accent-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-secondary-100">
         <img
           src="https://media1.tenor.com/m/j6hODwAA_VQAAAAd/fat-luffy-fat-luffy-rubbing-belly.gif"
           alt="Conseils pratiques"
@@ -59,8 +59,8 @@ export default function Home() {
       </div>
       <div className="order-1 lg:order-2 text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-accent-medium rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <Compass className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-accent" />
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <Compass className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
             Changez de cap !
@@ -72,7 +72,7 @@ export default function Home() {
         <div className="flex justify-start md:justify-start">
           <Link
             href="/recherche?q=Nike"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-gradient-odm text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-900 text-sm md:text-base"
+            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
           >
             <TextSearch className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Voir des exemples de conseils
@@ -86,8 +86,8 @@ export default function Home() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
       <div className="text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-accent-medium rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <Sailboat className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-accent" />
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <Sailboat className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
             Naviguez librement !
@@ -101,7 +101,7 @@ export default function Home() {
             href="https://chrome.google.com/webstore"
             className={`inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg transition-all duration-300 text-sm md:text-base ${isMobile
               ? 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
-              : 'bg-gradient-odm text-white hover:bg-primary-600 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-900'
+              : 'bg-primary text-white hover:bg-primary-dark shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark'
               }`}
             {...(isMobile ? { onClick: (e) => e.preventDefault() } : {})}
           > 
@@ -115,7 +115,7 @@ export default function Home() {
           </p>
         )}
       </div>
-      <div className="bg-gradient-to-br from-lavande-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-lavande-200">
+      <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-secondary-100">
         <img
           src="https://media1.tenor.com/m/Nt6Zju-KjTsAAAAC/luffy-one-piece.gif"
           alt="Extension en action"
@@ -130,7 +130,7 @@ export default function Home() {
 
   const SignalementSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-      <div className="order-2 lg:order-1 bg-gradient-to-br from-primary-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-lavande-200">
+      <div className="order-2 lg:order-1 bg-gradient-to-r from-primary-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-secondary-100">
         <img
           src="https://media1.tenor.com/m/qanLZ89oReAAAAAC/gear-5-gear-5-luffy.gif"
           alt="Processus de signalement"
@@ -142,8 +142,8 @@ export default function Home() {
       </div>
       <div className="order-1 lg:order-2 text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-accent-medium rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <WavesLadder className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-accent" />
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <WavesLadder className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
             Montez à bord !
@@ -157,7 +157,7 @@ export default function Home() {
         <div className="flex justify-start md:justify-start">
           <Link
             href="/signaler"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-gradient-odm text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-900 text-sm md:text-base"
+            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
           >
             <FileInput className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Signaler une controverse
@@ -170,7 +170,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary-50 via-violet-magenta-50 to-lavande-50 section-padding">
+      <section className="relative bg-gradient-to-r from-primary-100 via-secondary-100 to-accent-100 section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
             L&apos;Observatoire des Marques
@@ -214,7 +214,7 @@ export default function Home() {
       </section>
 
       {/* Section FAQ */}
-      <section className="section-padding bg-gradient-to-r from-primary-50 to-lavande-50">
+      <section className="section-padding bg-gradient-to-r from-primary-100 via-secondary-100 to-accent-100">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="heading-main text-neutral-900 mb-4">
             Des questions ? Des doutes ?
@@ -231,7 +231,7 @@ export default function Home() {
               draggable={false}
             >
               <div className="flex items-start space-x-4">
-                <CircleQuestionMark className="w-12 h-12 text-accent" />
+                <CircleQuestionMark className="w-12 h-12 text-accent-dark" />
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-2 group-hover:text-primary transition-colors">
                     &quot;À quoi ça sert ? C&apos;est peine perdue de toute façon...&quot;
@@ -250,7 +250,7 @@ export default function Home() {
               draggable={false}
             >
               <div className="flex items-start space-x-4">
-                <Zap className="w-12 h-12 text-accent" />
+                <Zap className="w-12 h-12 text-accent-dark" />
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-2 group-hover:text-primary transition-colors">
                     &quot;Pourquoi ne proposez-vous pas des alternatives ?&quot;
@@ -265,11 +265,259 @@ export default function Home() {
           {/* Lien vers FAQ complète */}
           <Link
             href="/faq"
-            className="inline-flex items-center px-6 py-3 bg-gradient-odm hover:bg-primary text-white font-semibold rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary"
+            className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary text-white font-semibold rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary"
           >
             Consulter la FAQ complète
             <ChevronRight className="w-4 h-4 ml-2" />
           </Link>
+        </div>
+      </section>
+
+      {/* Palette de couleurs */}
+      <section className="section-padding bg-white border-t border-neutral-200">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="heading-main text-neutral-900 mb-8">
+            Palette de couleurs ODM
+          </h2>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Primary Colors */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-neutral-900 mb-4">
+                Primary - Rouge bordeaux
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#fdf5f7' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-50</div>
+                    <div className="text-xs text-neutral-500">#fdf5f7</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#fae8ed' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-100</div>
+                    <div className="text-xs text-neutral-500">#fae8ed</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#f2c8d4' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-200</div>
+                    <div className="text-xs text-neutral-500">#f2c8d4</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#e8a3b7' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-300</div>
+                    <div className="text-xs text-neutral-500">#e8a3b7</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#c85a85' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-400</div>
+                    <div className="text-xs text-neutral-500">#c85a85</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#98105b' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-500</div>
+                    <div className="text-xs text-neutral-500">#98105b</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#800d4d' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-600</div>
+                    <div className="text-xs text-neutral-500">#800d4d</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#6f0c43' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-700</div>
+                    <div className="text-xs text-neutral-500">#6f0c43</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#5c0a37' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-800</div>
+                    <div className="text-xs text-neutral-500">#5c0a37</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#4a082e' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">primary-900</div>
+                    <div className="text-xs text-neutral-500">#4a082e</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Secondary Colors */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-neutral-900 mb-4">
+                Secondary - Lavande
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#f7f7fd' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-50</div>
+                    <div className="text-xs text-neutral-500">#f7f7fd</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#eeeefa' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-100</div>
+                    <div className="text-xs text-neutral-500">#eeeefa</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#ddddf4' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-200</div>
+                    <div className="text-xs text-neutral-500">#ddddf4</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#c7c7ed' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-300</div>
+                    <div className="text-xs text-neutral-500">#c7c7ed</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#b0b0e0' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-400</div>
+                    <div className="text-xs text-neutral-500">#b0b0e0</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#9999d3' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-500</div>
+                    <div className="text-xs text-neutral-500">#9999d3</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#8080c6' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-600</div>
+                    <div className="text-xs text-neutral-500">#8080c6</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#7070b3' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-700</div>
+                    <div className="text-xs text-neutral-500">#7070b3</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#5d5d96' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-800</div>
+                    <div className="text-xs text-neutral-500">#5d5d96</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#4d4d7a' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">secondary-900</div>
+                    <div className="text-xs text-neutral-500">#4d4d7a</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Accent Colors */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-neutral-900 mb-4">
+                Accent - Bleu gris
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#f6f9fc' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-50</div>
+                    <div className="text-xs text-neutral-500">#f6f9fc</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#eef5fb' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-100</div>
+                    <div className="text-xs text-neutral-500">#eef5fb</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#dae9f6' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-200</div>
+                    <div className="text-xs text-neutral-500">#dae9f6</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#b8d4ed' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-300</div>
+                    <div className="text-xs text-neutral-500">#b8d4ed</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#95b8dc' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-400</div>
+                    <div className="text-xs text-neutral-500">#95b8dc</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#729dd0' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-500</div>
+                    <div className="text-xs text-neutral-500">#729dd0</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#5a84ba' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-600</div>
+                    <div className="text-xs text-neutral-500">#5a84ba</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#4d6ea4' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-700</div>
+                    <div className="text-xs text-neutral-500">#4d6ea4</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#3f5a87' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-800</div>
+                    <div className="text-xs text-neutral-500">#3f5a87</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#344b6d' }}></div>
+                  <div className="text-left">
+                    <div className="text-sm font-mono text-neutral-600">accent-900</div>
+                    <div className="text-xs text-neutral-500">#344b6d</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -154,8 +154,8 @@ function BeneficiaireCard({ beneficiaire, onEdit }: BeneficiaireCardProps) {
         <div className="flex items-center space-x-2">
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
             isGroupe 
-              ? 'bg-lavande-100 text-lavande-700' 
-              : 'bg-lavande-100 text-lavande-700'
+              ? 'bg-secondary-100 text-secondary-700' 
+              : 'bg-secondary-100 text-secondary-700'
           }`}>
             {typeLabel}
           </span>

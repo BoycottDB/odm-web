@@ -5,7 +5,6 @@ import { User, Building2, ChevronDown, ChevronRight } from 'lucide-react';
 import { BeneficiaireComplet, TypeBeneficiaire, ControverseBeneficiaire } from '@/types';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
 import { dataService } from '@/lib/services/dataService';
-import { ControverseCard } from './ControverseCard';
 
 interface ChaineNode {
   beneficiaire: {
@@ -56,7 +55,7 @@ interface ChaineBeneficiairesProps {
 
 // Styles uniformes pour tous les niveaux
 const getUniformStyles = () => ({
-  background: 'bg-white border-primary',
+  background: 'bg-white border-primary-medium',
   iconColor: 'text-primary'
 });
 
@@ -140,7 +139,7 @@ const ControversesSection = ({
                 href={controverse.source_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-xs text-violet-magenta-600 font-medium hover:text-violet-magenta-700 transition-colors"
+                className="inline-flex items-center text-xs text-primary font-medium hover:text-accent-700 transition-colors"
               >
                 <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -153,7 +152,7 @@ const ControversesSection = ({
                   href={controverse.reponse}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-xs font-medium text-violet-magenta-600 hover:text-violet-magenta-700 transition-colors"
+                  className="inline-flex items-center text-xs font-medium text-primary hover:text-accent-700 transition-colors"
                 >
                   <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -163,7 +162,7 @@ const ControversesSection = ({
               )}
 
               {controverse.condamnation_judiciaire && (
-                <span className="inline-flex items-center text-xs text-violet-magenta-600 font-medium">
+                <span className="inline-flex items-center text-xs text-primary-dark font-medium">
                   <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                   </svg>
@@ -293,8 +292,8 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
 
   if (error) {
     return (
-      <div className="bg-primary-50 border border-primary-200 rounded-md p-4">
-        <p className="text-primary-600">❌ {error}</p>
+      <div className="bg-primary-50 border border-primary-light rounded-md p-4">
+        <p className="text-primary-dark">❌ {error}</p>
       </div>
     );
   }
@@ -405,7 +404,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
                   {/* Informations financières */}
                   <div className="space-y-4 mb-6">
                     <div>
-                      <div className={`font-semibold text-xs mb-1 text-lavande-700`}>
+                      <div className={`font-semibold text-xs mb-1 text-primary`}>
                         Impact de vos achats :
                       </div>
                       <div 
@@ -418,7 +417,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
                   {/* Controverses - seulement si il y en a */}
                   {beneficiaire.controverses && beneficiaire.controverses.length > 0 && (
                     <div className="mb-6">
-                      <div className={`font-semibold text-xs mb-3 text-lavande-700`}>
+                      <div className={`font-semibold text-xs mb-3 text-primary`}>
                         Controverses documentées :
                       </div>
                       <ControversesSection 
@@ -431,7 +430,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
                   {beneficiaire.marques_directes && beneficiaire.marques_directes.length > 0 && (
                     <div className="mt-6 pt-4 border-t border-primary">
                       <div className="font-semibold text-black text-xs mb-3">
-                        Autres marques directement liées à {beneficiaire.nom} ({beneficiaire.marques_directes.length}) :
+                        Autres marques <span className="text-primary">directement</span> liées à {beneficiaire.nom} ({beneficiaire.marques_directes.length}) :
                       </div>
                       <MarquesBadges 
                         marques={beneficiaire.marques_directes}
@@ -446,7 +445,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
                       {Object.entries(beneficiaire.marques_indirectes).map(([beneficiaireIntermediaire, marques]) => (
                         <div key={beneficiaireIntermediaire}>
                           <div className="font-semibold text-black text-xs mb-3">
-                            Autres marques indirectement liées à {beneficiaire.nom} via {beneficiaireIntermediaire} ({marques.length}) :
+                            Autres marques <span className="text-secondary-dark">indirectement</span> liées à {beneficiaire.nom} via {beneficiaireIntermediaire} ({marques.length}) :
                           </div>
                           <MarquesBadges 
                             marques={marques}
