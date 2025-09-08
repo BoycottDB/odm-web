@@ -3,7 +3,7 @@ export default function About() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-to-r from-primary-100 via-secondary-100 to-accent-100 py-16 px-4">
+      <section className="bg-gradient-hero py-16 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             À propos du projet

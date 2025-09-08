@@ -92,7 +92,7 @@ function SearchPageContent() {
   return (
     <div className="min-h-screen bg-white">
       {/* Section Hero */}
-      <section className="relative bg-gradient-to-r from-primary-100 via-secondary-100 to-accent-100 section-padding">
+      <section className="relative bg-gradient-hero section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
             Rechercher une marque

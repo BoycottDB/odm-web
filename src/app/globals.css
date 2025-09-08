@@ -81,6 +81,9 @@
   /* Usage contextuel */
   --color-accent-category: var(--color-secondary-medium);
   --color-accent-date: var(--color-accent-medium);
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(to top right, var(--color-primary-100), var(--color-secondary-100), var(--color-accent-100));
 }
 
 /* =============================================================================
@@ -232,6 +235,9 @@ body {
 /* Classes spécifiques */
 .bg-accent-category { background-color: var(--color-accent-category); }
 .bg-accent-date { background-color: var(--color-accent-date); }
+
+/* Gradient backgrounds */
+.bg-gradient-hero { background: var(--gradient-hero); }
 
 /* Neutres */
 .bg-neutral-50 { background-color: #fdfcfc; }
