@@ -170,7 +170,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary-100 via-secondary-100 to-accent-100 section-padding">
+      <section className="relative bg-gradient-hero section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
             L&apos;Observatoire des Marques
@@ -214,7 +214,7 @@ export default function Home() {
       </section>
 
       {/* Section FAQ */}
-      <section className="section-padding bg-gradient-to-r from-primary-100 via-secondary-100 to-accent-100">
+      <section className="section-padding bg-gradient-hero">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="heading-main text-neutral-900 mb-4">
             Des questions ? Des doutes ?
@@ -274,14 +274,14 @@ export default function Home() {
       </section>
 
       {/* Palette de couleurs */}
-      <section className="section-padding bg-white border-t border-neutral-200">
+      {/* <section className="section-padding bg-white border-t border-neutral-200">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="heading-main text-neutral-900 mb-8">
             Palette de couleurs ODM
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Primary Colors */}
+            
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-neutral-900 mb-4">
                 Primary - Rouge bordeaux
@@ -360,7 +360,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Secondary Colors */}
+            
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-neutral-900 mb-4">
                 Secondary - Lavande
@@ -439,7 +439,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Accent Colors */}
+            
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-neutral-900 mb-4">
                 Accent - Bleu gris
@@ -519,7 +519,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
     </div>
   );

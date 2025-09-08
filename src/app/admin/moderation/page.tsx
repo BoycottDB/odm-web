@@ -112,7 +112,7 @@ export default function AdminModeration() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen">
       <AdminNavigation />
       
       <div className="max-w-6xl mx-auto p-6">
