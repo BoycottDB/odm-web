@@ -93,7 +93,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
           beneficiaire_id: beneficiaireId,
           titre: newControverse.titre.trim(),
           source_url: newControverse.source_url.trim(),
-          ordre: controverses.length,
           date: newControverse.date || undefined,
           categorie_id: newControverse.categorie_id || undefined,
           condamnation_judiciaire: newControverse.condamnation_judiciaire,
