@@ -20,8 +20,7 @@ export async function GET(request: NextRequest) {
         Categorie!controverse_beneficiaire_categorie_id_fkey(*)
       `)
       .eq('beneficiaire_id', beneficiaire_id)
-      .order('date', { ascending: false, nullsFirst: false })
-      .order('ordre', { ascending: true });
+      .order('date', { ascending: false, nullsFirst: false });
 
     if (error) throw error;
 
