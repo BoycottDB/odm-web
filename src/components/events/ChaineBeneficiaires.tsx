@@ -184,6 +184,7 @@ interface BeneficiaireHeaderProps {
   onToggle: () => void;
   niveau: number;
   beneficiaireIndex: number;
+  headerRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
 const BeneficiaireHeader = ({ 
@@ -191,13 +192,15 @@ const BeneficiaireHeader = ({
   isExpanded, 
   onToggle, 
   niveau, 
-  beneficiaireIndex 
+  beneficiaireIndex,
+  headerRef
 }: BeneficiaireHeaderProps) => {
   const Icon = beneficiaire.type_beneficiaire === 'groupe' ? Building2 : User;
   const styles = getUniformStyles();
   
   return (
     <button
+      ref={headerRef}
       key={`niveau-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`}
       onClick={onToggle}
       className={`${styles.background} ${isExpanded ? 'rounded-t-2xl border-b-0' : 'rounded-2xl'} border-2 p-4 text-left`}
@@ -241,6 +244,7 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
   const [error, setError] = useState<string | null>(null);
   const [expandedBeneficiaire, setExpandedBeneficiaire] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const headerRefs = useRef<Record<string, React.RefObject<HTMLButtonElement | null>>>({});
 
   useEffect(() => {
     if (!marqueId) return;
@@ -278,7 +282,26 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
 
   // Toggle expansion d'un bénéficiaire (un seul à la fois)
   const toggleBeneficiaire = (uniqueId: string) => {
-    setExpandedBeneficiaire(prev => prev === uniqueId ? null : uniqueId);
+    setExpandedBeneficiaire(prev => {
+      const newExpanded = prev === uniqueId ? null : uniqueId;
+      
+      // Si on ouvre un nouveau bénéficiaire, scroller vers son header
+      if (newExpanded && headerRefs.current[newExpanded]) {
+        setTimeout(() => {
+          const element = headerRefs.current[newExpanded]?.current;
+          if (element) {
+            const elementTop = element.getBoundingClientRect().top + window.scrollY;
+            const offset = window.innerWidth < 768 ? 150 : 160;
+            window.scrollTo({
+              top: elementTop - offset,
+              behavior: 'smooth'
+            });
+          }
+        }, 100); // Petit délai pour laisser l'animation d'ouverture se déclencher
+      }
+      
+      return newExpanded;
+    });
   };
 
   if (loading) {
@@ -371,13 +394,18 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
         return (
         <div key={niveau} className={marginClass}>
 
-          {/* Bénéficiaires de ce niveau */}
+          {/* Bénéficiaires de ce niveau avec contenu expansible intégré */}
           <div className={`grid gap-4 ${getGridColumns(beneficiairesParNiveauConverti[niveau].length)}`}>
-            {beneficiairesParNiveauConverti[niveau].map((beneficiaire, beneficiaireIndex) => {
+            {beneficiairesParNiveauConverti[niveau].flatMap((beneficiaire, beneficiaireIndex) => {
               const uniqueId = `${niveau}-${beneficiaireIndex}`;
               const isExpanded = expandedBeneficiaire === uniqueId;
               
-              return (
+              // Créer une ref pour ce header si elle n'existe pas
+              if (!headerRefs.current[uniqueId]) {
+                headerRefs.current[uniqueId] = React.createRef<HTMLButtonElement>();
+              }
+              
+              const elements = [
                 <BeneficiaireHeader
                   key={`niveau-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`}
                   beneficiaire={beneficiaire}
@@ -385,20 +413,14 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
                   onToggle={() => toggleBeneficiaire(uniqueId)}
                   niveau={niveau}
                   beneficiaireIndex={beneficiaireIndex}
+                  headerRef={headerRefs.current[uniqueId]}
                 />
-              );
-            })}
-          </div>
-
-          {/* Contenu expansible affiché en pleine largeur après le grid */}
-          {beneficiairesParNiveauConverti[niveau].map((beneficiaire, beneficiaireIndex) => {
-            const uniqueId = `${niveau}-${beneficiaireIndex}`;
-            const isExpanded = expandedBeneficiaire === uniqueId;
-            
-            if (!isExpanded) return null;
-            
-            return (
-              <div key={`expanded-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`} className="w-full">
+              ];
+              
+              // Ajouter le contenu expansible directement après le header
+              if (isExpanded) {
+                elements.push(
+                  <div key={`expanded-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`} className="w-full -mt-4" style={{ gridColumn: '1 / -1' }}>
                 <div className={`${getUniformStyles().background} border-2 border-t-0 rounded-b-2xl px-6 pb-6 pt-2`}>
 
                   {/* Informations financières */}
@@ -456,9 +478,13 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
                     </div>
                   )}
                 </div>
-              </div>
-            );
-          })}
+                  </div>
+                );
+              }
+              
+              return elements;
+            })}
+          </div>
         </div>
         );
       })}

@@ -304,7 +304,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
   beneficiaire_id: number;
   titre: string;
   source_url: string;
-  ordre?: number;
   date?: string;
   categorie_id?: number;
   condamnation_judiciaire?: boolean;
@@ -321,7 +320,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
     beneficiaire_id,
     titre,
     source_url,
-    ordre,
     date,
     categorie_id,
     condamnation_judiciaire,
@@ -330,7 +328,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
     beneficiaire_id?: unknown;
     titre?: unknown;
     source_url?: unknown;
-    ordre?: unknown;
     date?: unknown;
     categorie_id?: unknown;
     condamnation_judiciaire?: unknown;
@@ -367,10 +364,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
     }
   }
 
-  // Validation ordre (optionnel)
-  if (ordre !== undefined && (typeof ordre !== 'number' || !Number.isInteger(ordre))) {
-    errors.push('L\'ordre doit être un nombre entier');
-  }
 
   // Validation date (optionnelle)
   if (date !== undefined && typeof date === 'string' && date.trim() && isNaN(Date.parse(date))) {
@@ -406,7 +399,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
       beneficiaire_id: Number(beneficiaire_id),
       titre: (titre as string).trim(),
       source_url: (source_url as string).trim(),
-      ordre: typeof ordre === 'number' ? ordre : undefined,
       date: typeof date === 'string' && date.trim() ? date.trim() : undefined,
       categorie_id: typeof categorie_id === 'number' ? categorie_id : undefined,
       condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined,
@@ -420,7 +412,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
   id: number;
   titre?: string;
   source_url?: string;
-  ordre?: number;
   date?: string;
   categorie_id?: number;
   condamnation_judiciaire?: boolean;
@@ -437,7 +428,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
     id,
     titre,
     source_url,
-    ordre,
     date,
     categorie_id,
     condamnation_judiciaire,
@@ -446,7 +436,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
     id?: unknown;
     titre?: unknown;
     source_url?: unknown;
-    ordre?: unknown;
     date?: unknown;
     categorie_id?: unknown;
     condamnation_judiciaire?: unknown;
@@ -487,10 +476,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
     }
   }
 
-  // Validation ordre (optionnel)
-  if (ordre !== undefined && (typeof ordre !== 'number' || !Number.isInteger(ordre))) {
-    errors.push('L\'ordre doit être un nombre entier');
-  }
 
   // Validation date (optionnelle)
   if (date !== undefined && typeof date === 'string' && date.trim() && isNaN(Date.parse(date))) {
@@ -526,7 +511,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
       id: Number(id),
       titre: typeof titre === 'string' && titre.trim() ? titre.trim() : undefined,
       source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : undefined,
-      ordre: typeof ordre === 'number' ? ordre : undefined,
       date: typeof date === 'string' && date.trim() ? date.trim() : undefined,
       categorie_id: typeof categorie_id === 'number' ? categorie_id : undefined,
       condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined,

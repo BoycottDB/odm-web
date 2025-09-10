@@ -54,6 +54,7 @@ export function SearchBar({
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
+            autoComplete="off"
             aria-label="Rechercher une marque"
             aria-autocomplete="list"
             aria-expanded={suggestions.visible && suggestions.items.length > 0}
