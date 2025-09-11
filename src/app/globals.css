@@ -412,3 +412,20 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: inherit !important;
   background-color: white !important;
 }
+
+/* =============================================================================
+   CLASSES UTILITAIRES - SCROLLBAR
+   ============================================================================= */
+
+/* Cacher la scrollbar sur tous les navigateurs */
+.scrollbar-hide {
+  /* Firefox */
+  scrollbar-width: none;
+  /* Internet Explorer et Edge */
+  -ms-overflow-style: none;
+}
+
+/* WebKit (Chrome, Safari) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
