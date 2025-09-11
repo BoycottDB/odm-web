@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { User, Building2, ChevronDown, ChevronRight } from 'lucide-react';
 import { BeneficiaireComplet, TypeBeneficiaire, ControverseBeneficiaire } from '@/types';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
@@ -203,9 +203,9 @@ const BeneficiaireHeader = ({
       ref={headerRef}
       key={`niveau-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`}
       onClick={onToggle}
-      className={`${styles.background} ${isExpanded ? 'rounded-t-2xl border-b-0' : 'rounded-2xl'} border-2 p-4 text-left`}
+      className={`w-full ${styles.background} ${isExpanded ? 'rounded-t-2xl border-b-0' : 'rounded-2xl'} border-2 p-2 md:p-4 text-left h-[5rem] md:h-[5rem]`}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between h-full">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
             <Icon className={`w-8 h-8 ${styles.iconColor}`} />
@@ -213,14 +213,14 @@ const BeneficiaireHeader = ({
           
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1">
-              <div className="font-semibold text-base truncate">{beneficiaire.nom}</div>
+              <div className="font-semibold text-sm md:text-base truncate">{beneficiaire.nom}</div>
               {/* {beneficiaire.beneficiaire_parent_nom && (
                 <div className="text-xs opacity-75 flex-shrink-0">
                   via {beneficiaire.beneficiaire_parent_nom}
                 </div>
               )} */}
             </div>
-            <div className="text-xs opacity-75 truncate">
+            <div className="text-xs opacity-75 md:truncate">
               {beneficiaire.lien_financier}
             </div>
           </div>
@@ -243,8 +243,22 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [expandedBeneficiaire, setExpandedBeneficiaire] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentSlideByLevel, setCurrentSlideByLevel] = useState<Record<number, number>>({});
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRefs = useRef<Record<string, React.RefObject<HTMLButtonElement | null>>>({});
+  const carouselRefs = useRef<Record<number, React.RefObject<HTMLDivElement | null>>>({});
+
+  // Hook pour détecter la taille d'écran côté client
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (!marqueId) return;
@@ -279,6 +293,41 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [expandedBeneficiaire]);
+
+  // Navigation du carrousel
+  const goToSlide = (niveau: number, slideIndex: number) => {
+    setCurrentSlideByLevel(prev => ({ ...prev, [niveau]: slideIndex }));
+    const carousel = carouselRefs.current[niveau]?.current;
+    if (carousel) {
+      const slideWidth = window.innerWidth * 0.82; // 82vw
+      const gap = 16; // gap-4 = 1rem = 16px
+      carousel.scrollTo({
+        left: slideIndex * (slideWidth + gap),
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Fonction pour détecter la slide actuellement visible lors du scroll manuel
+  const handleScroll = useCallback((niveau: number) => {
+    const carousel = carouselRefs.current[niveau]?.current;
+    if (!carousel) return;
+
+    const slideWidth = window.innerWidth * 0.82; // 82vw
+    const gap = 16; // gap-4 = 1rem = 16px
+    const scrollLeft = carousel.scrollLeft;
+    
+    // Calculer l'index de la slide la plus proche du centre
+    const activeIndex = Math.round(scrollLeft / (slideWidth + gap));
+    
+    // Mettre à jour l'état si nécessaire
+    setCurrentSlideByLevel(prev => {
+      if (prev[niveau] !== activeIndex) {
+        return { ...prev, [niveau]: activeIndex };
+      }
+      return prev;
+    });
+  }, []);
 
   // Toggle expansion d'un bénéficiaire (un seul à la fois)
   const toggleBeneficiaire = (uniqueId: string) => {
@@ -386,105 +435,224 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
 
   return (
     <div ref={containerRef}>
-      {/* Affichage par niveau avec headers seulement */}
+      {/* Affichage par niveau */}
       {niveaux.map((niveau) => {
-        // Espacement uniforme entre tous les niveaux
-        const marginClass = "mb-3";
+        const beneficiaires = beneficiairesParNiveauConverti[niveau];
+        const currentSlide = currentSlideByLevel[niveau] || 0;
+        
+        // Créer une ref pour ce carrousel si elle n'existe pas
+        if (!carouselRefs.current[niveau]) {
+          carouselRefs.current[niveau] = React.createRef<HTMLDivElement>();
+        }
         
         return (
-        <div key={niveau} className={marginClass}>
+        <div key={niveau} className="mb-3">
+              {/* Wrapper uniforme : toujours carrousel en mobile, grid en desktop */}
+              {isMobile ? (
+                <div>
+                  <div 
+                    ref={carouselRefs.current[niveau]}
+                    className="overflow-x-auto snap-x snap-mandatory scrollbar-hide" 
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    onScroll={() => handleScroll(niveau)}
+                  >
+                    <div className="flex gap-4">
+                      {beneficiaires.map((beneficiaire, beneficiaireIndex) => {
+                        const uniqueId = `${niveau}-${beneficiaireIndex}`;
+                        const isExpanded = expandedBeneficiaire === uniqueId;
+                        
+                        // Créer une ref pour ce header si elle n'existe pas
+                        if (!headerRefs.current[uniqueId]) {
+                          headerRefs.current[uniqueId] = React.createRef<HTMLButtonElement>();
+                        }
+                        
+                        return (
+                          <div key={uniqueId} className="w-[82vw] flex-shrink-0 mx-auto snap-center">
+                            <BeneficiaireHeader
+                              beneficiaire={beneficiaire}
+                              isExpanded={isExpanded}
+                              onToggle={() => toggleBeneficiaire(uniqueId)}
+                              niveau={niveau}
+                              beneficiaireIndex={beneficiaireIndex}
+                              headerRef={headerRefs.current[uniqueId]}
+                            />
+                            
+                            {/* Contenu expansible mobile dans la slide */}
+                            {isExpanded && (
+                              <div className={`${getUniformStyles().background} border-2 border-t-0 rounded-b-2xl px-6 pb-6 pt-2`}>
+                                {/* Informations financières */}
+                                <div className="space-y-4 mb-6">
+                                  <div>
+                                    <div className={`font-semibold text-xs mb-1 text-primary`}>
+                                      Impact de vos achats :
+                                    </div>
+                                    <div 
+                                      className="text-neutral-900 text-sm"
+                                      dangerouslySetInnerHTML={{ __html: formatMarkdown(beneficiaire.impact_description) }}
+                                    />
+                                  </div>
+                                </div>
 
-          {/* Bénéficiaires de ce niveau avec contenu expansible intégré */}
-          <div className={`grid gap-4 ${getGridColumns(beneficiairesParNiveauConverti[niveau].length)}`}>
-            {beneficiairesParNiveauConverti[niveau].flatMap((beneficiaire, beneficiaireIndex) => {
-              const uniqueId = `${niveau}-${beneficiaireIndex}`;
-              const isExpanded = expandedBeneficiaire === uniqueId;
-              
-              // Créer une ref pour ce header si elle n'existe pas
-              if (!headerRefs.current[uniqueId]) {
-                headerRefs.current[uniqueId] = React.createRef<HTMLButtonElement>();
-              }
-              
-              const elements = [
-                <BeneficiaireHeader
-                  key={`niveau-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`}
-                  beneficiaire={beneficiaire}
-                  isExpanded={isExpanded}
-                  onToggle={() => toggleBeneficiaire(uniqueId)}
-                  niveau={niveau}
-                  beneficiaireIndex={beneficiaireIndex}
-                  headerRef={headerRefs.current[uniqueId]}
-                />
-              ];
-              
-              // Ajouter le contenu expansible directement après le header
-              if (isExpanded) {
-                elements.push(
-                  <div key={`expanded-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`} className="w-full -mt-4" style={{ gridColumn: '1 / -1' }}>
-                <div className={`${getUniformStyles().background} border-2 border-t-0 rounded-b-2xl px-6 pb-6 pt-2`}>
+                                {/* Controverses - seulement si il y en a */}
+                                {beneficiaire.controverses && beneficiaire.controverses.length > 0 && (
+                                  <div className="mb-6">
+                                    <div className={`font-semibold text-xs mb-3 text-primary`}>
+                                      Controverses documentées :
+                                    </div>
+                                    <ControversesSection 
+                                      controverses={beneficiaire.controverses}
+                                    />
+                                  </div>
+                                )}
 
-                  {/* Informations financières */}
-                  <div className="space-y-4 mb-6">
-                    <div>
-                      <div className={`font-semibold text-xs mb-1 text-primary`}>
-                        Impact de vos achats :
-                      </div>
-                      <div 
-                        className="text-neutral-900 text-sm"
-                        dangerouslySetInnerHTML={{ __html: formatMarkdown(beneficiaire.impact_description) }}
-                      />
+                                {/* Section marques directement liées */}
+                                {beneficiaire.marques_directes && beneficiaire.marques_directes.length > 0 && (
+                                  <div className="mt-6 pt-4 border-t border-primary">
+                                    <div className="font-semibold text-black text-xs mb-3">
+                                      Autres marques <span className="text-primary">directement</span> liées à {beneficiaire.nom} ({beneficiaire.marques_directes.length}) :
+                                    </div>
+                                    <MarquesBadges 
+                                      marques={beneficiaire.marques_directes}
+                                      variant="public"
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Sections marques indirectement liées */}
+                                {beneficiaire.marques_indirectes && Object.keys(beneficiaire.marques_indirectes).length > 0 && (
+                                  <div className="mt-6 pt-4 border-t border-primary space-y-4">
+                                    {Object.entries(beneficiaire.marques_indirectes).map(([beneficiaireIntermediaire, marques]) => (
+                                      <div key={beneficiaireIntermediaire}>
+                                        <div className="font-semibold text-black text-xs mb-3">
+                                          Autres marques <span className="text-secondary-dark">indirectement</span> liées à {beneficiaire.nom} via {beneficiaireIntermediaire} ({marques.length}) :
+                                        </div>
+                                        <MarquesBadges 
+                                          marques={marques}
+                                          variant="indirect"
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-
-                  {/* Controverses - seulement si il y en a */}
-                  {beneficiaire.controverses && beneficiaire.controverses.length > 0 && (
-                    <div className="mb-6">
-                      <div className={`font-semibold text-xs mb-3 text-primary`}>
-                        Controverses documentées :
-                      </div>
-                      <ControversesSection 
-                        controverses={beneficiaire.controverses}
-                      />
-                    </div>
-                  )}
-
-                  {/* Section marques directement liées */}
-                  {beneficiaire.marques_directes && beneficiaire.marques_directes.length > 0 && (
-                    <div className="mt-6 pt-4 border-t border-primary">
-                      <div className="font-semibold text-black text-xs mb-3">
-                        Autres marques <span className="text-primary">directement</span> liées à {beneficiaire.nom} ({beneficiaire.marques_directes.length}) :
-                      </div>
-                      <MarquesBadges 
-                        marques={beneficiaire.marques_directes}
-                        variant="public"
-                      />
-                    </div>
-                  )}
-
-                  {/* Sections marques indirectement liées */}
-                  {beneficiaire.marques_indirectes && Object.keys(beneficiaire.marques_indirectes).length > 0 && (
-                    <div className="mt-6 pt-4 border-t border-primary space-y-4">
-                      {Object.entries(beneficiaire.marques_indirectes).map(([beneficiaireIntermediaire, marques]) => (
-                        <div key={beneficiaireIntermediaire}>
-                          <div className="font-semibold text-black text-xs mb-3">
-                            Autres marques <span className="text-secondary-dark">indirectement</span> liées à {beneficiaire.nom} via {beneficiaireIntermediaire} ({marques.length}) :
-                          </div>
-                          <MarquesBadges 
-                            marques={marques}
-                            variant="indirect"
-                          />
-                        </div>
+                  
+                  {/* Dots de navigation HORS du conteneur scrollable */}
+                  {beneficiaires.length > 1 && (
+                    <div className="flex justify-center mt-3 space-x-1.5">
+                      {beneficiaires.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => goToSlide(niveau, index)}
+                          className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                            index === currentSlide ? 'bg-primary' : 'bg-gray-300'
+                          }`}
+                        />
                       ))}
                     </div>
                   )}
                 </div>
+              ) : (
+                // Grid pour desktop uniquement
+                <div className={`grid gap-4 ${getGridColumns(beneficiaires.length)}`}>
+                  {beneficiaires.map((beneficiaire, beneficiaireIndex) => {
+                    const uniqueId = `${niveau}-${beneficiaireIndex}`;
+                    const isExpanded = expandedBeneficiaire === uniqueId;
+                    
+                    // Créer une ref pour ce header si elle n'existe pas
+                    if (!headerRefs.current[uniqueId]) {
+                      headerRefs.current[uniqueId] = React.createRef<HTMLButtonElement>();
+                    }
+                    
+                    return (
+                      <BeneficiaireHeader
+                        key={`niveau-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`}
+                        beneficiaire={beneficiaire}
+                        isExpanded={isExpanded}
+                        onToggle={() => toggleBeneficiaire(uniqueId)}
+                        niveau={niveau}
+                        beneficiaireIndex={beneficiaireIndex}
+                        headerRef={headerRefs.current[uniqueId]}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Contenu expansible desktop seulement - mobile géré dans les slides */}
+              {!isMobile && beneficiaires.map((beneficiaire, beneficiaireIndex) => {
+                const uniqueId = `${niveau}-${beneficiaireIndex}`;
+                const isExpanded = expandedBeneficiaire === uniqueId;
+                
+                if (!isExpanded) return null;
+                
+                return (
+                  <div key={`expanded-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`} className="w-full">
+                    <div className={`${getUniformStyles().background} border-2 border-t-0 rounded-b-2xl px-6 pb-6 pt-2`}>
+
+                      {/* Informations financières */}
+                      <div className="space-y-4 mb-6">
+                        <div>
+                          <div className={`font-semibold text-xs mb-1 text-primary`}>
+                            Impact de vos achats :
+                          </div>
+                          <div 
+                            className="text-neutral-900 text-sm"
+                            dangerouslySetInnerHTML={{ __html: formatMarkdown(beneficiaire.impact_description) }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Controverses - seulement si il y en a */}
+                      {beneficiaire.controverses && beneficiaire.controverses.length > 0 && (
+                        <div className="mb-6">
+                          <div className={`font-semibold text-xs mb-3 text-primary`}>
+                            Controverses documentées :
+                          </div>
+                          <ControversesSection 
+                            controverses={beneficiaire.controverses}
+                          />
+                        </div>
+                      )}
+
+                      {/* Section marques directement liées */}
+                      {beneficiaire.marques_directes && beneficiaire.marques_directes.length > 0 && (
+                        <div className="mt-6 pt-4 border-t border-primary">
+                          <div className="font-semibold text-black text-xs mb-3">
+                            Autres marques <span className="text-primary">directement</span> liées à {beneficiaire.nom} ({beneficiaire.marques_directes.length}) :
+                          </div>
+                          <MarquesBadges 
+                            marques={beneficiaire.marques_directes}
+                            variant="public"
+                          />
+                        </div>
+                      )}
+
+                      {/* Sections marques indirectement liées */}
+                      {beneficiaire.marques_indirectes && Object.keys(beneficiaire.marques_indirectes).length > 0 && (
+                        <div className="mt-6 pt-4 border-t border-primary space-y-4">
+                          {Object.entries(beneficiaire.marques_indirectes).map(([beneficiaireIntermediaire, marques]) => (
+                            <div key={beneficiaireIntermediaire}>
+                              <div className="font-semibold text-black text-xs mb-3">
+                                Autres marques <span className="text-secondary-dark">indirectement</span> liées à {beneficiaire.nom} via {beneficiaireIntermediaire} ({marques.length}) :
+                              </div>
+                              <MarquesBadges 
+                                marques={marques}
+                                variant="indirect"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 );
-              }
-              
-              return elements;
-            })}
-          </div>
+              })}
         </div>
         );
       })}

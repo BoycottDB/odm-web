@@ -208,7 +208,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <p className="bg-foreground text-center text-sm text-gray-400 pb-3">
+        <p className="bg-foreground text-center text-xs md:text-sm text-gray-400 pb-3">
           Ce projet étant le fruit du travail d&apos;humains, il peut y avoir des erreurs ou des données non à jour. N&apos;hésitez pas à vérifier les sources et à nous signaler des éventuelles corrections.
         </p>
       </body>
