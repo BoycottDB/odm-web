@@ -34,7 +34,7 @@ export default function Home() {
       </div>
       <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
         <video
-          src="/videos/Recherche.mov"
+          src="/videos/recherche.mp4"
           autoPlay
           muted
           loop
@@ -49,7 +49,7 @@ export default function Home() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
       <div className="order-2 lg:order-1 bg-gradient-to-r from-accent-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
         <video
-          src="/videos/Boycott.mov"
+          src="/videos/boycott.mp4"
           autoPlay
           muted
           loop
