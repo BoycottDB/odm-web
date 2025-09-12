@@ -132,7 +132,7 @@ export default function Home() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
       <div className="order-2 lg:order-1 bg-gradient-to-r from-primary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
         <video
-          src="/videos/Signalement.mov"
+          src="/videos/signalement.mp4"
           autoPlay
           muted
           loop
