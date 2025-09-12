@@ -11,7 +11,10 @@
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .next",
-    "analyze": "ANALYZE=true npm run build"
+    "analyze": "ANALYZE=true npm run build",
+    "build:netlify": "next build",
+    "dev:netlify": "netlify dev",
+    "preview": "netlify build && netlify dev"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.53.0",
@@ -24,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@netlify/plugin-nextjs": "^5.13.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

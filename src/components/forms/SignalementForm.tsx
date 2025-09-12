@@ -269,6 +269,7 @@ export default function SignalementForm() {
                 onChange={(e) => setFormData({ ...formData, marque_nom: e.target.value, marque_id: undefined })}
                 className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Tapez le nom de la marque..."
+                autoComplete="off"
                 aria-autocomplete="list"
                 aria-expanded={showSuggestions}
                 aria-owns={showSuggestions ? "marque-suggestions" : undefined}
