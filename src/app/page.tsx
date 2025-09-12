@@ -39,7 +39,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-lg"
+          className="w-full aspect-[3/2] object-cover rounded-lg"
         />
       </div>
     </div>
@@ -54,7 +54,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-lg"
+          className="w-full aspect-[3/2] object-cover rounded-lg"
         />
       </div>
       <div className="order-1 lg:order-2 text-left">
@@ -117,12 +117,12 @@ export default function Home() {
       </div>
       <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
         <video
-          src="/videos/Extension.mov"
+          src="/videos/extension.mp4"
           autoPlay
           muted
           loop
           playsInline
-          className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-lg"
+          className="w-full aspect-[3/2] object-cover rounded-lg"
         />
       </div>
     </div>
@@ -137,7 +137,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-lg"
+          className="w-full aspect-[3/2] object-cover rounded-lg"
         />
       </div>
       <div className="order-1 lg:order-2 text-left">
