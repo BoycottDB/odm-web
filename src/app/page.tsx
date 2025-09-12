@@ -32,30 +32,30 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-secondary-100">
-        <img
-          src="https://media1.tenor.com/m/j6hODwAA_VQAAAAd/fat-luffy-fat-luffy-rubbing-belly.gif"
-          alt="Interface de recherche"
-          className="w-full h-24 md:h-32 lg:h-48 object-cover rounded-lg mb-2 md:mb-4"
+      <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
+        <video
+          src="/videos/Recherche.mov"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-lg"
         />
-        <p className="text-sm md:text-base text-neutral-600">
-          Interface de recherche avec suggestions
-        </p>
       </div>
     </div>
   );
 
   const BoycottTipsSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-      <div className="order-2 lg:order-1 bg-gradient-to-r from-accent-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-secondary-100">
-        <img
-          src="https://media1.tenor.com/m/j6hODwAA_VQAAAAd/fat-luffy-fat-luffy-rubbing-belly.gif"
-          alt="Conseils pratiques"
-          className="w-full h-24 md:h-32 lg:h-48 object-cover rounded-lg mb-2 md:mb-4"
+      <div className="order-2 lg:order-1 bg-gradient-to-r from-accent-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
+        <video
+          src="/videos/Boycott.mov"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-lg"
         />
-        <p className="text-sm md:text-base text-neutral-600">
-          Des conseils adaptés à chaque secteur d&apos;activité
-        </p>
       </div>
       <div className="order-1 lg:order-2 text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
@@ -115,30 +115,30 @@ export default function Home() {
           </p>
         )}
       </div>
-      <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-secondary-100">
-        <img
-          src="https://media1.tenor.com/m/Nt6Zju-KjTsAAAAC/luffy-one-piece.gif"
-          alt="Extension en action"
-          className="w-full h-24 md:h-32 lg:h-48 object-cover rounded-lg mb-2 md:mb-4"
+      <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
+        <video
+          src="/videos/Extension.mov"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-lg"
         />
-        <p className="text-sm md:text-base text-neutral-600">
-          Extension en action sur site e-commerce
-        </p>
       </div>
     </div>
   );
 
   const SignalementSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-      <div className="order-2 lg:order-1 bg-gradient-to-r from-primary-50 to-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 text-center border border-secondary-100">
-        <img
-          src="https://media1.tenor.com/m/qanLZ89oReAAAAAC/gear-5-gear-5-luffy.gif"
-          alt="Processus de signalement"
-          className="w-full h-24 md:h-32 lg:h-48 object-cover rounded-lg mb-2 md:mb-4"
+      <div className="order-2 lg:order-1 bg-gradient-to-r from-primary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
+        <video
+          src="/videos/Signalement.mov"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-56 md:h-72 lg:h-96 object-cover rounded-lg"
         />
-        <p className="text-sm md:text-base text-neutral-600">
-          Processus de signalement collaboratif
-        </p>
       </div>
       <div className="order-1 lg:order-2 text-left">
         <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
