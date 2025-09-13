@@ -17,6 +17,7 @@
     "preview": "netlify build && netlify dev"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.11.0",
     "@supabase/supabase-js": "^2.53.0",
     "lucide-react": "^0.536.0",
     "next": "15.4.5",
