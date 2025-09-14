@@ -111,7 +111,7 @@ Proposition (1) ←→ (1) Décision
 - **👤 Gestion Dirigeants** : Création et liaison avec marques
 - **🏷️ Gestion Secteurs** : Catégorisation marques pour BoycottTips
 - **📋 Interface Modération** : Workflow optimisé pour les propositions
-- **📊 Dashboard Monitoring** : Surveillance temps réel système et métriques
+- **📊 Dashboard Monitoring** : Health checks essentiels avec design unifié
 
 ## Déploiement & Infrastructure
 
@@ -133,27 +133,26 @@ Proposition (1) ←→ (1) Décision
 - **Image Optimization** : Compression et formats modernes automatiques
 
 #### Système de Surveillance Intégré
-- **Dashboard Admin** : Interface `/admin/metrics` temps réel
-  - Health checks automatiques (odm-api + Supabase)
-  - Statistiques business (marques, événements, modération)
-  - Tests performance cache avec métriques détaillées
-  - Auto-refresh configurable + contrôles manuels
+- **Dashboard Admin** : Interface `/admin/metrics` minimaliste
+  - Health checks essentiels uniquement (odm-api + Supabase)
+  - Temps de réponse et status opérationnel
+  - Refresh manuel (auto-refresh optionnel)
+  - Design harmonisé avec interface admin
   
-- **Métriques Structurées** : Logs JSON odm-api
-  - Cache hit/miss rates avec TTL monitoring
-  - Response times par endpoint
-  - Error tracking avec contexte sanitisé
-  - User analytics anonymes (bot/mobile/desktop)
+- **Monitoring Externe** : Stack complémentaire optimisée
+  - **UptimeRobot** : Surveillance uptime 24/7 avec alertes SMS/email
+  - **Sentry** : Error tracking + performance monitoring détaillé
+  - **Dashboard admin** : Diagnostic ponctuel et debug interne
   
-- **Alertes Automatiques** :
-  - UptimeRobot : Surveillance 3 endpoints (email si down >2min)
-  - Sentry : Error tracking JS + serverless functions
-  - Dashboard warnings : Indicateurs visuels temps réel
+- **Architecture Monitoring** : Rôles distincts et complémentaires
+  - Pas de redondance - chaque outil a sa fonction spécifique
+  - Coût optimisé (suppression métriques non-critiques)
+  - Focus sur disponibilité système plutôt que stats métier
   
 - **Privacy-First** : 100% RGPD compliant
   - Aucune donnée personnelle collectée
-  - Métriques techniques uniquement
-  - Rétention limitée (90 jours max)
+  - Métriques techniques essentielles uniquement
+  - Monitoring système sans impact utilisateur
 
 ## Contribution & Développement
 
