@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Evenement, SearchState, Marque, BeneficiaireResult, TypeBeneficiaire, BeneficiaireComplet } from '@/types';
+import { SearchState, Marque, BeneficiaireResult, TypeBeneficiaire, BeneficiaireComplet } from '@/types';
 
 export function useSearch() {
   const router = useRouter();
@@ -60,32 +60,29 @@ export function useSearch() {
     setSearchState(prev => ({ ...prev, isSearching: true, notFound: false }));
 
     try {
-      // Utiliser dataService pour cohérence architecturale
       const { dataService } = await import('@/lib/services/dataService');
-      const [allEvenements, allMarques] = await Promise.all([
-        dataService.getEvenements(),
-        dataService.getMarques()
-      ]);
-      
       const normalizedQuery = query.toLowerCase().trim();
-      
-      // Filtrer les événements existants et enrichir avec les données complètes des marques
+
+      const [allEvenements, filteredMarques] = await Promise.all([
+        dataService.getEvenements(), 
+        dataService.getMarques(normalizedQuery, 50)
+      ]);
+
+      // Filtrer les événements localement (dataset plus petit)
       const filteredEvents = allEvenements.filter(event =>
         event.marque?.nom.toLowerCase().includes(normalizedQuery) ||
         event.titre.toLowerCase().includes(normalizedQuery) ||
         event.categorie?.nom.toLowerCase().includes(normalizedQuery)
       ).map(event => {
-        // Trouver la marque complète correspondante dans allMarques
-        const marqueComplete = allMarques.find(m => m.id === event.marque?.id);
+        // Trouver la marque complète correspondante dans les marques filtrées
+        const marqueComplete = filteredMarques.find(m => m.id === event.marque?.id);
         return {
           ...event,
           marque: marqueComplete || event.marque
         };
       });
-      
-      // Trouver les marques avec bénéficiaires controversés qui correspondent à la recherche
-      const marquesWithBeneficiaires = allMarques.filter((marque: Marque) => 
-        marque.nom.toLowerCase().includes(normalizedQuery) &&
+
+      const marquesWithBeneficiaires = filteredMarques.filter((marque: Marque) =>
         marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0
       );
       

@@ -51,9 +51,21 @@ class DataService {
     if (search) params.append('search', search);
     if (limit) params.append('limit', limit.toString());
     if (offset) params.append('offset', offset.toString());
-    
+
     const endpoint = `marques${params.toString() ? '?' + params.toString() : ''}`;
     return this.fetchFromExtensionApi<Marque[]>(endpoint);
+  }
+
+  /**
+   * Get brand suggestions for auto-completion (ultra-fast, minimal data)
+   */
+  async getSuggestions(query: string, limit: number = 10): Promise<{id: number, nom: string}[]> {
+    const params = new URLSearchParams();
+    params.append('q', query);
+    params.append('limit', limit.toString());
+
+    const endpoint = `suggestions?${params.toString()}`;
+    return this.fetchFromExtensionApi<{id: number, nom: string}[]>(endpoint);
   }
 
   /**
