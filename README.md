@@ -111,15 +111,15 @@ Proposition (1) ←→ (1) Décision
 - **👤 Gestion Dirigeants** : Création et liaison avec marques
 - **🏷️ Gestion Secteurs** : Catégorisation marques pour BoycottTips
 - **📋 Interface Modération** : Workflow optimisé pour les propositions
-- **📈 Analytics** : Statistiques d'usage et performance
+- **📊 Dashboard Monitoring** : Surveillance temps réel système et métriques
 
 ## Déploiement & Infrastructure
 
 ### Hébergement
-- **Frontend** : Vercel (déploiement automatique depuis Git)
+- **Frontend** : Netlify (déploiement automatique depuis Git)
 - **Backend** : Supabase (BaaS managed PostgreSQL)
 - **CDN** : Global edge network pour performance mondiale
-- **Monitoring** : Uptime monitoring + error tracking
+- **Monitoring** : UptimeRobot + Sentry + Dashboard admin intégré
 
 ### CI/CD
 - **Git Workflow** : Déploiements automatiques depuis `main`
@@ -127,10 +127,33 @@ Proposition (1) ←→ (1) Décision
 - **Type Checking** : Validation TypeScript automatique
 - **Linting** : ESLint + Prettier pour qualité de code
 
-### Performance
+### Performance & Monitoring
 - **Bundle Analysis** : Optimisation taille automatique
 - **Core Web Vitals** : Monitoring performance continue
 - **Image Optimization** : Compression et formats modernes automatiques
+
+#### Système de Surveillance Intégré
+- **Dashboard Admin** : Interface `/admin/metrics` temps réel
+  - Health checks automatiques (odm-api + Supabase)
+  - Statistiques business (marques, événements, modération)
+  - Tests performance cache avec métriques détaillées
+  - Auto-refresh configurable + contrôles manuels
+  
+- **Métriques Structurées** : Logs JSON odm-api
+  - Cache hit/miss rates avec TTL monitoring
+  - Response times par endpoint
+  - Error tracking avec contexte sanitisé
+  - User analytics anonymes (bot/mobile/desktop)
+  
+- **Alertes Automatiques** :
+  - UptimeRobot : Surveillance 3 endpoints (email si down >2min)
+  - Sentry : Error tracking JS + serverless functions
+  - Dashboard warnings : Indicateurs visuels temps réel
+  
+- **Privacy-First** : 100% RGPD compliant
+  - Aucune donnée personnelle collectée
+  - Métriques techniques uniquement
+  - Rétention limitée (90 jours max)
 
 ## Contribution & Développement
 
@@ -145,6 +168,10 @@ cp .env.example .env.local
 # SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY (obligatoire)
 # NEXT_PUBLIC_EXTENSION_API_URL=https://odm-api.netlify.app (obligatoire)
 # ADMIN_TOKEN=your_admin_token (pour l'interface admin)
+
+# Variables monitoring (optionnelles) :
+# SENTRY_DSN=your_sentry_dsn (error tracking)
+# NEXT_PUBLIC_SENTRY_DSN=your_sentry_dsn (client-side errors)
 
 # Lancement développement
 npm run dev
@@ -171,11 +198,16 @@ npm run dev
 npm run type-check  # TypeScript
 npm run lint        # Code quality
 npm run build       # Production build
+
+# Monitoring en développement
+npm run dev         # Dashboard admin : /admin/metrics
+                   # Health checks : http://localhost:3000/api/admin/metrics
 ```
 
 ### Documentation
 - **CLAUDE.md** : Instructions pour IA et développeurs
 - **ARCHITECTURE.md** : Documentation technique détaillée
+- **MONITORING.md** : Guide complet surveillance système (11 types monitoring)
 - **Code Comments** : JSDoc pour fonctions complexes uniquement
 
 ### Architecture des Données
