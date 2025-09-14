@@ -1,29 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Marque, SuggestionState } from '@/types';
 
 export function useSuggestions() {
-  const [allMarques, setAllMarques] = useState<Marque[]>([]);
   const [suggestionState, setSuggestionState] = useState<SuggestionState>({
     items: [],
     highlighted: -1,
     visible: false
   });
-
-  // Charger toutes les marques au démarrage
-  useEffect(() => {
-    const loadMarques = async () => {
-      try {
-        // Utiliser dataService pour cohérence architecturale
-        const { dataService } = await import('@/lib/services/dataService');
-        const data = await dataService.getMarques();
-        setAllMarques(data);
-      } catch (error) {
-        console.error('Erreur lors du chargement des marques:', error);
-      }
-    };
-
-    loadMarques();
-  }, []);
 
   const updateSuggestions = useCallback((query: string) => {
     if (query.trim().length === 0) {
@@ -35,16 +18,38 @@ export function useSuggestions() {
       return;
     }
 
-    const filtered = allMarques.filter((marque) =>
-      marque.nom.toLowerCase().includes(query.trim().toLowerCase())
-    );
+    
+    (async () => {
+      try {
+        // Délégation à l'API suggestions ultra-rapide
+        const { dataService } = await import('@/lib/services/dataService');
+        const suggestions = await dataService.getSuggestions(query.trim(), 10);
 
-    setSuggestionState({
-      items: filtered,
-      highlighted: -1,
-      visible: filtered.length > 0
-    });
-  }, [allMarques]);
+        // Convertir format minimal vers format Marque pour compatibilité
+        const marques: Marque[] = suggestions.map(s => ({
+          id: s.id,
+          nom: s.nom,
+          // Propriétés minimales pour compatibilité (ne seront pas utilisées dans suggestions)
+          secteur_marque_id: undefined,
+          message_boycott_tips: undefined,
+          beneficiaires_marque: []
+        }));
+
+        setSuggestionState({
+          items: marques,
+          highlighted: -1,
+          visible: marques.length > 0
+        });
+      } catch (error) {
+        console.error('Erreur lors de la récupération des suggestions:', error);
+        setSuggestionState({
+          items: [],
+          highlighted: -1,
+          visible: false
+        });
+      }
+    })();
+  }, []);
 
   const highlightSuggestion = useCallback((index: number) => {
     setSuggestionState(prev => ({
@@ -83,7 +88,6 @@ export function useSuggestions() {
     highlightSuggestion,
     selectSuggestion,
     hideSuggestions,
-    showSuggestions,
-    allMarques
+    showSuggestions
   };
 }

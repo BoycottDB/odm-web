@@ -98,15 +98,17 @@ export default function Home() {
         </p>
         <div className="flex justify-start md:justify-start">
           <Link
-            href="https://chrome.google.com/webstore"
+            href=""
             className={`inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg transition-all duration-300 text-sm md:text-base ${isMobile
               ? 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
-              : 'bg-primary text-white hover:bg-primary-dark shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark'
+              : 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
+              //bg-primary text-white hover:bg-primary-dark shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark
               }`}
             {...(isMobile ? { onClick: (e) => e.preventDefault() } : {})}
           > 
             <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-            Installer l&apos;extension
+            {/* Installer l&apos;extension */}
+            Bientôt disponible <span className="ml-2">👀</span>
           </Link>
         </div>
         {isMobile && (
