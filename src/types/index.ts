@@ -99,6 +99,7 @@ export interface BeneficiaireResult {
   beneficiaire: BeneficiaireComplet;
 }
 
+// ✅ État pour recherche + suggestions (ex-UnifiedSearchState, remplace SearchState + SuggestionState legacy)
 export interface SearchState {
   query: string;
   isSearching: boolean;
@@ -106,13 +107,11 @@ export interface SearchState {
   beneficiaireResults: BeneficiaireResult[];
   notFound: boolean;
   loading: boolean;
-  hasPerformedSearch: boolean; // True quand une recherche a été effectivement exécutée
-}
-
-export interface SuggestionState {
-  items: Marque[];
-  highlighted: number;
-  visible: boolean;
+  hasPerformedSearch: boolean;
+  // ✅ Suggestions intégrées
+  suggestions: Marque[];
+  suggestionHighlighted: number;
+  showSuggestions: boolean;
 }
 
 // Types pour les API responses

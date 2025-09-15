@@ -1,11 +1,18 @@
 import { KeyboardEvent, ChangeEvent } from 'react';
-import { Marque, SuggestionState } from '@/types';
+import { Marque } from '@/types';
+
+// Interface unifiée
+interface UnifiedSuggestions {
+  items: Marque[];
+  highlighted: number;
+  visible: boolean;
+}
 
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
   onSearch: (query: string) => void;
-  suggestions: SuggestionState;
+  suggestions: UnifiedSuggestions;
   onSuggestionSelect: (marque: Marque) => void;
   onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
   onFocus: () => void;
