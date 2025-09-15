@@ -412,7 +412,6 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
     liaison_id: 0, // Pas pertinent ici
     type_beneficiaire: node.beneficiaire.type_beneficiaire as TypeBeneficiaire,
     source_lien: node.niveau === 0 ? 'direct' : 'transitif',
-    toutes_marques: [],
     beneficiaire_parent_nom: trouverBeneficiaireParent(node),
     marques_directes: node.marques_directes || [],
     marques_indirectes: node.marques_indirectes || {}

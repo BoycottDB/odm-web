@@ -293,12 +293,7 @@ export interface BeneficiaireComplet {
   marque_nom: string;
   liaison_id: number;
   type_beneficiaire: TypeBeneficiaire;
-  source_lien?: 'direct' | 'transitif'; // NOUVEAU : origine du lien
-  toutes_marques: Array<{
-    id: number;
-    nom: string;
-  }>;
-  // ✅ NOUVEAU : Sections séparées pour marques directes et indirectes
+  source_lien?: 'direct' | 'transitif'; 
   marques_directes?: Array<{
     id: number;
     nom: string;
@@ -309,7 +304,6 @@ export interface BeneficiaireComplet {
       nom: string;
     }>;
   }; // Marques indirectement liées via d'autres bénéficiaires
-  // ✅ NOUVEAU : Nom du bénéficiaire intermédiaire pour relations transitives
   beneficiaire_parent_nom?: string;
 }
 

@@ -108,7 +108,6 @@ export function useSearch() {
                   liaison_id: liaison.id,
                   type_beneficiaire: liaison.beneficiaire.type_beneficiaire as TypeBeneficiaire,
                   source_lien: liaison.source_lien || 'direct',
-                  toutes_marques: liaison.beneficiaire.toutes_marques || [{ id: marque.id, nom: marque.nom }],
                   marques_directes: liaison.beneficiaire.marques_directes || [],
                   marques_indirectes: liaison.beneficiaire.marques_indirectes || {},
                   beneficiaire_parent_nom: liaison.beneficiaire_parent_nom
