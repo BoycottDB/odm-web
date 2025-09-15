@@ -95,6 +95,12 @@ Proposition (1) ←→ (1) Décision
 - **♿ Accessibilité** : WCAG 2.1 compliant, navigation clavier fluide
 - **💡 Conseils de Boycott** : Recommandations pratiques par marque et secteur
 
+#### Recherche (SearchBar)
+
+- Recherche par marque uniquement: match exact (insensible à la casse) sur le nom via l'endpoint `/marques` (ILIKE sans wildcards).
+- Suggestions: correspondance préfixe (startsWith) uniquement via l'endpoint `/suggestions` (ILIKE avec wildcard de fin: `q%`).
+- Aucun mot-clé: pas de recherche plein texte sur titre/catégorie d'événement dans cette page.
+
 ### Système de Données
 - **📊 Affichage Enrichi** : Chronologie, catégories, condamnations judiciaires
 - **🔗 Chaîne de Bénéficiaires** : Traçabilité financière complète (ex: Maybelline → L'Oréal → Nestlé → BlackRock)
@@ -166,19 +172,26 @@ Proposition (1) ←→ (1) Décision
 # Installation
 npm install
 
+# CLI Netlify (recommandé)
+npm i -g netlify-cli
+
 # Configuration environnement
 cp .env.example .env.local
 # Variables requises :
 # SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY (obligatoire)
 # NEXT_PUBLIC_EXTENSION_API_URL=https://odm-api.netlify.app (obligatoire)
+#   → en local (si l'API est lancée avec Netlify Dev) : NEXT_PUBLIC_EXTENSION_API_URL=http://localhost:8888
 # ADMIN_TOKEN=your_admin_token (pour l'interface admin)
 
 # Variables monitoring (optionnelles) :
 # SENTRY_DSN=your_sentry_dsn (error tracking)
 # NEXT_PUBLIC_SENTRY_DSN=your_sentry_dsn (client-side errors)
 
-# Lancement développement
-npm run dev
+# Lancement développement (recommandé)
+netlify dev
+
+# (Optionnel) Next.js dev server
+# npm run dev
 ```
 
 ### Workflow de Contribution

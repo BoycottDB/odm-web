@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { SearchState, Marque, BeneficiaireResult, TypeBeneficiaire, BeneficiaireComplet } from '@/types';
+import { SearchState, Marque, BeneficiaireResult, TypeBeneficiaire, BeneficiaireComplet, Evenement } from '@/types';
 
 // ✅ Cache intelligent avec partage données
 class SearchCache {
@@ -47,12 +47,11 @@ class SearchCache {
       if (key.startsWith('marques_') && Date.now() - entry.timestamp <= entry.ttl) {
         const marques: Marque[] = entry.data;
         if (marques && Array.isArray(marques)) {
-          // Utiliser la même logique que l'API (correspondance au début du nom ou mot complet)
+          // Utiliser la même logique que l'API: correspondance au début du nom uniquement (prefix match)
           return marques
             .filter(m => {
               const nom = m.nom.toLowerCase();
-              // Correspondance au début du nom OU inclusion de la chaîne
-              return nom.startsWith(normalizedQuery) || nom.includes(normalizedQuery);
+              return nom.startsWith(normalizedQuery);
             })
             .slice(0, limit);
         }
@@ -212,31 +211,22 @@ export function useSearch() {
       let cachedResults = cache.get(cacheKey);
 
       if (!cachedResults) {
-        const [allEvenements, filteredMarques] = await Promise.all([
-          dataService.getEvenements(),
-          dataService.getMarques(normalizedQuery, 50)
-        ]);
+        // Recherche marque exacte uniquement (pas de mot-clé)
+        const filteredMarques = await dataService.getMarques(normalizedQuery, 1);
 
         // ✅ Stocker marques dans cache pour suggestions futures
         cache.set(`marques_${normalizedQuery}`, filteredMarques, 20 * 60 * 1000);
 
-        // Filtrer événements localement
-        const filteredEvents = allEvenements.filter(event =>
-          event.marque?.nom.toLowerCase().includes(normalizedQuery) ||
-          event.titre.toLowerCase().includes(normalizedQuery) ||
-          event.categorie?.nom.toLowerCase().includes(normalizedQuery)
-        ).map(event => {
-          const marqueComplete = filteredMarques.find(m => m.id === event.marque?.id);
-          return { ...event, marque: marqueComplete || event.marque };
-        });
-
-        // Créer résultats bénéficiaires
+        let filteredEvents: Evenement[] = [];
         const beneficiaireResults: BeneficiaireResult[] = [];
-        const marquesWithBeneficiaires = filteredMarques.filter((marque: Marque) =>
-          marque.beneficiaires_marque && marque.beneficiaires_marque.length > 0
-        );
 
-        marquesWithBeneficiaires.forEach((marque: Marque) => {
+        if (filteredMarques && filteredMarques.length > 0) {
+          const marque = filteredMarques[0];
+
+          // Utiliser les événements déjà fournis par l'API marques (normalisés)
+          filteredEvents = Array.isArray(marque.evenements) ? marque.evenements : [];
+
+          // Construire les résultats bénéficiaires pour cette marque
           if (marque.beneficiaires_marque) {
             marque.beneficiaires_marque.forEach((liaison) => {
               if (liaison.beneficiaire) {
@@ -263,7 +253,7 @@ export function useSearch() {
               }
             });
           }
-        });
+        }
 
         cachedResults = { filteredEvents, beneficiaireResults };
         cache.set(cacheKey, cachedResults, 10 * 60 * 1000); // 10min cache

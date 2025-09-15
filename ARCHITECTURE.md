@@ -170,6 +170,45 @@ ChaineBeneficiaires → dataService.getBeneficiairesChaine()
   → Structure unifiée sans duplication → Interface accordéon
 ```
 
+> Note SearchBar (comportement de recherche):
+> - Recherche par marque uniquement: match exact (insensible à la casse) sur le nom de marque via l'endpoint `/marques` (ILIKE sans wildcards).
+> - Suggestions: match préfixe (startsWith) uniquement via l'endpoint `/suggestions` (ILIKE avec wildcard de fin seulement: `q%`).
+> - Aucun mot-clé: la page de recherche ne filtre pas par titre/catégorie d'événement.
+
+## ⚙️ Développement local (Netlify Dev)
+
+Le projet a migré de Vercel vers Netlify. Le développement local se fait désormais via Netlify Dev.
+
+1) Prérequis
+- Node.js 22+
+- Netlify CLI: `npm install -g netlify-cli`
+
+2) Variables d'environnement (fichier `.env.local` à la racine de `odm-web/`)
+```env
+# URL de l'API d'extension (odm-api)
+# Production (par défaut)
+NEXT_PUBLIC_EXTENSION_API_URL="https://odm-api.netlify.app"
+
+# Local (si vous lancez aussi l'API en local via Netlify Dev)
+# NEXT_PUBLIC_EXTENSION_API_URL="http://localhost:8888"
+```
+
+3) Lancer l'application web
+```bash
+cd odm-web
+netlify dev
+```
+- Le port est configuré dans `odm-web/netlify.toml` (`[dev] port = 3001`).
+- Le plugin officiel `@netlify/plugin-nextjs` prend en charge le dev server Next.js.
+
+4) (Optionnel) Lancer l'API en local
+```bash
+cd odm-api
+netlify dev
+```
+- Netlify Dev expose les functions sur `http://localhost:8888` par défaut.
+- Dans ce cas, définissez `NEXT_PUBLIC_EXTENSION_API_URL=http://localhost:8888` côté `odm-web`.
+
 #### ✏️ **Écritures (Administration & Modération)**
 ```typescript
 // 1. Administration marques/bénéficiaires optimisée
