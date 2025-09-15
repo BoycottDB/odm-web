@@ -94,7 +94,6 @@ export async function GET(request: NextRequest) {
         dirigeantsMap.set(dirigeantId, {
           id: liaison.beneficiaire.id,
           nom: liaison.beneficiaire.nom,
-          // ✅ NOUVEAU : Controverses structurées
           controverses: (liaison.beneficiaire.controverses as ControverseBeneficiaire[]) || [],
           lien_financier: liaison.lien_financier,
           // Priorité à l'impact spécifique, sinon impact générique
@@ -103,7 +102,7 @@ export async function GET(request: NextRequest) {
           marque_nom: liaison.marque.nom,
           liaison_id: liaison.id,
           type_beneficiaire: (liaison.beneficiaire.type_beneficiaire as 'individu' | 'groupe') || 'individu',
-          toutes_marques: marquesArray
+          marques_directes: marquesArray
         });
       }
     }

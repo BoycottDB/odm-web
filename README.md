@@ -75,7 +75,10 @@ Proposition (1) ←→ (1) Décision
 - **CORS** : Configuration sécurisée pour production
 
 ### Performance & SEO
-- **Architecture Hybride** : Cache CDN multi-niveaux (15min-1h TTL) via odm-api
+- **Architecture Hybride** : Cache CDN multi-niveaux (5-20min TTL) via odm-api optimisé
+- **SQL JOINs Unifiés** : Requêtes optimisées éliminant les anti-patterns N+1
+- **Endpoint Spécialisé** : API suggestions ultra-rapide (96ms) pour auto-complétion
+- **Recherche Déléguée** : Filtrage serveur pour réduire le transfert de données
 - **Fallback Automatique** : Basculement transparent vers Supabase direct si API indisponible
 - **SSR/SSG** : Pre-rendering Next.js pour SEO optimal
 - **Image Optimization** : Next.js Image avec WebP
@@ -85,9 +88,10 @@ Proposition (1) ←→ (1) Décision
 ## Fonctionnalités Principales
 
 ### Interface Utilisateur
-- **🔍 Recherche Unifiée** : Marques + dirigeants avec auto-complétion intelligente
+- **🔍 Recherche Unifiée** : Marques + bénéficiaires avec auto-complétion déléguée
+- **⚡ Auto-complétion** : Suggestions temps réel via endpoint spécialisé (sub-100ms)
 - **📱 Design Responsive** : Mobile-first avec PWA native
-- **⚡ Performance** : Chargement instantané avec cache optimisé
+- **🚀 Performance** : Chargement instantané avec cache optimisé et SQL JOINs
 - **♿ Accessibilité** : WCAG 2.1 compliant, navigation clavier
 - **💡 Conseils de Boycott** : Recommandations pratiques par marque et secteur
 
@@ -95,7 +99,8 @@ Proposition (1) ←→ (1) Décision
 - **📊 Affichage Enrichi** : Chronologie, catégories, condamnations judiciaires
 - **🔗 Chaîne de Bénéficiaires** : Traçabilité financière complète (ex: Maybelline → L'Oréal → Nestlé → BlackRock)
 - **💰 Relations Financières** : Algorithme récursif pour découvrir les bénéficiaires indirects
-- **🏢 Marques Liées** : "Autres marques" directes et indirectes pour chaque bénéficiaire
+- **🏢 Marques Directes** : Marques directement liées à chaque bénéficiaire
+- **🔗 Marques Indirectes** : Marques accessibles via chaîne de bénéficiaires intermédiaires
 - **📋 Sources Vérifiées** : Liens directs vers sources officielles
 - **⚖️ Notices Légales** : Disclaimers pour condamnations judiciaires
 - **🎯 BoycottTips** : Conseils personnalisés par marque et secteur d'activité
@@ -107,8 +112,8 @@ Proposition (1) ←→ (1) Décision
 - **🛡️ Anti-spam** : Protection multicouche contre les abus
 
 ### Administration
-- **👥 Gestion Marques** : CRUD complet avec statistiques
-- **👤 Gestion Dirigeants** : Création et liaison avec marques
+- **👥 Gestion Marques** : CRUD complet avec statistiques et structure unifiée
+- **👤 Gestion Bénéficiaires** : Création et liaison avec marques via relations optimisées
 - **🏷️ Gestion Secteurs** : Catégorisation marques pour BoycottTips
 - **📋 Interface Modération** : Workflow optimisé pour les propositions
 - **📊 Dashboard Monitoring** : Health checks essentiels avec design unifié
