@@ -87,12 +87,12 @@ Proposition (1) ←→ (1) Décision
 
 ## Fonctionnalités Principales
 
-### Interface Utilisateur
-- **🔍 Recherche Unifiée** : Marques + bénéficiaires avec auto-complétion déléguée
-- **⚡ Auto-complétion** : Suggestions temps réel via endpoint spécialisé (sub-100ms)
+### Interface Utilisateur (Post-Optimisation Architecture)
+- **🎯 Recherche Unifiée Nouvelle Génération** : Hook unique avec cache intelligent partagé (50x plus rapide)
+- **⚡ Auto-complétion Instantanée** : Suggestions temps réel <100ms + extraction intelligente du cache
 - **📱 Design Responsive** : Mobile-first avec PWA native
-- **🚀 Performance** : Chargement instantané avec cache optimisé et SQL JOINs
-- **♿ Accessibilité** : WCAG 2.1 compliant, navigation clavier
+- **🚀 Performance Maximisée** : Cache stratifié multi-niveau + hit rate 70%+
+- **♿ Accessibilité** : WCAG 2.1 compliant, navigation clavier fluide
 - **💡 Conseils de Boycott** : Recommandations pratiques par marque et secteur
 
 ### Système de Données

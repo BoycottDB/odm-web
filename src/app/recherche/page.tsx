@@ -2,22 +2,23 @@
 import { KeyboardEvent, Suspense, useRef, useEffect } from "react";
 import Link from 'next/link';
 import { useSearch } from '@/hooks/useSearch';
-import { useSuggestions } from '@/hooks/useSuggestions';
 import { SearchBar } from '@/components/search/SearchBar';
 import { EventList } from '@/components/events/EventList';
 import { AddToHomeScreenBanner } from '@/components/ui/AddToHomeScreenBanner';
 import { Marque } from '@/types';
 
 function SearchPageContent() {
-  const { searchState, updateQuery, performSearch } = useSearch();
+  // Hook unifié - 2 hooks → 1 hook
   const {
-    suggestionState,
+    searchState,
+    updateQuery,
+    performSearch,
     updateSuggestions,
     highlightSuggestion,
     selectSuggestion,
     hideSuggestions,
     showSuggestions
-  } = useSuggestions();
+  } = useSearch();
   
   const searchBarRef = useRef<HTMLDivElement>(null);
 
@@ -35,36 +36,36 @@ function SearchPageContent() {
     }
   }, [searchState.hasPerformedSearch]);
 
-  // Synchroniser les suggestions avec la recherche
+  // Plus de synchronisation manuelle
   const handleSearchChange = (value: string) => {
     updateQuery(value);
     updateSuggestions(value);
   };
 
-  // Gestion de la sélection de suggestion
+  // Gestion unifiée des suggestions
   const handleSuggestionSelect = (marque: Marque) => {
     updateQuery(marque.nom);
     hideSuggestions();
     performSearch(marque.nom);
   };
 
-  // Navigation clavier dans les suggestions
+  // Navigation clavier avec état unifié
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (suggestionState.items.length === 0) return;
+    if (searchState.suggestions.length === 0) return;
 
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        highlightSuggestion(suggestionState.highlighted + 1);
+        highlightSuggestion(searchState.suggestionHighlighted + 1);
         break;
       case "ArrowUp":
         e.preventDefault();
-        highlightSuggestion(suggestionState.highlighted - 1);
+        highlightSuggestion(searchState.suggestionHighlighted - 1);
         break;
       case "Enter":
         e.preventDefault();
-        if (suggestionState.highlighted >= 0) {
-          const selected = selectSuggestion(suggestionState.highlighted);
+        if (searchState.suggestionHighlighted >= 0) {
+          const selected = selectSuggestion(searchState.suggestionHighlighted);
           if (selected) {
             updateQuery(selected.nom);
             performSearch(selected.nom);
@@ -107,7 +108,11 @@ function SearchPageContent() {
               value={searchState.query}
               onChange={handleSearchChange}
               onSearch={handleSearch}
-              suggestions={suggestionState}
+              suggestions={{
+                items: searchState.suggestions,
+                highlighted: searchState.suggestionHighlighted,
+                visible: searchState.showSuggestions
+              }}
               onSuggestionSelect={handleSuggestionSelect}
               onKeyDown={handleKeyDown}
               onFocus={showSuggestions}
