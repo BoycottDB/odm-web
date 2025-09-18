@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { SearchState, Marque, BeneficiaireResult, TypeBeneficiaire, BeneficiaireComplet, Evenement } from '@/types';
+import { SearchState, Marque, Evenement } from '@/types';
 
 // ✅ Cache intelligent avec partage données
 class SearchCache {
@@ -71,7 +71,7 @@ export function useSearch() {
     query: '',
     isSearching: false,
     results: [],
-    beneficiaireResults: [],
+    marque: null,
     notFound: false,
     loading: true,
     hasPerformedSearch: false,
@@ -183,7 +183,7 @@ export function useSearch() {
         setSearchState(prev => ({
           ...prev,
           results: events,
-          beneficiaireResults: [],
+          marque: null,
           notFound: false,
           isSearching: false,
           hasPerformedSearch: false,
@@ -218,54 +218,26 @@ export function useSearch() {
         cache.set(`marques_${normalizedQuery}`, filteredMarques, 20 * 60 * 1000);
 
         let filteredEvents: Evenement[] = [];
-        const beneficiaireResults: BeneficiaireResult[] = [];
+        let marque: Marque | null = null;
 
         if (filteredMarques && filteredMarques.length > 0) {
-          const marque = filteredMarques[0];
+          marque = filteredMarques[0];
 
           // Utiliser les événements déjà fournis par l'API marques (normalisés)
           filteredEvents = Array.isArray(marque.evenements) ? marque.evenements : [];
-
-          // Construire les résultats bénéficiaires pour cette marque
-          if (marque.beneficiaires_marque) {
-            marque.beneficiaires_marque.forEach((liaison) => {
-              if (liaison.beneficiaire) {
-                beneficiaireResults.push({
-                  id: `beneficiaire-${liaison.id}`,
-                  type: 'beneficiaire' as const,
-                  marque: marque,
-                  beneficiaire: {
-                    id: liaison.beneficiaire.id,
-                    nom: liaison.beneficiaire.nom,
-                    controverses: liaison.beneficiaire.controverses || [],
-                    lien_financier: liaison.lien_financier,
-                    impact_description: liaison.impact_specifique || liaison.beneficiaire.impact_generique || 'Impact à définir',
-                    marque_id: marque.id,
-                    marque_nom: marque.nom,
-                    liaison_id: liaison.id,
-                    type_beneficiaire: liaison.beneficiaire.type_beneficiaire as TypeBeneficiaire,
-                    source_lien: liaison.source_lien || 'direct',
-                    marques_directes: liaison.beneficiaire.marques_directes || [],
-                    marques_indirectes: liaison.beneficiaire.marques_indirectes || {},
-                    beneficiaire_parent_nom: liaison.beneficiaire_parent_nom
-                  } as BeneficiaireComplet
-                });
-              }
-            });
-          }
         }
 
-        cachedResults = { filteredEvents, beneficiaireResults };
+        cachedResults = { filteredEvents, marque };
         cache.set(cacheKey, cachedResults, 10 * 60 * 1000); // 10min cache
       }
 
-      const { filteredEvents, beneficiaireResults } = cachedResults;
-      const hasResults = filteredEvents.length > 0 || beneficiaireResults.length > 0;
+      const { filteredEvents, marque } = cachedResults;
+      const hasResults = filteredEvents.length > 0 || marque?.total_beneficiaires_chaine > 0;
 
       setSearchState(prev => ({
         ...prev,
         results: filteredEvents,
-        beneficiaireResults: beneficiaireResults,
+        marque: marque,
         notFound: !hasResults,
         isSearching: false,
         loading: false,
@@ -325,7 +297,7 @@ export function useSearch() {
           setSearchState(prev => ({
             ...prev,
             results: events,
-            beneficiaireResults: [],
+            marque: null,
             loading: false,
             hasPerformedSearch: false
           }));
@@ -361,7 +333,7 @@ export function useSearch() {
       query: '',
       isSearching: false,
       results: [],
-      beneficiaireResults: [],
+      marque: null,
       notFound: false,
       loading: false,
       hasPerformedSearch: false,

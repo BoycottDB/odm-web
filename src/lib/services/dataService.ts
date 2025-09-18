@@ -118,13 +118,6 @@ class DataService {
     }[]>('marques-stats');
   }
 
-  /**
-   * Get beneficiary chain for a brand
-   */
-  async getBeneficiairesChaine(marqueId: number, profondeurMax: number = 5): Promise<unknown> {
-    const endpoint = `beneficiaires-chaine?marqueId=${marqueId}&profondeur=${profondeurMax}`;
-    return this.fetchFromExtensionApi<unknown>(endpoint);
-  }
 
   // ============= ÉCRITURES (Supabase direct uniquement) =============
 
