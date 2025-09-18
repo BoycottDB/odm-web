@@ -1,55 +1,78 @@
 // Types centralisés pour toute l'application
 
-// ✅ SUPPRIMÉ : MarqueDirigeantLegacy n'est plus nécessaire
 
 export interface Marque {
   id: number;
   nom: string;
   evenements?: Evenement[];
+  // Champs pour les Boycott Tips
+  message_boycott_tips?: string;
+  // Nouvelles propriétés pour la chaîne complète de bénéficiaires
+  total_beneficiaires_chaine?: number;
+  chaine_beneficiaires?: Array<{
+    beneficiaire: {
+      id: number;
+      nom: string;
+      controverses: Array<{
+        id: number;
+        beneficiaire_id: number;
+        titre: string;
+        source_url: string;
+        ordre: number;
+        created_at: string;
+        updated_at: string;
+      }>;
+      impact_generique?: string;
+      type_beneficiaire: string;
+    };
+    niveau: number;
+    relations_suivantes: Array<{
+      id: number;
+      beneficiaire_source_id: number;
+      beneficiaire_cible_id: number;
+      type_relation: string;
+      description_relation?: string;
+    }>;
+    lien_financier: string;
+    marques_directes: Array<{
+      id: number;
+      nom: string;
+    }>;
+    marques_indirectes: Record<string, Array<{
+      id: number;
+      nom: string;
+    }>>;
+  }>;
+  secteur_marque?: {
+    nom: string;
+    message_boycott_tips?: string;
+  };
+  // Propriétés pour l'administration uniquement
   beneficiaires_marque?: Array<{
     id: number;
     lien_financier: string;
     impact_specifique?: string;
-    source_lien?: 'direct' | 'transitif'; // NOUVEAU : origine du lien
-    beneficiaire_parent_nom?: string; // ✅ NOUVEAU : Nom du bénéficiaire intermédiaire pour relations transitives
     beneficiaire: {
       id: number;
       nom: string;
-      // ✅ NOUVEAU : Controverses structurées
       controverses: ControverseBeneficiaire[];
       impact_generique?: string;
       type_beneficiaire?: string;
       created_at: string;
       updated_at: string;
-      toutes_marques?: Array<{
-        id: number;
-        nom: string;
-      }>; // Toutes les marques liées à ce bénéficiaire (ajouté par l'API)
-      // ✅ NOUVEAU : Sections séparées pour marques directes et indirectes
       marques_directes?: Array<{
         id: number;
         nom: string;
-      }>; // Marques directement liées à ce bénéficiaire (exclut la marque actuelle)
+      }>;
       marques_indirectes?: {
         [beneficiaireIntermediaire: string]: Array<{
           id: number;
           nom: string;
         }>;
-      }; // Marques indirectement liées via d'autres bénéficiaires
+      };
     };
   }>;
-  // Champs spécifiques au contexte dirigeant-marque
-  lien_financier?: string;
-  impact_description?: string;
-  liaison_id?: number;
-  // Champs pour les Boycott Tips
   secteur_marque_id?: number;
-  message_boycott_tips?: string;
-  // Hierarchical structure for inheritance
-  marque_parent_id?: number;
-  marque_parent?: Marque;
-  filiales?: Marque[];
-  secteur_marque?: SecteurMarque;
 }
 
 export interface SecteurMarque {
@@ -75,40 +98,33 @@ export interface Categorie {
 
 export interface Evenement {
   id: number | string; // Peut être virtuel (string) ou réel (number)
-  marque_id: number;
   titre: string; // Renommé de 'description' pour plus de clarté
-  description?: string; // Description détaillée si nécessaire
   date: string;
-  categorie_id: number | null;
   source_url: string;
   reponse?: string; // URL de la réponse officielle de la marque à la controverse
+  condamnation_judiciaire?: boolean; // Indique si la controverse a fait l'objet d'une condamnation judiciaire
+  categorie?: Categorie | null;
+  // Champs techniques pour autres contextes (admin, etc.)
+  marque_id?: number;
+  description?: string;
+  categorie_id?: number | null;
   proposition_source_id?: number;
   moderation_status?: string;
-  condamnation_judiciaire?: boolean; // Indique si la controverse a fait l'objet d'une condamnation judiciaire
   created_at?: string;
   updated_at?: string;
   marque?: Marque;
-  categorie?: Categorie | null;
 }
 
 // Types pour les résultats de recherche
-export interface BeneficiaireResult {
-  id: string;
-  type: 'beneficiaire';
-  marque: Marque;
-  beneficiaire: BeneficiaireComplet;
-}
-
 // ✅ État pour recherche + suggestions (ex-UnifiedSearchState, remplace SearchState + SuggestionState legacy)
 export interface SearchState {
   query: string;
   isSearching: boolean;
   results: Evenement[];
-  beneficiaireResults: BeneficiaireResult[];
+  marque: Marque | null;
   notFound: boolean;
   loading: boolean;
   hasPerformedSearch: boolean;
-  // ✅ Suggestions intégrées
   suggestions: Marque[];
   suggestionHighlighted: number;
   showSuggestions: boolean;
@@ -229,7 +245,6 @@ export interface Beneficiaire {
     id: number;
     nom: string;
   }>; // Toutes les marques liées à ce bénéficiaire (ajouté par l'API)
-  // ✅ NOUVEAU : Sections séparées pour marques directes et indirectes
   marques_directes?: Array<{
     id: number;
     nom: string;
@@ -267,7 +282,6 @@ export type MarqueDirigeant = Omit<MarqueBeneficiaire, 'beneficiaire_id'> & {
 export interface BeneficiaireWithMarques {
   id: number;
   nom: string;
-  // ✅ NOUVEAU : Controverses structurées
   controverses: ControverseBeneficiaire[];
   impact_generique?: string;
   type_beneficiaire: TypeBeneficiaire;
@@ -292,7 +306,7 @@ export interface BeneficiaireComplet {
   marque_nom: string;
   liaison_id: number;
   type_beneficiaire: TypeBeneficiaire;
-  source_lien?: 'direct' | 'transitif'; 
+ 
   marques_directes?: Array<{
     id: number;
     nom: string;
@@ -313,7 +327,6 @@ export type DirigeantWithMarques = BeneficiaireWithMarques;
 // Requests pour l'API bénéficiaires
 export interface BeneficiaireCreateRequest {
   nom: string;
-  // ✅ SUPPRIMER : controverses et sources (gérés via API séparée)
   impact_generique?: string;
   type_beneficiaire: TypeBeneficiaire;
 }
@@ -321,7 +334,6 @@ export interface BeneficiaireCreateRequest {
 export interface BeneficiaireUpdateRequest {
   id: number;
   nom?: string;
-  // ✅ SUPPRIMER : controverses et sources (gérés via API séparée)
   impact_generique?: string;
   type_beneficiaire?: TypeBeneficiaire;
 }

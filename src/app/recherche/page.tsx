@@ -22,19 +22,26 @@ function SearchPageContent() {
   
   const searchBarRef = useRef<HTMLDivElement>(null);
 
-  // Scroll automatique vers la barre de recherche quand les résultats apparaissent
+  // Scroll automatique vers la barre de recherche à chaque fin de recherche
   useEffect(() => {
-    if (searchState.hasPerformedSearch && searchBarRef.current) {
+    if (!searchBarRef.current) return;
+
+    if (searchState.hasPerformedSearch && !searchState.isSearching) {
       const searchBarElement = searchBarRef.current;
       const offset = 20; // Quelques pixels au-dessus
       const elementTop = searchBarElement.offsetTop - offset;
-      
+
       window.scrollTo({
         top: elementTop,
         behavior: 'smooth'
       });
     }
-  }, [searchState.hasPerformedSearch]);
+  }, [
+    searchState.hasPerformedSearch,
+    searchState.isSearching,
+    searchState.results.length,
+    searchState.marque?.id
+  ]);
 
   // Plus de synchronisation manuelle
   const handleSearchChange = (value: string) => {
@@ -137,7 +144,7 @@ function SearchPageContent() {
         <div className="max-w-6xl mx-auto px-6">
           <EventList
             events={searchState.results}
-            beneficiaireResults={searchState.beneficiaireResults}
+            marque={searchState.marque}
             loading={searchState.loading}
             searching={searchState.isSearching}
             notFound={searchState.notFound}

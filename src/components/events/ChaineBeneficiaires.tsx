@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { User, Building2, ChevronDown, ChevronRight } from 'lucide-react';
 import { BeneficiaireComplet, TypeBeneficiaire, ControverseBeneficiaire } from '@/types';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
-import { dataService } from '@/lib/services/dataService';
 
 interface ChaineNode {
   beneficiaire: {
@@ -50,7 +49,8 @@ interface ChaineBeneficiaires {
 
 interface ChaineBeneficiairesProps {
   marqueId: number;
-  profondeurMax?: number;
+  marqueNom: string;
+  chaine: ChaineNode[];
 }
 
 // Styles uniformes pour tous les niveaux
@@ -238,10 +238,9 @@ const BeneficiaireHeader = ({
   );
 };
 
-export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: ChaineBeneficiairesProps) {
-  const [chaine, setChaine] = useState<ChaineBeneficiaires | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export default function ChaineBeneficiaires({ marqueId, marqueNom, chaine }: ChaineBeneficiairesProps) {
+  const [loading] = useState(false);
+  const [error] = useState<string | null>(null);
   const [expandedBeneficiaire, setExpandedBeneficiaire] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [currentSlideByLevel, setCurrentSlideByLevel] = useState<Record<number, number>>({});
@@ -260,25 +259,6 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    if (!marqueId) return;
-
-    const fetchChaine = async () => {
-      setLoading(true);
-      setError(null);
-      
-      try {
-        const data = await dataService.getBeneficiairesChaine(marqueId, profondeurMax);
-        setChaine(data as ChaineBeneficiaires);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erreur lors du chargement de la chaîne');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchChaine();
-  }, [marqueId, profondeurMax]);
 
   // Fermer au clic extérieur
   useEffect(() => {
@@ -370,12 +350,12 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
     );
   }
 
-  if (!chaine || chaine.chaine.length === 0) {
+  if (!chaine || chaine.length === 0) {
     return null; // Ne rien afficher si pas de chaîne
   }
 
   // Organiser les bénéficiaires par niveau
-  const beneficiairesParNiveau = chaine.chaine.reduce((acc, node) => {
+  const beneficiairesParNiveau = chaine.reduce((acc, node) => {
     if (!acc[node.niveau]) acc[node.niveau] = [];
     acc[node.niveau].push(node);
     return acc;
@@ -407,11 +387,10 @@ export default function ChaineBeneficiaires({ marqueId, profondeurMax = 5 }: Cha
     controverses: node.beneficiaire.controverses,
     lien_financier: node.lien_financier,
     impact_description: node.beneficiaire.impact_generique || 'Impact à définir',
-    marque_id: chaine!.marque_id,
-    marque_nom: chaine!.marque_nom,
+    marque_id: marqueId,
+    marque_nom: marqueNom,
     liaison_id: 0, // Pas pertinent ici
     type_beneficiaire: node.beneficiaire.type_beneficiaire as TypeBeneficiaire,
-    source_lien: node.niveau === 0 ? 'direct' : 'transitif',
     beneficiaire_parent_nom: trouverBeneficiaireParent(node),
     marques_directes: node.marques_directes || [],
     marques_indirectes: node.marques_indirectes || {}

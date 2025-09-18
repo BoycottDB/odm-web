@@ -1,4 +1,4 @@
-import { Evenement, BeneficiaireResult } from '@/types';
+import { Evenement, Marque } from '@/types';
 import { EventCard } from './EventCard';
 import ChaineBeneficiaires from './ChaineBeneficiaires';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -10,14 +10,14 @@ import { useAddToHomeScreen } from '@/hooks/useAddToHomeScreen';
 
 interface EventListProps {
   events: Evenement[];
-  beneficiaireResults: BeneficiaireResult[];
+  marque: Marque | null;
   loading: boolean;
   searching: boolean;
   notFound: boolean;
   hasSearched: boolean;
 }
 
-export function EventList({ events, beneficiaireResults, loading, searching, notFound, hasSearched }: EventListProps) {
+export function EventList({ events, marque, loading, searching, notFound, hasSearched }: EventListProps) {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q') || '';
   // Récupérer la valeur brute encodée depuis l'URL
@@ -72,7 +72,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
   }
 
   // Pas encore de recherche effectuée ET pas de données à afficher
-  if (!hasSearched && events.length === 0 && beneficiaireResults.length === 0 && !loading) {
+  if (!hasSearched && events.length === 0 && !loading) {
     return (
       <div className="text-center py-16">
         <div className="w-20 h-20 mx-auto mb-6 bg-primary-50 rounded-full flex items-center justify-center">
@@ -90,14 +90,11 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
 
   // Affichage des résultats
   const hasEvents = events.length > 0;
-  const hasBeneficiaires = beneficiaireResults.length > 0;
-  const hasBoth = hasEvents && hasBeneficiaires;
   // Considérer comme résultats de recherche si une recherche a été effectuée (même sans résultats)
   const isSearchResults = hasSearched;
-  
 
-  // Extraire la marque des résultats pour afficher les Boycott Tips
-  const marque = hasEvents ? events[0].marque : (hasBeneficiaires ? beneficiaireResults[0].marque : null);
+  // Vérifier s'il y a des bénéficiaires dans la chaîne
+  const hasBeneficiaires = (marque?.total_beneficiaires_chaine ?? 0) > 0;
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 md:space-y-16">
@@ -105,7 +102,7 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
       {/* Statistiques */}
       {isSearchResults && (
         <p className="body-base text-center">
-          {hasBeneficiaires && <strong>{beneficiaireResults.length} bénéficiaire{beneficiaireResults.length > 1 ? 's' : ''} controversé{beneficiaireResults.length > 1 ? 's' : ''}</strong>}{hasBoth && ' et '}{hasEvents && <strong>{events.length} controverse{events.length > 1 ? 's' : ''}</strong>} ont été signalés pour <strong>{searchQuery}</strong>.
+          {hasBeneficiaires && <strong>{marque?.total_beneficiaires_chaine} bénéficiaire{(marque?.total_beneficiaires_chaine ?? 0) > 1 ? 's' : ''} controversé{(marque?.total_beneficiaires_chaine ?? 0) > 1 ? 's' : ''}</strong>}{hasBeneficiaires && hasEvents && ' et '}{hasEvents && <strong>{events.length} controverse{events.length > 1 ? 's' : ''}</strong>} ont été signalés pour <strong>{searchQuery}</strong>.
         </p>
       )}
 
@@ -150,7 +147,11 @@ export function EventList({ events, beneficiaireResults, loading, searching, not
           {/* <p className="body-small text-neutral-600 text-center mb-6">
             Découvrez les dirigeants et entités controversés qui bénéficient de vos achats
           </p> */}
-          <ChaineBeneficiaires marqueId={marque.id} profondeurMax={5} />
+          <ChaineBeneficiaires
+            marqueId={marque.id}
+            marqueNom={marque.nom}
+            chaine={marque.chaine_beneficiaires || []}
+          />
         </div>
       )}
 

@@ -47,8 +47,8 @@ Proposition (1) ←→ (1) Décision
 ### Exemple de Données
 | Marque | Événement | Date | Catégorie | Condamnation Judiciaire | Source |
 |--------|-----------|------|-----------|------------------------|--------|
-| Danone | Contamination usine Miribel | 2022-09-15 | Sécurité alimentaire | ❌ | [Lien officiel] |
-| Meta | Amende RGPD record | 2023-05-22 | Protection données | ✅ | [Décision CNIL] |
+| Danone | Contamination usine Miribel | Sept. | Sécurité alimentaire | ❌ | [Lien officiel] |
+| Meta | Amende RGPD record | Mai | Protection données | ✅ | [Décision CNIL] |
 
 ## Stack Technique
 
@@ -235,7 +235,7 @@ L'application utilise une **architecture simplifiée** pour optimiser performanc
 - **Performance** : Temps de réponse constant (~50ms) grâce au cache CDN
 - **Configuration** : Une seule variable d'environnement (`NEXT_PUBLIC_EXTENSION_API_URL`)
 
-Cette architecture simplifie la maintenance en éliminant la complexité des fallbacks tout en conservant les avantages du cache CDN et la fiabilité de Netlify (99.9% uptime).
+Cette architecture simplifie la maintenance en éliminant la complexité des fallbacks tout en conservant les avantages du cache CDN et la fiabilité de Netlify.
 
 ---
 
