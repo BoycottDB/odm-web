@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useMobileDetection } from '@/hooks/useMobileDetection';
 
 interface ShareButtonProps {
   /** URL à partager */
@@ -25,7 +24,6 @@ export function ShareButton({
   className = ''
 }: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
-  const isMobile = useMobileDetection();
 
   // Construction de l'URL absolue
   const shareUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;

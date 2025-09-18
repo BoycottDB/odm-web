@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { BeneficiaireWithMarques, BeneficiaireUpdateRequest, BeneficiaireCreateRequest } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
@@ -21,13 +21,7 @@ export default function BeneficiaireDetailPage() {
   const params = useParams();
   const beneficiaireId = params.id as string;
 
-  useEffect(() => {
-    if (beneficiaireId) {
-      loadBeneficiaire();
-    }
-  }, [beneficiaireId]);
-
-  const loadBeneficiaire = async () => {
+  const loadBeneficiaire = useCallback(async () => {
     try {
       const response = await fetch(`/api/beneficiaires?id=${beneficiaireId}`);
       if (response.ok) {
@@ -42,7 +36,13 @@ export default function BeneficiaireDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [beneficiaireId]);
+
+  useEffect(() => {
+    if (beneficiaireId) {
+      loadBeneficiaire();
+    }
+  }, [beneficiaireId, loadBeneficiaire]);
 
   const handleUpdate = async (data: BeneficiaireUpdateRequest) => {
     setUpdating(true);

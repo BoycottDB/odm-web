@@ -5,7 +5,7 @@ import { SearchState, Marque, Evenement } from '@/types';
 // ✅ Cache intelligent avec partage données
 class SearchCache {
   private static instance: SearchCache;
-  private cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
+  private cache = new Map<string, { data: unknown; timestamp: number; ttl: number }>();
 
   static getInstance(): SearchCache {
     if (!SearchCache.instance) {
@@ -14,7 +14,7 @@ class SearchCache {
     return SearchCache.instance;
   }
 
-  set(key: string, data: any, ttlMs: number = 10 * 60 * 1000) {
+  set(key: string, data: unknown, ttlMs: number = 10 * 60 * 1000) {
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
@@ -45,7 +45,7 @@ class SearchCache {
     // Chercher dans toutes les marques déjà en cache
     for (const [key, entry] of this.cache.entries()) {
       if (key.startsWith('marques_') && Date.now() - entry.timestamp <= entry.ttl) {
-        const marques: Marque[] = entry.data;
+        const marques = entry.data as Marque[];
         if (marques && Array.isArray(marques)) {
           // Utiliser la même logique que l'API: correspondance au début du nom uniquement (prefix match)
           return marques
@@ -88,7 +88,7 @@ export function useSearch() {
   }, []);
 
   // ✅ Gestion d'erreurs centralisée
-  const handleError = useCallback((error: any, operation: string) => {
+  const handleError = useCallback((error: unknown, operation: string) => {
     console.error(`Erreur lors de ${operation}:`, error);
     setSearchState(prev => ({
       ...prev,
@@ -100,9 +100,9 @@ export function useSearch() {
   }, []);
 
   // ✅ Chargement événements avec cache
-  const loadEvents = useCallback(async (limit: number = 10) => {
+  const loadEvents = useCallback(async (limit: number = 10): Promise<Evenement[]> => {
     const cacheKey = `events_${limit}`;
-    const cached = cache.get(cacheKey);
+    const cached = cache.get(cacheKey) as Evenement[] | null;
     if (cached) return cached;
 
     try {
@@ -136,7 +136,7 @@ export function useSearch() {
       // 1. Toujours utiliser l'API dédiée suggestions pour être complet
       // (Le cache d'extraction n'est utilisé que si l'API échoue)
       const cacheKey = `suggestions_${normalizedQuery}`;
-      let suggestions = cache.get(cacheKey);
+      let suggestions = cache.get(cacheKey) as Marque[] | null;
 
       if (!suggestions) {
         const dataService = await getDataService();
@@ -208,7 +208,7 @@ export function useSearch() {
 
       // Cache pour recherche
       const cacheKey = `search_${normalizedQuery}`;
-      let cachedResults = cache.get(cacheKey);
+      let cachedResults = cache.get(cacheKey) as { filteredEvents: Evenement[], marque: Marque | null } | null;
 
       if (!cachedResults) {
         // Recherche marque exacte uniquement (pas de mot-clé)
@@ -232,7 +232,7 @@ export function useSearch() {
       }
 
       const { filteredEvents, marque } = cachedResults;
-      const hasResults = filteredEvents.length > 0 || marque?.total_beneficiaires_chaine > 0;
+      const hasResults = filteredEvents.length > 0 || (marque?.total_beneficiaires_chaine || 0) > 0;
 
       setSearchState(prev => ({
         ...prev,

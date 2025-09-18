@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { MarqueBeneficiaireCreateRequest, MarqueDirigeantUpdateRequest, Marque } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
@@ -15,13 +15,7 @@ export default function LierDirigeantPage() {
   const params = useParams();
   const marqueId = parseInt(params.id as string);
 
-  useEffect(() => {
-    if (marqueId) {
-      loadMarque();
-    }
-  }, [marqueId]);
-
-  const loadMarque = async () => {
+  const loadMarque = useCallback(async () => {
     try {
       const response = await fetch(`/api/marques`);
       if (response.ok) {
@@ -46,7 +40,13 @@ export default function LierDirigeantPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [marqueId]);
+
+  useEffect(() => {
+    if (marqueId) {
+      loadMarque();
+    }
+  }, [marqueId, loadMarque]);
 
   const handleSave = async (data: MarqueBeneficiaireCreateRequest | MarqueDirigeantUpdateRequest) => {
     setSaving(true);

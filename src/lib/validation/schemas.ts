@@ -145,7 +145,7 @@ const SECURITY_RULES = {
   }
 };
 
-function validateSecureText(text: string, field: 'description' | 'source'): string[] {
+export function validateSecureText(text: string, field: 'description' | 'source'): string[] {
   const errors: string[] = [];
 
   if (field === 'description') {

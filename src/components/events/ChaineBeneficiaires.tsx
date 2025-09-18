@@ -381,7 +381,7 @@ export default function ChaineBeneficiaires({ marqueId, marqueNom, chaine }: Cha
   };
 
   // Convertir les nodes en format BeneficiaireComplet pour réutiliser DirigeantCard
-  const convertNodeToBeneficiaire = (node: ChaineNode, _niveau: number): BeneficiaireComplet => ({
+  const convertNodeToBeneficiaire = (node: ChaineNode): BeneficiaireComplet => ({
     id: node.beneficiaire.id,
     nom: node.beneficiaire.nom,
     controverses: node.beneficiaire.controverses,
@@ -401,8 +401,8 @@ export default function ChaineBeneficiaires({ marqueId, marqueNom, chaine }: Cha
     const resultat: Record<number, BeneficiaireComplet[]> = {};
     
     niveaux.forEach(niveau => {
-      resultat[niveau] = beneficiairesParNiveau[niveau].map(node => 
-        convertNodeToBeneficiaire(node, niveau)
+      resultat[niveau] = beneficiairesParNiveau[niveau].map(node =>
+        convertNodeToBeneficiaire(node)
       );
     });
     

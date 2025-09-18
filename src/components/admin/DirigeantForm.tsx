@@ -68,7 +68,7 @@ export default function DirigeantForm({
       await onSave(payload);
       setErrors([]);
       onSaveSuccess?.();
-    } catch (_error) {
+    } catch {
       setErrors(['Erreur lors de la sauvegarde']);
     }
   };
