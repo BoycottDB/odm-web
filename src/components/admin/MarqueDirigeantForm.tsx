@@ -109,7 +109,7 @@ export default function MarqueDirigeantForm({
     try {
       await onSave(payload);
       setErrors([]);
-    } catch (_error) {
+    } catch {
       setErrors(['Erreur lors de la sauvegarde']);
     }
   };

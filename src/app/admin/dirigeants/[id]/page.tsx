@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { DirigeantWithMarques, DirigeantCreateRequest, DirigeantUpdateRequest } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
@@ -15,13 +15,7 @@ export default function DirigeantDetailPage() {
   const params = useParams();
   const dirigeantId = parseInt(params.id as string);
 
-  useEffect(() => {
-    if (dirigeantId) {
-      loadDirigeant();
-    }
-  }, [dirigeantId]);
-
-  const loadDirigeant = async () => {
+  const loadDirigeant = useCallback(async () => {
     try {
       const response = await fetch('/api/dirigeants');
       if (response.ok) {
@@ -41,7 +35,13 @@ export default function DirigeantDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dirigeantId]);
+
+  useEffect(() => {
+    if (dirigeantId) {
+      loadDirigeant();
+    }
+  }, [dirigeantId, loadDirigeant]);
 
   const handleSave = async (data: DirigeantCreateRequest | DirigeantUpdateRequest) => {
     setSaving(true);

@@ -1,12 +1,12 @@
-import { Evenement } from '@/types';
-import { Badge } from '@/components/ui/Badge';
+import { Evenement, Marque } from '@/types';
 import { JudicialCondemnationNotice } from '@/components/ui/JudicialCondemnationNotice';
 
 interface EventCardProps {
   event: Evenement;
+  marque?: Marque | null; // Marque optionnelle quand event.marque n'est pas disponible
 }
 
-export function EventCard({ event }: EventCardProps) {
+export function EventCard({ event, marque }: EventCardProps) {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
@@ -44,16 +44,20 @@ export function EventCard({ event }: EventCardProps) {
       <div className="flex items-center justify-between mb-2">
         {/* Nom de la marque */}
         <h3 className="heading-sub font-bold text-primary-dark">
-          {event.marque?.nom && (() => {
-            const { mainName, parentheses } = formatMarqueName(event.marque.nom);
-            return (
-              <>
-                {mainName}
-                {parentheses && (
-                  <span className="heading-sub-brackets font-normal ml-1">{parentheses}</span>
-                )}
-              </>
-            );
+          {(() => {
+            const marqueNom = event.marque?.nom || marque?.nom;
+            if (marqueNom) {
+              const { mainName, parentheses } = formatMarqueName(marqueNom);
+              return (
+                <>
+                  {mainName}
+                  {parentheses && (
+                    <span className="heading-sub-brackets font-normal ml-1">{parentheses}</span>
+                  )}
+                </>
+              );
+            }
+            return null;
           })()}
         </h3>
         
