@@ -82,7 +82,7 @@ export default function AlternativesFAQ() {
       {/* Contenu principal */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8">
+          <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 md:p-8">
             <div className="prose prose-lg max-w-none">
 
               <div className="mb-8">
@@ -131,7 +131,7 @@ export default function AlternativesFAQ() {
                 </p>
               </div>
 
-              <div className="mt-10 bg-secondary-light border border-secondary rounded-xl p-8">
+              <div className="mt-10 bg-secondary-light border border-secondary rounded-xl p-6">
                 <h3 className="body-large font-bold text-neutral-900 mb-4">💡 Cela  dit, et si on créait ensemble la solution ?</h3>
                 <p className="body-base text-neutral-700 leading-relaxed mb-6">
                   Nous réfléchissons à développer une plateforme e-commerce éthique : une sorte d&apos;Amazon mais
@@ -147,7 +147,7 @@ export default function AlternativesFAQ() {
                   Chaque créateur aurait sa page personnelle pour expliquer sa passion et ses méthodes de fabrication, avec une obligation de transparence sur les fournisseurs pour garantir l&apos;aspect éthique.
                 </p>
 
-                <div className="bg-white rounded-lg p-6 border border-neutral-200">
+                <div className="bg-white rounded-lg p-4 md:p-6 border border-neutral-200">
                   <h4 className="font-semibold text-neutral-900 mb-4">💬 Votre avis nous intéresse !</h4>
                   <p className="body-base text-neutral-700 mb-4">
                     Seriez-vous intéressé·e par une telle plateforme ? Aidez-nous à valider ce concept :
@@ -163,7 +163,7 @@ export default function AlternativesFAQ() {
                       <button
                         onClick={sendAcheteurResponse}
                         disabled={acheteurStatus === 'loading'}
-                        className="w-full bg-success text-white md:px-4 py-2 rounded-md font-medium hover:bg-success-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
+                        className="w-full bg-success text-white px-2 md:px-4 py-2 rounded-md font-medium hover:bg-success-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
                       >
                         {acheteurStatus === 'loading' ? (
                           <>
@@ -187,7 +187,7 @@ export default function AlternativesFAQ() {
                       <button
                         onClick={sendVendeurResponse}
                         disabled={vendeurStatus === 'loading'}
-                        className="w-full bg-success text-white md:px-4 py-2 rounded-md font-medium hover:bg-success-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
+                        className="w-full bg-success text-white px-2 md:px-4 py-2 rounded-md font-medium hover:bg-success-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
                       >
                         {vendeurStatus === 'loading' ? (
                           <>
