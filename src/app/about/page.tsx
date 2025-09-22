@@ -8,12 +8,12 @@ export default function About() {
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             À propos du projet
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-relaxed">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
             Découvrez notre mission, nos valeurs et notre fonctionnement
           </p>
         </div>
         {/* Encadré informatif */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mt-8 max-w-3xl mx-auto border border-primary shadow-lg">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mt-8  mx-auto border border-primary shadow-lg">
           <p className="body-base font-light text-neutral-700 mb-4 text-center">
             Ce projet est <strong>open source</strong> et <strong>non lucratif</strong>. Notre objectif est de fournir des informations factuelles et vérifiées pour aider les consommateurs à faire des choix éclairés.
           </p>
@@ -46,16 +46,16 @@ export default function About() {
               </div>
               <div className="flex-1">
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Notre mission</h2>
-                <p className="body-large font-light text-neutral-700 leading-relaxed mb-4">
+                <p className="body-large font-light text-neutral-700 leading-snug mb-4">
                   Ce répertoire vous aide à prendre des décisions d&apos;achat éclairées et responsables en vous informant sur les pratiques éthiques, sociales et environnementales des marques. Notre application vous accompagne tout au long de votre parcours d&apos;achat, en vous fournissant des informations factuelles et vérifiées, issues d&apos;une base de données collaborative alimentée par des utilisateurs comme vous.
                 </p>
-                <p className="body-large font-light text-neutral-700 leading-relaxed mb-4">
+                <p className="body-large font-light text-neutral-700 leading-snug mb-4">
                   Nous ne vous empêcherons jamais de passer commande. Nous comprenons que pour de nombreuses raisons, notamment pour les produits de première nécessité, vous pouvez être amenés à acheter des produits de marques dont les pratiques ne sont pas parfaitement alignées avec vos valeurs.
                 </p>
-                <p className="body-large font-light text-neutral-700 leading-relaxed mb-4">
+                <p className="body-large font-light text-neutral-700 leading-snug mb-4">
                   Notre rôle est simplement de vous permettre d&apos;effectuer vos achats en pleine conscience, selon vos propres valeurs et votre seuil de tolérance personnel. Nous restons strictement neutres : vous avez toujours le choix, et notre engagement consiste uniquement à vous fournir les informations nécessaires pour décider librement.
                 </p>
-                <p className="body-large font-light text-neutral-700 leading-relaxed">
+                <p className="body-large font-light text-neutral-700 leading-snug">
                   <strong>Nous croyons au pouvoir du boycott.</strong> En choisissant de ne plus financer certaines entreprises ou dirigeants dont les pratiques vont à l&apos;encontre de nos valeurs, nous pouvons collectivement réduire leur pouvoir économique et les inciter au changement. Le boycott est un acte démocratique puissant qui permet aux citoyens de faire entendre leur voix par leur portefeuille, en soutenant les entreprises responsables et en sanctionnant celles qui ne le sont pas.
                 </p>
               </div>

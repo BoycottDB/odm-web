@@ -14,7 +14,7 @@ export default function Signaler() {
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Signaler une controverse
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-relaxed">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
             Contribuez à l&apos;enrichissement collaboratif de notre base de données
           </p>
         </div>
@@ -40,7 +40,7 @@ export default function Signaler() {
                   Prêt à contribuer ?
                 </h2>
                 
-                <p className="body-large text-neutral-700 mb-8 leading-relaxed">
+                <p className="body-large text-neutral-700 mb-8 leading-snug">
                   Signalez une controverse liée à une marque pour informer les consommateurs. 
                   Tous les signalements sont vérifiés et font l&apos;objet d&apos;une 
                   modération transparente avec sources documentées.
@@ -53,7 +53,7 @@ export default function Signaler() {
                   Commencer mon signalement
                 </button>
 
-                <p className="text-primary body-small mt-4 leading-relaxed">
+                <p className="text-primary body-small mt-4 leading-snug">
                   Vos contributions restent entièrement anonymes. Aucune donnée personnelle n&apos;est stockée.
                 </p>
               </div>

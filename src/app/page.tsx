@@ -9,9 +9,10 @@ export default function Home() {
 
   // Sections dans l'ordre d'apparition sur la page
   const SearchSection = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-      <div className="text-left">
-        <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
+    <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 lg:items-center">
+      {/* Titre - order-1 sur mobile et desktop */}
+      <div className="order-1 lg:order-1 text-left">
+        <div className="flex items-center md:mb-6 lg:mb-8">
           <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
             <SearchX className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
           </div>
@@ -19,7 +20,38 @@ export default function Home() {
             Scrutez les marques !
           </h3>
         </div>
-        <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
+        {/* Texte et CTA - visibles sur desktop seulement */}
+        <div className="hidden lg:block">
+          <p className="text-base md:text-lg font-light text-neutral-700 mb-4 md:mb-6 lg:mb-8">
+            Recherchez une marque pour repérer ses éventuelles controverses documentées mais aussi ses éventuels <strong>bénéficiaires</strong> à qui vos achats profitent.
+          </p>
+          <div className="flex justify-start md:justify-start">
+            <Link
+              href="/recherche"
+              className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+            >
+              <Search className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              Rechercher une marque
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Vidéo - order-2 sur mobile et desktop */}
+      <div className="order-2 lg:order-2 bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
+        <video
+          src="/videos/recherche.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full aspect-[3/2] object-cover rounded-lg"
+        />
+      </div>
+
+      {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
+      <div className="order-3 lg:hidden text-left">
+        <p className="text-base md:text-lg font-light text-neutral-700 mb-4 md:mb-6 lg:mb-8">
           Recherchez une marque pour repérer ses éventuelles controverses documentées mais aussi ses éventuels <strong>bénéficiaires</strong> à qui vos achats profitent.
         </p>
         <div className="flex justify-start md:justify-start">
@@ -32,21 +64,39 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
-        <video
-          src="/videos/recherche.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full aspect-[3/2] object-cover rounded-lg"
-        />
-      </div>
     </div>
   );
 
   const BoycottTipsSection = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
+    <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 lg:items-center">
+      {/* Titre - order-1 sur mobile et desktop */}
+      <div className="order-1 lg:order-2 text-left">
+        <div className="flex items-center md:mb-6 lg:mb-8">
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <Compass className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
+          </div>
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
+            Changez de cap !
+          </h3>
+        </div>
+        {/* Texte et CTA - visibles sur desktop seulement */}
+        <div className="hidden lg:block">
+          <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+            Découvez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
+          </p>
+          <div className="flex justify-start md:justify-start">
+            <Link
+              href="/recherche?q=Nike"
+              className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+            >
+              <TextSearch className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              Voir des exemples de conseils
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Vidéo - order-2 sur mobile et desktop */}
       <div className="order-2 lg:order-1 bg-gradient-to-r from-accent-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
         <video
           src="/videos/boycott.mp4"
@@ -57,16 +107,10 @@ export default function Home() {
           className="w-full aspect-[3/2] object-cover rounded-lg"
         />
       </div>
-      <div className="order-1 lg:order-2 text-left">
-        <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <Compass className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
-          </div>
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
-            Changez de cap !
-          </h3>
-        </div>
-        <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
+
+      {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
+      <div className="order-3 lg:hidden text-left">
+        <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
           Découvez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
         </p>
         <div className="flex justify-start md:justify-start">
@@ -83,9 +127,10 @@ export default function Home() {
   );
 
   const ExtensionSection = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
-      <div className="text-left">
-        <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
+    <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 lg:items-center">
+      {/* Titre - order-1 sur mobile et desktop */}
+      <div className="order-1 lg:order-1 text-left">
+        <div className="flex items-center md:mb-6 lg:mb-8">
           <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
             <Sailboat className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
           </div>
@@ -93,7 +138,49 @@ export default function Home() {
             Naviguez librement !
           </h3>
         </div>
-        <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
+        {/* Texte et CTA - visibles sur desktop seulement */}
+        <div className="hidden lg:block">
+          <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+            Parcourrez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
+          </p>
+          <div className="flex justify-start md:justify-start">
+            <Link
+              href=""
+              className={`inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg transition-all duration-300 text-sm md:text-base ${isMobile
+                ? 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
+                : 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
+                //bg-primary text-white hover:bg-primary-dark shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark
+                }`}
+              {...(isMobile ? { onClick: (e) => e.preventDefault() } : {})}
+            >
+              <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              {/* Installer l&apos;extension */}
+              Bientôt disponible <span className="ml-2">👀</span>
+            </Link>
+          </div>
+          {isMobile && (
+            <p className="text-sm text-primary mt-3">
+              Extension disponible sur ordinateur uniquement
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Vidéo - order-2 sur mobile et desktop */}
+      <div className="order-2 lg:order-2 bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
+        <video
+          src="/videos/extension.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full aspect-[3/2] object-cover rounded-lg"
+        />
+      </div>
+
+      {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
+      <div className="order-3 lg:hidden text-left">
+        <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
           Parcourrez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
         </p>
         <div className="flex justify-start md:justify-start">
@@ -105,7 +192,7 @@ export default function Home() {
               //bg-primary text-white hover:bg-primary-dark shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark
               }`}
             {...(isMobile ? { onClick: (e) => e.preventDefault() } : {})}
-          > 
+          >
             <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             {/* Installer l&apos;extension */}
             Bientôt disponible <span className="ml-2">👀</span>
@@ -117,21 +204,41 @@ export default function Home() {
           </p>
         )}
       </div>
-      <div className="bg-gradient-to-r from-secondary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
-        <video
-          src="/videos/extension.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full aspect-[3/2] object-cover rounded-lg"
-        />
-      </div>
     </div>
   );
 
   const SignalementSection = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center">
+    <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 lg:items-center">
+      {/* Titre - order-1 sur mobile et desktop */}
+      <div className="order-1 lg:order-2 text-left">
+        <div className="flex items-center md:mb-6 lg:mb-8">
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+            <WavesLadder className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
+          </div>
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
+            Montez à bord !
+          </h3>
+        </div>
+        {/* Texte et CTA - visibles sur desktop seulement */}
+        <div className="hidden lg:block">
+          <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+            Rejoignez le mouvement en participant à la collecte de données. Chaque signalement fait l&apos;objet d&apos;une modération transparente :
+            notre équipe vérifie les sources, argumente sa décision et rend publique
+            l&apos;historique de validation ou de refus.
+          </p>
+          <div className="flex justify-start md:justify-start">
+            <Link
+              href="/signaler"
+              className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+            >
+              <FileInput className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              Signaler une controverse
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Vidéo - order-2 sur mobile et desktop */}
       <div className="order-2 lg:order-1 bg-gradient-to-r from-primary-50 to-white rounded-xl md:rounded-2xl p-2 md:p-3 lg:p-4 text-center border border-secondary-100">
         <video
           src="/videos/signalement.mp4"
@@ -142,16 +249,10 @@ export default function Home() {
           className="w-full aspect-[3/2] object-cover rounded-lg"
         />
       </div>
-      <div className="order-1 lg:order-2 text-left">
-        <div className="flex items-center mb-4 md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-primary-light rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
-            <WavesLadder className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-primary" />
-          </div>
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
-            Montez à bord !
-          </h3>
-        </div>
-        <p className="text-base md:text-lg font-light text-neutral-700 leading-relaxed mb-4 md:mb-6 lg:mb-8">
+
+      {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
+      <div className="order-3 lg:hidden text-left">
+        <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
           Rejoignez le mouvement en participant à la collecte de données. Chaque signalement fait l&apos;objet d&apos;une modération transparente :
           notre équipe vérifie les sources, argumente sa décision et rend publique
           l&apos;historique de validation ou de refus.
@@ -177,14 +278,14 @@ export default function Home() {
           <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
             L&apos;Observatoire des Marques
           </h1>
-          {/* <p className="heading-sub font-light text-neutral-700 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Une plateforme collaborative qui vous donne les clés d'une consommation éthique et responsable.
-          </p> */}
-          <p className="heading-sub font-light text-neutral-700 mb-16 max-w-3xl mx-auto leading-relaxed">
-            Découvrez qui bénéficie vraiment de vos achats, retrouvez des conseils pratiques pour adapter votre consommation et rejoignez une communauté engagée pour une consommation éthique et responsable.
+          <p className="heading-sub font-light text-neutral-700 mx-auto leading-snug">
+            {/* Découvrez qui bénéficie vraiment de vos achats, retrouvez des conseils pratiques pour adapter votre consommation et rejoignez une communauté engagée pour une consommation éthique et responsable. */}
+            Recherchez des marques, découvrez ce qu&apos;elles vous cachent <br className="hidden lg:block" />
+            et retrouvez des conseils pratiques pour adapter vos achats <br className="hidden lg:block" />
+            vers une consommation plus éthique et responsable.
           </p>
 
-          <div className="space-y-8 md:space-y-16">
+          <div className="space-y-16 md:space-y-32 my-12 md:my-32">
             {/* Ordre unifié : Recherche, BoycottTips, Extension, Signalement */}
             <SearchSection />
             <BoycottTipsSection />

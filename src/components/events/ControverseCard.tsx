@@ -52,7 +52,7 @@ export function ControverseCard({ controverse }: ControverseCardProps) {
         </div>
 
         {/* Titre de la controverse */}
-        <h4 className="heading-sub font-medium text-neutral-900 mb-4 leading-relaxed">
+        <h4 className="heading-sub font-medium text-neutral-900 mb-4 leading-snug">
           {controverse.titre}
         </h4>
 

@@ -94,7 +94,7 @@ export default function Moderation() {
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Modération et validation
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-relaxed">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
             Transparence totale sur les décisions de validation et de refus
           </p>
         </div>
@@ -117,10 +117,10 @@ export default function Moderation() {
 
             {/* Contenu texte */}
             <div>
-              <p className="body-base font-light text-neutral-700 leading-relaxed mb-4">
+              <p className="body-base font-light text-neutral-700 leading-snug mb-4">
                 Chaque ajout, correction ou suppression d&apos;entrée est soumis à validation par des modérateurs. Toutes les décisions sont publiques, justifiées et consultables ici.
               </p>
-              <p className="body-base font-light text-neutral-700 leading-relaxed">
+              <p className="body-base font-light text-neutral-700 leading-snug">
                 Cette transparence garantit la fiabilité des informations et permet à chacun de comprendre les critères de validation utilisés.
               </p>
             </div>

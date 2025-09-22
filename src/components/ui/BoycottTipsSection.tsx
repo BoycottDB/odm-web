@@ -248,7 +248,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                 </h3>
               </div>
               <div 
-                className="body-small text-neutral-700 leading-relaxed boycott-content"
+                className="body-small text-neutral-700 leading-snug boycott-content"
                 dangerouslySetInnerHTML={{ __html: formatMarkdown(marque.message_boycott_tips) }}
               />
             </div>
@@ -263,7 +263,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                 </h3>
               </div>
               <div 
-                className="body-small text-neutral-700 leading-relaxed boycott-content"
+                className="body-small text-neutral-700 leading-snug boycott-content"
                 dangerouslySetInnerHTML={{ __html: formatMarkdown(marque.secteur_marque.message_boycott_tips) }}
               />
             </div>
@@ -288,7 +288,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                   {message.titre}
                 </h4> */}
                 <div 
-                  className="body-small text-neutral-700 leading-relaxed boycott-content"
+                  className="body-small text-neutral-700 leading-snug boycott-content"
                   dangerouslySetInnerHTML={{ __html: formatMarkdown(message.contenu) }}
                 />
               </div>

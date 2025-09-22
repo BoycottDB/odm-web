@@ -83,7 +83,7 @@ export default function MarquesPage() {
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Toutes les marques référencées
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-relaxed">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
             Découvrez l&apos;ensemble des marques documentées dans notre base de données collaborative.
           </p>
         </div>
