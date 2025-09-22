@@ -73,7 +73,7 @@ export default function AlternativesFAQ() {
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Pourquoi ne proposons-nous pas des alternatives ?
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-relaxed">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
             Une question légitime que nous recevons souvent
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function AlternativesFAQ() {
 
               <div className="mb-8">
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Notre position sur les alternatives</h2>
-                <p className="body-base text-neutral-700 leading-relaxed mb-6">
+                <p className="body-base text-neutral-700 leading-snug mb-6">
                   Nous avons fait le choix délibéré de ne pas proposer d&apos;alternatives pour le moment, et voici pourquoi :
                 </p>
               </div>
@@ -95,7 +95,7 @@ export default function AlternativesFAQ() {
               <div className="space-y-8">
                 <div className="border-l-4 border-error pl-6">
                   <h3 className="body-large font-semibold text-neutral-900 mb-3">Certaines marques cachent bien leur jeu</h3>
-                  <p className="body-base text-neutral-700 leading-relaxed">
+                  <p className="body-base text-neutral-700 leading-snug">
                     Il peut arriver qu&apos;une marque cache des controverses que nous n&apos;avons pas encore découvertes.
                     Nous nous en voudrions de vous avoir influencé à consommer une marque qui s&apos;avérerait problématique par la suite.
                   </p>
@@ -103,20 +103,20 @@ export default function AlternativesFAQ() {
 
                 <div className="border-l-4 border-warning pl-6">
                   <h3 className="body-large font-semibold text-neutral-900 mb-3">Les situations peuvent changer</h3>
-                  <p className="body-base text-neutral-700 leading-relaxed">
+                  <p className="body-base text-neutral-700 leading-snug">
                     Une marque peut être totalement &quot;clean&quot; aujourd&apos;hui et faire quelque chose de grave demain ou se faire racheter par un bénéficiaire controversé comme <strong>Relay</strong> qui appartient maintenant à <strong>Bolloré</strong>.
                   </p>
                 </div>
 
                 <div className="border-l-4 border-success pl-6">
                   <h3 className="body-large font-semibold text-neutral-900 mb-3">Nous ne voulons pas faire de tort aux petits producteurs locaux</h3>
-                  <p className="body-base text-neutral-700 leading-relaxed mb-4">
+                  <p className="body-base text-neutral-700 leading-snug mb-4">
                     C&apos;est sûrement le point le plus important : il nous est difficile de connaître toutes les marques
                     éthiques du pays. Il y a surement plein de petits producteurs locaux, près de chez vous dont on n&apos;entendra peut-être
                     jamais parler et à qui on n&apos;aimerait pas faire de l&apos;ombre en influençant ne serait-ce qu&apos;une
                     personne à consommer une autre marque.
                   </p>
-                  <p className="body-base text-neutral-700 leading-relaxed">
+                  <p className="body-base text-neutral-700 leading-snug">
                     On espère même que toi qui lit ses lignes, tu entreprènes pour créer des alternatives éthiques et responsables.
                   </p>
                 </div>
@@ -124,7 +124,7 @@ export default function AlternativesFAQ() {
 
               <div className="mt-10 bg-accent-light border border-accent rounded-xl p-6">
                 <h3 className="body-large font-semibold text-accent-dark mb-3">Notre approche</h3>
-                <p className="body-base text-neutral-700 leading-relaxed">
+                <p className="body-base text-neutral-700 leading-snug">
                   Plutôt que de vous orienter vers des marques spécifiques, nous préférons vous donner
                   l&apos;information pour que vous puissiez faire vos propres choix éclairés. C&apos;est dans cette
                   optique que nous proposons plutôt des <strong>conseils de consommation</strong> dans les sections &quot;Comment bien boycotter telle marque ?&quot;.
@@ -133,7 +133,7 @@ export default function AlternativesFAQ() {
 
               <div className="mt-10 bg-secondary-light border border-secondary rounded-xl p-6">
                 <h3 className="body-large font-bold text-neutral-900 mb-4">💡 Cela  dit, et si on créait ensemble la solution ?</h3>
-                <p className="body-base text-neutral-700 leading-relaxed mb-6">
+                <p className="body-base text-neutral-700 leading-snug mb-6">
                   Nous réfléchissons à développer une plateforme e-commerce éthique : une sorte d&apos;Amazon mais
                   exclusivement avec des produits responsables créés par des citoyens lambda. Actuellement,
                   les créateurs éthiques galèrent pour se faire connaître : soit ils restent invisibles sur
@@ -143,7 +143,7 @@ export default function AlternativesFAQ() {
                   donne enfin une vraie visibilité aux créateurs éthiques sans qu&apos;ils aient à compromettre
                   leurs valeurs.
                 </p>
-                <p className="body-base text-neutral-700 leading-relaxed mb-6">
+                <p className="body-base text-neutral-700 leading-snug mb-6">
                   Chaque créateur aurait sa page personnelle pour expliquer sa passion et ses méthodes de fabrication, avec une obligation de transparence sur les fournisseurs pour garantir l&apos;aspect éthique.
                 </p>
 

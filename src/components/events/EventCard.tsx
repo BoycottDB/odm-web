@@ -80,7 +80,7 @@ export function EventCard({ event, marque }: EventCardProps) {
       */}
 
       {/* Description */}
-      <h4 className="heading-sub font-medium text-neutral-900 mb-4 leading-relaxed">
+      <h4 className="heading-sub font-medium text-neutral-900 mb-4 leading-snug">
         {event.titre}
       </h4>
 
