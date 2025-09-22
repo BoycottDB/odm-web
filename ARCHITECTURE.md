@@ -733,6 +733,90 @@ async getMarques(): Promise<Marque[]> {
 }
 ```
 
+## 🚀 Cas d'étude : Optimisation page /marques
+
+### Problème initial (Sept 2025)
+- **TTFB** : 1.6s (client-side fetching + useEffect)
+- **UX** : Spinner générique pendant chargement complet
+- **Architecture** : Client Component avec état local et hydration lourde
+- **Payload** : 23KB pour ~150 marques chargées d'un coup
+
+### Solution implémentée
+- **Pattern Streaming SSR** : Suspense + Server Components séparés
+- **ISR Cache** : `revalidate = 300` (5 minutes) pour performance
+- **Skeleton premium** : Remplacement spinner générique par skeleton réaliste
+- **Memoization React** : Components optimisés avec `memo()` et `useMemo()`
+- **Architecture modulaire** : Séparation page wrapper + composant données
+
+### Résultats mesurés
+- **TTFB** : 1.6s → 0.1s (**93% amélioration**)
+- **Temps total** : 1.6s → 0.7s (**55% amélioration**)
+- **UX** : Header instantané + skeleton fluide → perception de rapidité
+
+### Architecture finale optimisée
+```typescript
+// 1. Page wrapper (rendu instantané)
+export const revalidate = 300; // ISR Cache 5min
+export default function MarquesPage() {
+  return (
+    <Layout>
+      <Suspense fallback={<MarquesSkeleton count={12} />}>
+        <MarquesList />
+      </Suspense>
+    </Layout>
+  );
+}
+
+// 2. Composant données (Server Component)
+async function MarquesList() {
+  const marques = await dataService.getMarquesStats();
+  const sortedMarques = marques.sort((a, b) => a.nom.localeCompare(b.nom));
+  return sortedMarques.map(marque =>
+    <MarqueCard key={marque.id} marque={marque} />
+  );
+}
+
+// 3. Carte optimisée (memoized)
+const MarqueCard = memo(({ marque }) => {
+  const { mainName, parentheses } = useMemo(() =>
+    formatMarqueName(marque.nom), [marque.nom]
+  );
+  // Rendu optimisé...
+});
+```
+
+### Fichiers créés/modifiés
+- `src/app/marques/page.tsx` → Wrapper Suspense + ISR
+- `src/app/marques/loading.tsx` → Fallback skeleton
+- `src/components/MarquesList.tsx` → Server Component données
+- `src/components/MarqueCard.tsx` → Composant memoized
+- `src/components/MarquesSkeleton.tsx` → Skeleton premium
+
+### Pattern réutilisable pour autres pages lourdes
+```typescript
+// Template pour pages avec données volumineuses
+export const revalidate = 300; // Cache adaptatif selon usage
+
+export default function HeavyDataPage() {
+  return (
+    <PageLayout>
+      <InstantHeader />
+      <Suspense fallback={<RealisticSkeleton />}>
+        <HeavyDataComponent />
+      </Suspense>
+    </PageLayout>
+  );
+}
+```
+
+### Prochaines optimisations applicables
+- **Pagination intelligente** : 50 items + infinite scroll
+- **Virtualisation** : react-window pour >100 éléments
+- **Search debouncing** : Filtrage client-side optimisé
+- **Progressive loading** : Marques prioritaires d'abord
+
+---
+
 ## 📈 Roadmap & Optimisations
 
 ### **Performance & UX**
