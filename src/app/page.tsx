@@ -271,9 +271,12 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen relative">
+      {/* Parallax Background */}
+      <div className="fixed inset-0 bg-gradient-hero parallax-bg"></div>
+
       {/* Hero Section */}
-      <section className="relative bg-gradient-hero section-padding">
+      <section className="relative z-10 section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
             L&apos;Observatoire des Marques
@@ -285,18 +288,18 @@ export default function Home() {
             vers une consommation plus éthique et responsable.
           </p>
 
-          <div className="space-y-24 md:space-y-32 my-16 md:my-32">
+          <div className="space-y-20 md:space-y-32 my-16 md:my-32">
             {/* Ordre unifié : Recherche, BoycottTips, Extension, Signalement */}
-            <div className="glassmorphism-section p-6 md:p-0">
+            <div className="glassmorphism-section p-6 pb-8 md:p-0">
               <SearchSection/>
             </div>
-            <div className="glassmorphism-section p-6 md:p-0">
+            <div className="glassmorphism-section p-6 pb-8 md:p-0">
               <BoycottTipsSection />
             </div>
-            <div className="glassmorphism-section p-6 md:p-0">
+            <div className="glassmorphism-section p-6 pb-8 md:p-0">
               <ExtensionSection />
             </div>
-            <div className="glassmorphism-section p-6 md:p-0">
+            <div className="glassmorphism-section p-6 pb-8 md:p-0">
               <SignalementSection />
             </div>
           </div>
@@ -304,7 +307,7 @@ export default function Home() {
       </section>
 
       {/* Section Pourquoi ce projet */}
-      <section className="section-padding bg-white">
+      <section className="relative z-10 section-padding bg-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="heading-main text-neutral-900 mb-8">
             Pourquoi ce projet ?
@@ -325,7 +328,7 @@ export default function Home() {
       </section>
 
       {/* Section FAQ */}
-      <section className="section-padding bg-gradient-hero">
+      <section className="relative z-10 section-padding">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="heading-main text-neutral-900 mb-4">
             Des questions ? Des doutes ?

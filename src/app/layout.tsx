@@ -178,7 +178,7 @@ export default function RootLayout({
           {children}
         </main>
         {/* Footer */}
-        <footer className="bg-foreground text-white section-padding" role="contentinfo">
+        <footer className="relative z-10 bg-foreground text-white section-padding" role="contentinfo">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <div className="mb-6">
               <p className="body-large text-white mb-2">
@@ -208,7 +208,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <p className="bg-foreground text-center text-xs md:text-sm text-gray-400 pb-3 md:-mt-10">
+        <p className="relative z-10 bg-foreground text-center text-xs md:text-sm text-gray-400 pb-3 md:-mt-10">
           Ce projet étant le fruit du travail d&apos;humains, il peut y avoir des erreurs ou des données non à jour. N&apos;hésitez pas à vérifier les sources et à nous signaler des éventuelles corrections.
         </p>
       </body>
