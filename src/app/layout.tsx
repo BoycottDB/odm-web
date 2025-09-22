@@ -64,7 +64,7 @@ function MobileNav() {
           role="dialog"
         >
           {/* Header avec bouton de fermeture */}
-          <div className="flex justify-end items-center p-5 ">
+          <div className="flex justify-end items-center p-3">
             <button
               onClick={() => setOpen(false)}
               className="flex items-center justify-center w-8 h-8 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
