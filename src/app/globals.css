@@ -430,3 +430,26 @@ input:-webkit-autofill:active {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* =============================================================================
+   GLASSMORPHISM - EFFETS DE VERRE
+   ============================================================================= */
+
+/* Glassmorphism seulement sur mobile (< 768px) */
+@media (max-width: 767px) {
+  .glassmorphism-section {
+    /* background: rgba(152, 16, 90, 0.01); */
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(152, 16, 90, 0.08);
+  }
+}
+
+.glassmorphism-bg {
+  /* background: rgba(152, 16, 90, 0.01); */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
