@@ -39,7 +39,7 @@ export function EventCard({ event, marque }: EventCardProps) {
     <div className={`relative ${event.condamnation_judiciaire && 'mt-6'}`}>
       {/* Notification de condamnation judiciaire */}
       {event.condamnation_judiciaire && <JudicialCondemnationNotice />}
-      <div className="relative z-10 glassmorphism-bg-full rounded-3xl card-padding shadow-lg border border-primary-medium hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+      <div className="relative z-10 bg-white rounded-3xl card-padding shadow-lg border border-primary-medium hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* En-tête principal : Marque et Date */}
       <div className="flex items-center justify-between mb-2">
         {/* Nom de la marque */}

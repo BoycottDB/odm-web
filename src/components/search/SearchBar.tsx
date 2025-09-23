@@ -76,7 +76,7 @@ export function SearchBar({
         <div 
           id="search-suggestions"
           role="listbox"
-          className="absolute z-10 w-full mt-2 glassmorphism-bg-full border-2 border-accent-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto"
+          className="absolute z-20 w-full mt-1 liquid-glass-dropdown border-2 border-accent-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto"
         >
           {suggestions.items.map((marque, index) => (
             <button
@@ -85,8 +85,8 @@ export function SearchBar({
               role="option"
               aria-selected={index === suggestions.highlighted}
               onMouseDown={() => onSuggestionSelect(marque)}
-              className={`w-full px-4 py-3 text-left glassmorphism-bg-primary transition-colors duration-200 ${
-                index === suggestions.highlighted ? 'glassmorphism-bg-primary' : ''
+              className={`w-full px-4 py-3 text-left liquid-glass-suggestion transition-colors duration-200 ${
+                index === suggestions.highlighted ? 'highlighted' : ''
               } ${index === 0 ? 'rounded-t-2xl' : ''} ${
                 index === suggestions.items.length - 1 ? 'rounded-b-2xl' : ''
               }`}
