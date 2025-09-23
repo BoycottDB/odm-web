@@ -432,38 +432,73 @@ input:-webkit-autofill:active {
 }
 
 /* =============================================================================
-   GLASSMORPHISM - EFFETS DE VERRE
+   LIQUID GLASS - EFFETS DE VERRE LIQUIDE iOS 26
    ============================================================================= */
 
-/* Glassmorphism seulement sur mobile (< 768px) */
+/* Base liquid glass effect */
+.liquid-glass {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(152, 16, 90, 0.08) 100%);
+  backdrop-filter: blur(16px) saturate(1.6) brightness(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6) brightness(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 16px 50px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(152, 16, 90, 0.15);
+  transition: all 0.5s ease;
+}
+
+/* Section liquid glass - responsive */
 @media (max-width: 767px) {
-  .glassmorphism-section {
-    /* background: rgba(152, 16, 90, 0.01); */
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(152, 16, 90, 0.08);
+  .liquid-glass-section {
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(152, 16, 90, 0.03) 100%);
+    backdrop-filter: blur(15px) saturate(1.5) brightness(1.05);
+    -webkit-backdrop-filter: blur(15px) saturate(1.5) brightness(1.05);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -1px 0 rgba(152, 16, 90, 0.08);
+    transition: all 0.4s ease;
   }
 }
 
-.glassmorphism-bg {
-  /* background: rgba(152, 16, 90, 0.01); */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
-}
-
-.glassmorphism-bg-full {
-  background: rgba(255, 255, 255, 0.23);
+/* Liquid glass pour suggestions dropdown */
+.liquid-glass-dropdown {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(152, 16, 90, 0.03) 100%);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(152, 16, 90, 0.08);
+  transition: all 0.4s ease;
 }
 
-.glassmorphism-bg-primary:hover {
+/* Liquid glass pour items de suggestion */
+.liquid-glass-suggestion {
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.liquid-glass-suggestion:hover,
+.liquid-glass-suggestion.highlighted {
   background: rgba(152, 16, 90, 0.07);
 }
+
 
 /* =============================================================================
    PARALLAX EFFECT - ARRIÈRE-PLAN FIXE AVEC MOUVEMENT

@@ -13,7 +13,7 @@ export default function Home() {
       {/* Titre - order-1 sur mobile et desktop */}
       <div className="order-1 lg:order-1 text-center md:text-left">
         <div className="flex items-center justify-center md:justify-start md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 glassmorphism-bg rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 liquid-glass rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
             <SearchX className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 text-primary" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
@@ -38,7 +38,7 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-2  glassmorphism-bg rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-2  liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
         <video
           src="/videos/recherche.mp4"
           autoPlay
@@ -72,7 +72,7 @@ export default function Home() {
       {/* Titre - order-1 sur mobile et desktop */}
       <div className="order-1 lg:order-2 text-center md:text-left">
         <div className="flex items-center justify-center md:justify-start md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 glassmorphism-bg rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 liquid-glass rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
             <Compass className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 text-primary" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
@@ -97,7 +97,7 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-1 glassmorphism-bg rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-1 liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
         <video
           src="/videos/boycott.mp4"
           autoPlay
@@ -131,7 +131,7 @@ export default function Home() {
       {/* Titre - order-1 sur mobile et desktop */}
       <div className="order-1 lg:order-1 text-center md:text-left">
         <div className="flex items-center justify-center md:justify-start md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 glassmorphism-bg rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 liquid-glass rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
             <Sailboat className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 text-primary" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
@@ -167,7 +167,7 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-2  glassmorphism-bg rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-2  liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
         <video
           src="/videos/extension.mp4"
           autoPlay
@@ -212,7 +212,7 @@ export default function Home() {
       {/* Titre - order-1 sur mobile et desktop */}
       <div className="order-1 lg:order-2 text-center md:text-left">
         <div className="flex items-center justify-center md:justify-start md:mb-6 lg:mb-8">
-          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 glassmorphism-bg rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
+          <div className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 liquid-glass rounded-lg md:rounded-xl flex items-center justify-center mr-3 md:mr-4 lg:mr-6">
             <WavesLadder className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 text-primary" />
           </div>
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900">
@@ -239,7 +239,7 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-1 glassmorphism-bg rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-1 liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
         <video
           src="/videos/signalement.mp4"
           autoPlay
@@ -290,16 +290,16 @@ export default function Home() {
 
           <div className="space-y-20 md:space-y-32 my-16 md:my-32">
             {/* Ordre unifié : Recherche, BoycottTips, Extension, Signalement */}
-            <div className="glassmorphism-section p-6 pb-8 md:p-0">
+            <div className="liquid-glass-section p-6 pb-8 md:p-0">
               <SearchSection/>
             </div>
-            <div className="glassmorphism-section p-6 pb-8 md:p-0">
+            <div className="liquid-glass-section p-6 pb-8 md:p-0">
               <BoycottTipsSection />
             </div>
-            <div className="glassmorphism-section p-6 pb-8 md:p-0">
+            <div className="liquid-glass-section p-6 pb-8 md:p-0">
               <ExtensionSection />
             </div>
-            <div className="glassmorphism-section p-6 pb-8 md:p-0">
+            <div className="liquid-glass-section p-6 pb-8 md:p-0">
               <SignalementSection />
             </div>
           </div>
