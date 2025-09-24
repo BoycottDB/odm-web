@@ -50,12 +50,17 @@ export function useMobileDetection(): MobileDetection {
 
     setDetection(detectMobile());
 
-    // Écouter les changements de taille d'écran
+    // Écouter les changements de taille d'écran (iOS déclenche 'resize' au scroll)
     const handleResize = () => {
-      setDetection(detectMobile());
+      const next = detectMobile();
+      setDetection(prev => (
+        prev.isMobile === next.isMobile &&
+        prev.os === next.os &&
+        prev.isStandalone === next.isStandalone
+      ) ? prev : next);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
