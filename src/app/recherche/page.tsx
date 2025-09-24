@@ -19,7 +19,7 @@ function SearchPageContent() {
     hideSuggestions,
     showSuggestions
   } = useSearch();
-  
+
   const searchBarRef = useRef<HTMLDivElement>(null);
 
   // Scroll automatique vers la barre de recherche à chaque fin de recherche
@@ -43,7 +43,8 @@ function SearchPageContent() {
     searchState.marque?.id
   ]);
 
-  // Plus de synchronisation manuelle
+
+  // Gestion simple des changements de recherche
   const handleSearchChange = (value: string) => {
     updateQuery(value);
     updateSuggestions(value);

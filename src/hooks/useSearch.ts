@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { safeTrack } from '@/lib/analytics';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SearchState, Marque, Evenement } from '@/types';
@@ -67,6 +67,7 @@ export function useSearch() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const cache = useMemo(() => SearchCache.getInstance(), []);
+  const abortControllerRef = useRef<AbortController | undefined>(undefined);
 
   const [searchState, setSearchState] = useState<SearchState>({
     query: '',
@@ -119,7 +120,7 @@ export function useSearch() {
     }
   }, [cache, getDataService, handleError]);
 
-  // Suggestions intelligentes avec cache partagé
+  // Suggestions intelligentes avec AbortController
   const updateSuggestions = useCallback(async (query: string) => {
     const normalizedQuery = query.toLowerCase().trim();
 
@@ -133,9 +134,11 @@ export function useSearch() {
       return;
     }
 
+    // Annuler requête précédente
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = new AbortController();
+
     try {
-      // 1. Toujours utiliser l'API dédiée suggestions pour être complet
-      // (Le cache d'extraction n'est utilisé que si l'API échoue)
       const cacheKey = `suggestions_${normalizedQuery}`;
       let suggestions = cache.get(cacheKey) as Marque[] | null;
 
@@ -143,14 +146,13 @@ export function useSearch() {
         const dataService = await getDataService();
         const apiSuggestions = await dataService.getSuggestions(normalizedQuery, 10);
 
-        // Convertir vers format Marque complet (plus besoin de propriétés factices)
         suggestions = apiSuggestions.map(s => ({
           id: s.id,
           nom: s.nom,
-          beneficiaires_marque: [] // Vide pour suggestions, sera rempli si sélectionné
+          beneficiaires_marque: []
         }));
 
-        cache.set(cacheKey, suggestions, 5 * 60 * 1000); // 5min cache
+        cache.set(cacheKey, suggestions, 5 * 60 * 1000);
       }
 
       setSearchState(prev => ({
@@ -160,9 +162,8 @@ export function useSearch() {
         showSuggestions: suggestions.length > 0
       }));
     } catch (error) {
-      console.error('Erreur suggestions API:', error);
+      if ((error as Error).name === 'AbortError') return;
 
-      // 2. Fallback vers l'extraction du cache en cas d'erreur API
       const cachedSuggestions = cache.extractSuggestionsFromMarques(normalizedQuery);
       setSearchState(prev => ({
         ...prev,
