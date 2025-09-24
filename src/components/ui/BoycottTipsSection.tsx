@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { safeTrack } from '@/lib/analytics';
 import Image from 'next/image';
 import { Marque } from '@/types';
 
@@ -53,6 +54,15 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
       };
     }
   }, [isExpanded]);
+
+  // Tracking: vue des Boycott Tips quand la section s'ouvre
+  useEffect(() => {
+    if (isExpanded) {
+      safeTrack('boycott_tips_view', {
+        marque_id: marque.id
+      });
+    }
+  }, [isExpanded, marque]);
 
   // Fonction pour extraire tous les groupes d'images du contenu
   const extractImageGroups = (): string[][] => {

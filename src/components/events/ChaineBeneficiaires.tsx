@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { safeTrack } from '@/lib/analytics';
 import { User, Building2, ChevronDown, ChevronRight } from 'lucide-react';
 import { BeneficiaireComplet, TypeBeneficiaire, ControverseBeneficiaire } from '@/types';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
@@ -87,9 +88,11 @@ const formatMarkdown = (text: string) => {
 
 // Composant pour afficher les controverses (version compacte)
 const ControversesSection = ({ 
-  controverses 
+  controverses,
+  marqueId
 }: { 
   controverses: ControverseBeneficiaire[];
+  marqueId: number;
 }) => {
   if (!controverses || controverses.length === 0) {
     return (
@@ -140,6 +143,11 @@ const ControversesSection = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-xs text-primary font-medium hover:text-accent-700 transition-colors"
+                onClick={() => safeTrack('source_click', {
+                  source_type: 'beneficiaire',
+                  source_id: controverse.id,
+                  marque_id: marqueId
+                })}
               >
                 <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -309,26 +317,55 @@ export default function ChaineBeneficiaires({ marqueId, marqueNom, chaine }: Cha
     });
   }, []);
 
-  // Toggle expansion d'un bénéficiaire (un seul à la fois)
-  const toggleBeneficiaire = (uniqueId: string) => {
+  // Toggle expansion d'un bénéficiaire (un seul à la fois) avec tracking au moment de l'ouverture
+  const handleToggleBeneficiaire = (uniqueId: string, beneficiaireId: number) => {
     setExpandedBeneficiaire(prev => {
-      const newExpanded = prev === uniqueId ? null : uniqueId;
-      
-      // Si on ouvre un nouveau bénéficiaire, scroller vers son header
-      if (newExpanded && headerRefs.current[newExpanded]) {
-        setTimeout(() => {
-          const element = headerRefs.current[newExpanded]?.current;
-          if (element) {
-            const elementTop = element.getBoundingClientRect().top + window.scrollY;
-            const offset = window.innerWidth < 768 ? 150 : 160;
-            window.scrollTo({
-              top: elementTop - offset,
-              behavior: 'smooth'
-            });
+      const opening = prev !== uniqueId;
+      const newExpanded = opening ? uniqueId : null;
+
+      if (opening) {
+        // Tracking (dédupliqué par session): l'utilisateur ouvre un bénéficiaire
+        try {
+          const storageKey = 'odm_beneficiary_chain_viewed';
+          const trackKey = `${marqueId}:${beneficiaireId}`;
+          const raw = typeof window !== 'undefined' ? sessionStorage.getItem(storageKey) : null;
+          let viewed: Record<string, boolean> = {};
+          if (raw) {
+            try { viewed = JSON.parse(raw) || {}; } catch { viewed = {}; }
           }
-        }, 100); // Petit délai pour laisser l'animation d'ouverture se déclencher
+
+          if (!viewed[trackKey]) {
+            safeTrack('beneficiary_chain_view', {
+              marque_id: marqueId,
+              beneficiaire_id: beneficiaireId
+            });
+            viewed[trackKey] = true;
+            sessionStorage.setItem(storageKey, JSON.stringify(viewed));
+          }
+        } catch (e) {
+          // En cas d'échec du storage, on track quand même (best-effort)
+          safeTrack('beneficiary_chain_view', {
+            marque_id: marqueId,
+            beneficiaire_id: beneficiaireId
+          });
+        }
+
+        // Scroll vers le header correspondant
+        if (headerRefs.current[uniqueId]) {
+          setTimeout(() => {
+            const element = headerRefs.current[uniqueId]?.current;
+            if (element) {
+              const elementTop = element.getBoundingClientRect().top + window.scrollY;
+              const offset = window.innerWidth < 768 ? 150 : 160;
+              window.scrollTo({
+                top: elementTop - offset,
+                behavior: 'smooth'
+              });
+            }
+          }, 100);
+        }
       }
-      
+
       return newExpanded;
     });
   };
@@ -449,7 +486,7 @@ export default function ChaineBeneficiaires({ marqueId, marqueNom, chaine }: Cha
                             <BeneficiaireHeader
                               beneficiaire={beneficiaire}
                               isExpanded={isExpanded}
-                              onToggle={() => toggleBeneficiaire(uniqueId)}
+                              onToggle={() => handleToggleBeneficiaire(uniqueId, beneficiaire.id)}
                               niveau={niveau}
                               beneficiaireIndex={beneficiaireIndex}
                               headerRef={headerRefs.current[uniqueId]}
@@ -479,6 +516,7 @@ export default function ChaineBeneficiaires({ marqueId, marqueNom, chaine }: Cha
                                     </div>
                                     <ControversesSection 
                                       controverses={beneficiaire.controverses}
+                                      marqueId={marqueId}
                                     />
                                   </div>
                                 )}
@@ -552,7 +590,7 @@ export default function ChaineBeneficiaires({ marqueId, marqueNom, chaine }: Cha
                         key={`niveau-${niveau}-${beneficiaire.id}-${beneficiaireIndex}`}
                         beneficiaire={beneficiaire}
                         isExpanded={isExpanded}
-                        onToggle={() => toggleBeneficiaire(uniqueId)}
+                        onToggle={() => handleToggleBeneficiaire(uniqueId, beneficiaire.id)}
                         niveau={niveau}
                         beneficiaireIndex={beneficiaireIndex}
                         headerRef={headerRefs.current[uniqueId]}
@@ -594,6 +632,7 @@ export default function ChaineBeneficiaires({ marqueId, marqueNom, chaine }: Cha
                           </div>
                           <ControversesSection 
                             controverses={beneficiaire.controverses}
+                            marqueId={marqueId}
                           />
                         </div>
                       )}
