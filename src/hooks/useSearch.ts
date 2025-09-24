@@ -261,7 +261,7 @@ export function useSearch() {
       // Tracking des erreurs de recherche (optionnel selon flag)
       safeTrack('search_error', {
         query: normalizedQuery,
-        type: (error as any)?.name === 'AbortError' ? 'timeout' : 'client',
+        type: (error as Error)?.name === 'AbortError' ? 'timeout' : 'client',
         response_time_ms: Date.now() - startedAt
       });
       handleError(error, 'recherche principale');

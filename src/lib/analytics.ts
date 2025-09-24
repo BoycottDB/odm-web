@@ -29,7 +29,7 @@ const isEventEnabled = (event: string): boolean => {
   return true;
 };
 
-export const safeTrack = (event: string, data?: Record<string, any>) => {
+export const safeTrack = (event: string, data?: Record<string, unknown>) => {
   try {
     if (!isEventEnabled(event)) {
       return;
@@ -37,7 +37,6 @@ export const safeTrack = (event: string, data?: Record<string, any>) => {
 
     if (getEnv() === 'local') {
       // Do not send in local; just log
-      // eslint-disable-next-line no-console
       console.debug(`📊 [LOCAL] ${event}`, data);
       return;
     }
@@ -49,13 +48,17 @@ export const safeTrack = (event: string, data?: Record<string, any>) => {
     }
 
     if (typeof window !== 'undefined') {
-      const w: any = window as any;
+      const w = window as unknown as {
+        umami?: ((event: string, data?: Record<string, unknown>) => void) | {
+          track: (event: string, data?: Record<string, unknown>) => void
+        }
+      };
       const umami = w.umami;
 
       // Support both API shapes: function or object with .track
       if (typeof umami === 'function') {
         umami(event, data);
-      } else if (umami && typeof umami.track === 'function') {
+      } else if (umami && typeof umami === 'object' && 'track' in umami && typeof umami.track === 'function') {
         umami.track(event, data);
       }
     }
