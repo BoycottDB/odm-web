@@ -3,12 +3,33 @@
 import Link from 'next/link';
 import { Download, Search, SearchX, Compass, TextSearch, WavesLadder, Sailboat, FileInput, CircleQuestionMark, Zap, ChevronRight } from 'lucide-react';
 import { useMobileDetection } from '@/hooks/useMobileDetection';
+import { useEffect, useState } from 'react';
+import { VideoSkeleton } from '@/components/ui/VideoSkeleton';
 
 export default function Home() {
   const { isMobile } = useMobileDetection();
 
+  const useVideoLoader = () => {
+    const [ready, setReady] = useState(false);
+    const [progress, setProgress] = useState(0);
+    useEffect(() => {
+      if (ready) return;
+      const id = setInterval(() => {
+        setProgress((p) => Math.min(p + 8, 95));
+      }, 200);
+      return () => clearInterval(id);
+    }, [ready]);
+    const handleLoaded = () => {
+      setReady(true);
+      setProgress(100);
+    };
+    return { ready, progress, handleLoaded };
+  };
+
   // Sections dans l'ordre d'apparition sur la page
-  const SearchSection = () => (
+  const SearchSection = () => {
+    const { ready, progress, handleLoaded } = useVideoLoader();
+    return (
     <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 lg:items-center">
       {/* Titre - order-1 sur mobile et desktop */}
       <div className="order-1 lg:order-1 text-center md:text-left">
@@ -38,15 +59,22 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-2  liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-2 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
         <video
           src="/videos/recherche.mp4"
           autoPlay
           muted
           loop
           playsInline
-          className="w-full aspect-[3/2] object-cover rounded-lg"
+          onCanPlayThrough={handleLoaded}
+          onLoadedData={handleLoaded}
+          className={`w-full aspect-[3/2] object-cover rounded-lg transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
         />
+        {!ready && (
+          <div className="absolute inset-0 p-0 md:p-3">
+            <VideoSkeleton progress={progress} shouldLoad={!ready} />
+          </div>
+        )}
       </div>
 
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
@@ -65,9 +93,12 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
-  const BoycottTipsSection = () => (
+  const BoycottTipsSection = () => {
+    const { ready, progress, handleLoaded } = useVideoLoader();
+    return (
     <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 lg:items-center">
       {/* Titre - order-1 sur mobile et desktop */}
       <div className="order-1 lg:order-2 text-center md:text-left">
@@ -97,15 +128,22 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-1 liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-1 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
         <video
           src="/videos/boycott.mp4"
           autoPlay
           muted
           loop
           playsInline
-          className="w-full aspect-[3/2] object-cover rounded-lg"
+          onCanPlayThrough={handleLoaded}
+          onLoadedData={handleLoaded}
+          className={`w-full aspect-[3/2] object-cover rounded-lg transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
         />
+        {!ready && (
+          <div className="absolute inset-0 p-0 md:p-3">
+            <VideoSkeleton progress={progress} shouldLoad={!ready} />
+          </div>
+        )}
       </div>
 
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
@@ -124,9 +162,12 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
-  const ExtensionSection = () => (
+  const ExtensionSection = () => {
+    const { ready, progress, handleLoaded } = useVideoLoader();
+    return (
     <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 lg:items-center">
       {/* Titre - order-1 sur mobile et desktop */}
       <div className="order-1 lg:order-1 text-center md:text-left">
@@ -167,15 +208,22 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-2  liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-2 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
         <video
           src="/videos/extension.mp4"
           autoPlay
           muted
           loop
           playsInline
-          className="w-full aspect-[3/2] object-cover rounded-lg"
+          onCanPlayThrough={handleLoaded}
+          onLoadedData={handleLoaded}
+          className={`w-full aspect-[3/2] object-cover rounded-lg transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
         />
+        {!ready && (
+          <div className="absolute inset-0 p-0 md:p-3">
+            <VideoSkeleton progress={progress} shouldLoad={!ready} />
+          </div>
+        )}
       </div>
 
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
@@ -205,9 +253,12 @@ export default function Home() {
         )}
       </div>
     </div>
-  );
+    );
+  };
 
-  const SignalementSection = () => (
+  const SignalementSection = () => {
+    const { ready, progress, handleLoaded } = useVideoLoader();
+    return (
     <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 lg:items-center">
       {/* Titre - order-1 sur mobile et desktop */}
       <div className="order-1 lg:order-2 text-center md:text-left">
@@ -239,15 +290,22 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-1 liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-1 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
         <video
           src="/videos/signalement.mp4"
           autoPlay
           muted
           loop
           playsInline
-          className="w-full aspect-[3/2] object-cover rounded-lg"
+          onCanPlayThrough={handleLoaded}
+          onLoadedData={handleLoaded}
+          className={`w-full aspect-[3/2] object-cover rounded-lg transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
         />
+        {!ready && (
+          <div className="absolute inset-0 p-0 md:p-3">
+            <VideoSkeleton progress={progress} shouldLoad={!ready} />
+          </div>
+        )}
       </div>
 
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
@@ -268,7 +326,8 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
   return (
     <div className="min-h-screen relative">
