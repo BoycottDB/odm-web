@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { safeTrack } from '@/lib/analytics';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SearchState, Marque, Evenement } from '@/types';
 
@@ -175,6 +176,8 @@ export function useSearch() {
   // ✅ Recherche principale avec cache intelligent
   const performSearchInternal = useCallback(async (query: string) => {
     setSearchState(prev => ({ ...prev, query }));
+    const startedAt = Date.now();
+    const normalizedQuery = query.toLowerCase().trim();
 
     if (!query.trim()) {
       // Recherche vide : charger événements par défaut
@@ -204,7 +207,6 @@ export function useSearch() {
 
     try {
       const dataService = await getDataService();
-      const normalizedQuery = query.toLowerCase().trim();
 
       // Cache pour recherche
       const cacheKey = `search_${normalizedQuery}`;
@@ -234,6 +236,17 @@ export function useSearch() {
       const { filteredEvents, marque } = cachedResults;
       const hasResults = filteredEvents.length > 0 || (marque?.total_beneficiaires_chaine || 0) > 0;
 
+      // Tracking Umami
+      safeTrack('search', {
+        query: normalizedQuery,
+        has_results: hasResults,
+        marque_id: marque?.id
+      });
+
+      if (!hasResults) {
+        safeTrack('search_gap', { query: normalizedQuery });
+      }
+
       setSearchState(prev => ({
         ...prev,
         results: filteredEvents,
@@ -244,6 +257,12 @@ export function useSearch() {
         hasPerformedSearch: true
       }));
     } catch (error) {
+      // Tracking des erreurs de recherche (optionnel selon flag)
+      safeTrack('search_error', {
+        query: normalizedQuery,
+        type: (error as any)?.name === 'AbortError' ? 'timeout' : 'client',
+        response_time_ms: Date.now() - startedAt
+      });
       handleError(error, 'recherche principale');
     }
   }, [cache, getDataService, loadEvents, handleError]);

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { safeTrack } from '@/lib/analytics';
 
 interface ShareButtonProps {
   /** URL à partager */
@@ -53,6 +54,8 @@ export function ShareButton({
     if (navigator.share) {
       try {
         await navigator.share(shareData);
+        // Track partage via Web Share API
+        safeTrack('social_share', { platform: 'web_share_api' });
       } catch (error) {
         // Si l'utilisateur annule le partage, ne rien faire
         if ((error as Error).name !== 'AbortError') {
@@ -72,9 +75,11 @@ export function ShareButton({
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      // Track copie du lien
+      safeTrack('social_share', { platform: 'copy_link' });
     } catch (error) {
       console.warn('Erreur lors de la copie:', error);
-      // Fallback pour navigateurs anciens
+      // Fallback pour navigateurs anciens (track à l'intérieur de fallback)
       fallbackCopy();
     }
   };
@@ -89,6 +94,8 @@ export function ShareButton({
       document.execCommand('copy');
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      // Track copie du lien (fallback)
+      safeTrack('social_share', { platform: 'copy_link' });
     } catch (error) {
       console.warn('Fallback copy failed:', error);
     }

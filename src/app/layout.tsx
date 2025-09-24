@@ -1,5 +1,6 @@
 'use client';
 import Link from "next/link";
+import Script from 'next/script';
 import { usePathname } from "next/navigation";
 import { Rubik, Geist } from "next/font/google";
 import { useState } from "react";
@@ -97,7 +98,7 @@ function MobileNav() {
               Signaler
             </Link>
             <Link href="/faq" className={getLinkClass('/faq')} onClick={() => setOpen(false)}>
-              FAQ
+              Questions fréquentes
             </Link>
           </nav>
         </div>
@@ -112,6 +113,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+  const appEnv = process.env.NEXT_PUBLIC_APP_ENV ?? (process.env.NODE_ENV === 'development' ? 'local' : 'prod');
+  const websiteId = appEnv === 'local'
+    ? process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID_LOCAL
+    : process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
 
   const getDesktopLinkClass = (href: string) => {
     const isActive = pathname === href;
@@ -128,6 +133,12 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="ODM" />
+        {/* Umami Analytics */}
+        <Script
+          async
+          src={`${process.env.NEXT_PUBLIC_UMAMI_URL}/script.js`}
+          data-website-id={websiteId}
+        />
 
         {/* Favicons */}
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -167,7 +178,7 @@ export default function RootLayout({
                 Signaler
               </Link>
               <Link href="/faq" className={getDesktopLinkClass('/faq')}>
-                FAQ
+                Questions fréquentes
               </Link>
             </nav>
             {/* Menu mobile */}

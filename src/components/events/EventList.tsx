@@ -25,6 +25,13 @@ export function EventList({ events, marque, loading, searching, notFound, hasSea
     new URLSearchParams(window.location.search).get('q') || '' : 
     searchQuery;
   const { canInstall } = useAddToHomeScreen();
+
+  // Affichage des résultats
+  const hasEvents = events.length > 0;
+  // Considérer comme résultats de recherche si une recherche a été effectuée (même sans résultats)
+  const isSearchResults = hasSearched;
+  // Vérifier s'il y a des bénéficiaires dans la chaîne
+  const hasBeneficiaires = (marque?.total_beneficiaires_chaine ?? 0) > 0;
   // État de chargement initial
   if (loading && !hasSearched) {
     return (
@@ -89,13 +96,7 @@ export function EventList({ events, marque, loading, searching, notFound, hasSea
     );
   }
 
-  // Affichage des résultats
-  const hasEvents = events.length > 0;
-  // Considérer comme résultats de recherche si une recherche a été effectuée (même sans résultats)
-  const isSearchResults = hasSearched;
-
-  // Vérifier s'il y a des bénéficiaires dans la chaîne
-  const hasBeneficiaires = (marque?.total_beneficiaires_chaine ?? 0) > 0;
+  
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 md:space-y-16">

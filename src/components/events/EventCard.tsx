@@ -1,4 +1,5 @@
 import { Evenement, Marque } from '@/types';
+import { safeTrack } from '@/lib/analytics';
 import { JudicialCondemnationNotice } from '@/components/ui/JudicialCondemnationNotice';
 
 interface EventCardProps {
@@ -92,6 +93,11 @@ export function EventCard({ event, marque }: EventCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center body-base font-medium text-primary hover:text-primary-700 transition-colors duration-200"
+            onClick={() => safeTrack('source_click', {
+              source_type: 'evenement',
+              source_id: event.id,
+              marque_id: event.marque?.id || marque?.id
+            })}
           >
             <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
