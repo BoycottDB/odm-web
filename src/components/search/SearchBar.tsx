@@ -1,4 +1,6 @@
-import { KeyboardEvent, ChangeEvent } from 'react';
+'use client';
+
+import { KeyboardEvent, ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Marque } from '@/types';
 
 // Interface unifiée
@@ -20,6 +22,108 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
+// Hook d'animation pour placeholder "tapé"
+function useTypingPlaceholder(words: string[], enabled: boolean) {
+  const [text, setText] = useState('');
+  const timerRef = useRef<number | null>(null);
+  const wordIndexRef = useRef(0);
+  const charIndexRef = useRef(0);
+  const phaseRef = useRef<'typing' | 'pausingAfterType' | 'deleting' | 'pausingAfterDelete'>('typing');
+
+  // Nettoyage timer
+  const clearTimer = () => {
+    if (timerRef.current !== null) {
+      window.clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    // En SSR: ne rien faire (barre vide)
+    if (typeof window === 'undefined') return;
+
+    // Reset à chaque (re)démarrage
+    clearTimer();
+    setText('');
+    wordIndexRef.current = 0;
+    charIndexRef.current = 0;
+    phaseRef.current = 'typing';
+
+    if (!enabled || words.length === 0) {
+      return;
+    }
+
+    // Respecte prefers-reduced-motion: pas d'animation, affiche un exemple statique
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      setText(words[0] ?? '');
+      return;
+    }
+
+    const TYPE_MS = 90;
+    const DELETE_MS = 55;
+    const HOLD_AFTER_TYPE_MS = 1100;
+    const HOLD_AFTER_DELETE_MS = 400;
+    const INITIAL_DELAY_MS = 450; // démarre vide un court instant
+
+    let cancelled = false;
+
+    const tick = () => {
+      if (cancelled) return;
+      const currentWord = words[wordIndexRef.current] ?? '';
+      let delay = TYPE_MS;
+
+      switch (phaseRef.current) {
+        case 'typing': {
+          if (charIndexRef.current < currentWord.length) {
+            charIndexRef.current += 1;
+            setText(currentWord.slice(0, charIndexRef.current));
+            delay = TYPE_MS;
+          } else {
+            phaseRef.current = 'pausingAfterType';
+            delay = HOLD_AFTER_TYPE_MS;
+          }
+          break;
+        }
+        case 'pausingAfterType': {
+          phaseRef.current = 'deleting';
+          delay = DELETE_MS;
+          break;
+        }
+        case 'deleting': {
+          if (charIndexRef.current > 0) {
+            charIndexRef.current -= 1;
+            setText(currentWord.slice(0, charIndexRef.current));
+            delay = DELETE_MS;
+          } else {
+            phaseRef.current = 'pausingAfterDelete';
+            delay = HOLD_AFTER_DELETE_MS;
+          }
+          break;
+        }
+        case 'pausingAfterDelete': {
+          wordIndexRef.current = words.length > 0 ? (wordIndexRef.current + 1) % words.length : 0;
+          phaseRef.current = 'typing';
+          delay = TYPE_MS;
+          break;
+        }
+      }
+
+      timerRef.current = window.setTimeout(tick, delay);
+    };
+
+    timerRef.current = window.setTimeout(tick, INITIAL_DELAY_MS);
+
+    return () => {
+      cancelled = true;
+      clearTimer();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, words.join('|')]);
+
+  return text;
+}
+
 export function SearchBar({
   value,
   onChange,
@@ -29,8 +133,10 @@ export function SearchBar({
   onKeyDown,
   onFocus,
   onBlur,
-  placeholder = "Herta, Nike, Smartbox, Twitter"
+  placeholder = "Herta, Starbucks, Decathlon, Smartbox, L'Oréal, Nous Anti Gaspi, Vittel, La Laitière, Biscuits St Michel, Twitter, CANAL+"
 }: SearchBarProps) {
+  const [isFocusedLocal, setIsFocusedLocal] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(value);
@@ -38,6 +144,29 @@ export function SearchBar({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
+  };
+
+  // Liste des mots à "taper" extraite du placeholder (séparés par des virgules)
+  const words = useMemo(() => {
+    return placeholder
+      .split(',')
+      .map((w) => w.trim())
+      .filter(Boolean);
+  }, [placeholder]);
+
+  // Animation active uniquement si l'input est vide et non focus
+  const animationEnabled = value.length === 0 && !isFocusedLocal;
+  const typedPlaceholder = useTypingPlaceholder(words, animationEnabled);
+  const effectivePlaceholder = animationEnabled ? typedPlaceholder : placeholder;
+
+  const handleFocusWrapped = () => {
+    setIsFocusedLocal(true);
+    onFocus();
+  };
+
+  const handleBlurWrapped = () => {
+    setIsFocusedLocal(false);
+    onBlur();
   };
 
   return (
@@ -58,9 +187,9 @@ export function SearchBar({
             value={value}
             onChange={handleChange}
             onKeyDown={onKeyDown}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            placeholder={placeholder}
+            onFocus={handleFocusWrapped}
+            onBlur={handleBlurWrapped}
+            placeholder={effectivePlaceholder}
             autoComplete="off"
             aria-label="Rechercher une marque"
             aria-autocomplete="list"
