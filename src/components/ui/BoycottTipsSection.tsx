@@ -55,14 +55,29 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
     }
   }, [isExpanded]);
 
-  // Tracking: vue des Boycott Tips quand la section s'ouvre
+  // Tracking: vue des Boycott Tips quand la section s'ouvre (dédupliqué par session et par marque)
   useEffect(() => {
     if (isExpanded) {
-      safeTrack('boycott_tips_view', {
-        marque_id: marque.id
-      });
+      try {
+        const storageKey = 'odm_boycott_tips_viewed';
+        const trackKey = String(marque.id);
+        const raw = typeof window !== 'undefined' ? sessionStorage.getItem(storageKey) : null;
+        let viewed: Record<string, boolean> = {};
+        if (raw) {
+          try { viewed = JSON.parse(raw) || {}; } catch { viewed = {}; }
+        }
+
+        if (!viewed[trackKey]) {
+          safeTrack('boycott_tips_view', { marque_id: marque.id });
+          viewed[trackKey] = true;
+          sessionStorage.setItem(storageKey, JSON.stringify(viewed));
+        }
+      } catch (e) {
+        // En cas d'échec du storage, on track quand même (best-effort)
+        safeTrack('boycott_tips_view', { marque_id: marque.id });
+      }
     }
-  }, [isExpanded, marque]);
+  }, [isExpanded, marque.id]);
 
   // Fonction pour extraire tous les groupes d'images du contenu
   const extractImageGroups = (): string[][] => {
