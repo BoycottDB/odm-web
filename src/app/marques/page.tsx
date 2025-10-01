@@ -2,8 +2,8 @@ import { Suspense } from 'react';
 import MarquesList from '@/components/MarquesList';
 import MarquesSkeleton from '@/components/MarquesSkeleton';
 
-// Utilisation d'ISR pour le cache et performance
-export const revalidate = 300; // 5 minutes
+// Utilisation d'ISR pour le cache et performance (aligné API)
+export const revalidate = 600; // 10 minutes
 
 export default function MarquesPage() {
 
@@ -24,7 +24,7 @@ export default function MarquesPage() {
       {/* Section Liste des marques */}
       <section className="section-padding bg-gradient-to-b from-white to-primary-50">
         <div className="max-w-6xl mx-auto px-6">
-          <Suspense fallback={<MarquesSkeleton count={12} />}>
+          <Suspense fallback={<MarquesSkeleton count={8} />}>
             <MarquesList />
           </Suspense>
         </div>

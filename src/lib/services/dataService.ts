@@ -28,12 +28,18 @@ class DataService {
   // ============= LECTURES (odm-api uniquement) =============
 
   /**
-   * Méthode privée pour fetch depuis odm-api
+   * Méthode privée pour fetch depuis odm-api (compatible ISR Next.js)
+   * Utilise par défaut le cache Next (revalidate configurable), les tags pour revalidateTag,
+   * et le cache CDN en amont.
    */
-  private async fetchFromExtensionApi<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${this.extensionApiUrl}/.netlify/functions/${endpoint}`, {
+  private async fetchFromExtensionApi<T>(endpoint: string, options?: { revalidate?: number; tags?: string[]; cache?: RequestCache }): Promise<T> {
+    const url = `${this.extensionApiUrl}/.netlify/functions/${endpoint}`;
+    const response = await fetch(url, {
       headers: { 'Accept': 'application/json' },
-      cache: 'no-store'
+      ...((typeof options?.revalidate === 'number' || (options?.tags && options.tags.length))
+        ? { next: { ...(typeof options?.revalidate === 'number' ? { revalidate: options.revalidate } : {}), ...(options?.tags?.length ? { tags: options.tags } : {}) } }
+        : {}),
+      ...(options?.cache ? { cache: options.cache } : {}),
     });
     
     if (!response.ok) {
@@ -53,7 +59,8 @@ class DataService {
     if (offset) params.append('offset', offset.toString());
 
     const endpoint = `marques${params.toString() ? '?' + params.toString() : ''}`;
-    return this.fetchFromExtensionApi<Marque[]>(endpoint);
+    // TTL adaptatif: 10min pour recherche, 20min pour liste complète
+    return this.fetchFromExtensionApi<Marque[]>(endpoint, { revalidate: search ? 600 : 1200 });
   }
 
   /**
@@ -65,7 +72,8 @@ class DataService {
     params.append('limit', limit.toString());
 
     const endpoint = `suggestions?${params.toString()}`;
-    return this.fetchFromExtensionApi<{id: number, nom: string}[]>(endpoint);
+    // Suggestions: TTL court (5min) pour fraîcheur et performance
+    return this.fetchFromExtensionApi<{id: number, nom: string}[]>(endpoint, { revalidate: 300 });
   }
 
   /**
@@ -77,14 +85,16 @@ class DataService {
     if (offset) params.append('offset', offset.toString());
     
     const endpoint = `evenements${params.toString() ? '?' + params.toString() : ''}`;
-    return this.fetchFromExtensionApi<Evenement[]>(endpoint);
+    // Derniers événements: TTL 5min
+    return this.fetchFromExtensionApi<Evenement[]>(endpoint, { revalidate: 300 });
   }
 
   /**
    * Get all categories
    */
   async getCategories(): Promise<Categorie[]> {
-    return this.fetchFromExtensionApi<Categorie[]>('categories');
+    // Catégories: TTL 20min
+    return this.fetchFromExtensionApi<Categorie[]>('categories', { revalidate: 1200 });
   }
 
   /**
@@ -92,7 +102,8 @@ class DataService {
    */
   async getSecteurs(id?: number): Promise<SecteurMarque[] | SecteurMarque> {
     const endpoint = id ? `secteurs-marque?id=${id}` : 'secteurs-marque';
-    return this.fetchFromExtensionApi<SecteurMarque[] | SecteurMarque>(endpoint);
+    // Secteurs: TTL 20min
+    return this.fetchFromExtensionApi<SecteurMarque[] | SecteurMarque>(endpoint, { revalidate: 1200 });
   }
 
   /**
@@ -107,6 +118,8 @@ class DataService {
     nbBeneficiairesControverses: number;
     beneficiairesControverses: Array<{id: number, nom: string}>;
   }[]> {
+    // Aligner TTL (600s) et utiliser un tag pour une revalidation ciblée après écriture
+    const endpoint = 'marques-stats';
     return this.fetchFromExtensionApi<{
       id: number;
       nom: string;
@@ -115,7 +128,7 @@ class DataService {
       nbCondamnations: number;
       nbBeneficiairesControverses: number;
       beneficiairesControverses: Array<{id: number, nom: string}>;
-    }[]>('marques-stats');
+    }[]>(endpoint, { revalidate: 600, tags: ['marques-stats'] });
   }
 
 
