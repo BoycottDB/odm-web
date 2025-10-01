@@ -8,8 +8,8 @@ export default async function MarquesList() {
 
   try {
     const data = await dataService.getMarquesStats();
-    // Tri par ordre alphabétique côté serveur
-    marques = data.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+    // Déjà trié côté API par ordre alphabétique
+    marques = data;
   } catch (err) {
     console.error('Erreur lors du chargement des marques:', err);
     error = 'Erreur lors du chargement des marques';

@@ -743,9 +743,9 @@ async getMarques(): Promise<Marque[]> {
 
 ### Solution implémentée
 - **Pattern Streaming SSR** : Suspense + Server Components séparés
-- **ISR Cache** : `revalidate = 300` (5 minutes) pour performance
+- **ISR Cache** : `revalidate = 600` (10 minutes) + fetch tags (`'marques-stats'`) pour revalidation ciblée
 - **Skeleton premium** : Remplacement spinner générique par skeleton réaliste
-- **Memoization React** : Components optimisés avec `memo()` et `useMemo()`
+- **Server Components** : Composants server par défaut (hydratation minimale)
 - **Architecture modulaire** : Séparation page wrapper + composant données
 
 ### Résultats mesurés
@@ -756,11 +756,11 @@ async getMarques(): Promise<Marque[]> {
 ### Architecture finale optimisée
 ```typescript
 // 1. Page wrapper (rendu instantané)
-export const revalidate = 300; // ISR Cache 5min
+export const revalidate = 600; // ISR Cache 10min
 export default function MarquesPage() {
   return (
     <Layout>
-      <Suspense fallback={<MarquesSkeleton count={12} />}>
+      <Suspense fallback={<MarquesSkeleton count={8} />}> 
         <MarquesList />
       </Suspense>
     </Layout>
@@ -770,26 +770,27 @@ export default function MarquesPage() {
 // 2. Composant données (Server Component)
 async function MarquesList() {
   const marques = await dataService.getMarquesStats();
-  const sortedMarques = marques.sort((a, b) => a.nom.localeCompare(b.nom));
-  return sortedMarques.map(marque =>
+  // Tri déjà effectué côté API
+  return marques.map(marque =>
     <MarqueCard key={marque.id} marque={marque} />
   );
 }
 
-// 3. Carte optimisée (memoized)
-const MarqueCard = memo(({ marque }) => {
-  const { mainName, parentheses } = useMemo(() =>
-    formatMarqueName(marque.nom), [marque.nom]
-  );
+// 3. Carte optimisée (Server Component)
+const MarqueCard = ({ marque }) => {
+  // Server Component: pas de hooks client; navigation via <Link />
   // Rendu optimisé...
-});
+};
 ```
 
+#### Targeted revalidation via fetch tags
+- Fetch côté web utilise `next: { tags: ['marques-stats'] }`
+- Invalidation ciblée possible via `revalidateTag('marques-stats')` après une écriture
+
 ### Fichiers créés/modifiés
-- `src/app/marques/page.tsx` → Wrapper Suspense + ISR
-- `src/app/marques/loading.tsx` → Fallback skeleton
-- `src/components/MarquesList.tsx` → Server Component données
-- `src/components/MarqueCard.tsx` → Composant memoized
+- `src/app/marques/page.tsx` → Wrapper Suspense + ISR (revalidate 600s, skeleton 8)
+- `src/components/MarquesList.tsx` → Server Component données (pas de tri client)
+- `src/components/MarqueCard.tsx` → Server Component (chevron léger, +X overflow)
 - `src/components/MarquesSkeleton.tsx` → Skeleton premium
 
 ### Pattern réutilisable pour autres pages lourdes
