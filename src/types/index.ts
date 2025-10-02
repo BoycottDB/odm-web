@@ -1,5 +1,17 @@
 // Types centralisés pour toute l'application
 
+export interface MarqueStats {
+  id: number;
+  nom: string;
+  nbControverses: number;
+  nbCondamnations: number;
+  categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
+  beneficiairesControverses: Array<{id: number, nom: string}>;
+  nbBeneficiairesControverses?: number;
+  secteur?: { id: number; nom: string } | null;
+  pays_origine?: string;
+  updated_at?: string;
+}
 
 export interface Marque {
   id: number;
@@ -9,6 +21,7 @@ export interface Marque {
   message_boycott_tips?: string;
   // Nouvelles propriétés pour la chaîne complète de bénéficiaires
   total_beneficiaires_chaine?: number;
+  total_evenements?: number;
   chaine_beneficiaires?: Array<{
     beneficiaire: {
       id: number;
@@ -73,6 +86,9 @@ export interface Marque {
     };
   }>;
   secteur_marque_id?: number;
+  secteur?: string;
+  pays_origine?: string;
+  updated_at?: string;
 }
 
 export interface SecteurMarque {
