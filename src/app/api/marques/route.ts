@@ -3,14 +3,25 @@ import { supabaseAdmin } from '@/lib/supabaseClient';
 import { validateMarqueCreate } from '@/lib/validation/schemas';
 import { getErrorMessage } from '@/lib/utils/helpers';
 
+/**
+ * GET /api/marques - ADMIN ONLY
+ * Accès direct Supabase avec tous les champs pour l'administration
+ * Pour consultation publique, utiliser dataService.getMarquesStats() dans Server Components
+ */
 export async function GET(request: NextRequest) {
   try {
+    // TODO: Ajouter vérification auth admin ici
+    // const isAdmin = await checkAdminAuth(request);
+    // if (!isAdmin) {
+    //   return NextResponse.json({ error: 'Accès non autorisé' }, { status: 403 });
+    // }
+
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search');
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
     const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : undefined;
-    
-    // Query Supabase directly - API endpoints should not use dataService
+
+    // Query Supabase directly - Accès complet pour administration
     let query = supabaseAdmin
       .from('Marque')
       .select(`
@@ -24,30 +35,31 @@ export async function GET(request: NextRequest) {
           beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey(*)
         )
       `);
-    
+
     if (search) {
       query = query.ilike('nom', `%${search}%`);
     }
-    
+
     if (limit) {
       query = query.limit(limit);
     }
-    
+
     if (offset) {
       query = query.range(offset, offset + (limit || 50) - 1);
     }
-    
+
     const { data: marques, error } = await query;
-    
+
     if (error) throw error;
-    
+
     return NextResponse.json(marques || [], {
       headers: {
-        'X-Data-Source': 'direct-supabase'
+        'X-Data-Source': 'direct-supabase-admin',
+        'X-Warning': 'Admin endpoint - use dataService for public access'
       }
     });
   } catch (error) {
-    console.error('Erreur lors de la récupération des marques:', error);
+    console.error('Erreur lors de la récupération des marques (admin):', error);
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des marques' },
       { status: 500 }

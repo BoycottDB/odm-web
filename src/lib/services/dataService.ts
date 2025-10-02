@@ -112,17 +112,18 @@ class DataService {
   async getMarquesStats(): Promise<{
     id: number;
     nom: string;
+    secteur?: { id: number; nom: string } | null;
     nbControverses: number;
     categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
     nbCondamnations: number;
     nbBeneficiairesControverses: number;
     beneficiairesControverses: Array<{id: number, nom: string}>;
   }[]> {
-    // Aligner TTL (600s) et utiliser un tag pour une revalidation ciblée après écriture
     const endpoint = 'marques-stats';
     return this.fetchFromExtensionApi<{
       id: number;
       nom: string;
+      secteur?: { id: number; nom: string } | null;
       nbControverses: number;
       categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
       nbCondamnations: number;
