@@ -1,3 +1,5 @@
+'use client';
+
 import { Evenement, Marque } from '@/types';
 import { safeTrack } from '@/lib/analytics';
 import { JudicialCondemnationNotice } from '@/components/ui/JudicialCondemnationNotice';

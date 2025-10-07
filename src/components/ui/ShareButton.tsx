@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { safeTrack } from '@/lib/analytics';
 
@@ -26,8 +28,10 @@ export function ShareButton({
 }: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
 
-  // Construction de l'URL absolue
-  const shareUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
+  // Construction de l'URL absolue (client-side only)
+  const shareUrl = typeof window !== 'undefined' && !url.startsWith('http')
+    ? `${window.location.origin}${url}`
+    : url;
   
   const shareData = {
     title: title,

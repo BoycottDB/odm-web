@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { slugify } from '@/lib/slug';
 
 interface Marque {
   id: number;
@@ -14,22 +15,26 @@ interface MarquesBadgesProps {
   variant?: 'admin' | 'public' | 'indirect';
 }
 
-export function MarquesBadges({ 
-  marques, 
-  maxVisible = 230, 
+export function MarquesBadges({
+  marques,
+  maxVisible = 230,
   onMarqueClick,
-  variant = 'public' 
+  variant = 'public'
 }: MarquesBadgesProps) {
   const router = useRouter();
-  
+
   const handleMarqueClick = (marque: Marque, event: React.MouseEvent | React.KeyboardEvent) => {
     event.stopPropagation();
-    
+
     if (onMarqueClick) {
       onMarqueClick(marque);
     } else if (variant === 'public' || variant === 'indirect') {
-      // Navigation par défaut vers la recherche
-      router.push(`/recherche?q=${encodeURIComponent(marque.nom)}`);
+      // Poser flag pour scroll automatique après navigation
+      sessionStorage.setItem('scrollToResults', 'true');
+
+      // Navigation vers page marque
+      const slug = slugify(marque.nom);
+      router.push(`/marques/${slug}`);
     }
   };
 

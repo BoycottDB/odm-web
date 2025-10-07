@@ -115,6 +115,11 @@ export default function SimpleSelect<T extends { id: number; nom: string }>({
               const optionValue = option[valueKey] as number;
               const optionLabel = String(option[displayKey]);
               const count = 'count' in option ? (option as { count: number }).count : undefined;
+              const filteredCount = 'filteredCount' in option ? (option as { filteredCount: number }).filteredCount : undefined;
+
+              // Afficher filteredCount / count si filtré, sinon juste count
+              const showFiltered = filteredCount !== undefined && filteredCount !== count;
+
               return (
                 <button
                   key={optionValue}
@@ -127,7 +132,13 @@ export default function SimpleSelect<T extends { id: number; nom: string }>({
                   <span>{optionLabel}</span>
                   {count !== undefined && (
                     <span className={`text-xs px-2 py-0.5 rounded-full ${value === optionValue ? 'bg-primary/20 text-primary' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {count}
+                      {showFiltered ? (
+                        <>
+                          {filteredCount} sur {count}
+                        </>
+                      ) : (
+                        count
+                      )}
                     </span>
                   )}
                 </button>

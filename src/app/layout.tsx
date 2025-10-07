@@ -88,7 +88,7 @@ function MobileNav() {
             {/* <Link href="/" className={getLinkClass('/')} onClick={() => setOpen(false)}>
             Accueil
           </Link> */}
-            <Link href="/recherche" className={getLinkClass('/recherche')} onClick={() => setOpen(false)}>
+            <Link href="/marques" className={getLinkClass('/marques')} onClick={() => setOpen(false)}>
               Rechercher
             </Link>
             {/* <Link href="/about" className={getLinkClass('/about')} onClick={() => setOpen(false)}>
@@ -168,7 +168,7 @@ export default function RootLayout({
               {/* <Link href="/" className={getDesktopLinkClass('/')}>
                 Accueil
               </Link> */}
-              <Link href="/recherche" className={getDesktopLinkClass('/recherche')}>
+              <Link href="/marques" className={getDesktopLinkClass('/marques')}>
                 Rechercher
               </Link>
               {/* <Link href="/about" className={getDesktopLinkClass('/about')}>
@@ -205,7 +205,7 @@ export default function RootLayout({
               </p>
               <div className="text-center mt-4">
                 <a
-                  href={"http://localhost:3000/"}
+                  href="https://github.com/BoycottDB/odm-web"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="body-small inline-flex items-center px-6 py-3 bg-gradient-to-r bg-black hover:bg-primary text-white font-medium rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
