@@ -132,6 +132,39 @@ class DataService {
     }[]>(endpoint, { revalidate: 600, tags: ['marques-stats'] });
   }
 
+  /**
+   * Get a brand by its slug (for /marques/[slug] pages)
+   */
+  async getMarqueBySlug(slug: string): Promise<Marque | null> {
+    const params = new URLSearchParams();
+    params.append('slug', slug);
+
+    const endpoint = `marque-by-slug?${params.toString()}`;
+    try {
+      // TTL 10min pour pages marque
+      return await this.fetchFromExtensionApi<Marque>(endpoint, { revalidate: 600 });
+    } catch (error) {
+      console.error(`Marque not found for slug: ${slug}`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Get all brand slugs (for generateStaticParams)
+   */
+  async getMarquesSlugs(): Promise<string[]> {
+    const endpoint = 'marques-slugs';
+    // TTL 20min pour liste slugs (données structurelles)
+    return this.fetchFromExtensionApi<string[]>(endpoint, { revalidate: 1200 });
+  }
+
+  /**
+   * Get last events (for /signaler page)
+   */
+  async getLastEvenements(limit: number = 20, offset: number = 0): Promise<Evenement[]> {
+    return this.getEvenements(limit, offset);
+  }
+
 
   // ============= ÉCRITURES (Supabase direct uniquement) =============
 

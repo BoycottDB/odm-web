@@ -87,19 +87,23 @@ Proposition (1) ←→ (1) Décision
 
 ## Fonctionnalités Principales
 
-### Interface Utilisateur (Post-Optimisation Architecture)
-- **🎯 Recherche Unifiée Nouvelle Génération** : Hook unique avec cache intelligent partagé (50x plus rapide)
-- **⚡ Auto-complétion Instantanée** : Suggestions temps réel <100ms + extraction intelligente du cache
+### Interface Utilisateur
+- **🎯 Recherche Intelligente** : SearchHero avec suggestions temps réel et navigation automatique
+- **⚡ Auto-complétion <100ms** : Suggestions ultra-rapides avec AbortController anti-race-conditions
 - **📱 Design Responsive** : Mobile-first avec PWA native
-- **🚀 Performance Maximisée** : Cache stratifié multi-niveau + hit rate 70%+
+- **🔗 Navigation Fluide** : URLs SEO-friendly (`/marques/[slug]`) avec scroll automatique
+- **🎨 Filtres Avancés** : Recherche, secteur, bénéficiaire, tri avec sync URL bidirectionnelle
 - **♿ Accessibilité** : WCAG 2.1 compliant, navigation clavier fluide
 - **💡 Conseils de Boycott** : Recommandations pratiques par marque et secteur
 
-#### Recherche (SearchBar)
+#### Architecture Recherche (SearchHero)
 
-- Recherche par marque uniquement: match exact (insensible à la casse) sur le nom via l'endpoint `/marques` (ILIKE sans wildcards).
-- Suggestions: correspondance préfixe (startsWith) uniquement via l'endpoint `/suggestions` (ILIKE avec wildcard de fin: `q%`).
-- Aucun mot-clé: pas de recherche plein texte sur titre/catégorie d'événement dans cette page.
+**Pattern URL-first avec redirections intelligentes :**
+- **Suggestions** : Match préfixe via `/suggestions` endpoint (ILIKE `q%`, sub-100ms)
+- **Navigation match exact** : Redirect vers `/marques/${slug}` si marque trouvée
+- **Navigation no-match** : Redirect vers `/marques?search=${query}` avec état "Pas de résultats"
+- **Filtres URL-based** : Tous les filtres persistés dans l'URL (refresh-safe)
+- **Source tracking** : Analytics différencié (`marques_list` vs `marque_detail`)
 
 ### Système de Données
 - **📊 Affichage Enrichi** : Chronologie, catégories, condamnations judiciaires

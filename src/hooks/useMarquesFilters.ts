@@ -14,8 +14,8 @@ export interface MarquesFiltersState {
 }
 
 export interface FilterOptions {
-  beneficiaires: Array<{ id: number; nom: string; count: number }>;
-  secteurs: Array<{ id: number; nom: string; count: number }>;
+  beneficiaires: Array<{ id: number; nom: string; count: number; filteredCount: number }>;
+  secteurs: Array<{ id: number; nom: string; count: number; filteredCount: number }>;
 }
 
 // Actions pour le reducer
@@ -58,6 +58,9 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
   const searchDebounceRef = useRef<NodeJS.Timeout | null>(null);
   const urlDebounceRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Ref pour garder trace de la dernière URL normalisée appliquée (évite boucles)
+  const lastAppliedUrlRef = useRef<string>('');
+
   // État initial depuis URL
   const initialState: MarquesFiltersState = useMemo(() => ({
     searchQuery: searchParams.get('search') || '',
@@ -69,41 +72,6 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
 
   const [filters, dispatch] = useReducer(filtersReducer, initialState);
 
-  const filterOptions = useMemo<FilterOptions>(() => {
-    const beneficiairesMap = new Map<number, { nom: string; count: number }>();
-    const secteursMap = new Map<number, { nom: string; count: number }>();
-
-    initialMarques.forEach(marque => {
-      marque.beneficiairesControverses?.forEach(b => {
-        if (b && typeof b === 'object' && b.id && b.nom) {
-          const existing = beneficiairesMap.get(b.id);
-          if (existing) {
-            existing.count++;
-          } else {
-            beneficiairesMap.set(b.id, { nom: b.nom, count: 1 });
-          }
-        }
-      });
-      if (marque.secteur && typeof marque.secteur === 'object' && marque.secteur.id && marque.secteur.nom) {
-        const existing = secteursMap.get(marque.secteur.id);
-        if (existing) {
-          existing.count++;
-        } else {
-          secteursMap.set(marque.secteur.id, { nom: marque.secteur.nom, count: 1 });
-        }
-      }
-    });
-
-    return {
-      beneficiaires: Array.from(beneficiairesMap.entries())
-        .map(([id, data]) => ({ id, nom: data.nom, count: data.count }))
-        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
-      secteurs: Array.from(secteursMap.entries())
-        .map(([id, data]) => ({ id, nom: data.nom, count: data.count }))
-        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'))
-    };
-  }, [initialMarques]);
-
   // Index pour recherche optimisée O(1)
   const searchIndex = useMemo(() => {
     const index = new Map<number, string>();
@@ -112,6 +80,92 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
     });
     return index;
   }, [initialMarques]);
+
+  // Fonction helper pour calculer les marques filtrées (réutilisable)
+  const getFilteredMarquesBase = useCallback((excludeFilter?: 'beneficiaire' | 'secteur') => {
+    let result = initialMarques;
+
+    // Filtre recherche
+    if (filters.searchQuery.trim()) {
+      const query = filters.searchQuery.toLowerCase();
+      result = result.filter(m => searchIndex.get(m.id)?.includes(query));
+    }
+
+    // Filtre bénéficiaire (sauf si on calcule les compteurs bénéficiaires)
+    if (excludeFilter !== 'beneficiaire' && filters.beneficiaireFilter) {
+      result = result.filter(m =>
+        m.beneficiairesControverses?.some(b => b.id === filters.beneficiaireFilter)
+      );
+    }
+
+    // Filtre secteur (sauf si on calcule les compteurs secteurs)
+    if (excludeFilter !== 'secteur' && filters.secteurFilter) {
+      result = result.filter(m =>
+        m.secteur && typeof m.secteur === 'object' && m.secteur.id === filters.secteurFilter
+      );
+    }
+
+    return result;
+  }, [initialMarques, filters.searchQuery, filters.beneficiaireFilter, filters.secteurFilter, searchIndex]);
+
+  const filterOptions = useMemo<FilterOptions>(() => {
+    const beneficiairesMap = new Map<number, { nom: string; count: number; filteredCount: number }>();
+    const secteursMap = new Map<number, { nom: string; count: number; filteredCount: number }>();
+
+    // Compteurs globaux sur toutes les marques
+    initialMarques.forEach(marque => {
+      marque.beneficiairesControverses?.forEach(b => {
+        if (b && typeof b === 'object' && b.id && b.nom) {
+          const existing = beneficiairesMap.get(b.id);
+          if (existing) {
+            existing.count++;
+          } else {
+            beneficiairesMap.set(b.id, { nom: b.nom, count: 1, filteredCount: 0 });
+          }
+        }
+      });
+      if (marque.secteur && typeof marque.secteur === 'object' && marque.secteur.id && marque.secteur.nom) {
+        const existing = secteursMap.get(marque.secteur.id);
+        if (existing) {
+          existing.count++;
+        } else {
+          secteursMap.set(marque.secteur.id, { nom: marque.secteur.nom, count: 1, filteredCount: 0 });
+        }
+      }
+    });
+
+    // Compteurs filtrés (exclure le filtre qu'on calcule)
+    const filteredForBenef = getFilteredMarquesBase('beneficiaire');
+    filteredForBenef.forEach(marque => {
+      marque.beneficiairesControverses?.forEach(b => {
+        if (b && typeof b === 'object' && b.id) {
+          const existing = beneficiairesMap.get(b.id);
+          if (existing) {
+            existing.filteredCount++;
+          }
+        }
+      });
+    });
+
+    const filteredForSecteur = getFilteredMarquesBase('secteur');
+    filteredForSecteur.forEach(marque => {
+      if (marque.secteur && typeof marque.secteur === 'object' && marque.secteur.id) {
+        const existing = secteursMap.get(marque.secteur.id);
+        if (existing) {
+          existing.filteredCount++;
+        }
+      }
+    });
+
+    return {
+      beneficiaires: Array.from(beneficiairesMap.entries())
+        .map(([id, data]) => ({ id, nom: data.nom, count: data.count, filteredCount: data.filteredCount }))
+        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr')),
+      secteurs: Array.from(secteursMap.entries())
+        .map(([id, data]) => ({ id, nom: data.nom, count: data.count, filteredCount: data.filteredCount }))
+        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'))
+    };
+  }, [initialMarques, getFilteredMarquesBase]);
 
   // Marques filtrées et triées (optimisé)
   const filteredMarques = useMemo(() => {
@@ -141,6 +195,11 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
       result = result.filter(m => (m.nbBeneficiairesControverses || 0) > 0);
     }
 
+    // Filtre "avec controverses uniquement" automatique si tri par controverses
+    if (filters.sortField === 'evenements') {
+      result = result.filter(m => (m.nbControverses || 0) > 0);
+    }
+
     // Tri optimisé (shallow copy uniquement si nécessaire)
     if (filters.sortField !== 'nom' || filters.sortOrder !== 'asc') {
       result = [...result].sort((a, b) => {
@@ -168,7 +227,18 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
     return result;
   }, [initialMarques, filters, searchIndex]);
 
-  // Mise à jour URL avec debouncing (500ms)
+  // Helper pour normaliser les paramètres (tri alphabétique pour comparaison)
+  const normalizeParams = useCallback((state: MarquesFiltersState): string => {
+    const params: string[] = [];
+    if (state.searchQuery) params.push(`search=${encodeURIComponent(state.searchQuery)}`);
+    if (state.sortField !== 'nom') params.push(`sort=${state.sortField}`);
+    if (state.sortOrder !== 'asc') params.push(`order=${state.sortOrder}`);
+    if (state.beneficiaireFilter) params.push(`beneficiaire=${state.beneficiaireFilter}`);
+    if (state.secteurFilter) params.push(`secteur=${state.secteurFilter}`);
+    return params.sort().join('&');
+  }, []);
+
+  // Mise à jour URL avec debouncing (500ms) + garde d'égalité
   const updateURL = useCallback((newFilters: MarquesFiltersState) => {
     // Clear previous timeout
     if (urlDebounceRef.current) {
@@ -177,8 +247,14 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
 
     // Debounce URL updates
     urlDebounceRef.current = setTimeout(() => {
-      const params = new URLSearchParams();
+      const normalizedNew = normalizeParams(newFilters);
 
+      // Ne rien faire si identique à la dernière URL appliquée
+      if (normalizedNew === lastAppliedUrlRef.current) {
+        return;
+      }
+
+      const params = new URLSearchParams();
       if (newFilters.searchQuery) params.set('search', newFilters.searchQuery);
       if (newFilters.sortField !== 'nom') params.set('sort', newFilters.sortField);
       if (newFilters.sortOrder !== 'asc') params.set('order', newFilters.sortOrder);
@@ -186,11 +262,52 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
       if (newFilters.secteurFilter) params.set('secteur', newFilters.secteurFilter.toString());
 
       const newUrl = params.toString() ? `/marques?${params.toString()}` : '/marques';
+
+      // Mettre à jour le ref avant la navigation
+      lastAppliedUrlRef.current = normalizedNew;
+
       router.replace(newUrl, { scroll: false });
     }, 500);
-  }, [router]);
+  }, [router, normalizeParams]);
 
-  // Sync URL après changements de filtres
+  // URL → state : synchroniser l'état depuis l'URL au chargement/navigation
+  useEffect(() => {
+    const normalizedUrl = normalizeParams({
+      searchQuery: searchParams.get('search') || '',
+      sortField: (searchParams.get('sort') as SortField) || 'nom',
+      sortOrder: (searchParams.get('order') as SortOrder) || 'asc',
+      beneficiaireFilter: searchParams.get('beneficiaire') ? parseInt(searchParams.get('beneficiaire')!) : null,
+      secteurFilter: searchParams.get('secteur') ? parseInt(searchParams.get('secteur')!) : null
+    });
+
+    // Seulement mettre à jour si l'URL a changé
+    if (normalizedUrl !== lastAppliedUrlRef.current) {
+      lastAppliedUrlRef.current = normalizedUrl;
+
+      // Appliquer les changements via dispatch
+      if (searchParams.get('search') !== filters.searchQuery) {
+        dispatch({ type: 'UPDATE_SEARCH', payload: searchParams.get('search') || '' });
+      }
+
+      const urlSort = searchParams.get('sort') as SortField || 'nom';
+      const urlOrder = searchParams.get('order') as SortOrder || 'asc';
+      if (urlSort !== filters.sortField || urlOrder !== filters.sortOrder) {
+        dispatch({ type: 'UPDATE_SORT', payload: { field: urlSort, order: urlOrder } });
+      }
+
+      const urlBenef = searchParams.get('beneficiaire') ? parseInt(searchParams.get('beneficiaire')!) : null;
+      if (urlBenef !== filters.beneficiaireFilter) {
+        dispatch({ type: 'UPDATE_BENEFICIAIRE', payload: urlBenef });
+      }
+
+      const urlSecteur = searchParams.get('secteur') ? parseInt(searchParams.get('secteur')!) : null;
+      if (urlSecteur !== filters.secteurFilter) {
+        dispatch({ type: 'UPDATE_SECTEUR', payload: urlSecteur });
+      }
+    }
+  }, [searchParams, normalizeParams]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // state → URL : Sync URL après changements de filtres
   useEffect(() => {
     updateURL(filters);
   }, [filters, updateURL]);

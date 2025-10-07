@@ -96,7 +96,12 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
           if (imageMatches) {
             const imageUrls = imageMatches.map(match => {
               const urlMatch = match.match(/!\[([^\]]*)\]\(([^)]+)\)/);
-              return urlMatch ? urlMatch[2] : '';
+              const raw = urlMatch ? urlMatch[2] : '';
+              if (!raw) return '';
+              const resolved = /^(https?:|data:|blob:)/i.test(raw) || raw.startsWith('/')
+                ? raw
+                : '/' + raw.replace(/^(\.\/)+/, '').replace(/^(\.\.\/)+/, '').replace(/^\/+/, '');
+              return resolved;
             }).filter(Boolean);
             groups.push(imageUrls);
           }
@@ -184,13 +189,19 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
         // Traiter le contenu du groupe pour extraire les images avec clics
         const imageContent = content.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match: string, alt: string, src: string) => {
           const currentIndex = imageIndex++;
-          return `<img src="${src}" alt="${alt}" onclick="handleImageClick('${src}', '${currentGroupIndex}')" style="cursor: pointer;" data-image-index="${currentIndex}" data-group-index="${currentGroupIndex}" />`;
+          const resolvedSrc = (/^(https?:|data:|blob:)/i.test(src) || src.startsWith('/'))
+            ? src
+            : '/' + src.replace(/^(\.\/)+/, '').replace(/^(\.\.\/)+/, '').replace(/^\/+/, '');
+          return `<img src="${resolvedSrc}" alt="${alt}" onclick="handleImageClick('${resolvedSrc}', '${currentGroupIndex}')" style="cursor: pointer;" data-image-index="${currentIndex}" data-group-index="${currentGroupIndex}" />`;
         });
         return `<div class="image-group">${imageContent}</div>`;
       }) // groupes d'images [img-group]...[/img-group]
       .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match: string, alt: string, src: string) => {
         const currentIndex = imageIndex++;
-        return `<img src="${src}" alt="${alt}" class="max-w-full h-auto rounded-lg my-2" onclick="handleImageClick('${src}')" style="cursor: pointer;" data-image-index="${currentIndex}" />`;
+        const resolvedSrc = (/^(https?:|data:|blob:)/i.test(src) || src.startsWith('/'))
+          ? src
+          : '/' + src.replace(/^(\.\/)+/, '').replace(/^(\.\.\/)+/, '').replace(/^\/+/, '');
+        return `<img src="${resolvedSrc}" alt="${alt}" class="max-w-full h-auto rounded-lg my-2" onclick="handleImageClick('${resolvedSrc}')" style="cursor: pointer;" data-image-index="${currentIndex}" />`;
       }) // images individuelles ![alt](url)
       .replace(/(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, (match: string, text: string, url: string) => {
         // Valider que l'URL commence par http:// ou https://

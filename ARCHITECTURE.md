@@ -25,9 +25,10 @@ src/
 │   │   └── login/         # Authentification admin
 │   ├── faq/               # Page FAQ
 │   ├── moderation/        # Page modération publique
-│   ├── recherche/         # Page de recherche avancée
 │   ├── signaler/          # Page de signalement
-│   ├── marques/           # Listing des marques
+│   ├── marques/           # Listing et détail marques
+│   │   ├── [slug]/        # Page détail marque dynamique (ISR)
+│   │   └── page.tsx       # Liste marques avec filtres
 │   ├── globals.css        # Styles globaux
 │   ├── layout.tsx         # Layout principal responsive
 │   ├── metadata.ts        # Métadonnées SEO
@@ -44,12 +45,14 @@ src/
 │   │   ├── JudicialCondemnationNotice.tsx # Avis légaux
 │   │   └── BoycottTipsSection.tsx # Section conseils boycott avec modal
 │   ├── search/           # Système de recherche
-│   │   └── SearchBar.tsx  # Barre avec auto-complétion
+│   │   ├── SearchBar.tsx   # Input search avec suggestions (composant enfant)
+│   │   └── SearchHero.tsx  # Hero search avec navigation (composant parent)
 │   ├── events/           # Affichage des événements
 │   │   ├── EventCard.tsx  # Carte d'événement enrichie
-│   │   ├── EventList.tsx  # Liste avec chaîne de bénéficiaires intégrée
 │   │   ├── ChaineBeneficiaires.tsx # Chaîne financière accordéon avec fermeture extérieure
 │   │   └── DirigeantCard.tsx # Carte bénéficiaire avec toutes marques liées (directes + indirectes)
+│   ├── MarquesListClient.tsx # Client component liste marques avec filtres
+│   ├── MarqueCard.tsx    # Carte marque cliquable
 │   ├── forms/            # Formulaires complexes
 │   │   ├── SignalementForm.tsx # Formulaire de signalement
 │   │   └── SimilarItems.tsx # Détection de doublons UI
@@ -61,7 +64,7 @@ src/
 │   │   └── PropositionList.tsx # Liste propositions
 │   └── index.ts          # Export centralisé
 ├── hooks/                # Hooks personnalisés
-│   ├── useSearch.ts      # 🎯 Recherche + suggestions unifiées (cache intelligent)
+│   ├── useMarquesFilters.ts # 🎯 Gestion filtres avec sync URL bidirectionnelle
 │   ├── useDecisions.ts   # Récupération des décisions
 │   ├── useAddToHomeScreen.ts # PWA installation
 │   └── useMobileDetection.ts # Détection mobile
@@ -147,33 +150,46 @@ src/
 
 #### 🔍 **Lectures (Consultation publique)**
 ```typescript
-// 🎯 ARCHITECTURE UNIFIÉE - Recherche + Suggestions dans un seul hook
-SearchBar → handleSearchChange (debouncing) → useSearch (unifié)
-  ├── updateSuggestions → Cache intelligent → /suggestions API (sub-100ms)
-  └── performSearch → Cache partagé → /marques?search=X API
+// 🎯 ARCHITECTURE RECHERCHE - Pattern URL-first avec redirections
+SearchHero → handleSearch → Router navigation
+  ├── Match exact trouvé → router.push(`/marques/${slug}`)
+  └── Pas de match → router.push(`/marques?search=${query}`)
 
-// 🚀 Cache intelligent stratifié
-┌─ Suggestions (5min TTL) ──→ Extraction depuis cache marques si disponible
-├─ Résultats recherche (10min TTL) ──→ Réutilisation pour suggestions futures
-└─ Cache partagé entre fonctionnalités ──→ Hit rate 70%+
+// 📄 Page /marques avec filtres URL-based
+MarquesPage → MarquesListClient → useMarquesFilters (sync URL ↔ state)
+  ├── URL params → dispatch actions (UPDATE_SEARCH, SET_SORT, etc.)
+  └── State changes → router.replace avec nouveaux params
 
-// ⚡ Bénéfices architecture unifiée
-- 2 hooks → 1 hook (30% moins de code)
-- Cache intelligent partagé (5-10x plus rapide)
-- Navigation clavier fluide + sélection instantanée
-- 0 duplication logique entre recherche et suggestions
+// ⚡ Suggestions ultra-rapides
+SearchHero → dataService.getSuggestions(query, 10)
+  → odm-api /suggestions?q=${query}&limit=10
+  → AbortController pour race conditions
+  → Debouncing 200ms
 
-// 4. Chaîne de bénéficiaires (Solution 3)
+// 🎯 État "Pas de résultats"
+MarquesListClient → filteredMarques.length === 0 && hasSearchQuery
+  → Message collaboratif avec CTA signalement
+  → Scroll automatique vers filtres (450px mobile / 550px desktop)
+
+// 🔗 Navigation inter-pages avec scroll
+MarqueCard/MarquesBadges → onClick handler
+  → sessionStorage.setItem('scrollToResults', 'true')
+  → router.push(`/marques/${slug}`)
+  → MarquePageClient useEffect → scroll avec offsets fixes
+
+// 4. Chaîne de bénéficiaires
 ChaineBeneficiaires → dataService.getBeneficiairesChaine()
   → odm-api /beneficiaires/chaine?marqueId=X&profondeur=5
   → Algorithme récursif avec SQL JOINs → Protection cycles
   → Structure unifiée sans duplication → Interface accordéon
 ```
 
-> Note SearchBar (comportement de recherche):
-> - Recherche par marque uniquement: match exact (insensible à la casse) sur le nom de marque via l'endpoint `/marques` (ILIKE sans wildcards).
-> - Suggestions: match préfixe (startsWith) uniquement via l'endpoint `/suggestions` (ILIKE avec wildcard de fin seulement: `q%`).
-> - Aucun mot-clé: la page de recherche ne filtre pas par titre/catégorie d'événement.
+> Note SearchHero (comportement actuel):
+> - **Suggestions**: Match préfixe (startsWith) via `/suggestions` endpoint (ILIKE `q%`)
+> - **Navigation match exact**: Redirect vers `/marques/${slug}` si suggestion sélectionnée
+> - **Navigation no match**: Redirect vers `/marques?search=${query}` pour afficher résultats filtrés
+> - **Source tracking**: Paramètre `source` pour analytics ('marques_list' vs 'marque_detail')
+> - **Filtres avancés**: Secteur, bénéficiaire, tri disponibles sur `/marques`
 
 ## ⚙️ Développement local (Netlify Dev)
 
