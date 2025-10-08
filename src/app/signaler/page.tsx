@@ -16,7 +16,7 @@ export default async function SignalerPage() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-hero py-20 px-4">
+      <section className="bg-gradient-hero py-10 md:py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Signaler une controverse
@@ -28,7 +28,7 @@ export default async function SignalerPage() {
       </section>
 
       {/* Section Formulaire */}
-      <section className="py-16 px-4">
+      <section className="py-8 md:py-8 md:py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <SignalerClient />
         </div>
@@ -36,7 +36,7 @@ export default async function SignalerPage() {
 
       {/* Section Derniers signalements */}
       <section className="section-padding bg-gradient-to-b from-white to-primary-50">
-        <div className="max-w-4xl mx-2 md:mx-auto space-y-8 md:space-y-16">
+        <div className="max-w-4xl mx-4 md:mx-auto space-y-8 md:space-y-16">
           <h2 className="heading-main font-light text-neutral-900 mb-2 text-center">
             Derniers signalements
           </h2>

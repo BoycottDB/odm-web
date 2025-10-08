@@ -63,7 +63,7 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
       />
 
       {/* Section Hero */}
-      <section className="bg-gradient-hero py-20 px-4">
+      <section className="bg-gradient-hero py-10 md:py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             {marque.nom}
@@ -82,7 +82,7 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
 
       {/* Section principale avec layout identique à EventList */}
       <section className="section-padding bg-gradient-to-b from-white to-primary-50">
-        <div className="max-w-4xl mx-auto space-y-8 md:space-y-16">
+        <div className="max-w-4xl mx-4 md:mx-auto space-y-8 md:space-y-16">
 
           {/* Statistiques */}
           <section aria-label="Statistiques des résultats de recherche">
