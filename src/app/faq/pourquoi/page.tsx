@@ -4,7 +4,7 @@ export default function EfficaciteFAQ() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-hero py-20 px-4">
+      <section className="bg-gradient-hero py-10 md:py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Pourquoi on y croit ?
@@ -16,7 +16,7 @@ export default function EfficaciteFAQ() {
       </section>
 
       {/* Contenu principal */}
-      <section className="py-16 px-4">
+      <section className="py-8 md:py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8">
             <div className="prose prose-lg max-w-none space-y-8">
@@ -105,7 +105,7 @@ export default function EfficaciteFAQ() {
           <div className="mt-8 text-center">
             <Link
               href="/faq"
-              className="inline-flex items-center gap-2 text-secondary-dark hover:text-secondary-dark-hover font-medium"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

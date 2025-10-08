@@ -68,7 +68,7 @@ export default function AlternativesFAQ() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-hero py-20 px-4">
+      <section className="bg-gradient-hero py-10 md:py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Pourquoi ne proposons-nous pas des alternatives ?
@@ -80,7 +80,7 @@ export default function AlternativesFAQ() {
       </section>
 
       {/* Contenu principal */}
-      <section className="py-16 px-4">
+      <section className="py-8 md:py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 md:p-8">
             <div className="prose prose-lg max-w-none">

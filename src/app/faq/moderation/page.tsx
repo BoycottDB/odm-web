@@ -89,7 +89,7 @@ export default function Moderation() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-hero py-20 px-4">
+      <section className="bg-gradient-hero py-10 md:py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Modération et validation
@@ -101,7 +101,7 @@ export default function Moderation() {
       </section>
 
       {/* Contenu principal */}
-      <section className="py-16 px-4">
+      <section className="py-8 md:py-16 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Principe de modération */}
           <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 mb-8">

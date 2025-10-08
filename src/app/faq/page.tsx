@@ -29,7 +29,7 @@ export default function FAQ() {
   return (
     <div className="w-full">
       {/* Section Hero */}
-      <section className="bg-gradient-hero py-20 px-4">
+      <section className="bg-gradient-hero py-10 md:py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
             Questions fréquentes
@@ -41,7 +41,7 @@ export default function FAQ() {
       </section>
 
       {/* Section FAQ */}
-      <section className="py-16 px-4">
+      <section className="py-8 md:py-16 px-4">
         <div className="max-w-4xl mx-auto">
           
           {/* Liste des questions */}
