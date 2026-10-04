@@ -1,9 +1,13 @@
 import { NextRequest } from 'next/server';
 
-// Token admin simple (à définir dans les variables d'environnement)
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin-token-dev';
+// Token admin simple (à définir dans les variables d'environnement). Sans token configuré, tout accès admin est refusé.
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
 
 export function validateAdminToken(req: NextRequest): boolean {
+  if (!ADMIN_TOKEN) {
+    return false;
+  }
+
   // Vérifier d'abord les cookies
   const cookieToken = req.cookies.get('admin_token')?.value;
   if (cookieToken && cookieToken === ADMIN_TOKEN) {

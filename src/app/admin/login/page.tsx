@@ -26,8 +26,10 @@ export default function AdminLogin() {
       if (response.ok) {
         adminAuth.setToken(token);
         router.push('/admin/moderation');
-      } else {
+      } else if (response.status === 401) {
         setError('Token invalide');
+      } else {
+        setError('Erreur serveur, réessayez plus tard');
       }
     } catch {
       setError('Erreur de connexion');
