@@ -21,6 +21,11 @@ const faqItems: FAQItem[] = [
     id: '3',
     question: 'Comment sont modérés les signalements ?',
     url: '/faq/moderation'
+  },
+  {
+    id: '4',
+    question: 'Comment l\'argent de mes achats arrive-t-il jusqu\'aux bénéficiaires ?',
+    url: '/faq/argent'
   }
 ];
 
