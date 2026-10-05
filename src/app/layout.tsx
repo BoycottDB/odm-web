@@ -221,6 +221,10 @@ export default function RootLayout({
         </footer>
         <p className="relative z-10 bg-foreground text-center text-xs md:text-sm text-gray-400 pb-3 md:-mt-10">
           Ce projet étant le fruit du travail d&apos;humains, il peut y avoir des erreurs ou des données non à jour. N&apos;hésitez pas à vérifier les sources et à nous signaler des éventuelles corrections.
+          {' · '}
+          <Link href="/mentions-legales" className="underline hover:text-white">
+            Mentions légales
+          </Link>
         </p>
       </body>
     </html>
