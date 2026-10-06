@@ -40,7 +40,7 @@ export default function FAQ() {
             Questions fréquentes
           </h1>
           <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
-            Tout ce que vous devez savoir sur ODM et notre vision
+            Tout ce que vous devez savoir sur « Qui j&apos;enrichis ? » et notre vision
           </p>
         </div>
       </section>

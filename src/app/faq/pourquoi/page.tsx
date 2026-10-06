@@ -80,7 +80,7 @@ export default function EfficaciteFAQ() {
                 </p>
                 <div className="bg-white rounded-lg p-4 border border-neutral-200">
                   <p className="body-base text-neutral-700">
-                    Nous avons pourtant fait le choix de ne pas proposer d&apos;alternatives sur ODM pour le moment.
+                    Nous avons pourtant fait le choix de ne pas proposer d&apos;alternatives sur le site pour le moment.
                   </p>
                   <Link 
                     href="/faq/alternatives"

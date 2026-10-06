@@ -72,10 +72,14 @@ const formatMarkdown = (text: string) => {
   
   return text
     .replace(/(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, (match: string, text: string, url: string) => {
-      // Valider que l'URL commence par http:// ou https://
-      const isValidUrl = /^https?:\/\//.test(url);
-      if (isValidUrl) {
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-hover underline font-medium">${text}</a>`;
+      const linkClass = 'text-primary hover:text-primary-hover underline font-medium';
+      // Liens internes au site (ex. /faq/argent) : même onglet, indépendants du domaine
+      if (/^\/(?!\/)/.test(url)) {
+        return `<a href="${url}" class="${linkClass}">${text}</a>`;
+      }
+      // Liens externes : uniquement http:// ou https://
+      if (/^https?:\/\//.test(url)) {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="${linkClass}">${text}</a>`;
       }
       return match; // Retourner le texte original si l'URL n'est pas valide
     }) // liens [texte](url) - negative lookbehind pour éviter les images ![alt](url)

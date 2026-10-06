@@ -338,13 +338,13 @@ export default function Home() {
       <section className="relative z-10 section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
-            L&apos;Observatoire des Marques
+            Qui j&apos;enrichis ?
           </h1>
           <p className="heading-sub font-light text-neutral-700 mx-auto leading-snug">
             {/* Découvrez qui bénéficie vraiment de vos achats, retrouvez des conseils pratiques pour adapter votre consommation et rejoignez une communauté engagée pour une consommation éthique et responsable. */}
-            Recherchez des marques, découvrez ce qu&apos;elles vous cachent <br className="hidden lg:block" />
-            et retrouvez des conseils pratiques pour adapter vos achats <br className="hidden lg:block" />
-            vers une consommation plus éthique et responsable.
+            Des milliers de marques commercialisées en France. À chacun de vos achats, quelqu&apos;un s&apos;enrichit. <br className="hidden lg:block" />
+            Découvrez à qui va votre argent et retrouvez des conseils pratiques <br className="hidden lg:block" />
+            pour adapter vos achats vers une consommation plus éthique et responsable.
           </p>
 
           <div className="space-y-20 md:space-y-32 my-16 md:my-32">
@@ -377,7 +377,7 @@ export default function Home() {
               <strong className="text-neutral-900">Nous croyons au pouvoir du boycott</strong> comme acte démocratique puissant. En choisissant de ne plus financer des entreprises dont les pratiques vont à l&apos;encontre de nos valeurs, nous pouvons collectivement réduire leur pouvoir économique et les inciter au changement.
             </p>
             <p className="body-large font-light">
-              ODM vous permet d&apos;effectuer vos achats en pleine conscience, selon vos propres valeurs, votre seuil de tolérance et votre contexte. Nous restons strictement neutres : <strong>vous avez toujours le choix</strong>, et notre engagement consiste uniquement à centraliser des informations sourcées pour vous aider à décider.
+              Ce site vous permet d&apos;effectuer vos achats en pleine conscience, selon vos propres valeurs, votre seuil de tolérance et votre contexte. Nous restons strictement neutres : <strong>vous avez toujours le choix</strong>, et notre engagement consiste uniquement à centraliser des informations sourcées pour vous aider à décider.
             </p>
             <p className="body-large font-light">
               <em>L&apos;heure est à la mutinerie !</em>
