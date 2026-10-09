@@ -377,7 +377,7 @@ export default function Home() {
               <strong className="text-neutral-900">Nous croyons au pouvoir du boycott</strong> comme acte démocratique puissant. En choisissant de ne plus financer des entreprises dont les pratiques vont à l&apos;encontre de nos valeurs, nous pouvons collectivement réduire leur pouvoir économique et les inciter au changement.
             </p>
             <p className="body-large font-light">
-              Ce site vous permet d&apos;effectuer vos achats en pleine conscience, selon vos propres valeurs, votre seuil de tolérance et votre contexte. Nous restons strictement neutres : <strong>vous avez toujours le choix</strong>, et notre engagement consiste uniquement à centraliser des informations sourcées pour vous aider à décider.
+              Ce site vous permet d&apos;effectuer vos achats en pleine conscience, selon vos propres valeurs, votre seuil de tolérance et votre contexte. Nous ne décidons pas à votre place : <strong>vous avez toujours le choix</strong>. Notre rôle est de rassembler des faits sourcés pour vous aider à décider.
             </p>
             <p className="body-large font-light">
               <em>L&apos;heure est à la mutinerie !</em>
