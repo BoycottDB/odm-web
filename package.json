@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Qui j'enrichis ? - Plateforme collaborative pour documenter les controverses des marques",
   "private": true,
+  "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

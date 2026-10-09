@@ -91,9 +91,6 @@ function MobileNav() {
             <Link href="/marques" className={getLinkClass('/marques')} onClick={() => setOpen(false)}>
               Rechercher
             </Link>
-            {/* <Link href="/about" className={getLinkClass('/about')} onClick={() => setOpen(false)}>
-            À propos
-          </Link> */}
             <Link href="/signaler" className={getLinkClass('/signaler')} onClick={() => setOpen(false)}>
               Signaler
             </Link>
@@ -171,9 +168,6 @@ export default function RootLayout({
               <Link href="/marques" className={getDesktopLinkClass('/marques')}>
                 Rechercher
               </Link>
-              {/* <Link href="/about" className={getDesktopLinkClass('/about')}>
-                À propos
-              </Link> */}
               <Link href="/signaler" className={getDesktopLinkClass('/signaler')}>
                 Signaler
               </Link>
