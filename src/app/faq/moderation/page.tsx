@@ -53,7 +53,7 @@ function DecisionCard({ decision }: { decision: Decision }) {
       {decision.commentaire_admin && <p className="text-neutral-700 mt-2">
         <strong>Justification :</strong> {decision.commentaire_admin}
       </p>}
-      <span className="font-medium text-neutral-700">{decision.titre}</span>
+      {decision.titre && <span className="font-medium text-neutral-700">{decision.titre}</span>}
       {decision.source_url && (
         <div className="pt-4 border-t border-neutral-200 mt-4">
           <a
