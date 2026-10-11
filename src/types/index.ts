@@ -193,7 +193,7 @@ export interface Proposition {
 
 export interface Decision {
   id: number;
-  titre: string;
+  titre?: string;
   marque_nom: string;
   statut: 'approuve' | 'rejete';
   commentaire_admin: string;
