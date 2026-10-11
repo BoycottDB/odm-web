@@ -64,10 +64,7 @@ export default async function MarquesPage() {
           </p>
 
           {/* Barre de recherche */}
-          <SearchHero
-            placeholder="Herta, Starbucks, Decathlon, Smartbox, L'Oréal, Nous Anti Gaspi, Vittel, La Laitière, Biscuits St Michel, Twitter, CANAL+"
-            source="marques_list"
-          />
+          <SearchHero source="marques_list" />
         </div>
       </section>
 
