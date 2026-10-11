@@ -1,6 +1,6 @@
 'use client';
 
-import { KeyboardEvent, ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { KeyboardEvent, ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Marque } from '@/types';
 
 // Interface unifiée
@@ -19,8 +19,11 @@ interface SearchBarProps {
   onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
   onFocus: () => void;
   onBlur: () => void;
-  placeholder?: string;
 }
+
+// Exemples de marques affichés dans la barre de recherche : uniquement des marques présentes en base
+const EXEMPLES_RECHERCHE = "Nesquik, Starbucks, Decathlon, Smartbox, L'Oréal, Nous Anti Gaspi, Vittel, La Laitière, Biscuits St Michel, Twitter, CANAL+";
+const MOTS_EXEMPLES = EXEMPLES_RECHERCHE.split(',').map((mot) => mot.trim());
 
 // Hook d'animation pour placeholder "tapé"
 function useTypingPlaceholder(words: string[], enabled: boolean) {
@@ -132,8 +135,7 @@ export function SearchBar({
   onSuggestionSelect,
   onKeyDown,
   onFocus,
-  onBlur,
-  placeholder = "Herta, Starbucks, Decathlon, Smartbox, L'Oréal, Nous Anti Gaspi, Vittel, La Laitière, Biscuits St Michel, Twitter, CANAL+"
+  onBlur
 }: SearchBarProps) {
   const [isFocusedLocal, setIsFocusedLocal] = useState(false);
 
@@ -146,18 +148,10 @@ export function SearchBar({
     onChange(e.target.value);
   };
 
-  // Liste des mots à "taper" extraite du placeholder (séparés par des virgules)
-  const words = useMemo(() => {
-    return placeholder
-      .split(',')
-      .map((w) => w.trim())
-      .filter(Boolean);
-  }, [placeholder]);
-
   // Animation active uniquement si l'input est vide et non focus
   const animationEnabled = value.length === 0 && !isFocusedLocal;
-  const typedPlaceholder = useTypingPlaceholder(words, animationEnabled);
-  const effectivePlaceholder = animationEnabled ? typedPlaceholder : placeholder;
+  const typedPlaceholder = useTypingPlaceholder(MOTS_EXEMPLES, animationEnabled);
+  const effectivePlaceholder = animationEnabled ? typedPlaceholder : EXEMPLES_RECHERCHE;
 
   const handleFocusWrapped = () => {
     setIsFocusedLocal(true);

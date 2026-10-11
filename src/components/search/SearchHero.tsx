@@ -13,11 +13,10 @@ interface MarqueSuggestion {
 }
 
 interface SearchHeroProps {
-  placeholder?: string;
   source?: 'marques_list' | 'marque_detail';
 }
 
-export function SearchHero({ placeholder, source = 'marques_list' }: SearchHeroProps) {
+export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<MarqueSuggestion[]>([]);
@@ -180,7 +179,6 @@ export function SearchHero({ placeholder, source = 'marques_list' }: SearchHeroP
       onKeyDown={handleKeyDown}
       onFocus={() => setShowSuggestions(true)}
       onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-      placeholder={placeholder}
     />
   );
 }
