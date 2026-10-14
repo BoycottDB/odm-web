@@ -47,7 +47,7 @@ export function EnteteActeur({ icone, nom, sousTitre, etiquettes = [], ouvert, o
                 <Badge key={etiquette.nom}>
                   {etiquette.emoji && <span className="mr-1">{etiquette.emoji}</span>}
                   {etiquette.nom}
-                  <span className="ml-1 opacity-70">{etiquette.nombre}</span>
+                  {etiquette.nombre > 1 && <span className="ml-1 opacity-70">{etiquette.nombre}</span>}
                 </Badge>
               ))}
             </div>

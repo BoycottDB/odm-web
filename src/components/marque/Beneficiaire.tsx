@@ -2,7 +2,7 @@ import { Building2, User } from 'lucide-react';
 import { MarquesBadges } from '@/components/ui/MarquesBadges';
 import { EnteteActeurProps } from './BlocActeur';
 import { ControversesDocumentees } from './ControversesDocumentees';
-import { etiquettesBeneficiaire } from './etiquettes';
+import { calculerEtiquettes } from './etiquettes';
 import { formatImpact } from './formatImpact';
 import { NoeudChaine, LienEntrant } from './chaine';
 
@@ -25,8 +25,7 @@ export function enteteBeneficiaire(noeud: NoeudChaine, liens: LienEntrant[]): En
     icone: <Icone className="w-8 h-8" />,
     nom: beneficiaire.nom,
     sousTitre: sousTitre(liens),
-    etiquettes: etiquettesBeneficiaire(
-      beneficiaire.nom,
+    etiquettes: calculerEtiquettes(
       (beneficiaire.controverses || []).map((controverse) => ({ date: controverse.date, categorie: controverse.Categorie }))
     ),
   };
