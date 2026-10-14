@@ -1,6 +1,5 @@
 import { safeTrack } from '@/lib/analytics';
 import { CATEGORIE_EXCLUE } from './etiquettes';
-import { ListeEtiquettes } from './ListeEtiquettes';
 
 interface Controverse {
   id: number | string;
@@ -57,15 +56,22 @@ const LigneLiens = ({ controverse, sourceType, marqueId }: { controverse: Contro
   );
 };
 
-// Date et étiquette de la catégorie (style de l'en-tête, éclairci pour ne pas alourdir la frise) ; jamais « Autre »
+// Date et catégorie sur une ligne d'informations, séparées par « · » comme Source · Réponse ;
+// catégorie en texte simple (sans pastille) pour ne pas alourdir la frise ; jamais « Autre »
 const LigneDateCategorie = ({ controverse }: { controverse: Controverse }) => {
   const categorie = controverse.categorie?.nom && controverse.categorie.nom !== CATEGORIE_EXCLUE ? controverse.categorie : null;
   if (!controverse.date && !categorie) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-2 mb-1">
-      {controverse.date && <span className="text-xs font-semibold text-secondary">{formatDate(controverse.date)}</span>}
-      {categorie && <ListeEtiquettes etiquettes={[{ nom: categorie.nom, emoji: categorie.emoji, nombre: 1 }]} className="opacity-60" />}
+    <div className="flex flex-wrap items-center gap-x-2 text-xs mb-0.5">
+      {controverse.date && <span className="font-semibold text-secondary">{formatDate(controverse.date)}</span>}
+      {controverse.date && categorie && <span className="text-neutral-400" aria-hidden="true">·</span>}
+      {categorie && (
+        <span className="font-medium text-neutral-500">
+          {categorie.emoji && <span className="mr-1">{categorie.emoji}</span>}
+          {categorie.nom}
+        </span>
+      )}
     </div>
   );
 };
