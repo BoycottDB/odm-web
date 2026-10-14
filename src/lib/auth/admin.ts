@@ -3,32 +3,42 @@ import { NextRequest } from 'next/server';
 // Token admin simple (à définir dans les variables d'environnement). Sans token configuré, tout accès admin est refusé.
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
 
-export function validateAdminToken(req: NextRequest): boolean {
-  if (!ADMIN_TOKEN) {
+export const ADMIN_COOKIE = 'admin_token';
+export const ADMIN_COOKIE_MAX_AGE = 60 * 60 * 24;
+
+// Comparaison à temps constant : la durée ne révèle pas combien de caractères sont justes.
+// Écrite à la main car le middleware tourne en Edge, sans crypto.timingSafeEqual.
+function safeEqual(a: string, b: string): boolean {
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < b.length; i++) {
+    diff |= (a.charCodeAt(i) || 0) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+export function isValidAdminToken(token: string | undefined | null): boolean {
+  if (!ADMIN_TOKEN || !token) {
     return false;
   }
+  return safeEqual(token, ADMIN_TOKEN);
+}
 
-  // Vérifier d'abord les cookies
-  const cookieToken = req.cookies.get('admin_token')?.value;
-  if (cookieToken && cookieToken === ADMIN_TOKEN) {
+export function validateAdminToken(req: NextRequest): boolean {
+  // Cookie httpOnly posé par /api/admin/session (navigateur)
+  if (isValidAdminToken(req.cookies.get(ADMIN_COOKIE)?.value)) {
     return true;
   }
-  
-  // Fallback sur les headers Authorization
+
+  // En-tête Authorization (scripts, curl)
   const authHeader = req.headers.get('authorization');
-  if (authHeader) {
-    const token = authHeader.replace('Bearer ', '');
-    return token === ADMIN_TOKEN;
-  }
-  
-  return false;
+  return isValidAdminToken(authHeader?.replace('Bearer ', ''));
 }
 
 export function requireAdmin(req: NextRequest): Response | null {
   if (!validateAdminToken(req)) {
     return new Response(
       JSON.stringify({ error: 'Accès non autorisé' }),
-      { 
+      {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
       }
@@ -36,34 +46,3 @@ export function requireAdmin(req: NextRequest): Response | null {
   }
   return null;
 }
-
-// Utilitaires pour le côté client
-export const adminAuth = {
-  getToken(): string | null {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem('admin_token');
-  },
-  
-  setToken(token: string): void {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem('admin_token', token);
-    // Définir aussi le cookie pour le middleware
-    document.cookie = `admin_token=${token}; path=/; max-age=86400; secure; samesite=strict`;
-  },
-  
-  removeToken(): void {
-    if (typeof window === 'undefined') return;
-    localStorage.removeItem('admin_token');
-    // Effacer aussi le cookie
-    document.cookie = 'admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-  },
-  
-  isAuthenticated(): boolean {
-    return this.getToken() !== null;
-  },
-  
-  getAuthHeaders(): { [key: string]: string } {
-    const token = this.getToken();
-    return token ? { 'Authorization': `Bearer ${token}` } : {};
-  }
-};

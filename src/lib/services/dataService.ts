@@ -7,6 +7,7 @@
 // import { supabaseAdmin } from '@/lib/supabaseClient';
 import { 
   Marque, 
+  MarqueStats,
   Evenement, 
   DirigeantWithMarques, 
   SecteurMarque,
@@ -17,6 +18,14 @@ import {
   MarqueDirigeantCreateRequest,
   MarqueBeneficiaireCreateRequest
 } from '@/types';
+import type { MarqueNom } from '@/lib/rechercheMarques';
+
+// Erreur de l'API avec son statut HTTP, pour distinguer « introuvable » (404) d'une panne
+class ApiError extends Error {
+  constructor(readonly status: number) {
+    super(`Service indisponible (${status})`);
+  }
+}
 
 class DataService {
   private extensionApiUrl: string;
@@ -43,7 +52,7 @@ class DataService {
     });
     
     if (!response.ok) {
-      throw new Error(`Service indisponible (${response.status})`);
+      throw new ApiError(response.status);
     }
     
     return response.json();
@@ -64,16 +73,10 @@ class DataService {
   }
 
   /**
-   * Get brand suggestions for auto-completion (ultra-fast, minimal data)
+   * Noms de toutes les marques, pour la recherche (filtrée dans le navigateur)
    */
-  async getSuggestions(query: string, limit: number = 10): Promise<{id: number, nom: string}[]> {
-    const params = new URLSearchParams();
-    params.append('q', query);
-    params.append('limit', limit.toString());
-
-    const endpoint = `suggestions?${params.toString()}`;
-    // Suggestions: TTL court (5min) pour fraîcheur et performance
-    return this.fetchFromExtensionApi<{id: number, nom: string}[]>(endpoint, { revalidate: 300 });
+  async getMarquesNoms(): Promise<MarqueNom[]> {
+    return this.fetchFromExtensionApi<MarqueNom[]>('marques-noms');
   }
 
   /**
@@ -109,27 +112,9 @@ class DataService {
   /**
    * Get brand statistics (for /marques page)
    */
-  async getMarquesStats(): Promise<{
-    id: number;
-    nom: string;
-    secteur?: { id: number; nom: string } | null;
-    nbControverses: number;
-    categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
-    nbCondamnations: number;
-    nbBeneficiairesControverses: number;
-    beneficiairesControverses: Array<{id: number, nom: string}>;
-  }[]> {
+  async getMarquesStats(): Promise<MarqueStats[]> {
     const endpoint = 'marques-stats';
-    return this.fetchFromExtensionApi<{
-      id: number;
-      nom: string;
-      secteur?: { id: number; nom: string } | null;
-      nbControverses: number;
-      categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
-      nbCondamnations: number;
-      nbBeneficiairesControverses: number;
-      beneficiairesControverses: Array<{id: number, nom: string}>;
-    }[]>(endpoint, { revalidate: 600, tags: ['marques-stats'] });
+    return this.fetchFromExtensionApi<MarqueStats[]>(endpoint, { revalidate: 600, tags: ['marques-stats'] });
   }
 
   /**
@@ -144,8 +129,10 @@ class DataService {
       // TTL 10min pour pages marque
       return await this.fetchFromExtensionApi<Marque>(endpoint, { revalidate: 600 });
     } catch (error) {
-      console.error(`Marque not found for slug: ${slug}`, error);
-      return null;
+      // Seule une marque inexistante donne « non trouvée » ; une autre erreur remonte,
+      // pour que Next garde la dernière version de la page au lieu de mettre en cache une 404
+      if (error instanceof ApiError && error.status === 404) return null;
+      throw error;
     }
   }
 

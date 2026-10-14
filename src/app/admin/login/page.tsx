@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { adminAuth } from '@/lib/auth/admin';
 
 export default function AdminLogin() {
   const [token, setToken] = useState('');
@@ -16,15 +15,14 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      // Tester le token en faisant un appel API
-      const response = await fetch('/api/propositions', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      // Le serveur vérifie le token et le range dans un cookie httpOnly
+      const response = await fetch('/api/admin/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
       });
 
       if (response.ok) {
-        adminAuth.setToken(token);
         router.push('/admin/moderation');
       } else if (response.status === 401) {
         setError('Token invalide');

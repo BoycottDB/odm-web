@@ -1,13 +1,11 @@
 'use client';
 
 import { Marque } from '@/types';
-import { EventCard } from '@/components/events/EventCard';
-import ChaineBeneficiaires from '@/components/events/ChaineBeneficiaires';
-import BoycottTipsSection from '@/components/ui/BoycottTipsSection';
+import { ChaineQuiJenrichis } from '@/components/marque/ChaineQuiJenrichis';
+import { nomsDesActeursControverses } from '@/components/marque/chaine';
 import { ShareButton } from '@/components/ui/ShareButton';
 import { SearchHero } from '@/components/search/SearchHero';
 import { useAddToHomeScreen } from '@/hooks/useAddToHomeScreen';
-import { useEffect } from 'react';
 import Link from 'next/link';
 
 interface MarquePageClientProps {
@@ -18,31 +16,8 @@ interface MarquePageClientProps {
 export default function MarquePageClient({ marque, slug }: MarquePageClientProps) {
   const { canInstall } = useAddToHomeScreen();
 
-  const evenements = marque.evenements || [];
-  const hasBeneficiaires = (marque.total_beneficiaires_chaine ?? 0) > 0;
-  const chaine = marque.chaine_beneficiaires || [];
-  const hasEvents = evenements.length > 0;
-
-  // Auto-scroll vers résultats après chargement (si flag présent)
-  useEffect(() => {
-    const shouldAutoScroll = sessionStorage.getItem('scrollToResults');
-
-    if (shouldAutoScroll === 'true') {
-      setTimeout(() => {
-        // Offset fixe selon viewport (taille du hero header)
-        const isMobile = window.innerWidth < 768;
-        const headerHeight = isMobile ? 350 : 400;
-
-        window.scrollTo({
-          top: headerHeight,
-          behavior: 'smooth'
-        });
-      }, 100);
-
-      // Nettoyer le flag
-      sessionStorage.removeItem('scrollToResults');
-    }
-  }, [marque.id]);
+  const acteurs = nomsDesActeursControverses(marque);
+  const listeActeurs = new Intl.ListFormat('fr', { type: 'conjunction' }).format(acteurs);
 
   // JSON-LD Schema
   const jsonLd = {
@@ -62,102 +37,66 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Section Hero */}
-      <section className="bg-gradient-hero py-10 md:py-20 px-4">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
+      {/* Réponse : qui j'enrichis en achetant cette marque */}
+      <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
+        <div className="w-full max-w-4xl mx-auto text-center">
+          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
             {marque.nom}
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug mb-8">
-            Découvrez les controverses documentées et les bénéficiaires associés.
-          </p>
+          {acteurs.length > 0 && (
+            <p className="heading-sub text-neutral-700 font-light leading-snug">
+              En consommant {marque.nom}, j&apos;enrichis <strong className="font-semibold text-neutral-900">{listeActeurs}</strong>
+            </p>
+          )}
 
-          {/* Barre de recherche */}
-          <SearchHero source="marque_detail" />
+          {/* Recherche d'une autre marque, sous la réponse */}
+          <div className="max-w-2xl mx-auto mt-8">
+            <SearchHero source="marque_detail" />
+          </div>
         </div>
       </section>
 
-      {/* Section principale avec layout identique à EventList */}
       <section className="section-padding bg-gradient-to-b from-white to-primary-50">
-        <div className="max-w-4xl mx-4 md:mx-auto space-y-8 md:space-y-16">
-
-          {/* Statistiques */}
-          <section aria-label="Statistiques des résultats de recherche">
-            <p className="body-base text-center">
-              {hasBeneficiaires && <strong>{marque.total_beneficiaires_chaine} bénéficiaire{(marque.total_beneficiaires_chaine ?? 0) > 1 ? 's' : ''} controversé{(marque.total_beneficiaires_chaine ?? 0) > 1 ? 's' : ''}</strong>}{hasBeneficiaires && hasEvents && ' et '}{hasEvents && <strong>{evenements.length} controverse{evenements.length > 1 ? 's' : ''}</strong>} ont été signalés pour <strong>{marque.nom}</strong>.
-            </p>
-          </section>
-
-          {/* Section Boycott Tips */}
-          {(marque.message_boycott_tips || marque.secteur_marque?.message_boycott_tips) && (
-            <div className="max-w-4xl mx-auto">
-              <BoycottTipsSection marque={marque} />
-            </div>
-          )}
+        <div className="max-w-3xl mx-4 md:mx-auto space-y-12 md:space-y-16">
 
           {/* Bouton flottant desktop & mobile */}
           <div className={`fixed right-6 z-50 md:bottom-24 md:right-24 ${canInstall ? 'bottom-16' : 'bottom-6'}`}>
             <ShareButton
               url={`/marques/${slug}`}
-              title={`Controverses de ${marque.nom} - Répertoire des marques`}
-              text={`Découvrez les controverses documentées de ${marque.nom} sur notre répertoire collaboratif.`}
+              title={`Qui j'enrichis en consommant ${marque.nom} ?`}
+              text={acteurs.length > 0
+                ? `En consommant ${marque.nom}, j'enrichis ${listeActeurs}. Découvrez pourquoi ça peut poser problème.`
+                : `Qui j'enrichis en consommant ${marque.nom} ?`}
               variant="primary"
               size="lg"
               className="shadow-xl rounded-full px-4 py-4 hover:scale-105 transition-transform"
             />
           </div>
 
-          {/* Chaîne de bénéficiaires */}
-          {hasBeneficiaires && (
-            <section aria-labelledby="beneficiaires-title">
-              <h3 id="beneficiaires-title" className="heading-main font-medium text-neutral-900 mb-6 text-center">
-                À qui profitent vos achats ?
-              </h3>
-              <ChaineBeneficiaires
-                marqueId={marque.id}
-                marqueNom={marque.nom}
-                chaine={chaine}
-              />
-            </section>
-          )}
+          <ChaineQuiJenrichis marque={marque} />
 
-          {/* Événements */}
-          {hasEvents && (
-            <section aria-labelledby="controverses-title">
-              <h3 id="controverses-title" className="heading-main font-medium text-neutral-900 mb-6 text-center">
-                Controverses signalées
-              </h3>
-              <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
-                {evenements.map((event) => (
-                  <EventCard key={event.id} event={event} marque={marque} />
-                ))}
-              </div>
-            </section>
-          )}
 
-          {/* Fausse controverse d'incitation */}
-          <section className="bg-white border-2 border-dashed border-primary/30 rounded-2xl p-8 text-center" aria-labelledby="contribute-title">
-            <div className="w-16 h-16 mx-auto mb-4 bg-primary-50 rounded-full flex items-center justify-center" aria-hidden="true">
-              <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-            </div>
-            <h3 id="contribute-title" className="text-lg font-medium text-neutral-800 mb-3">
+          {/* Appel à contribuer, volontairement discret */}
+          <section className="border border-dashed border-primary/30 rounded-2xl px-6 py-5 text-center" aria-labelledby="contribute-title">
+            <h3 id="contribute-title" className="text-base font-medium text-neutral-800 mb-1">
               Une controverse manque ?
             </h3>
-            <p className="text-neutral-600 mb-4">
-              <strong>Ce répertoire est collaboratif</strong> : si une controverse n&apos;apparaît pas, c&apos;est que personne ne l&apos;a encore signalée. <br />N&apos;hésitez pas à contribuer pour enrichir cette base de données et aider d&apos;autres consommateurs à faire des choix éclairés !
+            <p className="text-sm text-neutral-600 mb-4">
+              Ce site est collaboratif : si une controverse n&apos;apparaît pas, c&apos;est que personne ne l&apos;a encore signalée.
             </p>
             <Link
               href="/signaler"
-              className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary transition-colors"
+              className="inline-flex items-center gap-2 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary hover:text-white transition-colors"
               aria-label="Signaler une nouvelle controverse"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
               Signaler une controverse
             </Link>
+            <p className="text-xs text-neutral-500 mt-3">
+              N&apos;hésitez pas à contribuer pour enrichir cette base de données et aider d&apos;autres consommateurs à faire des choix éclairés !
+            </p>
           </section>
         </div>
       </section>

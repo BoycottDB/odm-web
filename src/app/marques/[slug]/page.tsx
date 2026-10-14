@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { dataService } from '@/lib/services/dataService';
 import MarquePageClient from './MarquePageClient';
+import { nomsDesActeursControverses } from '@/components/marque/chaine';
 
 export const revalidate = 600; // ISR 10 minutes
 
@@ -20,22 +21,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const nbControverses = marque.evenements?.length || 0;
-  const nbBeneficiaires = marque.total_beneficiaires_chaine || 0;
-
-  const description = `Découvrez les controverses et bénéficiaires de ${marque.nom}. ${nbControverses} controverse${nbControverses > 1 ? 's' : ''} documentée${nbControverses > 1 ? 's' : ''}, ${nbBeneficiaires} bénéficiaire${nbBeneficiaires > 1 ? 's' : ''} controversé${nbBeneficiaires > 1 ? 's' : ''}.`;
+  const acteurs = nomsDesActeursControverses(marque);
+  const title = `Qui j'enrichis en consommant ${marque.nom} ?`;
+  const description = acteurs.length > 0
+    ? `En consommant ${marque.nom}, j'enrichis ${new Intl.ListFormat('fr', { type: 'conjunction' }).format(acteurs)}. Découvrez pourquoi ça peut poser problème et comment consommer autrement.`
+    : `Découvrez qui s'enrichit quand vous consommez ${marque.nom}, et comment consommer autrement.`;
 
   return {
-    title: `${marque.nom} — Controverses & bénéficiaires | Répertoire`,
+    title,
     description,
     openGraph: {
-      title: `${marque.nom} — Controverses & bénéficiaires`,
+      title,
       description,
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${marque.nom} — Controverses & bénéficiaires`,
+      title,
       description,
     },
     alternates: {

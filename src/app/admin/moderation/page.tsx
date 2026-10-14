@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { adminAuth } from '@/lib/auth/admin';
 import { Proposition } from '@/types';
 import PropositionDetail from '@/components/admin/PropositionDetail';
 import PropositionList from '@/components/admin/PropositionList';
@@ -14,24 +12,16 @@ export default function AdminModeration() {
   // Plus besoin de filtre - il n'y a que des controverses
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const router = useRouter();
 
+  // Accès vérifié par le middleware (cookie admin)
   useEffect(() => {
-    if (!adminAuth.isAuthenticated()) {
-      router.push('/admin/login');
-      return;
-    }
-    
     loadPropositions();
-  }, [router]);
+  }, []);
 
   const loadPropositions = async () => {
     try {
       setIsLoading(true);
-      // Utilisation directe de fetch avec les headers d'authentification
-      const response = await fetch('/api/propositions', {
-        headers: adminAuth.getAuthHeaders()
-      });
+      const response = await fetch('/api/propositions');
       
       if (!response.ok) {
         throw new Error('Erreur lors du chargement des signalements');
@@ -50,16 +40,12 @@ export default function AdminModeration() {
   const handlePropositionUpdate = async (id: number, updateData: {
     statut: 'approuve' | 'rejete';
     commentaire_admin?: string;
-    condamnation_judiciaire?: boolean;
     reponse?: string;
   }) => {
     try {
       const response = await fetch(`/api/propositions/${id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          ...adminAuth.getAuthHeaders()
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updateData)
       });
 
@@ -74,11 +60,6 @@ export default function AdminModeration() {
       alert('Erreur lors de la mise à jour du signalement');
     }
   };
-
-  // const handleLogout = () => {
-  //   adminAuth.removeToken();
-  //   router.push('/admin/login');
-  // };
 
   const filteredPropositions = propositions.filter(p => p.statut === 'en_attente'); // Seulement les signalements en attente
 

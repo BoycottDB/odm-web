@@ -1,11 +1,20 @@
 // Types centralisés pour toute l'application
 
+// Une catégorie de controverses d'un acteur, avec leur nombre
+export interface Etiquette {
+  nom: string;
+  emoji?: string;
+  nombre: number;
+}
+
+// D'où viennent les étiquettes d'une marque dans la liste
+export type OrigineEtiquettes = 'marque' | 'beneficiaires' | 'marque_ou_beneficiaires';
+
 export interface MarqueStats {
   id: number;
   nom: string;
-  nbControverses: number;
-  nbCondamnations: number;
-  categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
+  etiquettes: Etiquette[];
+  origineEtiquettes: OrigineEtiquettes | null;
   beneficiairesControverses: Array<{id: number, nom: string}>;
   nbBeneficiairesControverses?: number;
   secteur?: { id: number; nom: string } | null;
@@ -26,15 +35,7 @@ export interface Marque {
     beneficiaire: {
       id: number;
       nom: string;
-      controverses: Array<{
-        id: number;
-        beneficiaire_id: number;
-        titre: string;
-        source_url: string;
-        ordre: number;
-        created_at: string;
-        updated_at: string;
-      }>;
+      controverses: ControverseBeneficiaire[];
       impact_generique?: string;
       type_beneficiaire: string;
     };
@@ -118,7 +119,6 @@ export interface Evenement {
   date: string;
   source_url: string;
   reponse?: string; // URL de la réponse officielle de la marque à la controverse
-  condamnation_judiciaire?: boolean; // Indique si la controverse a fait l'objet d'une condamnation judiciaire
   categorie?: Categorie | null;
   // Champs techniques pour autres contextes (admin, etc.)
   marque_id?: number;
@@ -172,7 +172,6 @@ export interface EvenementCreateRequest {
   date: string;
   categorie_id: number;
   source_url: string;
-  condamnation_judiciaire?: boolean;
 }
 
 // Types pour le système de modération (simplifié - seulement des controverses)
@@ -219,7 +218,6 @@ export interface PropositionCreateRequest {
 export interface PropositionUpdateRequest {
   statut: 'approuve' | 'rejete';
   commentaire_admin?: string;
-  condamnation_judiciaire?: boolean;
   reponse?: string; // URL de la réponse de la marque (sera appliquée à l'événement lors de l'approbation)
 }
 
@@ -237,14 +235,13 @@ export interface ControverseBeneficiaire {
   // NOUVEAUX champs pour alignement avec Evenement
   date?: string | null; // Date de la controverse
   categorie_id?: number | null; // Référence vers Categorie
-  condamnation_judiciaire?: boolean; // Badge condamnation
   reponse?: string | null; // URL réponse officielle
   
   created_at: string;
   updated_at: string;
   
   // NOUVELLE relation
-  Categorie?: Categorie;
+  Categorie?: Categorie | null;
 }
 
 // Table bénéficiaires centralisée (ex-dirigeants)
@@ -387,7 +384,6 @@ export interface ControverseBeneficiaireCreateRequest {
   // NOUVEAUX champs optionnels
   date?: string;
   categorie_id?: number;
-  condamnation_judiciaire?: boolean;
   reponse?: string;
 }
 
@@ -400,27 +396,7 @@ export interface ControverseBeneficiaireUpdateRequest {
   // NOUVEAUX champs optionnels  
   date?: string;
   categorie_id?: number;
-  condamnation_judiciaire?: boolean;
   reponse?: string;
-}
-
-// Interface simplifiée pour les catégories dans les stats
-export interface CategorieStats {
-  id: number;
-  nom: string;
-  emoji?: string;
-  couleur?: string;
-}
-
-// Interface pour les statistiques de marques
-export interface MarqueWithStats {
-  id: number;
-  nom: string;
-  nbControverses: number;
-  categories: CategorieStats[]; // Catégories uniques de controverses avec émojis et couleurs
-  nbCondamnations: number; // Nombre de controverses avec condamnation judiciaire
-  nbBeneficiairesControverses: number; // Nombre de bénéficiaires controversés associés (multi-niveaux)
-  beneficiairesControverses: Array<{id: number, nom: string}>; // Noms des bénéficiaires controversés
 }
 
 // Types pour les secteurs marque

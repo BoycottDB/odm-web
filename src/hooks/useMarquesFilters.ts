@@ -1,16 +1,13 @@
 import { useReducer, useCallback, useMemo, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MarqueStats } from '@/types';
-
-export type SortField = 'nom' | 'evenements' | 'beneficiaires' | 'updated_at';
-export type SortOrder = 'asc' | 'desc';
+import { lettreDe } from '@/lib/lettre';
 
 export interface MarquesFiltersState {
   searchQuery: string;
-  sortField: SortField;
-  sortOrder: SortOrder;
   beneficiaireFilter: number | null;
   secteurFilter: number | null;
+  lettreFilter: string | null;
 }
 
 export interface FilterOptions {
@@ -21,9 +18,9 @@ export interface FilterOptions {
 // Actions pour le reducer
 type FilterAction =
   | { type: 'UPDATE_SEARCH'; payload: string }
-  | { type: 'UPDATE_SORT'; payload: { field: SortField; order: SortOrder } }
   | { type: 'UPDATE_BENEFICIAIRE'; payload: number | null }
   | { type: 'UPDATE_SECTEUR'; payload: number | null }
+  | { type: 'UPDATE_LETTRE'; payload: string | null }
   | { type: 'RESET_FILTERS' };
 
 // Reducer pour gestion d'état optimisée
@@ -31,19 +28,18 @@ function filtersReducer(state: MarquesFiltersState, action: FilterAction): Marqu
   switch (action.type) {
     case 'UPDATE_SEARCH':
       return { ...state, searchQuery: action.payload };
-    case 'UPDATE_SORT':
-      return { ...state, sortField: action.payload.field, sortOrder: action.payload.order };
     case 'UPDATE_BENEFICIAIRE':
       return { ...state, beneficiaireFilter: action.payload };
     case 'UPDATE_SECTEUR':
       return { ...state, secteurFilter: action.payload };
+    case 'UPDATE_LETTRE':
+      return { ...state, lettreFilter: action.payload };
     case 'RESET_FILTERS':
       return {
         searchQuery: '',
-        sortField: 'nom',
-        sortOrder: 'asc',
         beneficiaireFilter: null,
-        secteurFilter: null
+        secteurFilter: null,
+        lettreFilter: null
       };
     default:
       return state;
@@ -64,10 +60,9 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
   // État initial depuis URL
   const initialState: MarquesFiltersState = useMemo(() => ({
     searchQuery: searchParams.get('search') || '',
-    sortField: (searchParams.get('sort') as SortField) || 'nom',
-    sortOrder: (searchParams.get('order') as SortOrder) || 'asc',
     beneficiaireFilter: searchParams.get('beneficiaire') ? parseInt(searchParams.get('beneficiaire')!) : null,
-    secteurFilter: searchParams.get('secteur') ? parseInt(searchParams.get('secteur')!) : null
+    secteurFilter: searchParams.get('secteur') ? parseInt(searchParams.get('secteur')!) : null,
+    lettreFilter: searchParams.get('lettre')
   }), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [filters, dispatch] = useReducer(filtersReducer, initialState);
@@ -82,7 +77,7 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
   }, [initialMarques]);
 
   // Fonction helper pour calculer les marques filtrées (réutilisable)
-  const getFilteredMarquesBase = useCallback((excludeFilter?: 'beneficiaire' | 'secteur') => {
+  const getFilteredMarquesBase = useCallback((excludeFilter?: 'beneficiaire' | 'secteur' | 'lettre') => {
     let result = initialMarques;
 
     // Filtre recherche
@@ -105,8 +100,19 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
       );
     }
 
+    // Filtre lettre (sauf si on calcule les lettres disponibles)
+    if (excludeFilter !== 'lettre' && filters.lettreFilter) {
+      result = result.filter(m => lettreDe(m.nom) === filters.lettreFilter);
+    }
+
     return result;
-  }, [initialMarques, filters.searchQuery, filters.beneficiaireFilter, filters.secteurFilter, searchIndex]);
+  }, [initialMarques, filters.searchQuery, filters.beneficiaireFilter, filters.secteurFilter, filters.lettreFilter, searchIndex]);
+
+  // Lettres qui ont au moins une marque avec les autres filtres
+  const lettresDisponibles = useMemo(
+    () => new Set(getFilteredMarquesBase('lettre').map(m => lettreDe(m.nom))),
+    [getFilteredMarquesBase]
+  );
 
   const filterOptions = useMemo<FilterOptions>(() => {
     const beneficiairesMap = new Map<number, { nom: string; count: number; filteredCount: number }>();
@@ -190,38 +196,8 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
       );
     }
 
-    // Filtre "avec bénéficiaires uniquement" automatique si tri par bénéficiaires
-    if (filters.sortField === 'beneficiaires') {
-      result = result.filter(m => (m.nbBeneficiairesControverses || 0) > 0);
-    }
-
-    // Filtre "avec controverses uniquement" automatique si tri par controverses
-    if (filters.sortField === 'evenements') {
-      result = result.filter(m => (m.nbControverses || 0) > 0);
-    }
-
-    // Tri optimisé (shallow copy uniquement si nécessaire)
-    if (filters.sortField !== 'nom' || filters.sortOrder !== 'asc') {
-      result = [...result].sort((a, b) => {
-        let comparison = 0;
-
-        switch (filters.sortField) {
-          case 'nom':
-            comparison = a.nom.localeCompare(b.nom, 'fr');
-            break;
-          case 'evenements':
-            comparison = (a.nbControverses || 0) - (b.nbControverses || 0);
-            break;
-          case 'beneficiaires':
-            comparison = (a.nbBeneficiairesControverses || 0) - (b.nbBeneficiairesControverses || 0);
-            break;
-          case 'updated_at':
-            comparison = new Date(a.updated_at || 0).getTime() - new Date(b.updated_at || 0).getTime();
-            break;
-        }
-
-        return filters.sortOrder === 'asc' ? comparison : -comparison;
-      });
+    if (filters.lettreFilter) {
+      result = result.filter(m => lettreDe(m.nom) === filters.lettreFilter);
     }
 
     return result;
@@ -231,10 +207,9 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
   const normalizeParams = useCallback((state: MarquesFiltersState): string => {
     const params: string[] = [];
     if (state.searchQuery) params.push(`search=${encodeURIComponent(state.searchQuery)}`);
-    if (state.sortField !== 'nom') params.push(`sort=${state.sortField}`);
-    if (state.sortOrder !== 'asc') params.push(`order=${state.sortOrder}`);
     if (state.beneficiaireFilter) params.push(`beneficiaire=${state.beneficiaireFilter}`);
     if (state.secteurFilter) params.push(`secteur=${state.secteurFilter}`);
+    if (state.lettreFilter) params.push(`lettre=${encodeURIComponent(state.lettreFilter)}`);
     return params.sort().join('&');
   }, []);
 
@@ -256,10 +231,9 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
 
       const params = new URLSearchParams();
       if (newFilters.searchQuery) params.set('search', newFilters.searchQuery);
-      if (newFilters.sortField !== 'nom') params.set('sort', newFilters.sortField);
-      if (newFilters.sortOrder !== 'asc') params.set('order', newFilters.sortOrder);
       if (newFilters.beneficiaireFilter) params.set('beneficiaire', newFilters.beneficiaireFilter.toString());
       if (newFilters.secteurFilter) params.set('secteur', newFilters.secteurFilter.toString());
+      if (newFilters.lettreFilter) params.set('lettre', newFilters.lettreFilter);
 
       const newUrl = params.toString() ? `/marques?${params.toString()}` : '/marques';
 
@@ -274,10 +248,9 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
   useEffect(() => {
     const normalizedUrl = normalizeParams({
       searchQuery: searchParams.get('search') || '',
-      sortField: (searchParams.get('sort') as SortField) || 'nom',
-      sortOrder: (searchParams.get('order') as SortOrder) || 'asc',
       beneficiaireFilter: searchParams.get('beneficiaire') ? parseInt(searchParams.get('beneficiaire')!) : null,
-      secteurFilter: searchParams.get('secteur') ? parseInt(searchParams.get('secteur')!) : null
+      secteurFilter: searchParams.get('secteur') ? parseInt(searchParams.get('secteur')!) : null,
+      lettreFilter: searchParams.get('lettre')
     });
 
     // Seulement mettre à jour si l'URL a changé
@@ -289,12 +262,6 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
         dispatch({ type: 'UPDATE_SEARCH', payload: searchParams.get('search') || '' });
       }
 
-      const urlSort = searchParams.get('sort') as SortField || 'nom';
-      const urlOrder = searchParams.get('order') as SortOrder || 'asc';
-      if (urlSort !== filters.sortField || urlOrder !== filters.sortOrder) {
-        dispatch({ type: 'UPDATE_SORT', payload: { field: urlSort, order: urlOrder } });
-      }
-
       const urlBenef = searchParams.get('beneficiaire') ? parseInt(searchParams.get('beneficiaire')!) : null;
       if (urlBenef !== filters.beneficiaireFilter) {
         dispatch({ type: 'UPDATE_BENEFICIAIRE', payload: urlBenef });
@@ -303,6 +270,11 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
       const urlSecteur = searchParams.get('secteur') ? parseInt(searchParams.get('secteur')!) : null;
       if (urlSecteur !== filters.secteurFilter) {
         dispatch({ type: 'UPDATE_SECTEUR', payload: urlSecteur });
+      }
+
+      const urlLettre = searchParams.get('lettre');
+      if (urlLettre !== filters.lettreFilter) {
+        dispatch({ type: 'UPDATE_LETTRE', payload: urlLettre });
       }
     }
   }, [searchParams, normalizeParams]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -329,16 +301,16 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
     dispatch({ type: 'UPDATE_SEARCH', payload: query });
   }, []);
 
-  const updateSort = useCallback((field: SortField, order: SortOrder) => {
-    dispatch({ type: 'UPDATE_SORT', payload: { field, order } });
-  }, []);
-
   const updateBeneficiaireFilter = useCallback((beneficiaire: number | null) => {
     dispatch({ type: 'UPDATE_BENEFICIAIRE', payload: beneficiaire });
   }, []);
 
   const updateSecteurFilter = useCallback((secteur: number | null) => {
     dispatch({ type: 'UPDATE_SECTEUR', payload: secteur });
+  }, []);
+
+  const updateLettreFilter = useCallback((lettre: string | null) => {
+    dispatch({ type: 'UPDATE_LETTRE', payload: lettre });
   }, []);
 
   const resetFilters = useCallback(() => {
@@ -362,20 +334,20 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
       filters.searchQuery !== '' ||
       filters.beneficiaireFilter !== null ||
       filters.secteurFilter !== null ||
-      filters.sortField !== 'nom' ||
-      filters.sortOrder !== 'asc'
+      filters.lettreFilter !== null
   }), [initialMarques.length, filteredMarques.length, filters]);
 
   return {
     filters,
     filterOptions,
     filteredMarques,
+    lettresDisponibles,
     stats,
     updateSearchQuery,
     updateSearchQueryImmediate,
-    updateSort,
     updateBeneficiaireFilter,
     updateSecteurFilter,
+    updateLettreFilter,
     resetFilters
   };
 }

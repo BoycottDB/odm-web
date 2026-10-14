@@ -1,16 +1,22 @@
 'use client';
 
-import { useState, useEffect, KeyboardEvent, useCallback } from 'react';
+import { useState, useMemo, KeyboardEvent, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { SearchBar } from '@/components/search/SearchBar';
 import { dataService } from '@/lib/services/dataService';
 import { slugify } from '@/lib/slug';
 import { safeTrack } from '@/lib/analytics';
+import { MarqueNom, filtrerMarques, marqueExacte } from '@/lib/rechercheMarques';
 
-interface MarqueSuggestion {
-  id: number;
-  nom: string;
-}
+// Noms de toutes les marques, chargés une seule fois par visite (partagés entre les barres)
+let nomsEnCours: Promise<MarqueNom[]> | null = null;
+const chargerNomsMarques = () => {
+  nomsEnCours ??= dataService.getMarquesNoms().catch((error) => {
+    nomsEnCours = null; // un échec sera retenté au prochain focus
+    throw error;
+  });
+  return nomsEnCours;
+};
 
 interface SearchHeroProps {
   source?: 'marques_list' | 'marque_detail';
@@ -19,46 +25,26 @@ interface SearchHeroProps {
 export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<MarqueSuggestion[]>([]);
+  const [marques, setMarques] = useState<MarqueNom[]>([]);
   const [suggestionHighlighted, setSuggestionHighlighted] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Mise à jour des suggestions avec debounce + AbortController
-  useEffect(() => {
-    if (query.trim().length < 2) {
-      setSuggestions([]);
-      return;
-    }
+  // Filtrage sur place, sans appel réseau à chaque frappe
+  const suggestions = useMemo(() => filtrerMarques(marques, query), [marques, query]);
 
-    const abortController = new AbortController();
-
-    const timer = setTimeout(async () => {
-      try {
-        const results = await dataService.getSuggestions(query, 10);
-        // Vérifier si la requête n'a pas été annulée
-        if (!abortController.signal.aborted) {
-          setSuggestions(results);
-        }
-      } catch (error) {
-        if (!abortController.signal.aborted) {
-          console.error('Erreur chargement suggestions:', error);
-          setSuggestions([]);
-        }
-      }
-    }, 200);
-
-    return () => {
-      clearTimeout(timer);
-      abortController.abort();
-    };
-  }, [query]);
+  const handleFocus = useCallback(() => {
+    setShowSuggestions(true);
+    chargerNomsMarques()
+      .then(setMarques)
+      .catch((error) => console.error('Erreur chargement des marques:', error));
+  }, []);
 
   const handleQueryChange = (value: string) => {
     setQuery(value);
     setSuggestionHighlighted(-1);
   };
 
-  const handleSuggestionSelect = useCallback((marque: MarqueSuggestion) => {
+  const handleSuggestionSelect = useCallback((marque: MarqueNom) => {
     const slug = slugify(marque.nom);
     setShowSuggestions(false);
 
@@ -70,9 +56,6 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
       source
     });
 
-    // Poser flag pour scroll après navigation
-    sessionStorage.setItem('scrollToResults', 'true');
-
     router.push(`/marques/${slug}`);
   }, [router, source]);
 
@@ -81,20 +64,9 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
 
     setShowSuggestions(false);
 
-    // Recherche dans toutes les marques disponibles via l'API
+    // Recherche dans toutes les marques (liste déjà chargée au focus, sinon chargée ici)
     try {
-      const normalizedQuery = searchQuery.toLowerCase().trim();
-
-      // Chercher d'abord dans les suggestions déjà chargées
-      let exactMatch = suggestions.find(m => m.nom.toLowerCase() === normalizedQuery);
-
-      // Si pas trouvé dans suggestions, rechercher via l'API
-      if (!exactMatch) {
-        const results = await dataService.getSuggestions(normalizedQuery, 1);
-        if (results.length > 0 && results[0].nom.toLowerCase() === normalizedQuery) {
-          exactMatch = results[0];
-        }
-      }
+      const exactMatch = marqueExacte(await chargerNomsMarques(), searchQuery);
 
       if (exactMatch) {
         const slug = slugify(exactMatch.nom);
@@ -106,9 +78,6 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
           marque_id: exactMatch.id,
           source
         });
-
-        // Poser flag pour scroll après navigation
-        sessionStorage.setItem('scrollToResults', 'true');
 
         router.push(`/marques/${slug}`);
       } else {
@@ -132,7 +101,7 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
       sessionStorage.setItem('scrollToList', 'true');
       router.push(`/marques?search=${encodeURIComponent(searchQuery)}`);
     }
-  }, [suggestions, router, source]);
+  }, [router, source]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
@@ -177,7 +146,7 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
       }}
       onSuggestionSelect={handleSuggestionSelect}
       onKeyDown={handleKeyDown}
-      onFocus={() => setShowSuggestions(true)}
+      onFocus={handleFocus}
       onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
     />
   );

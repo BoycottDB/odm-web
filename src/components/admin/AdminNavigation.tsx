@@ -46,13 +46,9 @@ export default function AdminNavigation() {
               <span>Retour au site</span>
             </button>
             <button
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  import('@/lib/auth/admin').then(({ adminAuth }) => {
-                    adminAuth.removeToken();
-                    router.push('/admin/login');
-                  });
-                }
+              onClick={async () => {
+                await fetch('/api/admin/session', { method: 'DELETE' });
+                router.push('/admin/login');
               }}
               className="body-small text-error hover:text-error flex items-center space-x-1"
             >

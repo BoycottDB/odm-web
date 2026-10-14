@@ -10,7 +10,6 @@ interface PropositionDetailProps {
   onUpdate: (id: number, updateData: {
     statut: 'approuve' | 'rejete';
     commentaire_admin?: string;
-    condamnation_judiciaire?: boolean;
     reponse?: string;
   }) => Promise<void>;
   onBack: () => void;
@@ -21,7 +20,6 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editedData, setEditedData] = useState(proposition);
   const [categories, setCategories] = useState<Categorie[]>([]);
-  const [condamnationJudiciaire, setCondamnationJudiciaire] = useState(false);
   const [reponseUrl, setReponseUrl] = useState('');
   const [marqueSearch, setMarqueSearch] = useState('');
   const [marqueSearchResults, setMarqueSearchResults] = useState<{ id: number; nom: string }[]>([]);
@@ -221,10 +219,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
     try {
       const response = await fetch('/api/categories', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nom: categoryName.trim()
         })
@@ -339,7 +334,6 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
       await onUpdate(proposition.id, {
         statut,
         commentaire_admin: commentaire.trim() || undefined,
-        condamnation_judiciaire: statut === 'approuve' ? condamnationJudiciaire : undefined,
         reponse: statut === 'approuve' && reponseUrl.trim() ? reponseUrl.trim() : undefined
       });
     } catch (error) {
@@ -353,10 +347,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
     try {
       const response = await fetch(`/api/propositions/${proposition.id}/data`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editedData) // Envoyer directement les champs modifiés
       });
 
@@ -626,23 +617,6 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               />
               <p className="body-small text-neutral-500 mt-1">
                 {editedData?.titre_controverse?.length || 0}/200 caractères (minimum 10)
-              </p>
-            </div>
-
-            <div>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={condamnationJudiciaire}
-                  onChange={(e) => setCondamnationJudiciaire(e.target.checked)}
-                  className="mr-2"
-                />
-                <span className="body-small font-medium text-neutral-700">
-                  Condamnation judiciaire
-                </span>
-              </label>
-              <p className="body-xs text-neutral-500 mt-1">
-                Cocher si cette controverse a fait l&apos;objet d&apos;une condamnation judiciaire officielle
               </p>
             </div>
           </div>

@@ -48,10 +48,10 @@ export async function PATCH(
       );
     }
 
-    // Extraire condamnation_judiciaire et reponse avant la mise à jour de la Proposition
-    const { condamnation_judiciaire, reponse, ...propositionUpdateData } = validation.data!;
+    // Extraire reponse avant la mise à jour de la Proposition
+    const { reponse, ...propositionUpdateData } = validation.data!;
     
-    // Mettre à jour la proposition (sans condamnation_judiciaire)
+    // Mettre à jour la proposition (sans reponse)
     const updateData = {
       ...propositionUpdateData,
       updated_at: new Date().toISOString()
@@ -71,7 +71,7 @@ export async function PATCH(
     
     if (wasApproved) {
       try {
-        const conversionResult = await convertApprovedProposition(proposition, condamnation_judiciaire || false, reponse);
+        const conversionResult = await convertApprovedProposition(proposition, reponse);
         console.log(`✅ Proposition ${id} convertie automatiquement:`, conversionResult.type);
         
         // Retourner les infos de la proposition + le résultat de la conversion
