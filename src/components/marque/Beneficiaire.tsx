@@ -61,7 +61,11 @@ export function ContenuBeneficiaire({ noeud, liens, marqueId }: ContenuBeneficia
       )}
 
       {controverses.length > 0 && (
-        <ControversesDocumentees controverses={controverses} sourceType="beneficiaire" marqueId={marqueId} />
+        <ControversesDocumentees
+          controverses={controverses.map((controverse) => ({ ...controverse, categorie: controverse.Categorie }))}
+          sourceType="beneficiaire"
+          marqueId={marqueId}
+        />
       )}
 
       {/* Marques liées sans intermédiaire */}

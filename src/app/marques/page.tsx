@@ -25,18 +25,9 @@ export const metadata: Metadata = {
   }
 };
 
-async function getMarques() {
-  try {
-    // Appel direct dataService (évite hop inutile + pas de dépendance NEXT_PUBLIC_BASE_URL)
-    return await dataService.getMarquesStats();
-  } catch (error) {
-    console.error('Erreur chargement marques:', error);
-    return [];
-  }
-}
-
 export default async function MarquesPage() {
-  const marques = await getMarques();
+  // Une erreur de l'API remonte : Next garde la dernière liste au lieu de mettre en cache une liste vide
+  const marques = await dataService.getMarquesStats();
 
   return (
     <div className="min-h-screen bg-white">

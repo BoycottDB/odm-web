@@ -6,7 +6,7 @@ interface ControverseCategorisee {
 }
 
 // Catégorie jamais affichée en étiquette : elle ne dit rien au visiteur
-const CATEGORIE_EXCLUE = 'Autre';
+export const CATEGORIE_EXCLUE = 'Autre';
 
 // Une étiquette par catégorie, avec le nombre de controverses ;
 // ordre : catégorie dont la controverse est la plus récente en premier

@@ -1,4 +1,6 @@
 import { safeTrack } from '@/lib/analytics';
+import { CATEGORIE_EXCLUE } from './etiquettes';
+import { ListeEtiquettes } from './ListeEtiquettes';
 
 interface Controverse {
   id: number | string;
@@ -6,6 +8,7 @@ interface Controverse {
   date?: string | null;
   source_url: string;
   reponse?: string | null;
+  categorie?: { nom: string; emoji?: string } | null;
 }
 
 interface ControversesDocumenteesProps {
@@ -54,6 +57,19 @@ const LigneLiens = ({ controverse, sourceType, marqueId }: { controverse: Contro
   );
 };
 
+// Date et étiquette de la catégorie (même style que dans l'en-tête) ; jamais « Autre »
+const LigneDateCategorie = ({ controverse }: { controverse: Controverse }) => {
+  const categorie = controverse.categorie?.nom && controverse.categorie.nom !== CATEGORIE_EXCLUE ? controverse.categorie : null;
+  if (!controverse.date && !categorie) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 mb-1">
+      {controverse.date && <span className="text-xs font-semibold text-secondary">{formatDate(controverse.date)}</span>}
+      {categorie && <ListeEtiquettes etiquettes={[{ nom: categorie.nom, emoji: categorie.emoji, nombre: 1 }]} />}
+    </div>
+  );
+};
+
 // Frise des controverses d'un acteur, de la plus récente à la plus ancienne
 export function ControversesDocumentees({ controverses, sourceType, marqueId }: ControversesDocumenteesProps) {
   return (
@@ -65,9 +81,7 @@ export function ControversesDocumentees({ controverses, sourceType, marqueId }: 
         {[...controverses].sort(parDateDecroissante).map((controverse) => (
           <li key={controverse.id} className="relative pl-5 pb-5 last:pb-0">
             <span className="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-primary" aria-hidden="true" />
-            {controverse.date && (
-              <div className="text-xs font-semibold text-secondary mb-0.5">{formatDate(controverse.date)}</div>
-            )}
+            <LigneDateCategorie controverse={controverse} />
             <p className="text-sm font-medium text-neutral-900 leading-snug mb-1">{controverse.titre}</p>
             <LigneLiens controverse={controverse} sourceType={sourceType} marqueId={marqueId} />
           </li>

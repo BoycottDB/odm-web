@@ -19,6 +19,13 @@ import {
   MarqueBeneficiaireCreateRequest
 } from '@/types';
 
+// Erreur de l'API avec son statut HTTP, pour distinguer « introuvable » (404) d'une panne
+class ApiError extends Error {
+  constructor(readonly status: number) {
+    super(`Service indisponible (${status})`);
+  }
+}
+
 class DataService {
   private extensionApiUrl: string;
 
@@ -44,7 +51,7 @@ class DataService {
     });
     
     if (!response.ok) {
-      throw new Error(`Service indisponible (${response.status})`);
+      throw new ApiError(response.status);
     }
     
     return response.json();
@@ -127,8 +134,10 @@ class DataService {
       // TTL 10min pour pages marque
       return await this.fetchFromExtensionApi<Marque>(endpoint, { revalidate: 600 });
     } catch (error) {
-      console.error(`Marque not found for slug: ${slug}`, error);
-      return null;
+      // Seule une marque inexistante donne « non trouvée » ; une autre erreur remonte,
+      // pour que Next garde la dernière version de la page au lieu de mettre en cache une 404
+      if (error instanceof ApiError && error.status === 404) return null;
+      throw error;
     }
   }
 
