@@ -115,7 +115,6 @@ class DataService {
     secteur?: { id: number; nom: string } | null;
     nbControverses: number;
     categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
-    nbCondamnations: number;
     nbBeneficiairesControverses: number;
     beneficiairesControverses: Array<{id: number, nom: string}>;
   }[]> {
@@ -126,7 +125,6 @@ class DataService {
       secteur?: { id: number; nom: string } | null;
       nbControverses: number;
       categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
-      nbCondamnations: number;
       nbBeneficiairesControverses: number;
       beneficiairesControverses: Array<{id: number, nom: string}>;
     }[]>(endpoint, { revalidate: 600, tags: ['marques-stats'] });

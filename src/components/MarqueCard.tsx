@@ -7,7 +7,6 @@ interface MarqueCardProps {
     id: number;
     nom: string;
     nbControverses: number;
-    nbCondamnations: number;
     categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
     beneficiairesControverses: Array<{id: number, nom: string}>;
     nbBeneficiairesControverses?: number;
@@ -19,7 +18,7 @@ export default function MarqueCard({ marque }: MarqueCardProps) {
   const mainName = match ? match[1].trim() : marque.nom;
   const parentheses = match ? match[2].trim() : null;
 
-  const hasStats = marque.nbControverses > 0 || marque.nbCondamnations > 0;
+  const hasStats = marque.nbControverses > 0;
   const hasBeneficiaires = (marque.beneficiairesControverses?.length || 0) > 0;
   const hasCategories = marque.categories.length > 0;
   const beneficiairesToShow = (marque.beneficiairesControverses || []);
@@ -50,13 +49,6 @@ export default function MarqueCard({ marque }: MarqueCardProps) {
                   {marque.nbControverses} Controverse{marque.nbControverses > 1 ? 's' : ''}
                 </span>
               )}
-
-              {/* Condamnations - uniquement si > 0 */}
-              {marque.nbCondamnations > 0 && (
-                <span className="text-xs font-medium text-neutral-700">
-                  {marque.nbCondamnations} Condamnation{marque.nbCondamnations > 1 ? 's' : ''}
-                </span>
-              )}
             </div>
           )}
         </div>
@@ -68,13 +60,6 @@ export default function MarqueCard({ marque }: MarqueCardProps) {
             {marque.nbControverses > 0 && (
               <div className="body-large font-semibold text-neutral-600 items-center flex">
                 {marque.nbControverses} <span className="body-small ml-1">Controverse{marque.nbControverses > 1 ? 's' : ''}</span>
-              </div>
-            )}
-
-            {/* Condamnations - uniquement si > 0 */}
-            {marque.nbCondamnations > 0 && (
-              <div className="body-large font-semibold text-neutral-600 items-center flex">
-                {marque.nbCondamnations} <span className="body-small ml-1">Condamnation{marque.nbCondamnations > 1 ? 's' : ''}</span>
               </div>
             )}
           </div>

@@ -20,7 +20,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
     source_url: '',
     date: '',
     categorie_id: undefined as number | undefined,
-    condamnation_judiciaire: false,
     reponse: ''
   });
   const [editData, setEditData] = useState({ 
@@ -28,7 +27,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
     source_url: '',
     date: '',
     categorie_id: undefined as number | undefined,
-    condamnation_judiciaire: false,
     reponse: ''
   });
 
@@ -95,7 +93,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
           source_url: newControverse.source_url.trim(),
           date: newControverse.date || undefined,
           categorie_id: newControverse.categorie_id || undefined,
-          condamnation_judiciaire: newControverse.condamnation_judiciaire,
           reponse: newControverse.reponse.trim() || undefined
         })
       });
@@ -108,7 +105,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
           source_url: '',
           date: '',
           categorie_id: undefined,
-          condamnation_judiciaire: false,
           reponse: ''
         });
         setIsAdding(false);
@@ -130,7 +126,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
       source_url: controverse.source_url,
       date: controverse.date || '',
       categorie_id: controverse.categorie_id || undefined,
-      condamnation_judiciaire: controverse.condamnation_judiciaire || false,
       reponse: controverse.reponse || ''
     });
   };
@@ -142,7 +137,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
       source_url: '',
       date: '',
       categorie_id: undefined,
-      condamnation_judiciaire: false,
       reponse: ''
     });
   };
@@ -175,7 +169,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
           source_url: editData.source_url.trim(),
           date: editData.date || undefined,
           categorie_id: editData.categorie_id || undefined,
-          condamnation_judiciaire: editData.condamnation_judiciaire,
           reponse: editData.reponse.trim() || undefined
         })
       });
@@ -191,7 +184,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
           source_url: '',
           date: '',
           categorie_id: undefined,
-          condamnation_judiciaire: false,
           reponse: ''
         });
         onUpdate?.();
@@ -308,21 +300,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                       ))}
                     </select>
                   </div>
-                  
-                  {/* NOUVEAU : Condamnation judiciaire */}
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id={`condamnation-edit-${controverse.id}`}
-                      checked={editData.condamnation_judiciaire}
-                      onChange={(e) => setEditData({...editData, condamnation_judiciaire: e.target.checked})}
-                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                    />
-                    <label htmlFor={`condamnation-edit-${controverse.id}`} className="text-sm font-medium text-gray-700">
-                      ⚖️ Condamnation judiciaire
-                    </label>
-                  </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       URL source *
@@ -371,15 +349,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                 <div className="flex items-start gap-3">
                   <GripVertical className="w-4 h-4 text-gray-400 mt-1 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    {/* Badge condamnation judiciaire */}
-                    {controverse.condamnation_judiciaire && (
-                      <div className="mb-2">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-medium text-primary-700">
-                          ⚖️ Condamnation judiciaire
-                        </span>
-                      </div>
-                    )}
-                    
                     <div className="font-medium text-gray-900 mb-1 leading-tight">
                       {controverse.titre}
                     </div>
@@ -475,7 +444,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                 type="text"
                 value={newControverse.titre}
                 onChange={(e) => setNewControverse({...newControverse, titre: e.target.value})}
-                placeholder="Ex: Condamnation pour évasion fiscale"
+                placeholder="Ex : Renvoyé en procès le 19/03/2026 pour…"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
               />
               <div className="text-xs text-gray-500 mt-1">
@@ -514,21 +483,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                 ))}
               </select>
             </div>
-            
-            {/* NOUVEAU : Condamnation judiciaire */}
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="condamnation"
-                checked={newControverse.condamnation_judiciaire}
-                onChange={(e) => setNewControverse({...newControverse, condamnation_judiciaire: e.target.checked})}
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-              />
-              <label htmlFor="condamnation" className="text-sm font-medium text-gray-700">
-                ⚖️ Condamnation judiciaire
-              </label>
-            </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 URL source *
@@ -574,7 +529,6 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                     source_url: '',
                     date: '',
                     categorie_id: undefined,
-                    condamnation_judiciaire: false,
                     reponse: ''
                   });
                 }}

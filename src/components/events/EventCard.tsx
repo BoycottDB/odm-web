@@ -2,7 +2,6 @@
 
 import { Evenement, Marque } from '@/types';
 import { safeTrack } from '@/lib/analytics';
-import { JudicialCondemnationNotice } from '@/components/ui/JudicialCondemnationNotice';
 
 interface EventCardProps {
   event: Evenement;
@@ -39,10 +38,7 @@ export function EventCard({ event, marque }: EventCardProps) {
   };
 
   return (
-    <div className={`relative ${event.condamnation_judiciaire && 'mt-6'}`}>
-      {/* Notification de condamnation judiciaire */}
-      {event.condamnation_judiciaire && <JudicialCondemnationNotice />}
-      <div className="relative z-10 bg-white rounded-3xl card-padding shadow-lg border border-primary-medium hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+    <div className="relative z-10 bg-white rounded-3xl card-padding shadow-lg border border-primary-medium hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* En-tête principal : Marque et Date */}
       <div className="flex items-center justify-between mb-2">
         {/* Nom de la marque */}
@@ -109,9 +105,9 @@ export function EventCard({ event, marque }: EventCardProps) {
         </div>
       )}
 
-      {/* Réponse de la marque */}
-      <div className="pt-3">
-        {event.reponse ? (
+      {/* Réponse de la marque, seulement si elle existe */}
+      {event.reponse && (
+        <div className="pt-3">
           <a
             href={event.reponse}
             target="_blank"
@@ -123,13 +119,8 @@ export function EventCard({ event, marque }: EventCardProps) {
             </svg>
             Réponse officielle de la marque
           </a>
-        ) : (
-          <p className="body-small text-neutral-500 italic">
-            Aucune réponse officielle de la marque
-          </p>
-        )}
-      </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

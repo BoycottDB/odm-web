@@ -5,6 +5,7 @@
 
 import { NextRequest } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
+import { requireAdmin } from '@/lib/auth/admin';
 
 interface HealthCheck {
   service: string;
@@ -21,12 +22,9 @@ interface MetricsResponse {
 
 export async function GET(request: NextRequest) {
   try {
-    // Vérification token admin
-    const token = request.headers.get('Authorization')?.replace('Bearer ', '');
-    
-    if (token !== process.env.ADMIN_TOKEN) {
-      return Response.json({ error: 'Non autorisé' }, { status: 401 });
-    }
+    // Vérification admin (cookie httpOnly ou en-tête Authorization)
+    const authError = requireAdmin(request);
+    if (authError) return authError;
 
     const metrics = await collectMetrics();
     

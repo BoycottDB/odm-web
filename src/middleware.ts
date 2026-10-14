@@ -8,6 +8,8 @@ const WRITE_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
 const PUBLIC_WRITES = [
   { method: 'POST', path: '/api/propositions' },
   { method: 'POST', path: '/api/sondage-ecommerce' },
+  { method: 'POST', path: '/api/admin/session' },
+  { method: 'DELETE', path: '/api/admin/session' },
 ];
 
 function unauthorized() {

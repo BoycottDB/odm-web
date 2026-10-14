@@ -37,7 +37,6 @@ async function getMarques() {
       secteur: marque.secteur,
       updated_at: undefined,
       nbControverses: marque.nbControverses,
-      nbCondamnations: marque.nbCondamnations,
       categories: marque.categories,
       beneficiairesControverses: marque.beneficiairesControverses,
       nbBeneficiairesControverses: marque.nbBeneficiairesControverses || marque.beneficiairesControverses.length

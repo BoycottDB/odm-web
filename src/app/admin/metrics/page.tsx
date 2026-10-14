@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { adminAuth } from '@/lib/auth/admin';
 import AdminNavigation from '@/components/admin/AdminNavigation';
 
 interface HealthCheck {
@@ -28,17 +27,9 @@ export default function MetricsPage() {
   const fetchMetrics = async () => {
     try {
       setError(null);
-      
-      if (!adminAuth.isAuthenticated()) {
-        router.push('/admin/login');
-        return;
-      }
 
       const response = await fetch('/api/admin/metrics', {
-        headers: {
-          'Content-Type': 'application/json',
-          ...adminAuth.getAuthHeaders()
-        }
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (!response.ok) {

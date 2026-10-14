@@ -6,7 +6,6 @@ interface Controverse {
   date?: string | null;
   source_url: string;
   reponse?: string | null;
-  condamnation_judiciaire?: boolean;
 }
 
 interface ControversesDocumenteesProps {
@@ -23,7 +22,7 @@ const formatDate = (date: string) =>
 
 const lienClass = 'text-primary font-medium hover:text-accent-700 transition-colors';
 
-// Source, Réponse et Condamnation sur une ligne, séparées par « · »
+// Source et Réponse sur une ligne, séparées par « · »
 const LigneLiens = ({ controverse, sourceType, marqueId }: { controverse: Controverse } & Omit<ControversesDocumenteesProps, 'controverses'>) => {
   const elements = [
     <a
@@ -41,7 +40,6 @@ const LigneLiens = ({ controverse, sourceType, marqueId }: { controverse: Contro
         Réponse ↗
       </a>
     ) : null,
-    controverse.condamnation_judiciaire ? <span key="condamnation" className="text-primary-dark">Condamnation judiciaire</span> : null,
   ].filter(Boolean);
 
   return (

@@ -43,7 +43,6 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
   date: string;
   categorie_id: number;
   source_url: string;
-  condamnation_judiciaire?: boolean;
 }> {
   const errors: string[] = [];
 
@@ -57,15 +56,13 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
     description,
     date,
     categorie_id,
-    source_url,
-    condamnation_judiciaire
+    source_url
   } = data as {
     marque_id?: unknown;
     description?: unknown;
     date?: unknown;
     categorie_id?: unknown;
     source_url?: unknown;
-    condamnation_judiciaire?: unknown;
   };
 
   // Validation marque_id
@@ -107,11 +104,6 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
     errors.push('La date doit être au format valide');
   }
 
-  // Validation condamnation_judiciaire (optionnel)
-  if (condamnation_judiciaire !== undefined && typeof condamnation_judiciaire !== 'boolean') {
-    errors.push('Le champ condamnation judiciaire doit être un booléen');
-  }
-
   if (errors.length > 0) {
     return { success: false, errors };
   }
@@ -123,8 +115,7 @@ export function validateEvenementCreate(data: unknown): ValidationResult<{
       description: typeof description === 'string' ? description.trim() : '',
       date: typeof date === 'string' ? date : '',
       categorie_id: typeof categorie_id === 'number' ? categorie_id : 0,
-      source_url: typeof source_url === 'string' ? source_url.trim() : '',
-      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined
+      source_url: typeof source_url === 'string' ? source_url.trim() : ''
     }
   };
 }
@@ -248,10 +239,9 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     return { success: false, errors };
   }
 
-  const { statut, commentaire_admin, condamnation_judiciaire, reponse } = data as {
+  const { statut, commentaire_admin, reponse } = data as {
     statut?: unknown;
     commentaire_admin?: unknown;
-    condamnation_judiciaire?: unknown;
     reponse?: unknown;
   };
 
@@ -269,11 +259,6 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     }
   }
 
-
-  // Validation condamnation_judiciaire (optionnel)
-  if (condamnation_judiciaire !== undefined && typeof condamnation_judiciaire !== 'boolean') {
-    errors.push('La condamnation judiciaire doit être un booléen');
-  }
 
   // Validation reponse (optionnel)
   if (reponse !== undefined) {
@@ -293,7 +278,6 @@ export function validatePropositionUpdate(data: unknown): ValidationResult<Propo
     data: {
       statut: statut as 'approuve' | 'rejete',
       commentaire_admin: typeof commentaire_admin === 'string' ? commentaire_admin.trim() : undefined,
-      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined,
       reponse: typeof reponse === 'string' && reponse.trim() ? reponse.trim() : undefined
     }
   };
@@ -306,7 +290,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
   source_url: string;
   date?: string;
   categorie_id?: number;
-  condamnation_judiciaire?: boolean;
   reponse?: string;
 }> {
   const errors: string[] = [];
@@ -322,7 +305,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
     source_url,
     date,
     categorie_id,
-    condamnation_judiciaire,
     reponse
   } = data as {
     beneficiaire_id?: unknown;
@@ -330,7 +312,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
     source_url?: unknown;
     date?: unknown;
     categorie_id?: unknown;
-    condamnation_judiciaire?: unknown;
     reponse?: unknown;
   };
 
@@ -375,11 +356,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
     errors.push('L\'ID de catégorie doit être un nombre entier');
   }
 
-  // Validation condamnation_judiciaire (optionnelle)
-  if (condamnation_judiciaire !== undefined && typeof condamnation_judiciaire !== 'boolean') {
-    errors.push('Le champ condamnation judiciaire doit être un booléen');
-  }
-
   // Validation reponse (optionnelle)
   if (reponse !== undefined && typeof reponse === 'string' && reponse.trim()) {
     try {
@@ -401,7 +377,6 @@ export function validateControverseBeneficiaireCreate(data: unknown): Validation
       source_url: (source_url as string).trim(),
       date: typeof date === 'string' && date.trim() ? date.trim() : undefined,
       categorie_id: typeof categorie_id === 'number' ? categorie_id : undefined,
-      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined,
       reponse: typeof reponse === 'string' && reponse.trim() ? reponse.trim() : undefined
     }
   };
@@ -414,7 +389,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
   source_url?: string;
   date?: string;
   categorie_id?: number;
-  condamnation_judiciaire?: boolean;
   reponse?: string;
 }> {
   const errors: string[] = [];
@@ -430,7 +404,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
     source_url,
     date,
     categorie_id,
-    condamnation_judiciaire,
     reponse
   } = data as {
     id?: unknown;
@@ -438,7 +411,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
     source_url?: unknown;
     date?: unknown;
     categorie_id?: unknown;
-    condamnation_judiciaire?: unknown;
     reponse?: unknown;
   };
 
@@ -487,11 +459,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
     errors.push('L\'ID de catégorie doit être un nombre entier');
   }
 
-  // Validation condamnation_judiciaire (optionnelle)
-  if (condamnation_judiciaire !== undefined && typeof condamnation_judiciaire !== 'boolean') {
-    errors.push('Le champ condamnation judiciaire doit être un booléen');
-  }
-
   // Validation reponse (optionnelle)
   if (reponse !== undefined && typeof reponse === 'string' && reponse.trim()) {
     try {
@@ -513,7 +480,6 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
       source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : undefined,
       date: typeof date === 'string' && date.trim() ? date.trim() : undefined,
       categorie_id: typeof categorie_id === 'number' ? categorie_id : undefined,
-      condamnation_judiciaire: typeof condamnation_judiciaire === 'boolean' ? condamnation_judiciaire : undefined,
       reponse: typeof reponse === 'string' && reponse.trim() ? reponse.trim() : undefined
     }
   };
