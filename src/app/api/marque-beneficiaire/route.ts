@@ -1,167 +1,66 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
-import { MarqueBeneficiaireCreateRequest, MarqueBeneficiaireUpdateRequest } from '@/types';
+import { validateMarqueBeneficiaireCreate } from '@/lib/validation/schemas';
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const marqueId = searchParams.get('marqueId');
-  const beneficiaireId = searchParams.get('beneficiaireId');
-
-  try {
-    let query = supabaseAdmin
-      .from('Marque_beneficiaire')
-      .select(`
-        id,
-        marque_id,
-        beneficiaire_id,
-        lien_financier,
-        impact_specifique,
-        created_at,
-        updated_at,
-        beneficiaire:beneficiaire_id (
-          id,
-          nom,
-          controverses,
-          sources,
-          impact_generique,
-          type_beneficiaire
-        ),
-        marque:marque_id (
-          id,
-          nom
-        )
-      `);
-
-    if (marqueId) {
-      query = query.eq('marque_id', parseInt(marqueId));
-    }
-
-    if (beneficiaireId) {
-      query = query.eq('beneficiaire_id', parseInt(beneficiaireId));
-    }
-
-    const { data: liaisons, error } = await query.order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Erreur récupération liaisons marque-bénéficiaire:', error);
-      return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
-    }
-
-    return NextResponse.json(liaisons);
-  } catch (error) {
-    console.error('Erreur API GET marque-bénéficiaire:', error);
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
-  }
-}
-
+// POST /api/marque-beneficiaire - Créer un lien marque → bénéficiaire, toujours avec sa source
 export async function POST(request: NextRequest) {
   try {
-    const body: MarqueBeneficiaireCreateRequest = await request.json();
+    const validation = validateMarqueBeneficiaireCreate(await request.json());
+    if (!validation.success || !validation.data) {
+      return NextResponse.json({ error: validation.errors?.join(', ') }, { status: 400 });
+    }
+    const data = validation.data;
 
-    // Vérifier que la liaison n'existe pas déjà
+    const { data: marque } = await supabaseAdmin
+      .from('Marque')
+      .select('id, nom')
+      .eq('id', data.marque_id)
+      .single();
+
+    if (!marque) {
+      return NextResponse.json({ error: 'Marque introuvable' }, { status: 404 });
+    }
+
+    const { data: beneficiaire } = await supabaseAdmin
+      .from('Beneficiaires')
+      .select('id, nom')
+      .eq('id', data.beneficiaire_id)
+      .single();
+
+    if (!beneficiaire) {
+      return NextResponse.json({ error: 'Bénéficiaire introuvable' }, { status: 404 });
+    }
+
     const { data: existing } = await supabaseAdmin
       .from('Marque_beneficiaire')
       .select('id')
-      .eq('marque_id', body.marque_id)
-      .eq('beneficiaire_id', body.beneficiaire_id)
-      .single();
+      .eq('marque_id', data.marque_id)
+      .eq('beneficiaire_id', data.beneficiaire_id)
+      .maybeSingle();
 
     if (existing) {
       return NextResponse.json(
-        { error: 'Cette liaison entre la marque et le bénéficiaire existe déjà' },
-        { status: 400 }
+        { error: `${beneficiaire.nom} est déjà lié à ${marque.nom}` },
+        { status: 409 }
       );
     }
 
     const { data: liaison, error } = await supabaseAdmin
       .from('Marque_beneficiaire')
-      .insert([{
-        marque_id: body.marque_id,
-        beneficiaire_id: body.beneficiaire_id,
-        lien_financier: body.lien_financier,
-        impact_specifique: body.impact_specifique
-      }])
-      .select(`
-        id,
-        marque_id,
-        beneficiaire_id,
-        lien_financier,
-        impact_specifique,
-        created_at,
-        updated_at,
-        beneficiaire:beneficiaire_id (
-          id,
-          nom,
-          controverses,
-          sources,
-          impact_generique,
-          type_beneficiaire
-        ),
-        marque:marque_id (
-          id,
-          nom
-        )
-      `)
+      .insert({
+        ...data,
+        // La source vient d'être vérifiée par l'admin qui crée le lien
+        verifie_le: new Date().toISOString().slice(0, 10)
+      })
+      .select()
       .single();
 
-    if (error) {
-      console.error('Erreur création liaison marque-bénéficiaire:', error);
-      return NextResponse.json({ error: 'Erreur lors de la création de la liaison' }, { status: 500 });
-    }
+    if (error) throw error;
 
     return NextResponse.json(liaison, { status: 201 });
   } catch (error) {
-    console.error('Erreur API POST marque-bénéficiaire:', error);
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  try {
-    const body: MarqueBeneficiaireUpdateRequest = await request.json();
-
-    const updateData: Record<string, unknown> = {};
-    if (body.lien_financier !== undefined) updateData.lien_financier = body.lien_financier;
-    if (body.impact_specifique !== undefined) updateData.impact_specifique = body.impact_specifique;
-    
-    updateData.updated_at = new Date().toISOString();
-
-    const { data: liaison, error } = await supabaseAdmin
-      .from('Marque_beneficiaire')
-      .update(updateData)
-      .eq('id', body.id)
-      .select(`
-        id,
-        marque_id,
-        beneficiaire_id,
-        lien_financier,
-        impact_specifique,
-        created_at,
-        updated_at,
-        beneficiaire:beneficiaire_id (
-          id,
-          nom,
-          controverses,
-          sources,
-          impact_generique,
-          type_beneficiaire
-        ),
-        marque:marque_id (
-          id,
-          nom
-        )
-      `)
-      .single();
-
-    if (error) {
-      console.error('Erreur mise à jour liaison marque-bénéficiaire:', error);
-      return NextResponse.json({ error: 'Erreur lors de la mise à jour de la liaison' }, { status: 500 });
-    }
-
-    return NextResponse.json(liaison);
-  } catch (error) {
-    console.error('Erreur API PUT marque-bénéficiaire:', error);
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+    console.error('Erreur création liaison marque-bénéficiaire:', error);
+    return NextResponse.json({ error: 'Erreur lors de la création de la liaison' }, { status: 500 });
   }
 }
 

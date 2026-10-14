@@ -14,6 +14,7 @@ interface BeneficiaireRelation {
   beneficiaire_source_id: number;
   beneficiaire_cible_id: number;
   description_relation: string;
+  source_url: string | null;
   created_at: string;
   beneficiaire_source: Beneficiaire;
   beneficiaire_cible: Beneficiaire;
@@ -34,6 +35,8 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
     beneficiaire_source_id: '',
     beneficiaire_cible_id: '',
     description_relation: '',
+    source_url: '',
+    part_detenue: '',
     direction: 'sortante' as 'sortante' | 'entrante'
   });
 
@@ -76,7 +79,9 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
       const payload = {
         beneficiaire_source_id: formData.direction === 'sortante' ? beneficiaireId : parseInt(formData.beneficiaire_cible_id),
         beneficiaire_cible_id: formData.direction === 'sortante' ? parseInt(formData.beneficiaire_cible_id) : beneficiaireId,
-        description_relation: formData.description_relation
+        description_relation: formData.description_relation,
+        source_url: formData.source_url,
+        part_detenue: formData.part_detenue
       };
 
       const response = await fetch('/api/relations-beneficiaires', {
@@ -92,6 +97,8 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
           beneficiaire_source_id: '',
           beneficiaire_cible_id: '',
           description_relation: '',
+          source_url: '',
+          part_detenue: '',
           direction: 'sortante'
         });
         onUpdate?.();
@@ -253,6 +260,35 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
               />
             </div>
 
+            {/* Source (interne) */}
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
+                Source de la relation * <span className="font-normal text-neutral-500">(interne, non affichée)</span>
+              </label>
+              <input
+                type="url"
+                value={formData.source_url}
+                onChange={(e) => setFormData({...formData, source_url: e.target.value})}
+                className="w-full px-3 py-2 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="https://… (rapport annuel, rapport de gouvernance, proxy statement…)"
+                required
+              />
+            </div>
+
+            {/* Part détenue (interne) */}
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
+                Part détenue <span className="font-normal text-neutral-500">(optionnel, interne, non affichée)</span>
+              </label>
+              <input
+                type="text"
+                value={formData.part_detenue}
+                onChange={(e) => setFormData({...formData, part_detenue: e.target.value})}
+                className="w-full px-3 py-2 rounded-lg border border-neutral-300 focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="5,04 % (rapport de gouvernance 2025)"
+              />
+            </div>
+
             <div className="flex space-x-3">
               <button
                 type="submit"
@@ -302,6 +338,11 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                     {relation.description_relation}
                   </div>
                 )}
+                <div className="text-xs text-neutral-500 ml-6">
+                  {relation.source_url
+                    ? <a href={relation.source_url} target="_blank" rel="noopener noreferrer" className="underline">Source</a>
+                    : 'Sans source'}
+                </div>
               </div>
             ))}
           </div>
@@ -338,6 +379,11 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
                     {relation.description_relation}
                   </div>
                 )}
+                <div className="text-xs text-neutral-500 ml-6">
+                  {relation.source_url
+                    ? <a href={relation.source_url} target="_blank" rel="noopener noreferrer" className="underline">Source</a>
+                    : 'Sans source'}
+                </div>
               </div>
             ))}
           </div>

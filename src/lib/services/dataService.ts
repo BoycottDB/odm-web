@@ -9,14 +9,10 @@ import {
   Marque, 
   MarqueStats,
   Evenement, 
-  DirigeantWithMarques, 
   SecteurMarque,
   Categorie,
   MarqueCreateRequest,
-  EvenementCreateRequest,
-  DirigeantCreateRequest,
-  MarqueDirigeantCreateRequest,
-  MarqueBeneficiaireCreateRequest
+  EvenementCreateRequest
 } from '@/types';
 import type { MarqueNom } from '@/lib/rechercheMarques';
 
@@ -237,104 +233,6 @@ class DataService {
     const { supabaseAdmin } = await import('@/lib/supabaseClient');
     const { error } = await supabaseAdmin
       .from('Evenement')
-      .delete()
-      .eq('id', id);
-    
-    if (error) throw error;
-  }
-
-  /**
-   * Create a new leader
-   */
-  async createDirigeant(data: DirigeantCreateRequest): Promise<DirigeantWithMarques> {
-    const { supabaseAdmin } = await import('@/lib/supabaseClient');
-    const { data: beneficiaire, error } = await supabaseAdmin
-      .from('Beneficiaires')
-      .insert([data])
-      .select()
-      .single();
-    
-    if (error) throw error;
-    
-    return {
-      ...beneficiaire,
-      marques: []
-    };
-  }
-
-  /**
-   * Update a leader
-   */
-  async updateDirigeant(id: number, data: Partial<DirigeantCreateRequest>): Promise<void> {
-    const { supabaseAdmin } = await import('@/lib/supabaseClient');
-    const { error } = await supabaseAdmin
-      .from('Beneficiaires')
-      .update(data)
-      .eq('id', id);
-    
-    if (error) throw error;
-  }
-
-  /**
-   * Delete a leader
-   */
-  async deleteDirigeant(id: number): Promise<void> {
-    const { supabaseAdmin } = await import('@/lib/supabaseClient');
-    const { error } = await supabaseAdmin
-      .from('Beneficiaires')
-      .delete()
-      .eq('id', id);
-    
-    if (error) throw error;
-  }
-
-  /**
-   * Create a brand-leader relationship
-   */
-  async createMarqueDirigeant(data: MarqueDirigeantCreateRequest): Promise<void> {
-    // Transform dirigeant_id to beneficiaire_id for the new schema
-    const transformedData = {
-      marque_id: data.marque_id,
-      beneficiaire_id: 'dirigeant_id' in data ? (data as { dirigeant_id: number }).dirigeant_id : (data as MarqueBeneficiaireCreateRequest).beneficiaire_id,
-      lien_financier: data.lien_financier,
-      impact_specifique: data.impact_specifique
-    };
-    
-    const { supabaseAdmin } = await import('@/lib/supabaseClient');
-    const { error } = await supabaseAdmin
-      .from('Marque_beneficiaire')
-      .insert([transformedData]);
-    
-    if (error) throw error;
-  }
-
-  /**
-   * Update a brand-leader relationship
-   */
-  async updateMarqueDirigeant(id: number, data: Partial<MarqueDirigeantCreateRequest>): Promise<void> {
-    // Transform dirigeant_id to beneficiaire_id for the new schema
-    const transformedData: Record<string, unknown> = { ...data };
-    if ('dirigeant_id' in data) {
-      transformedData.beneficiaire_id = (data as { dirigeant_id: number }).dirigeant_id;
-      delete transformedData.dirigeant_id;
-    }
-    
-    const { supabaseAdmin } = await import('@/lib/supabaseClient');
-    const { error } = await supabaseAdmin
-      .from('Marque_beneficiaire')
-      .update(transformedData)
-      .eq('id', id);
-    
-    if (error) throw error;
-  }
-
-  /**
-   * Delete a brand-leader relationship
-   */
-  async deleteMarqueDirigeant(id: number): Promise<void> {
-    const { supabaseAdmin } = await import('@/lib/supabaseClient');
-    const { error } = await supabaseAdmin
-      .from('Marque_beneficiaire')
       .delete()
       .eq('id', id);
     

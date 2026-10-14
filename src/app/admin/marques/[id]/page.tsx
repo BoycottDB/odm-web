@@ -359,7 +359,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
                   </div>
                   <div className="body-xs text-success">
                     <p><strong>Lien financier :</strong> {beneficiaire.lien_financier}</p>
-                    <p><strong>Impact :</strong> {beneficiaire.impact_specifique || beneficiaire.beneficiaire.impact_generique || 'Impact à définir'}</p>
+                    <p><strong>Impact :</strong> {beneficiaire.beneficiaire.impact_generique || 'Impact à définir'}</p>
                     <p><strong>Type :</strong> {beneficiaire.beneficiaire.type_beneficiaire || 'individu'}</p>
                   </div>
                   {marque.beneficiaires_marque && marque.beneficiaires_marque.length > 1 && (
@@ -402,10 +402,10 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
               Vous pouvez lier un bénéficiaire controversé existant à cette marque.
             </p>
             <button
-              onClick={() => router.push(`/admin/marques/${marque.id}/lier-dirigeant`)}
+              onClick={() => router.push(`/admin/marques/${marque.id}/lier-beneficiaire`)}
               className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
             >
-              Lier un dirigeant
+              Lier un bénéficiaire
             </button>
           </div>
         )}

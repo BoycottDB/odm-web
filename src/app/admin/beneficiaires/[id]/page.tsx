@@ -76,12 +76,8 @@ export default function BeneficiaireDetailPage() {
     setError(null);
 
     try {
-      const response = await fetch('/api/beneficiaires', {
+      const response = await fetch(`/api/beneficiaires?id=${beneficiaireId}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: parseInt(beneficiaireId) }),
       });
 
       if (response.ok) {
@@ -252,7 +248,7 @@ export default function BeneficiaireDetailPage() {
               </h3>
               <p className="text-neutral-600 mb-6">
                 Êtes-vous sûr de vouloir supprimer <strong>{beneficiaire.nom}</strong> ?
-                Cette action supprimera également toutes les liaisons avec les marques.
+                Impossible tant que des marques y sont liées : supprimez d&apos;abord ces liaisons.
               </p>
               <div className="flex gap-3">
                 <button

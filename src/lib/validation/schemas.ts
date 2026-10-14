@@ -485,3 +485,104 @@ export function validateControverseBeneficiaireUpdate(data: unknown): Validation
   };
 }
 
+
+// Source et part détenue d'un lien de propriété (usage interne, jamais affichés)
+function validateSourceLien(source_url: unknown, part_detenue: unknown, errors: string[]): void {
+  if (typeof source_url !== 'string' || !source_url.trim()) {
+    errors.push('La source du lien (URL) est obligatoire');
+  } else if (!/^https?:\/\/.+/.test(source_url.trim())) {
+    errors.push('La source doit être une URL valide (http:// ou https://)');
+  }
+
+  if (part_detenue !== undefined && part_detenue !== null && typeof part_detenue !== 'string') {
+    errors.push('La part détenue doit être un texte');
+  }
+}
+
+function texteOptionnel(valeur: unknown): string | null {
+  return typeof valeur === 'string' && valeur.trim() ? valeur.trim() : null;
+}
+
+export function validateMarqueBeneficiaireCreate(data: unknown): ValidationResult<{
+  marque_id: number;
+  beneficiaire_id: number;
+  lien_financier: string;
+  source_url: string;
+  part_detenue: string | null;
+}> {
+  const errors: string[] = [];
+
+  if (typeof data !== 'object' || data === null) {
+    return { success: false, errors: ['Les données du lien sont invalides'] };
+  }
+
+  const { marque_id, beneficiaire_id, lien_financier, source_url, part_detenue } = data as Record<string, unknown>;
+
+  if (typeof marque_id !== 'number' || !Number.isInteger(marque_id)) {
+    errors.push('La marque est obligatoire');
+  }
+  if (typeof beneficiaire_id !== 'number' || !Number.isInteger(beneficiaire_id)) {
+    errors.push('Le bénéficiaire est obligatoire');
+  }
+  if (typeof lien_financier !== 'string' || !lien_financier.trim()) {
+    errors.push('Le lien financier est obligatoire');
+  }
+  validateSourceLien(source_url, part_detenue, errors);
+
+  if (errors.length > 0) {
+    return { success: false, errors };
+  }
+
+  return {
+    success: true,
+    data: {
+      marque_id: marque_id as number,
+      beneficiaire_id: beneficiaire_id as number,
+      lien_financier: (lien_financier as string).trim(),
+      source_url: (source_url as string).trim(),
+      part_detenue: texteOptionnel(part_detenue)
+    }
+  };
+}
+
+export function validateRelationBeneficiaireCreate(data: unknown): ValidationResult<{
+  beneficiaire_source_id: number;
+  beneficiaire_cible_id: number;
+  description_relation: string;
+  source_url: string;
+  part_detenue: string | null;
+}> {
+  const errors: string[] = [];
+
+  if (typeof data !== 'object' || data === null) {
+    return { success: false, errors: ['Les données de la relation sont invalides'] };
+  }
+
+  const { beneficiaire_source_id, beneficiaire_cible_id, description_relation, source_url, part_detenue } = data as Record<string, unknown>;
+
+  if (typeof beneficiaire_source_id !== 'number' || !Number.isInteger(beneficiaire_source_id)
+    || typeof beneficiaire_cible_id !== 'number' || !Number.isInteger(beneficiaire_cible_id)) {
+    errors.push('Les deux bénéficiaires sont obligatoires');
+  } else if (beneficiaire_source_id === beneficiaire_cible_id) {
+    errors.push('Un bénéficiaire ne peut pas être relié à lui-même');
+  }
+  if (typeof description_relation !== 'string' || !description_relation.trim()) {
+    errors.push('La description de la relation est obligatoire');
+  }
+  validateSourceLien(source_url, part_detenue, errors);
+
+  if (errors.length > 0) {
+    return { success: false, errors };
+  }
+
+  return {
+    success: true,
+    data: {
+      beneficiaire_source_id: beneficiaire_source_id as number,
+      beneficiaire_cible_id: beneficiaire_cible_id as number,
+      description_relation: (description_relation as string).trim(),
+      source_url: (source_url as string).trim(),
+      part_detenue: texteOptionnel(part_detenue)
+    }
+  };
+}

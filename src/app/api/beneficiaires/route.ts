@@ -16,7 +16,6 @@ interface BeneficiaireDatabase {
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const marqueId = searchParams.get('marqueId');
   const beneficiaireId = searchParams.get('id');
 
   try {
@@ -47,7 +46,6 @@ export async function GET(request: NextRequest) {
         .select(`
           id,
           lien_financier,
-          impact_specifique,
           marque:marque_id (
             id,
             nom
@@ -72,67 +70,12 @@ export async function GET(request: NextRequest) {
             id: (marqueData?.id as number) || 0,
             nom: (marqueData?.nom as string) || 'Marque inconnue',
             lien_financier: marque.lien_financier as string,
-            impact_specifique: marque.impact_specifique as string || undefined,
             liaison_id: marque.id as number
           };
         })
       };
 
       return NextResponse.json(beneficiaireWithMarques);
-    } else if (marqueId) {
-      // Récupérer les bénéficiaires d'une marque spécifique via les liaisons
-      const query = supabaseAdmin
-        .from('Marque_beneficiaire')
-        .select(`
-          id,
-          marque_id,
-          beneficiaire_id,
-          lien_financier,
-          impact_specifique,
-          created_at,
-          updated_at,
-          beneficiaire:beneficiaire_id (
-            id,
-            nom,
-            impact_generique,
-            type_beneficiaire,
-            created_at,
-            updated_at,
-            controverses:controverse_beneficiaire(*)
-          )
-        `)
-        .eq('marque_id', parseInt(marqueId))
-        .order('created_at', { ascending: false });
-
-      const { data: liaisons, error } = await query;
-
-      if (error) {
-        console.error('Erreur récupération bénéficiaires par marque:', error);
-        return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
-      }
-
-      // Transformer pour compatibilité avec frontend existant (format BeneficiaireResult)
-      const beneficiairesTransformes = (liaisons || []).map((liaison: unknown) => {
-        const l = liaison as Record<string, unknown>;
-        const beneficiaire = l.beneficiaire as Record<string, unknown> | undefined;
-        return {
-          id: l.id as number,
-          dirigeant_id: beneficiaire?.id as number, // Alias pour compatibilité
-          dirigeant_nom: (beneficiaire?.nom as string) || 'Nom inconnu',
-          // ✅ Transformer controverses pour compatibilité legacy
-          controverses: ((beneficiaire as unknown as BeneficiaireDatabase)?.controverses || [])
-            .map((c: ControverseBeneficiaire) => c.titre)
-            .join(' | ') || '',
-          sources: ((beneficiaire as unknown as BeneficiaireDatabase)?.controverses || [])
-            .map((c: ControverseBeneficiaire) => c.source_url) || [],
-          lien_financier: l.lien_financier as string,
-          impact_description: (l.impact_specifique as string) || (beneficiaire?.impact_generique as string) || 'Impact à définir',
-          type_beneficiaire: (beneficiaire?.type_beneficiaire as string) || 'individu',
-          marque_id: l.marque_id as number
-        };
-      });
-
-      return NextResponse.json(beneficiairesTransformes);
     } else {
       // Récupérer tous les bénéficiaires avec leurs marques liées
       const { data: beneficiaires, error } = await supabaseAdmin
@@ -162,7 +105,6 @@ export async function GET(request: NextRequest) {
             .select(`
               id,
               lien_financier,
-              impact_specifique,
               marque:marque_id (
                 id,
                 nom
@@ -186,7 +128,6 @@ export async function GET(request: NextRequest) {
                 id: (marqueData?.id as number) || 0,
                 nom: (marqueData?.nom as string) || 'Marque inconnue',
                 lien_financier: marque.lien_financier as string,
-                impact_specifique: marque.impact_specifique as string || undefined,
                 liaison_id: marque.id as number
               };
             })
@@ -268,6 +209,21 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
+    // Pas de suppression en cascade : refuser tant que des marques sont liées
+    const { count, error: countError } = await supabaseAdmin
+      .from('Marque_beneficiaire')
+      .select('id', { count: 'exact', head: true })
+      .eq('beneficiaire_id', parseInt(id));
+
+    if (countError) throw countError;
+
+    if (count) {
+      return NextResponse.json(
+        { error: `Impossible de supprimer ce bénéficiaire : il est lié à ${count} marque(s)` },
+        { status: 409 }
+      );
+    }
+
     const { error } = await supabaseAdmin
       .from('Beneficiaires')
       .delete()
