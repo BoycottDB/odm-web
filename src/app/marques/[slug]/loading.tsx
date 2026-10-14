@@ -1,21 +1,17 @@
-import { SearchHero } from '@/components/search/SearchHero';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 export default function Loading() {
   return (
     <div className="min-h-screen bg-white">
       {/* Section Hero - visible pendant chargement */}
-      <section className="bg-gradient-hero py-10 md:py-20 px-4">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-8 tracking-tight">
+      <section className="bg-gradient-hero py-10 md:py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
             Chargement...
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug mb-8">
-            Découvrez les controverses documentées et les bénéficiaires associés.
+          <p className="heading-sub text-neutral-700 font-light leading-snug">
+            Qui enrichissez-vous en achetant cette marque ?
           </p>
-
-          {/* Barre de recherche */}
-          <SearchHero />
         </div>
       </section>
 

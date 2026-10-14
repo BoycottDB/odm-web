@@ -534,3 +534,25 @@ input:-webkit-autofill:active {
   -o-transform: translateZ(0);
   transform: translateZ(0);
 }
+
+/* Pièces qui montent dans le bouton de conseils (page de marque) */
+@keyframes odm-particule {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(-140px) rotate(180deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-particule { animation: odm-particule linear infinite; }
+}
+
+/* Au survol, à l'appui et quand les conseils sont ouverts, chaque pièce fuit vers le bord le plus proche */
+.particule-fuite {
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+.group:hover .particule-fuite,
+.group:active .particule-fuite,
+.group[aria-expanded="true"] .particule-fuite {
+  transform: translateX(var(--fuite));
+  opacity: 0;
+}

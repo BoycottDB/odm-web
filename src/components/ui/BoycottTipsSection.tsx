@@ -1,9 +1,76 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { CheckCircle2, Lightbulb, ShoppingBasket, Tag } from 'lucide-react';
 import { safeTrack } from '@/lib/analytics';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Marque } from '@/types';
+
+// Titre de section : pastille avec icône, puis libellé
+const TitreSection = ({ icone: Icone, children }: { icone: typeof Tag; children: React.ReactNode }) => (
+  <h3 className="flex items-center gap-2 mb-3">
+    <span className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 bg-secondary-100 text-secondary-700" aria-hidden="true">
+      <Icone className="w-4 h-4" />
+    </span>
+    <span className="font-semibold text-sm md:text-base text-secondary-900">{children}</span>
+  </h3>
+);
+
+// Pièces qui montent lentement dans le bouton, à vitesses différentes (effet de profondeur),
+// très transparentes pour ne pas gêner la lecture ; au survol, à l'appui et quand les conseils
+// sont ouverts, elles fuient vers le bord le plus proche.
+// Positions fixes pour un rendu identique côté serveur et navigateur.
+const PARTICULES = [
+  { gauche: 4, taille: 8, duree: 7, delai: -1 },
+  { gauche: 11, taille: 12, duree: 9, delai: -6 },
+  { gauche: 19, taille: 7, duree: 6, delai: -3 },
+  { gauche: 27, taille: 10, duree: 8, delai: -5 },
+  { gauche: 35, taille: 6, duree: 5.5, delai: -2 },
+  { gauche: 43, taille: 11, duree: 9.5, delai: -8 },
+  { gauche: 51, taille: 8, duree: 6.5, delai: -4 },
+  { gauche: 59, taille: 13, duree: 10, delai: -2.5 },
+  { gauche: 66, taille: 7, duree: 6, delai: -5.5 },
+  { gauche: 74, taille: 10, duree: 8.5, delai: -1.5 },
+  { gauche: 82, taille: 6, duree: 5, delai: -3.5 },
+  { gauche: 89, taille: 12, duree: 9, delai: -7 },
+  { gauche: 96, taille: 8, duree: 7, delai: -4.5 },
+];
+
+const PieceSvg = ({ taille }: { taille: number }) => (
+  <svg width={taille} height={taille} viewBox="0 0 20 20">
+    <circle cx="10" cy="10" r="9" fill="#f6c945" stroke="#c9971c" strokeWidth="1.5" />
+    <circle cx="10" cy="10" r="5.5" fill="none" stroke="#c9971c" strokeWidth="1" />
+  </svg>
+);
+
+const ParticulesPieces = () => (
+  <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl" aria-hidden="true">
+    {PARTICULES.map((particule, index) => (
+      <span
+        key={index}
+        className="absolute top-full animate-particule"
+        style={{
+          left: `${particule.gauche}%`,
+          opacity: 0.15 + (particule.taille / 13) * 0.15,
+          animationDuration: `${particule.duree}s`,
+          animationDelay: `${particule.delai}s`,
+        }}
+      >
+        <span
+          className="particule-fuite block"
+          style={{
+            '--fuite': particule.gauche < 50
+              ? `-${particule.gauche * 5 + 40}px`
+              : `${(100 - particule.gauche) * 5 + 40}px`,
+          } as React.CSSProperties}
+        >
+          <PieceSvg taille={particule.taille} />
+        </span>
+      </span>
+    ))}
+  </span>
+);
 
 // Déclaration globale pour étendre le type Window
 declare global {
@@ -165,15 +232,12 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
   // Messages génériques hardcodés (option 3)
   const messagesGeneriques = [
     {
-      // titre: "Emploi et carrière",
-      contenu: "**Ne travaillez pas pour cette marque.** <br> Si vous cherchez un emploi, privilégiez les entreprises dont les valeurs correspondent aux vôtres. <br>Si vous êtes déjà en poste dans cette boîte, ne prenez pas une décision hâtive qui pourrait vous mettre dans une galère financière. Prenez le temps de trouver une porte de sortie et n'hésitez pas à demander à vos dirigeants de rendre des comptes en attendant. Cœur sur vous, le marché du travail est dur."
+      contenu: "**Ne travaillez pas pour cette marque.** <br> Si vous cherchez un emploi, privilégiez les entreprises dont les valeurs correspondent aux vôtres. <br>Si vous êtes déjà en poste dans cette boîte, ne prenez pas une décision hâtive qui pourrait vous mettre dans une galère financière. Prenez le temps de trouver une porte de sortie et n'hésitez pas à demander à vos dirigeants de rendre des comptes en attendant. Cœur sur vous, le marché du travail est dur 🫶"
     },
     {
-      // titre: "Alternatives responsables", 
       contenu: "**Privilégiez les petites enseignes locales.** <br>Même si elles ne sont pas parfaitement \"clean\", elles causeront toujours moins de tort à leur échelle que les grandes multinationales."
     },
     {
-      // titre: "Réflexion sur le besoin",
       contenu: "**Remettez en question votre besoin d'achat.** <br> Avant tout achat, demandez-vous : \"Ai-je vraiment besoin de ce produit aujourd'hui ?\""
     }
   ];
@@ -218,125 +282,95 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
       .replace(/(<\/div>)<br \/>/g, '$1'); // supprimer les <br /> immédiatement après les éléments de liste
   };
 
+  const texteConseil = 'text-sm text-neutral-800 leading-snug boycott-content';
+
+
   return (
     <div>
       {/* Bouton pour ouvrir/fermer */}
       <div className="text-center">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="group relative inline-flex items-center justify-center px-3 py-3 md:px-6 md:py-4 overflow-hidden text-base md:text-lg font-bold text-white transition-all duration-300 ease-in-out bg-primary rounded-2xl hover:scale-105 transform hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-primary/30"
+          aria-expanded={isExpanded}
+          className="group relative inline-flex items-center justify-center px-3 py-3 md:px-6 md:py-4 overflow-hidden text-base md:text-lg font-bold text-white transition-all duration-300 ease-in-out bg-secondary-700 rounded-2xl hover:scale-105 transform hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-secondary-700/30"
         >
-          {/* Effet de brillance shiny */}
-          <div className="absolute inset-0 w-0 h-full transition-all duration-300 ease-out bg-white opacity-10 group-hover:w-full"></div>
-          
+          <ParticulesPieces />
+
           {/* Icône */}
           <div className="relative flex items-center space-x-2 md:space-x-3">
             <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-              <svg 
-                className={`w-3 h-3 md:w-4 md:h-4 text-white transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className={`w-3 h-3 md:w-4 md:h-4 text-white transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
             <span className="relative z-10">
-              Comment bien boycotter {marque.nom} ?
+              Je ne veux plus leur donner mon argent
             </span>
           </div>
-          
-          {/* Effet de pulse */}
-          <div className="absolute inset-0 rounded-2xl bg-primary-hover opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse"></div>
+
+          {/* Assombrissement au survol, à l'appui et quand les conseils sont ouverts */}
+          <div className="absolute inset-0 rounded-2xl bg-secondary-800 opacity-0 group-hover:opacity-20 group-active:opacity-20 group-aria-expanded:opacity-20 transition-opacity duration-300"></div>
         </button>
       </div>
 
       {/* Section dépliable avec animation */}
       <div className={`transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-none mt-6 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-        <div className="bg-white rounded-2xl shadow-lg border border-neutral-200 p-6">
-          {/* Header avec bouton fermer */}
-          <div className="flex items-center justify-between pb-4 mb-2">
-            <div className="flex-1">
-              <h2 className="heading-sub font-bold text-neutral-900 mb-2">
-                Comment bien boycotter {marque.nom} ?
-              </h2>
-              <p className="body-small text-neutral-600">
-                Conseils pratiques pour un boycott efficace
-              </p>
-            </div>
-            <button
-              onClick={() => setIsExpanded(false)}
-              className="ml-4 w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 transition-colors"
-              aria-label="Fermer"
-            >
-              <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Message spécifique à la marque */}
+        <div className={`border rounded-2xl p-4 md:p-6 space-y-4 bg-secondary-50 border-secondary-200`}>
           {marque.message_boycott_tips && (
-            <div className="p-4 bg-warning-light border border-warning rounded-xl mb-8">
-              <div className="flex items-center mb-3">
-                <h3 className="body-large font-semibold text-neutral-900">
-                  Conseils spécifiques pour {marque.nom}
-                </h3>
-              </div>
-              <div 
-                className="body-small text-neutral-700 leading-snug boycott-content"
+            <section className={`bg-white border rounded-xl p-4 border-secondary-200`}>
+              <TitreSection icone={Tag}>Conseils spécifiques pour {marque.nom}</TitreSection>
+              <div
+                className={texteConseil}
                 dangerouslySetInnerHTML={{ __html: formatMarkdown(marque.message_boycott_tips) }}
               />
-            </div>
+            </section>
           )}
 
-          {/* Message du secteur */}
           {marque.secteur_marque?.message_boycott_tips && (
-            <div className="p-4 bg-secondary-light border border-secondary rounded-xl">
-              <div className="flex items-center mb-3">
-                <h3 className="body-large font-semibold text-neutral-900">
-                  Conseils pour le secteur {marque.secteur_marque.nom}
-                </h3>
-              </div>
-              <div 
-                className="body-small text-neutral-700 leading-snug boycott-content"
+            <section className={`bg-white border rounded-xl p-4 border-secondary-200`}>
+              <TitreSection icone={ShoppingBasket}>Conseils pour le secteur {marque.secteur_marque.nom}</TitreSection>
+              <div
+                className={texteConseil}
                 dangerouslySetInnerHTML={{ __html: formatMarkdown(marque.secteur_marque.message_boycott_tips) }}
               />
-            </div>
+            </section>
           )}
 
-          {/* Messages génériques */}
-          <div className="space-y-4 mt-8">
-            <div className="flex items-center mb-4">
-              <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center mr-3">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="body-large font-semibold text-neutral-900">
-                Conseils généraux pour toutes marques
-              </h3>
-            </div>
-            
-            {messagesGeneriques.map((message, index) => (
-              <div key={index} className="p-4 bg-neutral-50 border border-neutral-200 rounded-xl">
-                {/* <h4 className="body-base font-medium text-neutral-900 mb-2">
-                  {message.titre}
-                </h4> */}
-                <div 
-                  className="body-small text-neutral-700 leading-snug boycott-content"
-                  dangerouslySetInnerHTML={{ __html: formatMarkdown(message.contenu) }}
-                />
-              </div>
-            ))}
-          </div>
+          <section className={`bg-white border rounded-xl p-4 border-secondary-200`}>
+            <TitreSection icone={Lightbulb}>Conseils généraux pour toutes marques</TitreSection>
+            <ul className="space-y-3">
+              {messagesGeneriques.map((message, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <CheckCircle2 className={`w-4 h-4 mt-0.5 flex-shrink-0 text-secondary-600`} aria-hidden="true" />
+                  <div
+                    className={texteConseil}
+                    dangerouslySetInnerHTML={{ __html: formatMarkdown(message.contenu) }}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
 
-          {/* Footer */}
-          <div className="pt-4 text-center">
-            <p className="body-xs text-neutral-500">
-              Ces conseils sont donnés à titre informatif pour vous aider dans vos choix de consommation.
-            </p>
-          </div>
+          {/* Questions que se pose souvent le visiteur au moment d'agir */}
+          <p className="text-sm text-neutral-700 text-center">
+            Pour aller plus loin :{' '}
+            <Link href="/faq/pourquoi" className="font-medium text-secondary-800 underline hover:text-secondary-900">
+              Boycotter, ça sert vraiment ?
+            </Link>
+            <span className="mx-2 text-neutral-400" aria-hidden="true">·</span>
+            <Link href="/faq/alternatives" className="font-medium text-secondary-800 underline hover:text-secondary-900">
+              Pourquoi on ne propose pas d&apos;alternatives ?
+            </Link>
+          </p>
+
+          <p className="text-xs text-neutral-500 text-center">
+            Ces conseils sont donnés à titre informatif pour vous aider dans vos choix de consommation.
+          </p>
         </div>
       </div>
 

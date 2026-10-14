@@ -28,15 +28,8 @@ export default function MarqueCard({ marque }: MarqueCardProps) {
 
   const slug = slugify(marque.nom);
 
-  const handleClick = () => {
-    // Scroll immédiat vers le haut avant navigation
-    window.scrollTo(0, 0);
-    // Poser flag pour scroll automatique après navigation
-    sessionStorage.setItem('scrollToResults', 'true');
-  };
-
   return (
-    <Link href={`/marques/${slug}`} onClick={handleClick} className="block">
+    <Link href={`/marques/${slug}`} className="block">
       <div className="bg-white border border-primary-medium rounded-3xl p-4 md:p-6 cursor-pointer transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 md:relative">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         {/* Nom de la marque */}

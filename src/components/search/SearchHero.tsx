@@ -70,9 +70,6 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
       source
     });
 
-    // Poser flag pour scroll après navigation
-    sessionStorage.setItem('scrollToResults', 'true');
-
     router.push(`/marques/${slug}`);
   }, [router, source]);
 
@@ -106,9 +103,6 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
           marque_id: exactMatch.id,
           source
         });
-
-        // Poser flag pour scroll après navigation
-        sessionStorage.setItem('scrollToResults', 'true');
 
         router.push(`/marques/${slug}`);
       } else {

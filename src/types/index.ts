@@ -26,15 +26,7 @@ export interface Marque {
     beneficiaire: {
       id: number;
       nom: string;
-      controverses: Array<{
-        id: number;
-        beneficiaire_id: number;
-        titre: string;
-        source_url: string;
-        ordre: number;
-        created_at: string;
-        updated_at: string;
-      }>;
+      controverses: ControverseBeneficiaire[];
       impact_generique?: string;
       type_beneficiaire: string;
     };
@@ -244,7 +236,7 @@ export interface ControverseBeneficiaire {
   updated_at: string;
   
   // NOUVELLE relation
-  Categorie?: Categorie;
+  Categorie?: Categorie | null;
 }
 
 // Table bénéficiaires centralisée (ex-dirigeants)
