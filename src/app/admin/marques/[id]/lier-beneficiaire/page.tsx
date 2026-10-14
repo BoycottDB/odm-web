@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { MarqueBeneficiaireCreateRequest, MarqueDirigeantUpdateRequest, Marque } from '@/types';
+import { MarqueBeneficiaireCreateRequest, Marque } from '@/types';
 import AdminNavigation from '@/components/admin/AdminNavigation';
-import MarqueDirigeantForm from '@/components/admin/MarqueDirigeantForm';
+import MarqueBeneficiaireForm from '@/components/admin/MarqueBeneficiaireForm';
 
-export default function LierDirigeantPage() {
+export default function LierBeneficiairePage() {
   const [marque, setMarque] = useState<Marque | null>(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -48,16 +48,12 @@ export default function LierDirigeantPage() {
     }
   }, [marqueId, loadMarque]);
 
-  const handleSave = async (data: MarqueBeneficiaireCreateRequest | MarqueDirigeantUpdateRequest) => {
+  const handleSave = async (data: MarqueBeneficiaireCreateRequest) => {
     setSaving(true);
     setMessage(null);
 
     try {
-      // Cette page est réservée à la création d'une liaison
-      if ('id' in data) {
-        throw new Error('Ce formulaire est réservé à la création d\'une liaison');
-      }
-      const response = await fetch('/api/marque-dirigeant', {
+      const response = await fetch('/api/marque-beneficiaire', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -155,18 +151,17 @@ export default function LierDirigeantPage() {
 
         <div className="bg-white rounded-lg border border-neutral p-6">
           <h2 className="body-large font-semibold text-neutral-900 mb-4">
-            Liaison dirigeant-marque
+            Liaison bénéficiaire-marque
           </h2>
           <p className="body-small text-neutral-600 mb-6">
             Sélectionnez un bénéficiaire controversé existant et définissez son lien avec cette marque.
           </p>
           
-          <MarqueDirigeantForm
+          <MarqueBeneficiaireForm
             marqueId={marqueId}
             marqueNom={marque.nom}
             onSave={handleSave}
             isLoading={saving}
-            isEditing={false}
           />
         </div>
       </div>

@@ -65,7 +65,6 @@ export interface Marque {
   beneficiaires_marque?: Array<{
     id: number;
     lien_financier: string;
-    impact_specifique?: string;
     beneficiaire: {
       id: number;
       nom: string;
@@ -276,20 +275,15 @@ export interface MarqueBeneficiaire {
   marque_id: number;
   beneficiaire_id: number;
   lien_financier: string;
-  impact_specifique?: string; // Override optionnel de l'impact générique
+  source_url?: string | null; // Interne : source du lien, jamais affichée
+  verifie_le?: string | null;
+  part_detenue?: string | null;
   created_at: string;
   updated_at: string;
   // Relations populées
   beneficiaire?: Beneficiaire;
   marque?: { id: number; nom: string };
 }
-
-// TODO: DETTE TECHNIQUE - Types alias pour rétrocompatibilité
-// À supprimer avec MarqueDirigeantLegacy
-export type Dirigeant = Beneficiaire;
-export type MarqueDirigeant = Omit<MarqueBeneficiaire, 'beneficiaire_id'> & {
-  dirigeant_id: number;
-};
 
 // Interface pour la vue bénéficiaire-centrique
 export interface BeneficiaireWithMarques {
@@ -302,40 +296,9 @@ export interface BeneficiaireWithMarques {
     id: number;
     nom: string;
     lien_financier: string;
-    impact_specifique?: string;
     liaison_id: number; // ID de la liaison pour pouvoir l'éditer
   }>;
 }
-
-// Vue complète bénéficiaire + liaison (pour affichage public)
-export interface BeneficiaireComplet {
-  id: number;
-  nom: string;
-  // ✅ NOUVEAU : Controverses structurées
-  controverses: ControverseBeneficiaire[];
-  lien_financier: string;
-  impact_description: string; // impact_specifique || impact_generique
-  marque_id: number;
-  marque_nom: string;
-  liaison_id: number;
-  type_beneficiaire: TypeBeneficiaire;
- 
-  marques_directes?: Array<{
-    id: number;
-    nom: string;
-  }>; // Marques directement liées à ce bénéficiaire (exclut la marque actuelle)
-  marques_indirectes?: {
-    [beneficiaireIntermediaire: string]: Array<{
-      id: number;
-      nom: string;
-    }>;
-  }; // Marques indirectement liées via d'autres bénéficiaires
-  beneficiaire_parent_nom?: string;
-}
-
-// Types alias pour rétrocompatibilité
-export type DirigeantComplet = BeneficiaireComplet;
-export type DirigeantWithMarques = BeneficiaireWithMarques;
 
 // Requests pour l'API bénéficiaires
 export interface BeneficiaireCreateRequest {
@@ -356,23 +319,9 @@ export interface MarqueBeneficiaireCreateRequest {
   marque_id: number;
   beneficiaire_id: number;
   lien_financier: string;
-  impact_specifique?: string;
+  source_url: string;
+  part_detenue?: string;
 }
-
-export interface MarqueBeneficiaireUpdateRequest {
-  id: number;
-  lien_financier?: string;
-  impact_specifique?: string;
-}
-
-// TODO: DETTE TECHNIQUE - Types alias pour rétrocompatibilité
-// À supprimer avec MarqueDirigeantLegacy
-export type DirigeantCreateRequest = BeneficiaireCreateRequest;
-export type DirigeantUpdateRequest = BeneficiaireUpdateRequest;
-export type MarqueDirigeantCreateRequest = Omit<MarqueBeneficiaireCreateRequest, 'beneficiaire_id'> & {
-  dirigeant_id: number;
-};
-export type MarqueDirigeantUpdateRequest = MarqueBeneficiaireUpdateRequest;
 
 // Requests pour l'API controverses-beneficiaire
 export interface ControverseBeneficiaireCreateRequest {

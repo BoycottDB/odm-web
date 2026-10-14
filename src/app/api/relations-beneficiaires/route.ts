@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
+import { validateRelationBeneficiaireCreate } from '@/lib/validation/schemas';
 
 export async function GET() {
   try {
@@ -34,31 +35,23 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { 
-      beneficiaire_source_id, 
-      beneficiaire_cible_id, 
-      description_relation
-    } = body;
-
-    // Validation
-    if (!beneficiaire_source_id || !beneficiaire_cible_id || !description_relation) {
-      return NextResponse.json({ 
-        error: 'Tous les champs sont obligatoires' 
-      }, { status: 400 });
+    const validation = validateRelationBeneficiaireCreate(await request.json());
+    if (!validation.success || !validation.data) {
+      return NextResponse.json({ error: validation.errors?.join(', ') }, { status: 400 });
     }
+    const data = validation.data;
 
     // Vérifier que les bénéficiaires existent
     const { data: sourceExists } = await supabaseAdmin
       .from('Beneficiaires')
       .select('id')
-      .eq('id', beneficiaire_source_id)
+      .eq('id', data.beneficiaire_source_id)
       .single();
 
     const { data: cibleExists } = await supabaseAdmin
       .from('Beneficiaires')
       .select('id')
-      .eq('id', beneficiaire_cible_id)
+      .eq('id', data.beneficiaire_cible_id)
       .single();
 
     if (!sourceExists || !cibleExists) {
@@ -71,9 +64,9 @@ export async function POST(request: NextRequest) {
     const { data: relation, error } = await supabaseAdmin
       .from('beneficiaire_relation')
       .insert([{
-        beneficiaire_source_id,
-        beneficiaire_cible_id,
-        description_relation
+        ...data,
+        // La source vient d'être vérifiée par l'admin qui crée la relation
+        verifie_le: new Date().toISOString().slice(0, 10)
       }])
       .select(`
         *,

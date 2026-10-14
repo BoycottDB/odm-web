@@ -1,251 +1,187 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MarqueBeneficiaireCreateRequest, MarqueBeneficiaireUpdateRequest, MarqueBeneficiaire, Beneficiaire, Marque } from '@/types';
+import { MarqueBeneficiaireCreateRequest, BeneficiaireWithMarques } from '@/types';
 
 interface MarqueBeneficiaireFormProps {
-  liaison?: MarqueBeneficiaire;
-  marque?: Marque;
-  onSubmit: (data: MarqueBeneficiaireCreateRequest | MarqueBeneficiaireUpdateRequest) => void;
-  onCancel: () => void;
-  loading?: boolean;
+  marqueId: number;
+  marqueNom: string;
+  onSave: (data: MarqueBeneficiaireCreateRequest) => Promise<void>;
+  isLoading?: boolean;
 }
 
-export function MarqueBeneficiaireForm({ liaison, marque, onSubmit, onCancel, loading }: MarqueBeneficiaireFormProps) {
-  const [formData, setFormData] = useState({
-    marque_id: liaison?.marque_id || marque?.id || 0,
-    beneficiaire_id: liaison?.beneficiaire_id || 0,
-    lien_financier: liaison?.lien_financier || '',
-    impact_specifique: liaison?.impact_specifique || ''
-  });
+const champClassName = 'bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary';
 
-  const [beneficiaires, setBeneficiaires] = useState<Beneficiaire[]>([]);
-  const [marques, setMarques] = useState<Marque[]>([]);
-  const [loadingData, setLoadingData] = useState(true);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+export default function MarqueBeneficiaireForm({ marqueId, marqueNom, onSave, isLoading = false }: MarqueBeneficiaireFormProps) {
+  const [beneficiaireId, setBeneficiaireId] = useState<number | null>(null);
+  const [lienFinancier, setLienFinancier] = useState('');
+  const [sourceUrl, setSourceUrl] = useState('');
+  const [partDetenue, setPartDetenue] = useState('');
+  const [beneficiaires, setBeneficiaires] = useState<BeneficiaireWithMarques[]>([]);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [loadingBeneficiaires, setLoadingBeneficiaires] = useState(true);
 
-  // Charger les bénéficiaires et marques disponibles
   useEffect(() => {
-    const loadData = async () => {
+    const loadBeneficiaires = async () => {
       try {
-        const [beneficiairesRes, marquesRes] = await Promise.all([
-          fetch('/api/beneficiaires'),
-          fetch('/api/marques')
-        ]);
-
-        if (beneficiairesRes.ok) {
-          const beneficiairesData = await beneficiairesRes.json();
-          setBeneficiaires(beneficiairesData);
-        }
-
-        if (marquesRes.ok) {
-          const marquesData = await marquesRes.json();
-          setMarques(marquesData);
+        const response = await fetch('/api/beneficiaires');
+        if (response.ok) {
+          setBeneficiaires(await response.json());
         }
       } catch (error) {
-        console.error('Erreur chargement données:', error);
+        console.error('Erreur lors du chargement des bénéficiaires:', error);
       } finally {
-        setLoadingData(false);
+        setLoadingBeneficiaires(false);
       }
     };
 
-    loadData();
+    loadBeneficiaires();
   }, []);
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+  const selectedBeneficiaire = beneficiaires.find(b => b.id === beneficiaireId);
 
-    if (!formData.marque_id) {
-      newErrors.marque_id = 'Veuillez sélectionner une marque';
+  const validateData = (): boolean => {
+    const newErrors: string[] = [];
+
+    if (!beneficiaireId) {
+      newErrors.push('La sélection d\'un bénéficiaire est obligatoire');
     }
-
-    if (!formData.beneficiaire_id) {
-      newErrors.beneficiaire_id = 'Veuillez sélectionner un bénéficiaire';
+    if (!lienFinancier.trim()) {
+      newErrors.push('Le lien financier est obligatoire');
     }
-
-    if (!formData.lien_financier.trim()) {
-      newErrors.lien_financier = 'Le lien financier est requis';
+    if (!/^https?:\/\/.+/.test(sourceUrl.trim())) {
+      newErrors.push('La source du lien est obligatoire (URL en http:// ou https://)');
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors.length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+  const handleSave = async () => {
+    if (!validateData()) return;
 
-    const submitData = {
-      marque_id: formData.marque_id,
-      beneficiaire_id: formData.beneficiaire_id,
-      lien_financier: formData.lien_financier.trim(),
-      impact_specifique: formData.impact_specifique.trim() || undefined
-    };
-
-    if (liaison) {
-      onSubmit({ id: liaison.id, ...submitData });
-    } else {
-      onSubmit(submitData);
+    try {
+      await onSave({
+        marque_id: marqueId,
+        beneficiaire_id: beneficiaireId!,
+        lien_financier: lienFinancier.trim(),
+        source_url: sourceUrl.trim(),
+        part_detenue: partDetenue.trim() || undefined
+      });
+      setErrors([]);
+    } catch {
+      setErrors(['Erreur lors de la sauvegarde']);
     }
   };
-
-  const selectedBeneficiaire = beneficiaires.find(b => b.id === formData.beneficiaire_id);
-  const isGroupe = selectedBeneficiaire?.type_beneficiaire === 'groupe';
-
-  if (loadingData) {
-    return (
-      <div className="flex justify-center py-8">
-        <div className="text-neutral-600">Chargement des données...</div>
-      </div>
-    );
-  }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Marque */}
-      <div>
-        <label htmlFor="marque_id" className="block text-sm font-medium text-neutral-900 mb-2">
-          Marque *
-        </label>
-        <select
-          id="marque_id"
-          value={formData.marque_id}
-          onChange={(e) => setFormData(prev => ({ ...prev, marque_id: parseInt(e.target.value) }))}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.marque_id ? 'border-red-500' : 'border-neutral-300'
-          }`}
-          disabled={!!marque} // Désactivé si marque pré-sélectionnée
-          required
-        >
-          <option value="">-- Sélectionner une marque --</option>
-          {marques.map(m => (
-            <option key={m.id} value={m.id}>{m.nom}</option>
-          ))}
-        </select>
-        {errors.marque_id && <p className="text-red-500 text-sm mt-1">{errors.marque_id}</p>}
-      </div>
-
-      {/* Bénéficiaire */}
-      <div>
-        <label htmlFor="beneficiaire_id" className="block text-sm font-medium text-neutral-900 mb-2">
-          Bénéficiaire *
-        </label>
-        <select
-          id="beneficiaire_id"
-          value={formData.beneficiaire_id}
-          onChange={(e) => setFormData(prev => ({ ...prev, beneficiaire_id: parseInt(e.target.value) }))}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.beneficiaire_id ? 'border-red-500' : 'border-neutral-300'
-          }`}
-          required
-        >
-          <option value="">-- Sélectionner un bénéficiaire --</option>
-          {beneficiaires.map(b => (
-            <option key={b.id} value={b.id}>
-              {b.type_beneficiaire === 'groupe' ? '🏢' : '👤'} {b.nom}
-            </option>
-          ))}
-        </select>
-        {errors.beneficiaire_id && <p className="text-red-500 text-sm mt-1">{errors.beneficiaire_id}</p>}
-      </div>
-
-      {/* Lien financier */}
-      <div>
-        <label htmlFor="lien_financier" className="block text-sm font-medium text-neutral-900 mb-2">
-          Lien financier *
-        </label>
-        <textarea
-          id="lien_financier"
-          value={formData.lien_financier}
-          onChange={(e) => setFormData(prev => ({ ...prev, lien_financier: e.target.value }))}
-          placeholder={
-            isGroupe
-              ? "Ex: Filiale à 100% depuis 2022"
-              : "Ex: PDG depuis 2020, détient 25% des parts"
-          }
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.lien_financier ? 'border-red-500' : 'border-neutral-300'
-          }`}
-          rows={3}
-          required
-        />
-        {errors.lien_financier && <p className="text-red-500 text-sm mt-1">{errors.lien_financier}</p>}
-        <p className="text-xs text-neutral-600 mt-1">
-          Décrivez précisément la relation financière entre la marque et ce bénéficiaire.
-        </p>
-      </div>
-
-      {/* Impact spécifique */}
-      <div>
-        <label htmlFor="impact_specifique" className="block text-sm font-medium text-neutral-900 mb-2">
-          Impact spécifique (optionnel)
-        </label>
-        <textarea
-          id="impact_specifique"
-          value={formData.impact_specifique}
-          onChange={(e) => setFormData(prev => ({ ...prev, impact_specifique: e.target.value }))}
-          placeholder={
-            isGroupe
-              ? "Ex: Tous les profits de cette marque alimentent directement le groupe parent"
-              : "Ex: En tant que dirigeant principal, il influence directement la stratégie de l'entreprise"
-          }
-          className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-          rows={3}
-        />
-        <p className="text-xs text-neutral-600 mt-1">
-          Impact spécifique à cette relation. Si vide, l&apos;impact générique du bénéficiaire sera utilisé.
-          {selectedBeneficiaire && selectedBeneficiaire.impact_generique && (
-            <>
-              <br />
-              <strong>Impact générique actuel :</strong> {selectedBeneficiaire.impact_generique}
-            </>
-          )}
-        </p>
-      </div>
-
-      {/* Prévisualisation du bénéficiaire sélectionné */}
-      {selectedBeneficiaire && (
-        <div className="bg-neutral-50 p-4 rounded-lg">
-          <h4 className="font-medium text-neutral-900 mb-2">
-            {selectedBeneficiaire.type_beneficiaire === 'groupe' ? '🏢' : '👤'} {selectedBeneficiaire.nom}
-          </h4>
-          <div className="text-sm text-neutral-700">
-            <strong>Controverses :</strong> {selectedBeneficiaire.controverses && selectedBeneficiaire.controverses.length > 0
-              ? selectedBeneficiaire.controverses.map(c => c.titre).join(' • ').substring(0, 200) + (selectedBeneficiaire.controverses.map(c => c.titre).join(' • ').length > 200 ? '...' : '')
-              : 'Aucune controverse documentée'
-            }
-          </div>
-          {selectedBeneficiaire.controverses && selectedBeneficiaire.controverses.length > 0 && (
-            <div className="text-sm text-neutral-600 mt-2">
-              <strong>Sources :</strong> {selectedBeneficiaire.controverses.length} controverse(s) documentée(s)
-            </div>
-          )}
+    <div className="space-y-4">
+      {errors.length > 0 && (
+        <div className="p-3 bg-error-light border border-error rounded-lg">
+          <div className="body-small font-medium text-error mb-1">Erreurs :</div>
+          <ul className="body-small text-error list-disc list-inside">
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
         </div>
       )}
 
-      {/* Boutons */}
-      <div className="flex gap-3 pt-6 border-t">
-        <button
-          type="submit"
-          disabled={loading}
-          className="flex-1 bg-primary-dark text-white py-2 px-4 rounded-md font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? 'Enregistrement...' : (liaison ? 'Mettre à jour' : 'Créer la liaison')}
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          disabled={loading}
-          className="flex-1 bg-neutral-200 text-neutral-800 py-2 px-4 rounded-md font-medium hover:bg-neutral-300 disabled:opacity-50"
-        >
-          Annuler
-        </button>
+      <div className="p-3 bg-primary-50 border border-primary rounded-lg">
+        <div className="body-small font-medium text-primary">
+          Liaison avec la marque : <strong>{marqueNom}</strong>
+        </div>
       </div>
-    </form>
+
+      <div>
+        <label className="block body-small font-medium text-neutral-700 mb-2">
+          Bénéficiaire *
+        </label>
+        {loadingBeneficiaires ? (
+          <div className="p-2 text-neutral-500">Chargement des bénéficiaires...</div>
+        ) : (
+          <select
+            value={beneficiaireId || ''}
+            onChange={(e) => setBeneficiaireId(parseInt(e.target.value) || null)}
+            className={champClassName}
+            disabled={isLoading}
+          >
+            <option value="">-- Sélectionner un bénéficiaire --</option>
+            {beneficiaires.map(beneficiaire => (
+              <option key={beneficiaire.id} value={beneficiaire.id}>
+                {beneficiaire.nom}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
+
+      {selectedBeneficiaire && (
+        <div className="p-3 bg-white border border-neutral rounded-lg body-small">
+          <div className="font-medium text-neutral-900 mb-1">{selectedBeneficiaire.nom}</div>
+          <div className="text-neutral-600 body-xs">
+            {selectedBeneficiaire.controverses.length > 0
+              ? `${selectedBeneficiaire.controverses.length} controverse(s) documentée(s)`
+              : 'Aucune controverse documentée : un bénéficiaire n\'est ajouté que s\'il a des controverses.'
+            }
+          </div>
+        </div>
+      )}
+
+      <div>
+        <label className="block body-small font-medium text-neutral-700 mb-2">
+          Lien financier avec {marqueNom} * <span className="font-normal text-neutral-500">(affiché sur le site)</span>
+        </label>
+        <input
+          type="text"
+          placeholder={`Des fonds gérés par BlackRock possèdent une partie de ${marqueNom}`}
+          value={lienFinancier}
+          onChange={(e) => setLienFinancier(e.target.value)}
+          className={champClassName}
+          maxLength={500}
+          disabled={isLoading}
+        />
+        <p className="body-xs text-neutral-500 mt-1">
+          Langage courant, sans pourcentage ni « minoritaire ».
+        </p>
+      </div>
+
+      <div>
+        <label className="block body-small font-medium text-neutral-700 mb-2">
+          Source du lien * <span className="font-normal text-neutral-500">(interne, non affichée)</span>
+        </label>
+        <input
+          type="url"
+          placeholder="https://… (rapport annuel, page « nos marques », proxy statement…)"
+          value={sourceUrl}
+          onChange={(e) => setSourceUrl(e.target.value)}
+          className={champClassName}
+          disabled={isLoading}
+        />
+      </div>
+
+      <div>
+        <label className="block body-small font-medium text-neutral-700 mb-2">
+          Part détenue <span className="font-normal text-neutral-500">(optionnel, interne, non affichée)</span>
+        </label>
+        <input
+          type="text"
+          placeholder="7,3 % (proxy 2026)"
+          value={partDetenue}
+          onChange={(e) => setPartDetenue(e.target.value)}
+          className={champClassName}
+          maxLength={500}
+          disabled={isLoading}
+        />
+      </div>
+
+      <button
+        onClick={handleSave}
+        disabled={isLoading || !beneficiaireId}
+        className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isLoading ? 'Sauvegarde...' : 'Créer liaison'}
+      </button>
+    </div>
   );
 }
-
-export default MarqueBeneficiaireForm;

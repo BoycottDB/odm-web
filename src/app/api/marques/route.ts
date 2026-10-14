@@ -31,7 +31,6 @@ export async function GET(request: NextRequest) {
         beneficiaires_marque:Marque_beneficiaire(
           id,
           lien_financier,
-          impact_specifique,
           beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey(*)
         )
       `);
