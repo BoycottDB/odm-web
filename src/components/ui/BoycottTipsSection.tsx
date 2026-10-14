@@ -52,7 +52,7 @@ const ParticulesPieces = () => (
         className="absolute top-full animate-particule"
         style={{
           left: `${particule.gauche}%`,
-          opacity: 0.15 + (particule.taille / 13) * 0.15,
+          opacity: 0.77,
           animationDuration: `${particule.duree}s`,
           animationDelay: `${particule.delai}s`,
         }}
@@ -292,7 +292,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           aria-expanded={isExpanded}
-          className="group relative inline-flex items-center justify-center px-3 py-3 md:px-6 md:py-4 overflow-hidden text-base md:text-lg font-bold text-white transition-all duration-300 ease-in-out bg-secondary-700 rounded-2xl hover:scale-105 transform hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-secondary-700/30"
+          className="group relative inline-flex items-center justify-center px-3 py-3 md:px-6 md:py-4 overflow-hidden text-base md:text-lg font-bold text-white transition-all duration-300 ease-in-out bg-primary rounded-2xl hover:scale-105 transform hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-secondary-700/30"
         >
           <ParticulesPieces />
 
@@ -308,7 +308,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            <span className="relative z-10">
+            <span className="relative z-10 text-white [text-shadow:_2px_2px_0_rgba(152,16,91,0.5),_-2px_-2px_0_rgba(152,16,91,0.5),_2px_-2px_0_rgba(152,16,91,0.5),_-2px_2px_0_rgba(152,16,91,0.5)]">
               Je ne veux plus leur donner mon argent
             </span>
           </div>
