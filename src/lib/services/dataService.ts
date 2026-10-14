@@ -7,6 +7,7 @@
 // import { supabaseAdmin } from '@/lib/supabaseClient';
 import { 
   Marque, 
+  MarqueStats,
   Evenement, 
   DirigeantWithMarques, 
   SecteurMarque,
@@ -109,25 +110,9 @@ class DataService {
   /**
    * Get brand statistics (for /marques page)
    */
-  async getMarquesStats(): Promise<{
-    id: number;
-    nom: string;
-    secteur?: { id: number; nom: string } | null;
-    nbControverses: number;
-    categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
-    nbBeneficiairesControverses: number;
-    beneficiairesControverses: Array<{id: number, nom: string}>;
-  }[]> {
+  async getMarquesStats(): Promise<MarqueStats[]> {
     const endpoint = 'marques-stats';
-    return this.fetchFromExtensionApi<{
-      id: number;
-      nom: string;
-      secteur?: { id: number; nom: string } | null;
-      nbControverses: number;
-      categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
-      nbBeneficiairesControverses: number;
-      beneficiairesControverses: Array<{id: number, nom: string}>;
-    }[]>(endpoint, { revalidate: 600, tags: ['marques-stats'] });
+    return this.fetchFromExtensionApi<MarqueStats[]>(endpoint, { revalidate: 600, tags: ['marques-stats'] });
   }
 
   /**

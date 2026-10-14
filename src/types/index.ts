@@ -1,10 +1,20 @@
 // Types centralisés pour toute l'application
 
+// Une catégorie de controverses d'un acteur, avec leur nombre
+export interface Etiquette {
+  nom: string;
+  emoji?: string;
+  nombre: number;
+}
+
+// D'où viennent les étiquettes d'une marque dans la liste
+export type OrigineEtiquettes = 'marque' | 'beneficiaires' | 'marque_ou_beneficiaires';
+
 export interface MarqueStats {
   id: number;
   nom: string;
-  nbControverses: number;
-  categories: Array<{ id: number; nom: string; emoji?: string; couleur?: string }>;
+  etiquettes: Etiquette[];
+  origineEtiquettes: OrigineEtiquettes | null;
   beneficiairesControverses: Array<{id: number, nom: string}>;
   nbBeneficiairesControverses?: number;
   secteur?: { id: number; nom: string } | null;
@@ -387,24 +397,6 @@ export interface ControverseBeneficiaireUpdateRequest {
   date?: string;
   categorie_id?: number;
   reponse?: string;
-}
-
-// Interface simplifiée pour les catégories dans les stats
-export interface CategorieStats {
-  id: number;
-  nom: string;
-  emoji?: string;
-  couleur?: string;
-}
-
-// Interface pour les statistiques de marques
-export interface MarqueWithStats {
-  id: number;
-  nom: string;
-  nbControverses: number;
-  categories: CategorieStats[]; // Catégories uniques de controverses avec émojis et couleurs
-  nbBeneficiairesControverses: number; // Nombre de bénéficiaires controversés associés (multi-niveaux)
-  beneficiairesControverses: Array<{id: number, nom: string}>; // Noms des bénéficiaires controversés
 }
 
 // Types pour les secteurs marque

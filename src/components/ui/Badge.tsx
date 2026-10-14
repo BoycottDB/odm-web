@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
-import { Categorie, CategorieStats } from '@/types';
+import { Categorie } from '@/types';
 
 interface BadgeProps {
   children: ReactNode;
   variant?: 'category' | 'beneficiaire';
   className?: string;
-  category?: Categorie | CategorieStats;
+  category?: Categorie;
 }
 
 export function Badge({ children, variant = 'category', category }: BadgeProps) {

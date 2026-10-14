@@ -1,8 +1,4 @@
-export interface Etiquette {
-  nom: string;
-  emoji?: string;
-  nombre: number;
-}
+import { Etiquette } from '@/types';
 
 interface ControverseCategorisee {
   date?: string | null;

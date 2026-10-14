@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { Badge } from '@/components/ui/Badge';
-import { Etiquette } from './etiquettes';
+import { Etiquette } from '@/types';
+import { ListeEtiquettes } from './ListeEtiquettes';
 
 export interface EnteteActeurProps {
   icone: ReactNode;
@@ -41,17 +41,7 @@ export function EnteteActeur({ icone, nom, sousTitre, etiquettes = [], ouvert, o
         <div className="flex-1 min-w-0">
           <div className="font-semibold text-sm md:text-base truncate">{nom}</div>
           {sousTitre && <div className="text-xs opacity-75 md:truncate">{sousTitre}</div>}
-          {etiquettes.length > 0 && (
-            <div className="flex flex-wrap md:gap-2 gap-1 mt-2">
-              {etiquettes.map((etiquette) => (
-                <Badge key={etiquette.nom}>
-                  {etiquette.emoji && <span className="mr-1">{etiquette.emoji}</span>}
-                  {etiquette.nom}
-                  {etiquette.nombre > 1 && <span className="ml-1 opacity-70">{etiquette.nombre}</span>}
-                </Badge>
-              ))}
-            </div>
-          )}
+          <ListeEtiquettes etiquettes={etiquettes} className="mt-2" />
         </div>
         <div className="flex-shrink-0 ml-2">
           {ouvert ? (
