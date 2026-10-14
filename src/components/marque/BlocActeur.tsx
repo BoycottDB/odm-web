@@ -15,14 +15,18 @@ interface EnteteProps extends EnteteActeurProps {
   onToggle: () => void;
   contenuId: string;
   // Sur une ligne de plusieurs blocs (ordinateur), le contenu s'affiche sous la ligne :
-  // l'en-tête reste alors un bloc fermé
+  // l'en-tête ouvert devient un onglet qui descend jusqu'au contenu
   enLigne?: boolean;
   className?: string;
 }
 
-// Ouvert : bordure pleine, pour repérer le bloc ouvert (surtout sur une ligne de plusieurs)
+// Ouvert : même bordure que fermé, sans bordure du bas, accroché au contenu (la forme suffit
+// à repérer le bloc ouvert). Sur une ligne (ordinateur), l'onglet traverse l'espace sous la ligne
+// (gap-y-2 + bordure du contenu = 10px) et recouvre la bordure haute du contenu ;
+// le padding bas garde le texte centré comme sur les blocs fermés
+const ONGLET = 'md:relative md:z-10 md:-mb-[10px] md:pb-[26px]';
 const styleOuvert = (enLigne: boolean) =>
-  `bg-white border-primary ${enLigne ? 'rounded-t-2xl border-b-0 md:rounded-2xl md:border-b-2' : 'rounded-t-2xl border-b-0'}`;
+  `bg-white border-primary-medium rounded-t-2xl border-b-0 ${enLigne ? ONGLET : ''}`;
 
 // En-tête d'un bloc : nom, lien avec l'acteur précédent et étiquettes
 export function EnteteActeur({ icone, nom, sousTitre, etiquettes = [], ouvert, onToggle, contenuId, enLigne = false, className = '' }: EnteteProps) {
@@ -58,15 +62,21 @@ export function EnteteActeur({ icone, nom, sousTitre, etiquettes = [], ouvert, o
 interface ContenuActeurProps {
   id: string;
   enLigne?: boolean;
+  // Onglet ouvert en première ou dernière colonne : coin droit sous lui pour une jonction nette
+  coinOnglet?: 'gauche' | 'droite';
   className?: string;
   children: ReactNode;
 }
 
-// Contenu d'un bloc ouvert, accroché sous son en-tête
-export function ContenuActeur({ id, enLigne = false, className = '', children }: ContenuActeurProps) {
-  const coins = enLigne ? 'border-t-0 rounded-b-2xl md:border-t-2 md:rounded-2xl md:pt-6' : 'border-t-0 rounded-b-2xl';
+const COIN_ONGLET = { gauche: 'md:rounded-tl-none', droite: 'md:rounded-tr-none' };
+
+// Contenu d'un bloc ouvert, accroché sous son en-tête (sous l'onglet sur une ligne)
+export function ContenuActeur({ id, enLigne = false, coinOnglet, className = '', children }: ContenuActeurProps) {
+  const coins = enLigne
+    ? `border-t-0 rounded-b-2xl md:border-t-2 md:rounded-2xl md:pt-6 ${coinOnglet ? COIN_ONGLET[coinOnglet] : ''}`
+    : 'border-t-0 rounded-b-2xl';
   return (
-    <div id={id} className={`bg-white border-primary border-2 px-6 pb-6 pt-2 ${coins} ${className}`}>
+    <div id={id} className={`bg-white border-primary-medium border-2 px-6 pb-6 pt-2 ${coins} ${className}`}>
       {children}
     </div>
   );
