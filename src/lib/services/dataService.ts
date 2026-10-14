@@ -18,6 +18,7 @@ import {
   MarqueDirigeantCreateRequest,
   MarqueBeneficiaireCreateRequest
 } from '@/types';
+import type { MarqueNom } from '@/lib/rechercheMarques';
 
 // Erreur de l'API avec son statut HTTP, pour distinguer « introuvable » (404) d'une panne
 class ApiError extends Error {
@@ -72,16 +73,10 @@ class DataService {
   }
 
   /**
-   * Get brand suggestions for auto-completion (ultra-fast, minimal data)
+   * Noms de toutes les marques, pour la recherche (filtrée dans le navigateur)
    */
-  async getSuggestions(query: string, limit: number = 10): Promise<{id: number, nom: string}[]> {
-    const params = new URLSearchParams();
-    params.append('q', query);
-    params.append('limit', limit.toString());
-
-    const endpoint = `suggestions?${params.toString()}`;
-    // Suggestions: TTL court (5min) pour fraîcheur et performance
-    return this.fetchFromExtensionApi<{id: number, nom: string}[]>(endpoint, { revalidate: 300 });
+  async getMarquesNoms(): Promise<MarqueNom[]> {
+    return this.fetchFromExtensionApi<MarqueNom[]>('marques-noms');
   }
 
   /**

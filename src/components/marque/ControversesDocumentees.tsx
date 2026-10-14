@@ -57,7 +57,7 @@ const LigneLiens = ({ controverse, sourceType, marqueId }: { controverse: Contro
   );
 };
 
-// Date et étiquette de la catégorie (même style que dans l'en-tête) ; jamais « Autre »
+// Date et étiquette de la catégorie (style de l'en-tête, éclairci pour ne pas alourdir la frise) ; jamais « Autre »
 const LigneDateCategorie = ({ controverse }: { controverse: Controverse }) => {
   const categorie = controverse.categorie?.nom && controverse.categorie.nom !== CATEGORIE_EXCLUE ? controverse.categorie : null;
   if (!controverse.date && !categorie) return null;
@@ -65,7 +65,7 @@ const LigneDateCategorie = ({ controverse }: { controverse: Controverse }) => {
   return (
     <div className="flex flex-wrap items-center gap-2 mb-1">
       {controverse.date && <span className="text-xs font-semibold text-secondary">{formatDate(controverse.date)}</span>}
-      {categorie && <ListeEtiquettes etiquettes={[{ nom: categorie.nom, emoji: categorie.emoji, nombre: 1 }]} />}
+      {categorie && <ListeEtiquettes etiquettes={[{ nom: categorie.nom, emoji: categorie.emoji, nombre: 1 }]} className="opacity-60" />}
     </div>
   );
 };
