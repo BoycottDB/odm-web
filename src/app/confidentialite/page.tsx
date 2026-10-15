@@ -83,7 +83,7 @@ export default function Confidentialite() {
                   Certaines fiches nomment des dirigeants ou des actionnaires. Le site ne parle d&apos;eux qu&apos;à travers des faits liés à leur rôle public (entreprises détenues, déclarations publiques, procédures en cours ou jugées), toujours à partir de sources publiques citées sur la fiche. Leur vie privée n&apos;est évoquée que lorsqu&apos;elle rejoint ce rôle ou un débat d&apos;intérêt général.
                 </p>
                 <p className="body-base text-neutral-700 leading-snug">
-                  Ces traitements relèvent de la liberté d&apos;expression et d&apos;information (article 85 du RGPD et article 80 de la loi Informatique et Libertés). Si une fiche vous concerne, vous pouvez demander une rectification ou vous opposer à la publication d&apos;une information : la demande est examinée en tenant compte de l&apos;intérêt du public à être informé. Voir la page{' '}
+                  Ces traitements reposent sur l&apos;intérêt légitime à informer le public (article 6.1.f du RGPD), dans le cadre des dérogations prévues pour la liberté d&apos;expression et d&apos;information (article 85 du RGPD et article 80 de la loi Informatique et Libertés). Si une fiche vous concerne, vous pouvez demander une rectification ou vous opposer à la publication d&apos;une information : la demande est examinée en tenant compte de l&apos;intérêt du public à être informé. Voir la page{' '}
                   <Link href="/droit-de-reponse" className={lienClass}>Droit de réponse et corrections</Link>.
                 </p>
               </div>
