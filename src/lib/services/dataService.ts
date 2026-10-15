@@ -14,7 +14,7 @@ import {
   MarqueCreateRequest,
   EvenementCreateRequest
 } from '@/types';
-import type { MarqueNom } from '@/lib/rechercheMarques';
+import type { MarqueNom, BeneficiaireNom } from '@/lib/rechercheMarques';
 
 // Erreur de l'API avec son statut HTTP, pour distinguer « introuvable » (404) d'une panne
 class ApiError extends Error {
@@ -73,6 +73,13 @@ class DataService {
    */
   async getMarquesNoms(): Promise<MarqueNom[]> {
     return this.fetchFromExtensionApi<MarqueNom[]>('marques-noms');
+  }
+
+  /**
+   * Noms des bénéficiaires controversés, pour la recherche (filtrée dans le navigateur)
+   */
+  async getBeneficiairesNoms(): Promise<BeneficiaireNom[]> {
+    return this.fetchFromExtensionApi<BeneficiaireNom[]>('beneficiaires-noms');
   }
 
   /**

@@ -53,7 +53,7 @@ export default function MarquesListClient({ initialMarques }: MarquesListClientP
       // Nettoyer le flag
       sessionStorage.removeItem('scrollToList');
     }
-  }, [filters.searchQuery]); // Re-trigger quand searchQuery change
+  }, [filters.searchQuery, filters.beneficiaireFilter]); // Re-trigger quand la recherche ou le bénéficiaire change
 
   return (
     <div className="space-y-4">
