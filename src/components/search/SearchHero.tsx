@@ -6,12 +6,15 @@ import { SearchBar } from '@/components/search/SearchBar';
 import { dataService } from '@/lib/services/dataService';
 import { slugify } from '@/lib/slug';
 import { safeTrack } from '@/lib/analytics';
-import { MarqueNom, filtrerMarques, marqueExacte } from '@/lib/rechercheMarques';
+import { Suggestion, construireSuggestions, filtrerSuggestions, suggestionExacte } from '@/lib/rechercheMarques';
 
-// Noms de toutes les marques, chargés une seule fois par visite (partagés entre les barres)
-let nomsEnCours: Promise<MarqueNom[]> | null = null;
-const chargerNomsMarques = () => {
-  nomsEnCours ??= dataService.getMarquesNoms().catch((error) => {
+// Noms des marques et des bénéficiaires, chargés une seule fois par visite (partagés entre les barres)
+let nomsEnCours: Promise<Suggestion[]> | null = null;
+const chargerNoms = () => {
+  nomsEnCours ??= Promise.all([
+    dataService.getMarquesNoms(),
+    dataService.getBeneficiairesNoms(),
+  ]).then(([marques, beneficiaires]) => construireSuggestions(marques, beneficiaires)).catch((error) => {
     nomsEnCours = null; // un échec sera retenté au prochain focus
     throw error;
   });
@@ -25,18 +28,18 @@ interface SearchHeroProps {
 export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [marques, setMarques] = useState<MarqueNom[]>([]);
+  const [noms, setNoms] = useState<Suggestion[]>([]);
   const [suggestionHighlighted, setSuggestionHighlighted] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Filtrage sur place, sans appel réseau à chaque frappe
-  const suggestions = useMemo(() => filtrerMarques(marques, query), [marques, query]);
+  const suggestions = useMemo(() => filtrerSuggestions(noms, query), [noms, query]);
 
   const handleFocus = useCallback(() => {
     setShowSuggestions(true);
-    chargerNomsMarques()
-      .then(setMarques)
-      .catch((error) => console.error('Erreur chargement des marques:', error));
+    chargerNoms()
+      .then(setNoms)
+      .catch((error) => console.error('Erreur chargement des noms:', error));
   }, []);
 
   const handleQueryChange = (value: string) => {
@@ -44,42 +47,34 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
     setSuggestionHighlighted(-1);
   };
 
-  const handleSuggestionSelect = useCallback((marque: MarqueNom) => {
-    const slug = slugify(marque.nom);
-    setShowSuggestions(false);
-
-    // Analytics
-    safeTrack('search', {
-      query: marque.nom,
-      has_results: true,
-      marque_id: marque.id,
-      source
-    });
-
-    router.push(`/marques/${slug}`);
+  // Marque → sa page ; bénéficiaire → liste des marques filtrée sur lui
+  const ouvrirSuggestion = useCallback((suggestion: Suggestion, query: string) => {
+    if (suggestion.type === 'marque') {
+      safeTrack('search', { query, has_results: true, marque_id: suggestion.id, source });
+      router.push(`/marques/${slugify(suggestion.nom)}`);
+    } else {
+      safeTrack('search', { query, has_results: true, beneficiaire_id: suggestion.id, source });
+      sessionStorage.setItem('scrollToList', 'true');
+      router.push(`/marques?beneficiaire=${suggestion.id}`);
+    }
   }, [router, source]);
+
+  const handleSuggestionSelect = useCallback((suggestion: Suggestion) => {
+    setShowSuggestions(false);
+    ouvrirSuggestion(suggestion, suggestion.nom);
+  }, [ouvrirSuggestion]);
 
   const handleSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery.trim()) return;
 
     setShowSuggestions(false);
 
-    // Recherche dans toutes les marques (liste déjà chargée au focus, sinon chargée ici)
+    // Recherche dans les marques et bénéficiaires (liste déjà chargée au focus, sinon chargée ici)
     try {
-      const exactMatch = marqueExacte(await chargerNomsMarques(), searchQuery);
+      const exactMatch = suggestionExacte(await chargerNoms(), searchQuery);
 
       if (exactMatch) {
-        const slug = slugify(exactMatch.nom);
-
-        // Analytics
-        safeTrack('search', {
-          query: searchQuery,
-          has_results: true,
-          marque_id: exactMatch.id,
-          source
-        });
-
-        router.push(`/marques/${slug}`);
+        ouvrirSuggestion(exactMatch, searchQuery);
       } else {
         // Pas de correspondance exacte → redirection vers /marques?search=
         safeTrack('search', {
@@ -101,7 +96,7 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
       sessionStorage.setItem('scrollToList', 'true');
       router.push(`/marques?search=${encodeURIComponent(searchQuery)}`);
     }
-  }, [router, source]);
+  }, [router, source, ouvrirSuggestion]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {

@@ -1,11 +1,12 @@
 'use client';
 
 import { KeyboardEvent, ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Marque } from '@/types';
+import { Building2, ShoppingBag, User } from 'lucide-react';
+import { Suggestion } from '@/lib/rechercheMarques';
 
 // Interface unifiée
 interface UnifiedSuggestions {
-  items: Marque[];
+  items: Suggestion[];
   highlighted: number;
   visible: boolean;
 }
@@ -15,11 +16,17 @@ interface SearchBarProps {
   onChange: (value: string) => void;
   onSearch: (query: string) => void;
   suggestions: UnifiedSuggestions;
-  onSuggestionSelect: (marque: Marque) => void;
+  onSuggestionSelect: (suggestion: Suggestion) => void;
   onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
   onFocus: () => void;
   onBlur: () => void;
 }
+
+// Mêmes icônes que sur la page de marque
+const iconeSuggestion = (suggestion: Suggestion) => {
+  if (suggestion.type === 'marque') return ShoppingBag;
+  return suggestion.type_beneficiaire === 'groupe' ? Building2 : User;
+};
 
 // Exemples de marques affichés dans la barre de recherche : uniquement des marques présentes en base
 const EXEMPLES_RECHERCHE = "Nesquik, Starbucks, Decathlon, Smartbox, L'Oréal, Nous Anti Gaspi, Vittel, La Laitière, Biscuits St Michel, Twitter, CANAL+";
@@ -201,22 +208,26 @@ export function SearchBar({
           role="listbox"
           className="absolute z-20 w-full mt-1 liquid-glass-dropdown border-2 border-accent-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto"
         >
-          {suggestions.items.map((marque, index) => (
-            <button
-              key={marque.id}
-              type="button"
-              role="option"
-              aria-selected={index === suggestions.highlighted}
-              onMouseDown={() => onSuggestionSelect(marque)}
-              className={`w-full px-4 py-3 text-left liquid-glass-suggestion transition-colors duration-200 ${
-                index === suggestions.highlighted ? 'highlighted' : ''
-              } ${index === 0 ? 'rounded-t-2xl' : ''} ${
-                index === suggestions.items.length - 1 ? 'rounded-b-2xl' : ''
-              }`}
-            >
-              <span className="body-large font-medium text-neutral-900">{marque.nom}</span>
-            </button>
-          ))}
+          {suggestions.items.map((suggestion, index) => {
+            const Icone = iconeSuggestion(suggestion);
+            return (
+              <button
+                key={`${suggestion.type}-${suggestion.id}`}
+                type="button"
+                role="option"
+                aria-selected={index === suggestions.highlighted}
+                onMouseDown={() => onSuggestionSelect(suggestion)}
+                className={`w-full px-4 py-3 text-left flex items-center gap-3 liquid-glass-suggestion transition-colors duration-200 ${
+                  index === suggestions.highlighted ? 'highlighted' : ''
+                } ${index === 0 ? 'rounded-t-2xl' : ''} ${
+                  index === suggestions.items.length - 1 ? 'rounded-b-2xl' : ''
+                }`}
+              >
+                <Icone className="w-5 h-5 shrink-0 text-neutral-500" aria-hidden="true" />
+                <span className="body-large font-medium text-neutral-900">{suggestion.nom}</span>
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
