@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import AdresseContact from '@/components/ui/AdresseContact';
 
 export const metadata: Metadata = {
   title: 'Mentions légales',
 };
-
-const CONTACT_EMAIL = 'odm-app@protonmail.com';
 
 export default function MentionsLegales() {
   return (
@@ -44,7 +44,9 @@ export default function MentionsLegales() {
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Contact</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   Pour toute question, demande de correction ou exercice d&apos;un droit de réponse :{' '}
-                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary-dark hover:text-secondary-dark-hover underline">{CONTACT_EMAIL}</a>
+                  <AdresseContact />.
+                  La procédure est décrite sur la page{' '}
+                  <Link href="/droit-de-reponse" className="text-secondary-dark hover:text-secondary-dark-hover underline">Droit de réponse et corrections</Link>.
                 </p>
               </div>
 
