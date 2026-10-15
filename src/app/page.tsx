@@ -273,9 +273,8 @@ export default function Home() {
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
           <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-            Rejoignez le mouvement en participant à la collecte de données. Chaque signalement fait l&apos;objet d&apos;une modération transparente :
-            notre équipe vérifie les sources, argumente sa décision et rend publique
-            l&apos;historique de validation ou de refus.
+            Rejoignez le mouvement en participant à la collecte de données. Chaque signalement est relu avant publication :
+            nous vérifions sa source, et les décisions sont consultables sur la page Modération.
           </p>
           <div className="flex justify-center md:justify-start">
             <Link
@@ -311,9 +310,8 @@ export default function Home() {
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
         <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-          Rejoignez le mouvement en participant à la collecte de données. Chaque signalement fait l&apos;objet d&apos;une modération transparente :
-          notre équipe vérifie les sources, argumente sa décision et rend publique
-          l&apos;historique de validation ou de refus.
+          Rejoignez le mouvement en participant à la collecte de données. Chaque signalement est relu avant publication :
+          nous vérifions sa source, et les décisions sont consultables sur la page Modération.
         </p>
         <div className="flex justify-center md:justify-start">
           <Link

@@ -155,7 +155,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
           <div className="mt-4 pt-4 border-t border-primary">
             <div className="body-small text-primary">
               <span className="font-medium">
-                ⚠️ Ces signalements similaires sont en cours d&apos;examen par notre équipe.
+                ⚠️ Ces signalements similaires sont en cours d&apos;examen.
               </span>
             </div>
           </div>

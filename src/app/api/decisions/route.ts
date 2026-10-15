@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
 import { Decision } from '@/types';
 
-// Une décision affiche la controverse telle qu'elle est publiée aujourd'hui, pas le texte du signalement :
-// - approuvée : titre, source et marque actuels de la controverse créée (masquée si elle a été supprimée depuis) ;
+// Une décision affiche la controverse telle qu'elle est publiée aujourd'hui, jamais le texte du signalement :
+// - approuvée : titre, réponse et marque actuels de la controverse créée (masquée si elle a été supprimée depuis) ;
+//   pas de source, qui se lit sur la fiche de la marque ;
 // - refusée : marque et justification seulement, pour ne pas republier une accusation jugée infondée.
 export async function GET(request: NextRequest) {
   try {
@@ -31,7 +32,7 @@ export async function GET(request: NextRequest) {
 
     const { data: evenements, error: evenementsError } = await supabaseAdmin
       .from('Evenement')
-      .select('proposition_source_id, titre, source_url, marque:Marque!marque_id (nom)')
+      .select('proposition_source_id, titre, reponse, marque:Marque!marque_id (nom)')
       .in('proposition_source_id', approuveIds);
 
     if (evenementsError) {
@@ -66,10 +67,10 @@ export async function GET(request: NextRequest) {
       decisions.push({
         id: prop.id,
         titre: evenement.titre,
+        reponse: evenement.reponse || undefined,
         marque_nom: marque?.nom || prop.marque_nom,
         statut: 'approuve',
         commentaire_admin: prop.commentaire_admin,
-        source_url: evenement.source_url || undefined,
         date: prop.updated_at
       });
     }

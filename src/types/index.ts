@@ -191,11 +191,11 @@ export interface Proposition {
 
 export interface Decision {
   id: number;
-  titre?: string;
+  titre?: string; // Titre publié aujourd'hui (validées seulement), jamais celui du signalement
+  reponse?: string; // URL de la réponse de la marque, si elle existe
   marque_nom: string;
   statut: 'approuve' | 'rejete';
   commentaire_admin: string;
-  source_url?: string;
   date: string;
 }
 
