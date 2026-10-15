@@ -9,9 +9,12 @@ interface BadgeProps {
 }
 
 export function Badge({ children, variant = 'category', category }: BadgeProps) {
+  // Style tampon : catégories en bleu, bénéficiaires en contour bordeaux. Pas d'aplat pour les
+  // bénéficiaires, qui ressortiraient plus que le nom de la marque (et mettraient les personnes en avant)
+  const tampon = 'inline-flex items-center px-2 py-0.5 text-xs font-medium border rounded-sm';
   const variantClasses = {
-    category: 'inline-flex items-center px-2 py-0.5 text-xs font-medium text-accent-900 bg-accent-50 border-l-2 border-accent-100',
-    beneficiaire: 'inline-flex items-center px-2 py-0.5 text-xs font-medium text-primary-dark bg-primary-50 border-l-2 border-primary-light',
+    category: `${tampon} text-accent-900 bg-accent-50 border-accent-200`,
+    beneficiaire: `${tampon} text-primary-dark border-primary-medium`,
   };
     return (
       <span className={variantClasses[variant]}>
