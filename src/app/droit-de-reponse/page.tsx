@@ -75,7 +75,8 @@ export default function DroitDeReponse() {
               <div>
                 <h2 className="heading-main font-bold text-neutral-900 mb-4">Vos données personnelles</h2>
                 <p className="body-base text-neutral-700 leading-snug">
-                  Si une fiche contient des données qui vous concernent, vous pouvez en demander la rectification ou vous opposer à leur publication (règlement général sur la protection des données), à la même adresse : <AdresseContact />.
+                  Si une fiche contient des données qui vous concernent, vous pouvez en demander la rectification ou vous opposer à leur publication, à la même adresse : <AdresseContact />. Le détail est dans la{' '}
+                  <Link href="/confidentialite" className="text-secondary-dark hover:text-secondary-dark-hover underline">politique de confidentialité</Link>.
                 </p>
               </div>
 

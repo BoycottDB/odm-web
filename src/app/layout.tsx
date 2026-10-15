@@ -219,6 +219,10 @@ export default function RootLayout({
             Droit de réponse et corrections
           </Link>
           {' · '}
+          <Link href="/confidentialite" className="underline hover:text-white">
+            Confidentialité
+          </Link>
+          {' · '}
           <Link href="/mentions-legales" className="underline hover:text-white">
             Mentions légales
           </Link>
