@@ -30,7 +30,7 @@ export default function MarqueCard({ marque }: MarqueCardProps) {
   return (
     <Link
       href={`/marques/${slugify(marque.nom)}`}
-      className="block bg-white border border-primary-medium rounded-3xl px-4 py-3 md:px-6 md:py-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+      className="block bg-white border border-primary-medium rounded-2xl px-4 py-3 md:px-6 md:py-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
     >
       <div className="flex items-center gap-3">
         <div className="flex-1 min-w-0">

@@ -5,7 +5,7 @@ interface MarquesSkeletonProps {
 // Même gabarit que MarqueCard : nom, bénéficiaires, étiquettes
 function MarqueSkeleton() {
   return (
-    <div className="bg-white border border-primary-medium rounded-3xl px-4 py-3 md:px-6 md:py-4 shadow-sm animate-pulse">
+    <div className="bg-white border border-primary-medium rounded-2xl px-4 py-3 md:px-6 md:py-4 shadow-sm animate-pulse">
       <div className="flex items-center gap-3">
         <div className="flex-1 min-w-0 space-y-2">
           <div className="h-5 bg-gray-200 rounded w-48" />
