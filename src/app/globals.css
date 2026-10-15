@@ -69,7 +69,9 @@
   --color-secondary-medium: var(--color-secondary-100);
   --color-secondary: var(--color-secondary-500);
   --color-secondary-hover: var(--color-secondary-700);
-  --color-secondary-dark: var(--color-secondary-700);
+  /* Liens sur fond blanc : 800 = contraste 6:1 (700 n'atteignait que 4,5:1) */
+  --color-secondary-dark: var(--color-secondary-800);
+  --color-secondary-dark-hover: var(--color-secondary-900);
   
   /* Accent aliases */
   --color-accent-light: var(--color-accent-50);
