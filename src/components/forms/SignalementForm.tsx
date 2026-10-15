@@ -232,8 +232,7 @@ export default function SignalementForm() {
         
         <div className="bg-info-light border border-info rounded-lg p-4 mb-6">
           <p className="text-info body-small">
-            <strong>Rappel :</strong> Toutes les décisions de modération sont rendues publiques 
-            de manière transparente sur notre page dédiée.
+            <strong>Rappel :</strong> Les décisions de modération sont consultables sur la page Modération.
           </p>
         </div>
         
@@ -341,10 +340,10 @@ export default function SignalementForm() {
               </p>
             </div>
 
-        {/* Message aux modérateurs */}
+        {/* Message pour la modération */}
         <div>
           <label htmlFor="message-moderateurs" className="block body-small font-medium text-neutral-700 mb-2">
-            Message aux modérateurs *
+            Message pour la modération *
           </label>
           <textarea
             id="message-moderateurs"

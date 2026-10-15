@@ -4,70 +4,51 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useDecisions } from '@/hooks/useDecisions';
 import { Decision } from '@/types';
+import { slugify } from '@/lib/slug';
+
+// Validée : le titre tel qu'il est publié sur la fiche, avec le lien vers la fiche et la réponse éventuelle.
+// Refusée : la justification seule (elle donne le motif, sans reprendre l'accusation).
+const lienClass = 'text-secondary-dark hover:text-secondary-dark-hover font-medium';
 
 function DecisionCard({ decision }: { decision: Decision }) {
-  const statusConfig = {
-    approuve: {
-      label: 'VALIDÉ',
-      bgColor: 'bg-success-light border-success',
-      textColor: 'text-success',
-      badgeColor: 'bg-success-light text-success'
-    },
-    rejete: {
-      label: 'REFUSÉ',
-      bgColor: 'bg-error-light border-error',
-      textColor: 'text-error',
-      badgeColor: 'bg-error-light text-error'
-    }
-  };
-
-  const config = statusConfig[decision.statut];
-  const formattedDateDesktop = new Date(decision.date).toLocaleDateString('fr-FR', {
+  const date = new Date(decision.date).toLocaleDateString('fr-FR', {
     day: 'numeric',
     month: 'short',
     year: 'numeric'
   });
 
-  const formattedDateMobile = new Date(decision.date).toLocaleDateString('fr-FR', {
-    day: 'numeric',
-    month: 'numeric',
-    year: '2-digit'
-  });
-
   return (
-    <div className={`border rounded-lg p-4 ${config.bgColor}`}>
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center">
-          <span className={`${config.badgeColor} body-xs font-medium px:1.5 md:px-2.5 py-0.5 rounded-full mr-3`}>
-            {config.label}
-          </span>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-            <span className="font-bold text-neutral-900">{decision.marque_nom}</span>
-          </div>
-        </div>
-        <span className="body-small text-neutral-500">
-          <span className="hidden sm:inline">{formattedDateDesktop}</span>
-          <span className="sm:hidden">{formattedDateMobile}</span>
+    <div className="border border-neutral-200 rounded-lg px-4 py-3">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 body-small">
+        <span className="font-medium">
+          {decision.statut === 'approuve' ? '✅ Validé' : '❌ Refusé'}
         </span>
+        <span className="text-neutral-400" aria-hidden="true">·</span>
+        <span className="font-semibold text-neutral-900">{decision.marque_nom}</span>
+        <span className="text-neutral-400" aria-hidden="true">·</span>
+        <span className="text-neutral-500">{date}</span>
       </div>
-      {decision.commentaire_admin && <p className="text-neutral-700 mt-2">
-        <strong>Justification :</strong> {decision.commentaire_admin}
-      </p>}
-      {decision.titre && <span className="font-medium text-neutral-700">{decision.titre}</span>}
-      {decision.source_url && (
-        <div className="pt-4 border-t border-neutral-200 mt-4">
-          <a
-            href={decision.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center body-small sm:body-base font-medium text-primary hover:text-primary-dark transition-colors duration-200"
-          >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-            Voir la source
-          </a>
+      {decision.statut === 'approuve' && (
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 body-small mt-1">
+          {decision.titre && <span className="font-medium text-neutral-900">{decision.titre}</span>}
+          {decision.titre && <span className="text-neutral-400" aria-hidden="true">·</span>}
+          <Link href={`/marques/${slugify(decision.marque_nom)}`} className={lienClass}>
+            Voir la fiche →
+          </Link>
+          {decision.reponse && (
+            <>
+              <span className="text-neutral-400" aria-hidden="true">·</span>
+              <a href={decision.reponse} target="_blank" rel="noopener noreferrer" className={lienClass}>
+                Réponse ↗
+              </a>
+            </>
+          )}
         </div>
+      )}
+      {decision.statut === 'rejete' && decision.commentaire_admin && (
+        <p className="body-small text-neutral-700 mt-1">
+          <span className="font-medium">Justification :</span> {decision.commentaire_admin}
+        </p>
       )}
     </div>
   );
@@ -95,7 +76,7 @@ export default function Moderation() {
             Modération et validation
           </h1>
           <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
-            Transparence totale sur les décisions de validation et de refus
+            Comment les signalements sont relus, et les règles que nous appliquons
           </p>
         </div>
       </section>
@@ -118,43 +99,67 @@ export default function Moderation() {
             {/* Contenu texte */}
             <div>
               <p className="body-base font-light text-neutral-700 leading-snug mb-4">
-                Chaque ajout, correction ou suppression d&apos;entrée est soumis à validation par des modérateurs. Toutes les décisions sont publiques, justifiées et consultables ici.
+                Chaque signalement est relu avant d&apos;être publié : rien n&apos;apparaît sur le site sans validation. Les décisions sont consultables plus bas sur cette page.
               </p>
               <p className="body-base font-light text-neutral-700 leading-snug">
-                Cette transparence garantit la fiabilité des informations et permet à chacun de comprendre les critères de validation utilisés.
+                Les règles ci-dessous s&apos;appliquent à tout ce qui est publié, que l&apos;information vienne d&apos;un signalement ou de notre propre travail.
               </p>
             </div>
           </div>
 
-          {/* Critères de validation */}
+          {/* Règles éditoriales */}
           <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 mb-8">
-            {/* Header avec SVG et titre */}
-            <div className="flex items-center mb-6">
-              <div className="bg-success-light rounded-lg p-3 mr-4">
-                <svg className="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <h2 className="heading-main font-bold text-neutral-900">Critères de validation</h2>
-            </div>
+            <h2 className="heading-main font-bold text-neutral-900 mb-6">Nos règles</h2>
 
-            {/* Contenu critères */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="border-l-4 border-success pl-4">
-                <h3 className="font-semibold body-base text-neutral-900 mb-2">✅ Accepté si :</h3>
-                <ul className="text-neutral-700 space-y-2">
-                  <li>• Source vérifiable</li>
-                  <li>• Information factuelle et datée</li>
-                  <li>• Pertinence pour les consommateurs</li>
+            <div className="space-y-6">
+              <div className="border-l-4 border-secondary pl-4">
+                <h3 className="font-semibold body-base text-neutral-900 mb-2">📰 Les faits</h3>
+                <ul className="list-disc pl-5 text-neutral-700 space-y-2 body-base leading-snug">
+                  <li>Un titre décrit un fait précis et daté, attribué à celui qui a agi : la marque, le groupe ou la personne.</li>
+                  <li>Les mots qui supposent une décision de justice (condamnation, fraude, évasion fiscale, licenciement abusif…) ne sont employés que lorsqu&apos;une décision les prononce. Sinon, nous indiquons l&apos;étape exacte : plainte, enquête, mise en examen, renvoi en procès, condamnation en première instance… Toute personne est présumée innocente tant qu&apos;elle n&apos;a pas été définitivement condamnée.</li>
+                  <li>Une accusation contestée est présentée comme telle (« Enquête de… », « Accusée de… »).</li>
+                  <li>Quand l&apos;entreprise a répondu publiquement, sa réponse est affichée à côté de la source.</li>
+                  <li>Le ton peut être engagé, jamais injurieux envers une personne.</li>
                 </ul>
               </div>
-              <div className="border-l-4 border-error pl-4">
-                <h3 className="font-semibold body-base text-neutral-900 mb-2">❌ Refusé si :</h3>
-                <ul className="text-neutral-700 space-y-2">
-                  <li>• Source douteuse ou inexistante</li>
-                  <li>• Information non vérifiée</li>
-                  <li>• Hors sujet ou non pertinent</li>
+
+              <div className="border-l-4 border-secondary pl-4">
+                <h3 className="font-semibold body-base text-neutral-900 mb-2">🔗 Les sources</h3>
+                <ul className="list-disc pl-5 text-neutral-700 space-y-2 body-base leading-snug">
+                  <li>Chaque controverse a une source, dont nous gardons une copie archivée.</li>
+                  <li>Nous privilégions la source d&apos;origine (décision, rapport, étude), puis les médias et les ONG d&apos;enquête indépendants, puis la presse généraliste. Une source militante peut compléter, mais ne suffit pas seule à établir un fait grave.</li>
+                  <li>Nous ne citons pas de média détenu par une personne ou un groupe présent sur le site.</li>
                 </ul>
+              </div>
+
+              <div className="border-l-4 border-secondary pl-4">
+                <h3 className="font-semibold body-base text-neutral-900 mb-2">👥 Qui figure sur le site</h3>
+                <ul className="list-disc pl-5 text-neutral-700 space-y-2 body-base leading-snug">
+                  <li>Des marques disponibles en France et connues du grand public.</li>
+                  <li>Un propriétaire ou un actionnaire n&apos;apparaît que s&apos;il fait l&apos;objet de controverses documentées : le but n&apos;est pas de recenser tous les actionnaires. Un gestionnaire de fonds n&apos;est rattaché à une marque que s&apos;il en détient plus de 5 %, d&apos;après les documents officiels de l&apos;entreprise.</li>
+                  <li>Une controverse porte sur un acte précis de l&apos;entreprise ou de la personne, jamais sur une nationalité, une origine ou une religion.</li>
+                  <li>Les personnes citées le sont pour des faits liés à leur rôle public. Leur vie privée n&apos;est évoquée que lorsqu&apos;elle rejoint ce rôle ou un débat d&apos;intérêt général.</li>
+                </ul>
+              </div>
+
+              <div className="border-l-4 border-secondary pl-4">
+                <h3 className="font-semibold body-base text-neutral-900 mb-2">🏷️ Le classement</h3>
+                <ul className="list-disc pl-5 text-neutral-700 space-y-2 body-base leading-snug">
+                  <li>Les étiquettes désignent un domaine (environnement, conditions de travail…), pas un jugement sur l&apos;entreprise.</li>
+                  <li>Les controverses sont classées par date, de la plus récente à la plus ancienne, et non par gravité.</li>
+                </ul>
+              </div>
+
+              <p className="text-neutral-700 body-base leading-snug">
+                Un signalement qui ne respecte pas ces règles est refusé : source absente ou douteuse, fait invérifiable, hors sujet, propos injurieux ou fondés sur une nationalité, une origine ou une religion.
+              </p>
+
+              <div className="border-l-4 border-secondary pl-4">
+                <h3 className="font-semibold body-base text-neutral-900 mb-2">🛠️ Les corrections</h3>
+                <p className="text-neutral-700 body-base leading-snug">
+                  Une information fausse ou dépassée est corrigée dès que nous en avons connaissance. Pour la signaler ou exercer un droit de réponse :{' '}
+                  <Link href="/droit-de-reponse" className="text-secondary-dark hover:text-secondary-dark-hover underline">Droit de réponse et corrections</Link>.
+                </p>
               </div>
             </div>
           </div>
@@ -206,7 +211,7 @@ export default function Moderation() {
 
               {!loading && !error && decisions.length > 0 && (
                 <>
-                  <div className="space-y-4 mb-8">
+                  <div className="space-y-2 mb-8">
                     {decisions.map((decision) => (
                       <DecisionCard key={decision.id} decision={decision} />
                     ))}
