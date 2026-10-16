@@ -110,7 +110,7 @@ export function ShareButton({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-primary text-white hover:bg-primary-dark';
+        return 'bouton-primaire';
       case 'secondary':
         return 'bg-primary-50 text-primary hover:bg-primary-medium';
       case 'minimal':

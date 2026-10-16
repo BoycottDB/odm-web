@@ -223,10 +223,10 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
   if (loading) {
     return (
       <div className="animate-pulse">
-        <div className="bg-gray-200 h-8 rounded mb-4"></div>
+        <div className="bg-neutral-200 h-8 rounded mb-4"></div>
         <div className="space-y-3">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-gray-200 h-24 rounded"></div>
+            <div key={i} className="bg-neutral-200 h-24 rounded"></div>
           ))}
         </div>
       </div>
@@ -236,10 +236,10 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h4 className="text-lg font-medium text-gray-900">Controverses détaillées</h4>
+        <h4 className="text-lg font-medium text-neutral-900">Controverses détaillées</h4>
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm"
+          className="bouton-primaire flex gap-2 px-3 py-2 text-sm"
         >
           <Plus className="w-4 h-4" />
           Ajouter
@@ -252,45 +252,45 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
           {controverses.map((controverse) => (
             <div 
               key={controverse.id} 
-              className="border border-gray-200 rounded-lg p-4 bg-white hover:shadow-sm transition-shadow"
+              className="border border-neutral-200 rounded-lg p-4 bg-white hover:shadow-sm transition-shadow"
             >
               {editingId === controverse.id ? (
                 // Mode édition
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-neutral-700 mb-1">
                       Titre de la controverse *
                     </label>
                     <input
                       type="text"
                       value={editData.titre}
                       onChange={(e) => setEditData({...editData, titre: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
                     />
                   </div>
                   
                   {/* NOUVEAU : Date de la controverse */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-neutral-700 mb-1">
                       Date de la controverse
                     </label>
                     <input
                       type="date"
                       value={editData.date}
                       onChange={(e) => setEditData({...editData, date: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
                     />
                   </div>
                   
                   {/* NOUVEAU : Catégorie */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-neutral-700 mb-1">
                       Catégorie
                     </label>
                     <select
                       value={editData.categorie_id || ''}
                       onChange={(e) => setEditData({...editData, categorie_id: e.target.value ? parseInt(e.target.value) : undefined})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
                     >
                       <option value="">-- Sélectionner une catégorie --</option>
                       {categories.map(cat => (
@@ -302,20 +302,20 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-neutral-700 mb-1">
                       URL source *
                     </label>
                     <input
                       type="url"
                       value={editData.source_url}
                       onChange={(e) => setEditData({...editData, source_url: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
                     />
                   </div>
                   
                   {/* NOUVEAU : Réponse officielle */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-neutral-700 mb-1">
                       Réponse officielle (optionnel)
                     </label>
                     <input
@@ -323,21 +323,21 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                       value={editData.reponse}
                       onChange={(e) => setEditData({...editData, reponse: e.target.value})}
                       placeholder="https://exemple.com/reponse-officielle"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
                     />
                   </div>
                   
                   <div className="flex gap-2">
                     <button
                       onClick={() => saveEdit(controverse.id)}
-                      className="flex items-center gap-1 px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1 bg-success text-white rounded text-sm hover:bg-success-dark transition-colors"
                     >
                       <Check className="w-4 h-4" />
                       Sauver
                     </button>
                     <button
                       onClick={cancelEdit}
-                      className="flex items-center gap-1 px-3 py-1 border border-gray-300 text-gray-700 rounded text-sm hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1 border border-neutral-300 text-neutral-700 rounded text-sm hover:bg-neutral-50 transition-colors"
                     >
                       <X className="w-4 h-4" />
                       Annuler
@@ -347,9 +347,9 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
               ) : (
                 // Mode affichage
                 <div className="flex items-start gap-3">
-                  <GripVertical className="w-4 h-4 text-gray-400 mt-1 flex-shrink-0" />
+                  <GripVertical className="w-4 h-4 text-neutral-400 mt-1 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-gray-900 mb-1 leading-tight">
+                    <div className="font-medium text-neutral-900 mb-1 leading-tight">
                       {controverse.titre}
                     </div>
                     
@@ -395,7 +395,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                           href={controverse.reponse}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-sm text-green-600 hover:text-green-700 hover:underline"
+                          className="inline-flex items-center text-sm text-success hover:text-success-dark hover:underline"
                         >
                           <MessageCircle className="w-3 h-3 mr-1" />
                           Réponse officielle
@@ -425,7 +425,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
           ))}
         </div>
       ) : (
-        <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg">
+        <div className="text-center py-8 text-neutral-500 bg-neutral-50 rounded-lg">
           <div className="mb-2">Aucune controverse détaillée</div>
           <div className="text-sm">Utilisez le bouton &quot;Ajouter&quot; pour en créer une.</div>
         </div>
@@ -434,10 +434,10 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
       {/* Formulaire d'ajout */}
       {isAdding && (
         <div className="border border-primary rounded-lg p-4 bg-primary-50">
-          <h5 className="font-medium mb-3 text-gray-900">Nouvelle controverse</h5>
+          <h5 className="font-medium mb-3 text-neutral-900">Nouvelle controverse</h5>
           <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 Titre de la controverse *
               </label>
               <input
@@ -445,35 +445,35 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                 value={newControverse.titre}
                 onChange={(e) => setNewControverse({...newControverse, titre: e.target.value})}
                 placeholder="Ex : Renvoyé en procès le 19/03/2026 pour…"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
               />
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-xs text-neutral-500 mt-1">
                 Minimum 10 caractères
               </div>
             </div>
             
             {/* NOUVEAU : Date de la controverse */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 Date de la controverse
               </label>
               <input
                 type="date"
                 value={newControverse.date}
                 onChange={(e) => setNewControverse({...newControverse, date: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
               />
             </div>
             
             {/* NOUVEAU : Catégorie */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 Catégorie
               </label>
               <select
                 value={newControverse.categorie_id || ''}
                 onChange={(e) => setNewControverse({...newControverse, categorie_id: e.target.value ? parseInt(e.target.value) : undefined})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
               >
                 <option value="">-- Sélectionner une catégorie --</option>
                 {categories.map(cat => (
@@ -485,7 +485,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 URL source *
               </label>
               <input
@@ -493,16 +493,16 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                 value={newControverse.source_url}
                 onChange={(e) => setNewControverse({...newControverse, source_url: e.target.value})}
                 placeholder="https://exemple.com/article"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
               />
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-xs text-neutral-500 mt-1">
                 URL complète avec https://
               </div>
             </div>
             
             {/* NOUVEAU : Réponse officielle */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 Réponse officielle (optionnel)
               </label>
               <input
@@ -510,14 +510,14 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                 value={newControverse.reponse}
                 onChange={(e) => setNewControverse({...newControverse, reponse: e.target.value})}
                 placeholder="https://exemple.com/reponse-officielle"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm"
               />
             </div>
             
             <div className="flex gap-2 pt-2">
               <button
                 onClick={ajouterControverse}
-                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm"
+                className="bouton-primaire px-4 py-2 text-sm"
               >
                 Ajouter
               </button>
@@ -532,7 +532,7 @@ export function ControversesManager({ beneficiaireId, onUpdate }: ControversesMa
                     reponse: ''
                   });
                 }}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+                className="px-4 py-2 border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-50 transition-colors text-sm"
               >
                 Annuler
               </button>

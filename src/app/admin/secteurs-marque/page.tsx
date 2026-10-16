@@ -144,10 +144,10 @@ export default function SecteursMarquePage() {
       <AdminNavigation />
       <div className="max-w-6xl mx-auto p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="heading-main font-bold text-neutral-900">Gestion des secteurs marque</h2>
+          <h2 className="heading-main text-neutral-900">Gestion des secteurs marque</h2>
           <button
             onClick={() => setIsCreating(true)}
-            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+            className="bouton-primaire px-4 py-2"
             disabled={isCreating}
           >
             + Nouveau secteur
@@ -158,8 +158,8 @@ export default function SecteursMarquePage() {
         {message && (
           <div className={`mb-6 p-4 rounded-lg ${
             message.type === 'success' 
-              ? 'bg-success-light border border-success text-success' 
-              : 'bg-error-light border border-error text-error'
+              ? 'bg-success-light border border-success-medium text-success' 
+              : 'bg-error-light border border-error-medium text-error'
           }`}>
             {message.text}
           </div>
@@ -167,7 +167,7 @@ export default function SecteursMarquePage() {
 
         {/* Formulaire de création/édition */}
         {isCreating && (
-          <div className="mb-8 p-6 bg-white rounded-lg border border-neutral shadow-sm">
+          <div className="mb-8 p-6 bg-white rounded-lg border border-neutral-200 shadow-sm">
             <h3 className="heading-sub font-semibold text-neutral-900 mb-4">
               {editingSecteur ? 'Modifier le secteur' : 'Nouveau secteur'}
             </h3>
@@ -182,7 +182,7 @@ export default function SecteursMarquePage() {
                   required
                   value={formData.nom}
                   onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
-                  className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="ex: Mode, Tech/Hardware, Réseaux sociaux..."
                 />
               </div>
@@ -194,7 +194,7 @@ export default function SecteursMarquePage() {
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-20"
+                  className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-20"
                   placeholder="Description du secteur d'activité..."
                 />
               </div>
@@ -206,7 +206,7 @@ export default function SecteursMarquePage() {
                 <textarea
                   value={formData.message_boycott_tips}
                   onChange={(e) => setFormData({ ...formData, message_boycott_tips: e.target.value })}
-                  className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-32"
+                  className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-32"
                   placeholder="Message avec conseils de boycott pour ce secteur (supporte le markdown : **gras**, listes • etc.)"
                 />
                 <p className="body-xs text-neutral-500 mt-1">
@@ -217,14 +217,14 @@ export default function SecteursMarquePage() {
               <div className="flex space-x-3">
                 <button
                   type="submit"
-                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+                  className="bouton-primaire px-4 py-2"
                 >
                   {editingSecteur ? 'Mettre à jour' : 'Créer'}
                 </button>
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="bg-neutral-200 text-neutral-700 px-4 py-2 rounded-lg hover:bg-neutral-300"
+                  className="bouton-secondaire px-4 py-2"
                 >
                   Annuler
                 </button>
@@ -234,8 +234,8 @@ export default function SecteursMarquePage() {
         )}
 
         {/* Liste des secteurs */}
-        <div className="bg-white rounded-lg shadow-sm border border-neutral overflow-hidden">
-          <div className="px-6 py-4 border-b border-neutral">
+        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
+          <div className="px-6 py-4 border-b border-neutral-200">
             <h2 className="body-large font-medium text-neutral-900">
               {secteurs.length} secteur(s)
             </h2>
@@ -272,7 +272,7 @@ export default function SecteursMarquePage() {
                   <div className="ml-4 flex space-x-2">
                     <button
                       onClick={() => handleEdit(secteur)}
-                      className="body-small text-primary hover:text-primary underline"
+                      className="body-small text-primary hover:text-primary-dark underline"
                       disabled={isCreating}
                     >
                       Modifier

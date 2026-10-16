@@ -68,7 +68,7 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
           onChange={(e) => setFormData(prev => ({ ...prev, nom: e.target.value }))}
           placeholder="Ex: Pierre-Édouard Stérin, Nestlé SA"
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary ${
-            errors.nom ? 'border-error' : 'border-neutral'
+            errors.nom ? 'border-error-medium' : 'border-neutral-200'
           }`}
           required
           maxLength={255}
@@ -89,7 +89,7 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
             ...prev, 
             type_beneficiaire: e.target.value as TypeBeneficiaire
           }))}
-          className="w-full px-3 py-2 border border-neutral rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-3 py-2 border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={loading}
         >
           <option value="individu">👤 Individu (personne physique)</option>
@@ -110,7 +110,7 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
           value={formData.impact_generique}
           onChange={(e) => setFormData(prev => ({ ...prev, impact_generique: e.target.value }))}
           placeholder="Vos achats contribuent à la fortune de [NOM] et financent ses projets controversés..."
-          className="w-full px-3 py-2 border border-neutral rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-3 py-2 border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           rows={3}
           maxLength={500}
           disabled={loading}
@@ -157,7 +157,7 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 bg-primary text-white py-2 px-4 rounded-md font-medium hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bouton-primaire flex-1 py-2 px-4"
         >
           {loading ? 'Enregistrement...' : (beneficiaire ? 'Mettre à jour les informations' : 'Créer le bénéficiaire')}
         </button>
@@ -165,7 +165,7 @@ export function BeneficiaireForm({ beneficiaire, onSubmit, onCancel, loading }: 
           type="button"
           onClick={onCancel}
           disabled={loading}
-          className="flex-1 bg-neutral-light text-neutral-dark py-2 px-4 rounded-md font-medium hover:bg-neutral disabled:opacity-50"
+          className="bouton-secondaire flex-1 py-2 px-4"
         >
           Annuler
         </button>

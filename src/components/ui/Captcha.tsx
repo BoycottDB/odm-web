@@ -76,7 +76,7 @@ export default function Captcha({ onVerify, className = '' }: CaptchaProps) {
             type="text"
             value={userAnswer}
             onChange={(e) => handleVerification(e.target.value)}
-            className="w-16 px-2 py-1 text-center border border-neutral rounded focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-16 px-2 py-1 text-center border border-neutral-200 rounded focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="?"
             aria-label="Réponse au calcul"
           />
@@ -85,7 +85,7 @@ export default function Captcha({ onVerify, className = '' }: CaptchaProps) {
         <button
           type="button"
           onClick={generateQuestion}
-          className="px-3 py-1 body-small text-neutral-600 hover:text-neutral-800 border border-neutral rounded hover:bg-neutral-50"
+          className="px-3 py-1 body-small text-neutral-600 hover:text-neutral-800 border border-neutral-200 rounded hover:bg-neutral-50"
           aria-label="Générer une nouvelle question"
         >
           🔄

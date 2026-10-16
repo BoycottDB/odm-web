@@ -116,7 +116,7 @@ export default function BeneficiaireDetailPage() {
             <p className="text-neutral-600 mb-6">Ce bénéficiaire n&apos;existe pas ou a été supprimé.</p>
             <button
               onClick={() => router.push('/admin/beneficiaires')}
-              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
+              className="bouton-primaire px-4 py-2"
             >
               Retour à la liste
             </button>
@@ -254,14 +254,14 @@ export default function BeneficiaireDetailPage() {
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="flex-1 bg-red-600 text-white py-2 px-4 rounded-md font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bouton-primaire flex-1 py-2 px-4 bg-error hover:bg-error-dark"
                 >
                   {deleting ? 'Suppression...' : 'Supprimer'}
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
                   disabled={deleting}
-                  className="flex-1 bg-neutral-200 text-neutral-800 py-2 px-4 rounded-md font-medium hover:bg-neutral-300 disabled:opacity-50"
+                  className="bouton-secondaire flex-1 py-2 px-4"
                 >
                   Annuler
                 </button>

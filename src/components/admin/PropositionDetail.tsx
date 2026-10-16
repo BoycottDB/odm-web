@@ -373,7 +373,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-neutral">
+      <div className="px-6 py-4 border-b border-neutral-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
@@ -385,7 +385,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               </svg>
             </button>
             <div>
-              <h2 className="heading-main font-bold text-neutral-900">
+              <h2 className="heading-main text-neutral-900">
                 Signalement #{proposition.id}
               </h2>
               <div className="flex items-center space-x-2 mt-1">
@@ -408,7 +408,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               <label className="block body-small font-medium text-neutral-700 mb-1">
                 Message du contributeur <span className="body-xs text-neutral-500">(non modifiable)</span>
               </label>
-              <div className="text-neutral-900 p-3 rounded border border-neutral">
+              <div className="text-neutral-900 p-3 rounded border border-neutral-200">
                 {editedData?.description}
               </div>
             </div>
@@ -434,7 +434,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                   }
                 }}
                 placeholder="Rechercher ou saisir le nom de la marque"
-                className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="bg-white w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
               
@@ -448,7 +448,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               
               {/* Résultats de recherche */}
               {showMarqueResults && marqueSearchResults.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-neutral rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
                   {marqueSearchResults.map((marque) => (
                     <div
                       key={marque.id}
@@ -465,7 +465,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                           selectMarque(marque);
                         }
                       }}
-                      className="w-full px-3 py-2 text-left hover:bg-neutral border-b border-neutral last:border-b-0 cursor-pointer focus:bg-neutral focus:outline-none"
+                      className="w-full px-3 py-2 text-left hover:bg-neutral-100 border-b border-neutral-200 last:border-b-0 cursor-pointer focus:bg-neutral-100 focus:outline-none"
                     >
                       <div className="font-medium text-neutral-900">{marque.nom}</div>
                     </div>
@@ -474,7 +474,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               )}
               
               {!editedData?.marque_id && marqueSearch.trim() && (
-                <div className="mt-2 p-3 bg-info-light border border-info rounded-lg">
+                <div className="mt-2 p-3 bg-info-light border border-info-medium rounded-lg">
                   <p className="body-small text-info font-medium">ℹ️ Nouvelle marque</p>
                   <p className="body-xs text-info">Cette marque sera créée automatiquement lors de l&apos;approbation.</p>
                 </div>
@@ -488,7 +488,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                   type="date"
                   value={editedData?.date || ''}
                   onChange={(e) => handleFieldChange('date', e.target.value)}
-                  className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="bg-white w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
@@ -514,13 +514,13 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                     }
                   }}
                   placeholder="Rechercher ou créer une catégorie"
-                  className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="bg-white w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
                 
                 {/* Résultats de recherche catégories */}
                 {showCategoryResults && categorySearchResults.length > 0 && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-neutral rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
                     {categorySearchResults.map((category) => (
                       <div
                         key={category.id}
@@ -537,7 +537,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                             selectCategory(category);
                           }
                         }}
-                        className="w-full px-3 py-2 text-left hover:bg-neutral border-b border-neutral last:border-b-0 cursor-pointer focus:bg-neutral focus:outline-none"
+                        className="w-full px-3 py-2 text-left hover:bg-neutral-100 border-b border-neutral-200 last:border-b-0 cursor-pointer focus:bg-neutral-100 focus:outline-none"
                       >
                         <div className="font-medium text-neutral-900">{category.nom}</div>
                       </div>
@@ -560,7 +560,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                             createCategoryFromSearch(categorySearch.trim());
                           }
                         }}
-                        className="w-full px-3 py-2 text-left hover:bg-success-light border-t border-success cursor-pointer focus:bg-success-light focus:outline-none bg-success-light"
+                        className="w-full px-3 py-2 text-left hover:bg-success-light border-t border-success-medium cursor-pointer focus:bg-success-light focus:outline-none bg-success-light"
                       >
                         <div className="font-medium text-success">+ Créer &quot;{categorySearch.trim()}&quot;</div>
                         <div className="body-small text-success">Nouvelle catégorie</div>
@@ -578,7 +578,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 value={editedData?.source_url || ''}
                 onChange={(e) => handleFieldChange('source_url', e.target.value)}
                 placeholder="https://exemple.com/article"
-                className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="bg-white w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
             </div>
@@ -593,7 +593,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                 value={reponseUrl}
                 onChange={(e) => setReponseUrl(e.target.value)}
                 placeholder="https://exemple.com/reponse-officielle"
-                className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="bg-white w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <p className="body-xs text-neutral-500 mt-1">
                 URL vers la réponse officielle de la marque à cette controverse
@@ -608,7 +608,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
               <textarea
                 value={editedData?.titre_controverse || ''}
                 onChange={(e) => handleFieldChange('titre_controverse', e.target.value)}
-                className="bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="bg-white w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 rows={3}
                 placeholder="Rédigez un titre clair et concis qui décrit la controverse..."
                 required
@@ -624,9 +624,9 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
 
         {/* Recherche de similarités */}
         {isLoadingSimilar && (
-          <div className="mb-6 p-4 bg-info-light border border-info rounded-lg">
+          <div className="mb-6 p-4 bg-info-light border border-info-medium rounded-lg">
             <div className="flex items-center">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-info mr-3"></div>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-info-medium mr-3"></div>
               <span className="text-info body-small font-medium">Recherche de controverses similaires...</span>
             </div>
           </div>
@@ -641,7 +641,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
 
         {/* Erreurs de validation */}
         {validationErrors.length > 0 && (
-          <div className="mb-6 p-4 bg-error-light border border-error rounded-lg">
+          <div className="mb-6 p-4 bg-error-light border border-error-medium rounded-lg">
             <h3 className="body-small font-medium text-error mb-2">❌ Erreurs de validation :</h3>
             <ul className="body-small text-error list-disc list-inside space-y-1">
               {validationErrors.map((error, index) => (
@@ -652,7 +652,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
         )}
 
         {/* Formulaire de décision */}
-        <div className="border-t border-neutral pt-6">
+        <div className="border-t border-neutral-200 pt-6">
           <h2 className="heading-sub font-semibold text-neutral-900 mb-4">Décision de modération</h2>
           
           {/* Commentaire admin */}
@@ -663,7 +663,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
             <textarea
               value={commentaire}
               onChange={(e) => setCommentaire(e.target.value)}
-              className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               rows={3}
               placeholder="Justification de la décision (optionnel)..."
             />
@@ -677,7 +677,7 @@ export default function PropositionDetail({ proposition, onUpdate, onBack }: Pro
                     key={index}
                     type="button"
                     onClick={() => setCommentaire(template)}
-                    className="body-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded hover:bg-neutral"
+                    className="body-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded hover:bg-neutral-200"
                   >
                     {template}
                   </button>

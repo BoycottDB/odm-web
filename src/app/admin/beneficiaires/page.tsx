@@ -53,10 +53,10 @@ export default function BeneficiaireListPage() {
       <AdminNavigation />
       <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="heading-main font-bold text-neutral-900">Bénéficiaires controversés</h2>
+        <h2 className="heading-main text-neutral-900">Bénéficiaires controversés</h2>
         <button
           onClick={() => router.push('/admin/beneficiaires/create')}
-          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+          className="bouton-primaire px-4 py-2"
         >
           + Nouveau bénéficiaire
         </button>
@@ -69,24 +69,24 @@ export default function BeneficiaireListPage() {
           placeholder="Rechercher un bénéficiaire ou une marque..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
       
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-primary-50 p-4 rounded-lg border border-primary">
-          <div className="heading-main font-bold text-primary">{beneficiaires.length}</div>
+          <div className="heading-main text-primary">{beneficiaires.length}</div>
           <div className="body-small text-primary">Bénéficiaires controversés</div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-neutral">
-          <div className="heading-main font-bold text-neutral-900">
+        <div className="bg-white p-4 rounded-lg border border-neutral-200">
+          <div className="heading-main text-neutral-900">
             {beneficiaires.filter(b => b.type_beneficiaire === 'individu').length}
           </div>
           <div className="body-small text-neutral-600">👤 Individus</div>
         </div>
-        <div className="bg-white p-4 rounded-lg border border-neutral">
-          <div className="heading-main font-bold text-neutral-900">
+        <div className="bg-white p-4 rounded-lg border border-neutral-200">
+          <div className="heading-main text-neutral-900">
             {beneficiaires.filter(b => b.type_beneficiaire === 'groupe').length}
           </div>
           <div className="body-small text-neutral-600">🏢 Groupes</div>
@@ -94,7 +94,7 @@ export default function BeneficiaireListPage() {
       </div>
       
       {beneficiaires.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm border border-neutral p-12 text-center">
+        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-12 text-center">
           <div className="text-neutral-500 mb-4">
             <svg className="w-16 h-16 mx-auto mb-4 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
@@ -104,7 +104,7 @@ export default function BeneficiaireListPage() {
           <p className="text-neutral-600 mb-6">Commencez par ajouter un bénéficiaire controversé pour traquer les marques liées.</p>
           <button
             onClick={() => router.push('/admin/beneficiaires/create')}
-            className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-hover"
+            className="bouton-primaire px-6 py-3"
           >
             Ajouter le premier bénéficiaire
           </button>

@@ -65,20 +65,20 @@ export default function CreateMarquePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h2 className="heading-main font-bold text-neutral-900">Nouvelle marque</h2>
+          <h2 className="heading-main text-neutral-900">Nouvelle marque</h2>
         </div>
 
         {message && (
           <div className={`mb-6 p-4 rounded-lg ${
             message.type === 'success' 
-              ? 'bg-success-light border border-success text-success' 
-              : 'bg-error-light border border-error text-error'
+              ? 'bg-success-light border border-success-medium text-success' 
+              : 'bg-error-light border border-error-medium text-error'
           }`}>
             {message.text}
           </div>
         )}
 
-        <div className="bg-white rounded-lg border border-neutral p-6">
+        <div className="bg-white rounded-lg border border-neutral-200 p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block body-small font-medium text-neutral-700 mb-2">
@@ -89,7 +89,7 @@ export default function CreateMarquePage() {
                 placeholder="Ex: Tesla, Apple, Nestlé..."
                 value={nom}
                 onChange={(e) => setNom(e.target.value)}
-                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 maxLength={255}
                 disabled={loading}
                 required
@@ -100,14 +100,14 @@ export default function CreateMarquePage() {
               <button
                 type="submit"
                 disabled={loading || !nom.trim()}
-                className="flex-1 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bouton-primaire flex-1 px-4 py-2"
               >
                 {loading ? 'Création...' : 'Créer la marque'}
               </button>
               <button
                 type="button"
                 onClick={() => router.push('/admin/marques')}
-                className="flex-1 bg-neutral-300 text-neutral-700 px-4 py-2 rounded-lg hover:bg-neutral-400"
+                className="bouton-secondaire flex-1 px-4 py-2"
               >
                 Annuler
               </button>

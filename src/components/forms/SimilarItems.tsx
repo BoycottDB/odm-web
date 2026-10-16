@@ -14,9 +14,9 @@ interface SimilarItemsProps {
 
 export default function SimilarItems({ results }: SimilarItemsProps) {
   const getSimilarityLabel = (score: number) => {
-    if (score >= 0.8) return { label: 'Très similaire', color: 'text-error bg-error-light border-error' };
+    if (score >= 0.8) return { label: 'Très similaire', color: 'text-error bg-error-light border-error-medium' };
     if (score >= 0.6) return { label: 'Similaire', color: 'text-primary bg-primary-50 border-primary' };
-    return { label: 'Possiblement similaire', color: 'text-warning bg-warning-light border-warning' };
+    return { label: 'Possiblement similaire', color: 'text-warning bg-warning-light border-warning-medium' };
   };
 
   // Filtrer les résultats avec un score > 60%
@@ -34,7 +34,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
     <div className="space-y-4">
       {/* Section 1: Controverses déjà validées */}
       {hasValidatedControversies && (
-        <div className="bg-info-light border border-info rounded-lg p-6">
+        <div className="bg-info-light border border-info-medium rounded-lg p-6">
           <div className="flex items-start mb-4">
             <svg className="w-6 h-6 text-info mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -53,7 +53,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
                     <div className="flex-1">
                       <div className="font-medium text-neutral-900 items-center inline-flex">
                         {evenement.marque?.nom || 'Marque inconnue'}
-                        <span className={`ml-2 px-2 py-0.5 rounded-full body-xs font-medium bg-accent-category text-neutral-800 border border-info`}>
+                        <span className={`ml-2 px-2 py-0.5 rounded-full body-xs font-medium bg-accent-category text-neutral-800 border border-info-medium`}>
                           {evenement.categorie?.nom}
                         </span>
                       </div>
@@ -87,7 +87,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
             })}
           </div>
 
-          <div className="mt-4 pt-4 border-t border-info">
+          <div className="mt-4 pt-4 border-t border-info-medium">
             <div className="body-small text-info">
               <span className="font-medium">
                 Des controverses similaires existent déjà.
@@ -163,7 +163,7 @@ export default function SimilarItems({ results }: SimilarItemsProps) {
       )}
 
       {/* Message global */}
-      <div className="bg-warning-light border border-warning rounded-lg p-4">
+      <div className="bg-warning-light border border-warning-medium rounded-lg p-4">
         <div className="body-small text-warning">
           <span className="font-medium">
             🔍 Merci de vérifier qu&apos;il ne s&apos;agit pas d&apos;un doublon.

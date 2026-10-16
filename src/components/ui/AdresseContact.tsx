@@ -17,6 +17,6 @@ export default function AdresseContact() {
   }
 
   return (
-    <a href={`mailto:${adresse}`} className="text-secondary-dark hover:text-secondary-dark-hover underline">{adresse}</a>
+    <a href={`mailto:${adresse}`} className="text-secondary-dark hover:text-secondary-900 underline">{adresse}</a>
   );
 }

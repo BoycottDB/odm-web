@@ -49,7 +49,7 @@ export default function Home() {
           <div className="flex justify-center md:justify-start">
             <Link
               href="/marques"
-              className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+              className="bouton-primaire px-4 py-2 md:px-6 md:py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
             >
               <Search className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Rechercher une marque
@@ -59,7 +59,7 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-2 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-2 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center">
         <video
           src="/videos/recherche.mp4"
           autoPlay
@@ -85,7 +85,7 @@ export default function Home() {
         <div className="flex justify-center md:justify-start">
           <Link
             href="/marques"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+            className="bouton-primaire px-4 py-2 md:px-6 md:py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
           >
             <Search className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Rechercher une marque
@@ -118,7 +118,7 @@ export default function Home() {
           <div className="flex justify-center md:justify-start">
             <Link
               href="/marques/nike"
-              className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+              className="bouton-primaire px-4 py-2 md:px-6 md:py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
             >
               <TextSearch className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Voir des exemples de conseils
@@ -128,7 +128,7 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-1 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-1 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center">
         <video
           src="/videos/boycott.mp4"
           autoPlay
@@ -154,7 +154,7 @@ export default function Home() {
         <div className="flex justify-center md:justify-start">
           <Link
             href="/marques/nike"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+            className="bouton-primaire px-4 py-2 md:px-6 md:py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
           >
             <TextSearch className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Voir des exemples de conseils
@@ -187,11 +187,7 @@ export default function Home() {
           <div className="flex justify-center md:justify-start">
             <Link
               href=""
-              className={`inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg transition-all duration-300 text-sm md:text-base ${isMobile
-                ? 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
-                : 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
-                //bg-primary text-white hover:bg-primary-dark shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark
-                }`}
+              className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg text-sm md:text-base bg-neutral-300 text-neutral-600 cursor-not-allowed shadow-sm"
               {...(isMobile ? { onClick: (e) => e.preventDefault() } : {})}
             >
               <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
@@ -208,7 +204,7 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-2 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-2 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center">
         <video
           src="/videos/extension.mp4"
           autoPlay
@@ -234,11 +230,7 @@ export default function Home() {
         <div className="flex justify-center md:justify-start">
           <Link
             href=""
-            className={`inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg transition-all duration-300 text-sm md:text-base ${isMobile
-              ? 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
-              : 'bg-gray-300 text-gray-600 cursor-not-allowed shadow-sm'
-              //bg-primary text-white hover:bg-primary-dark shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark
-              }`}
+            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 font-semibold rounded-lg text-sm md:text-base bg-neutral-300 text-neutral-600 cursor-not-allowed shadow-sm"
             {...(isMobile ? { onClick: (e) => e.preventDefault() } : {})}
           >
             <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
@@ -279,7 +271,7 @@ export default function Home() {
           <div className="flex justify-center md:justify-start">
             <Link
               href="/signaler"
-              className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+              className="bouton-primaire px-4 py-2 md:px-6 md:py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
             >
               <FileInput className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Signaler une controverse
@@ -289,7 +281,7 @@ export default function Home() {
       </div>
 
       {/* Vidéo - order-2 sur mobile et desktop */}
-      <div className="order-2 lg:order-1 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center border border-secondary-100">
+      <div className="order-2 lg:order-1 relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center">
         <video
           src="/videos/signalement.mp4"
           autoPlay
@@ -316,7 +308,7 @@ export default function Home() {
         <div className="flex justify-center md:justify-start">
           <Link
             href="/signaler"
-            className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
+            className="bouton-primaire px-4 py-2 md:px-6 md:py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
           >
             <FileInput className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Signaler une controverse
@@ -335,10 +327,10 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative z-10 section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="heading-hero font-light text-neutral-900 mb-6 leading-tight">
+          <h1 className="heading-hero text-neutral-900 mb-6">
             Qui j&apos;enrichis ?
           </h1>
-          <p className="heading-sub font-light text-neutral-700 mx-auto leading-snug">
+          <p className="heading-sub font-light text-neutral-700 mx-auto">
             {/* Découvrez qui bénéficie vraiment de vos achats, retrouvez des conseils pratiques pour adapter votre consommation et rejoignez une communauté engagée pour une consommation éthique et responsable. */}
             Des milliers de marques commercialisées en France. À chacun de vos achats, quelqu&apos;un s&apos;enrichit. <br className="hidden lg:block" />
             Découvrez à qui va votre argent et retrouvez des conseils pratiques <br className="hidden lg:block" />
@@ -436,262 +428,13 @@ export default function Home() {
           {/* Lien vers FAQ complète */}
           <Link
             href="/faq"
-            className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary text-white font-semibold rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary"
+            className="bouton-primaire px-6 py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary"
           >
             Consulter la FAQ complète
             <ChevronRight className="w-4 h-4 ml-2" />
           </Link>
         </div>
       </section>
-
-      {/* Palette de couleurs */}
-      {/* <section className="section-padding bg-white border-t border-neutral-200">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="heading-main text-neutral-900 mb-8">
-            Palette de couleurs ODM
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-neutral-900 mb-4">
-                Primary - Rouge bordeaux
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#fdf5f7' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-50</div>
-                    <div className="text-xs text-neutral-500">#fdf5f7</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#fae8ed' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-100</div>
-                    <div className="text-xs text-neutral-500">#fae8ed</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#f2c8d4' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-200</div>
-                    <div className="text-xs text-neutral-500">#f2c8d4</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#e8a3b7' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-300</div>
-                    <div className="text-xs text-neutral-500">#e8a3b7</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#c85a85' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-400</div>
-                    <div className="text-xs text-neutral-500">#c85a85</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#98105b' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-500</div>
-                    <div className="text-xs text-neutral-500">#98105b</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#800d4d' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-600</div>
-                    <div className="text-xs text-neutral-500">#800d4d</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#6f0c43' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-700</div>
-                    <div className="text-xs text-neutral-500">#6f0c43</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#5c0a37' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-800</div>
-                    <div className="text-xs text-neutral-500">#5c0a37</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#4a082e' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">primary-900</div>
-                    <div className="text-xs text-neutral-500">#4a082e</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-neutral-900 mb-4">
-                Secondary - Lavande
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#f7f7fd' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-50</div>
-                    <div className="text-xs text-neutral-500">#f7f7fd</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#eeeefa' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-100</div>
-                    <div className="text-xs text-neutral-500">#eeeefa</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#ddddf4' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-200</div>
-                    <div className="text-xs text-neutral-500">#ddddf4</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#c7c7ed' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-300</div>
-                    <div className="text-xs text-neutral-500">#c7c7ed</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#b0b0e0' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-400</div>
-                    <div className="text-xs text-neutral-500">#b0b0e0</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#9999d3' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-500</div>
-                    <div className="text-xs text-neutral-500">#9999d3</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#8080c6' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-600</div>
-                    <div className="text-xs text-neutral-500">#8080c6</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#7070b3' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-700</div>
-                    <div className="text-xs text-neutral-500">#7070b3</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#5d5d96' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-800</div>
-                    <div className="text-xs text-neutral-500">#5d5d96</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#4d4d7a' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">secondary-900</div>
-                    <div className="text-xs text-neutral-500">#4d4d7a</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-neutral-900 mb-4">
-                Accent - Bleu gris
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#f6f9fc' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-50</div>
-                    <div className="text-xs text-neutral-500">#f6f9fc</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#eef5fb' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-100</div>
-                    <div className="text-xs text-neutral-500">#eef5fb</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#dae9f6' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-200</div>
-                    <div className="text-xs text-neutral-500">#dae9f6</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#b8d4ed' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-300</div>
-                    <div className="text-xs text-neutral-500">#b8d4ed</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#95b8dc' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-400</div>
-                    <div className="text-xs text-neutral-500">#95b8dc</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#729dd0' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-500</div>
-                    <div className="text-xs text-neutral-500">#729dd0</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#5a84ba' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-600</div>
-                    <div className="text-xs text-neutral-500">#5a84ba</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#4d6ea4' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-700</div>
-                    <div className="text-xs text-neutral-500">#4d6ea4</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#3f5a87' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-800</div>
-                    <div className="text-xs text-neutral-500">#3f5a87</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#344b6d' }}></div>
-                  <div className="text-left">
-                    <div className="text-sm font-mono text-neutral-600">accent-900</div>
-                    <div className="text-xs text-neutral-500">#344b6d</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
     </div>
   );
 }

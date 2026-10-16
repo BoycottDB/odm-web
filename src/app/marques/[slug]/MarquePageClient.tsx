@@ -40,11 +40,11 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
       {/* Réponse : qui j'enrichis en achetant cette marque */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-4xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
             {marque.nom}
           </h1>
           {acteurs.length > 0 && (
-            <p className="heading-sub text-neutral-700 font-light leading-snug">
+            <p className="heading-sub text-neutral-700 font-light">
               En consommant {marque.nom}, j&apos;enrichis <strong className="font-semibold text-neutral-900">{listeActeurs}</strong>
             </p>
           )}
@@ -86,7 +86,7 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
             </p>
             <Link
               href="/signaler"
-              className="inline-flex items-center gap-2 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary-dark hover:text-white transition-colors"
               aria-label="Signaler une nouvelle controverse"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

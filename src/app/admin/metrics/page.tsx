@@ -65,10 +65,10 @@ export default function MetricsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'healthy': return 'text-success bg-success-light border-success';
-      case 'degraded': return 'text-warning bg-warning-light border-warning';
-      case 'down': return 'text-error bg-error-light border-error';
-      default: return 'text-neutral-600 bg-neutral-50 border-neutral';
+      case 'healthy': return 'text-success bg-success-light border-success-medium';
+      case 'degraded': return 'text-warning bg-warning-light border-warning-medium';
+      case 'down': return 'text-error bg-error-light border-error-medium';
+      default: return 'text-neutral-600 bg-neutral-50 border-neutral-200';
     }
   };
 
@@ -102,12 +102,12 @@ export default function MetricsPage() {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="bg-error-light border border-error text-error px-4 py-3 rounded mb-4">
+          <div className="bg-error-light border border-error-medium text-error px-4 py-3 rounded mb-4">
             {error}
           </div>
           <button
             onClick={fetchMetrics}
-            className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover"
+            className="bouton-primaire px-4 py-2"
           >
             Réessayer
           </button>
@@ -134,7 +134,7 @@ export default function MetricsPage() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
-            <h2 className="heading-main font-bold text-neutral-900">
+            <h2 className="heading-main text-neutral-900">
               Monitoring système
             </h2>
           </div>
@@ -150,7 +150,7 @@ export default function MetricsPage() {
             </label>
             <button
               onClick={fetchMetrics}
-              className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover body-small"
+              className="bouton-primaire px-4 py-2 body-small"
             >
               🔄 Actualiser
             </button>

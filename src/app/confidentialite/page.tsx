@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Les données que traite le site, pourquoi, où et combien de temps, et comment exercer vos droits.',
 };
 
-const lienClass = 'text-secondary-dark hover:text-secondary-dark-hover underline';
+const lienClass = 'text-secondary-dark hover:text-secondary-900 underline';
 
 export default function Confidentialite() {
   return (
@@ -15,10 +15,10 @@ export default function Confidentialite() {
       {/* Section Hero */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
             Confidentialité
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
             Pas de compte, pas de cookie de suivi, aucune donnée vendue. Voici ce que le site traite, et pourquoi.
           </p>
         </div>
@@ -31,7 +31,7 @@ export default function Confidentialite() {
             <div className="prose prose-lg max-w-none space-y-8">
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Qui est responsable</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Qui est responsable</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   L&apos;éditeur du site, un particulier (voir les{' '}
                   <Link href="/mentions-legales" className={lienClass}>mentions légales</Link>). Pour toute question sur vos données : <AdresseContact />.
@@ -39,7 +39,7 @@ export default function Confidentialite() {
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Quand vous consultez le site</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Quand vous consultez le site</h2>
                 <ul className="list-disc pl-6 space-y-2 body-base text-neutral-700 leading-snug">
                   <li>
                     <strong>Hébergement (Netlify, États-Unis).</strong> Comme tout hébergeur, Netlify enregistre des journaux techniques (adresse IP, navigateur, pages demandées) pour faire fonctionner et protéger le site.
@@ -57,28 +57,28 @@ export default function Confidentialite() {
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Ce qui est enregistré dans votre navigateur</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Ce qui est enregistré dans votre navigateur</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   Aucun cookie n&apos;est déposé pour les visiteurs. Le site garde seulement, dans votre navigateur, quelques réglages d&apos;affichage : par exemple, si vous avez fermé la proposition d&apos;ajouter le site à votre écran d&apos;accueil. Ces informations ne quittent pas votre appareil, et vous pouvez les effacer depuis les réglages de votre navigateur.
                 </p>
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Quand vous signalez une controverse</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Quand vous signalez une controverse</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   Le formulaire de signalement est anonyme : il ne demande ni nom ni adresse email, et votre adresse IP n&apos;est pas enregistrée. Seuls la marque, la description, la date et la source sont conservés, dans une base de données hébergée dans l&apos;Union européenne (Supabase). La décision de modération est publique. N&apos;écrivez pas de données personnelles dans la description.
                 </p>
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Quand vous nous écrivez</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Quand vous nous écrivez</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   Vos courriels (questions, demandes de correction, droit de réponse) sont reçus par une messagerie hébergée en Suisse (Proton), pays reconnu par l&apos;Union européenne comme assurant une protection adéquate. Ils servent uniquement à traiter votre demande et sont conservés trois ans après le dernier échange, pour pouvoir prouver qu&apos;elle a été traitée.
                 </p>
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Les personnes citées dans les fiches</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Les personnes citées dans les fiches</h2>
                 <p className="body-base text-neutral-700 leading-snug mb-4">
                   Certaines fiches nomment des dirigeants ou des actionnaires. Le site ne parle d&apos;eux qu&apos;à travers des faits liés à leur rôle public (entreprises détenues, déclarations publiques, procédures en cours ou jugées), toujours à partir de sources publiques citées sur la fiche. Leur vie privée n&apos;est évoquée que lorsqu&apos;elle rejoint ce rôle ou un débat d&apos;intérêt général.
                 </p>
@@ -89,7 +89,7 @@ export default function Confidentialite() {
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Vos droits</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Vos droits</h2>
                 <p className="body-base text-neutral-700 leading-snug mb-4">
                   Vous pouvez demander l&apos;accès à vos données, leur rectification ou leur effacement, ou vous opposer à leur traitement, en écrivant à <AdresseContact />. Nous répondons dans un délai d&apos;un mois. Le site ne vous identifie pas : pour les statistiques et les journaux techniques, nous ne pouvons généralement pas retrouver des données qui vous concernent.
                 </p>

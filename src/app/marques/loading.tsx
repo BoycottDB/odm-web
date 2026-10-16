@@ -6,10 +6,10 @@ export default function Loading() {
       {/* Section Hero - visible pendant chargement */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-4xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
             Rechercher une marque
           </h1>
-          <p className="heading-sub text-neutral-700 font-light leading-snug">
+          <p className="heading-sub text-neutral-700 font-light">
             Découvrez l&apos;ensemble des marques documentées dans notre base de données collaborative.
           </p>
         </div>

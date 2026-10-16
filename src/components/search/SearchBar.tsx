@@ -206,7 +206,7 @@ export function SearchBar({
         <div 
           id="search-suggestions"
           role="listbox"
-          className="absolute z-20 w-full mt-1 liquid-glass-dropdown border-2 border-accent-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto"
+          className="absolute z-20 w-full mt-1 liquid-glass-dropdown max-h-60 overflow-y-auto"
         >
           {suggestions.items.map((suggestion, index) => {
             const Icone = iconeSuggestion(suggestion);

@@ -49,10 +49,10 @@ export default function MarquesListPage() {
       <AdminNavigation />
       <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="heading-main font-bold text-neutral-900">Gestion des marques</h2>
+        <h2 className="heading-main text-neutral-900">Gestion des marques</h2>
         <button
           onClick={() => router.push('/admin/marques/create')}
-          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+          className="bouton-primaire px-4 py-2"
         >
           + Nouvelle marque
         </button>
@@ -65,18 +65,18 @@ export default function MarquesListPage() {
           placeholder="Rechercher une marque..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
       
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg border border-neutral">
-          <div className="heading-main font-bold text-neutral-900">{marques.length}</div>
+        <div className="bg-white p-4 rounded-lg border border-neutral-200">
+          <div className="heading-main text-neutral-900">{marques.length}</div>
           <div className="body-small text-neutral-600">Marques total</div>
         </div>
         <div className="bg-primary-50 p-4 rounded-lg border border-primary">
-          <div className="heading-main font-bold text-primary">
+          <div className="heading-main text-primary">
             {marques.filter(m => 
               (m.beneficiaires_marque && m.beneficiaires_marque.length > 0)
             ).length}
@@ -86,8 +86,8 @@ export default function MarquesListPage() {
       </div>
       
       {/* Liste des marques */}
-      <div className="bg-white rounded-lg shadow-sm border border-neutral overflow-hidden">
-        <div className="px-6 py-4 border-b border-neutral">
+      <div className="bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-neutral-200">
           <h2 className="body-large font-medium text-neutral-900">
             {filteredMarques.length} marque(s)
           </h2>

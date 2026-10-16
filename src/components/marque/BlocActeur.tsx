@@ -36,7 +36,7 @@ export function EnteteActeur({ icone, nom, sousTitre, etiquettes = [], ouvert, o
       onClick={onToggle}
       aria-expanded={ouvert}
       aria-controls={contenuId}
-      className={`w-full border-2 ${ouvert ? styleOuvert(enLigne) : 'bg-white border-primary-medium rounded-2xl'} p-2 md:p-4 text-left min-h-[5rem] ${className}`}
+      className={`group w-full border-2 transition-colors duration-200 ${ouvert ? styleOuvert(enLigne) : 'bg-white border-primary-medium rounded-2xl hover:border-primary'} p-2 md:p-4 text-left min-h-[5rem] ${className}`}
     >
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 flex items-center justify-center flex-shrink-0 text-primary" aria-hidden="true">
@@ -49,9 +49,9 @@ export function EnteteActeur({ icone, nom, sousTitre, etiquettes = [], ouvert, o
         </div>
         <div className="flex-shrink-0 ml-2">
           {ouvert ? (
-            <ChevronDown className="w-5 h-5 text-gray-500" />
+            <ChevronDown className="w-5 h-5 text-neutral-500" />
           ) : (
-            <ChevronRight className="w-5 h-5 text-gray-500" />
+            <ChevronRight className="w-5 h-5 text-neutral-500 transition-transform duration-200 motion-safe:group-hover:rotate-90" />
           )}
         </div>
       </div>

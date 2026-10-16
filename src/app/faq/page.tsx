@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 
 interface FAQItem {
   id: string;
@@ -36,10 +37,10 @@ export default function FAQ() {
       {/* Section Hero */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
             Questions fréquentes
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
             Tout ce que vous devez savoir sur « Qui j&apos;enrichis ? » et notre vision
           </p>
         </div>
@@ -55,12 +56,13 @@ export default function FAQ() {
               <Link
                 key={item.id}
                 href={item.url}
-                className="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden transition-all hover:shadow-md h-40 flex items-center justify-center p-6 group hover:bg-neutral-50"
+                className="group relative bg-white rounded-xl border border-neutral-200 overflow-hidden hover:border-primary transition-colors duration-200 h-40 flex items-center justify-center p-6 pr-12"
                 draggable={false}
               >
-                <h3 className="heading-sub font-medium text-neutral-900 group-hover:text-primary transition-colors text-center select-text">
+                <h3 className="heading-sub font-medium text-neutral-900 text-center select-text">
                   {item.question}
                 </h3>
+                <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-primary transition-transform duration-200 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
               </Link>
             ))}
           </div>

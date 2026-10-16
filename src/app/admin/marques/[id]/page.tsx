@@ -174,7 +174,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
           <h3 className="heading-sub font-bold text-neutral-900 mb-4">Marque non trouvée</h3>
           <button
             onClick={() => router.push('/admin/marques')}
-            className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
+            className="bouton-secondaire px-4 py-2"
           >
             Retour à la liste
           </button>
@@ -194,7 +194,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h2 className="heading-main font-bold text-neutral-900">
+        <h2 className="heading-main text-neutral-900">
           Édition marque : {marque.nom}
         </h2>
       </div>
@@ -203,21 +203,21 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       {message && (
         <div className={`mb-6 p-4 rounded-lg ${
           message.type === 'success' 
-            ? 'bg-success-light border border-success text-success' 
-            : 'bg-error-light border border-error text-error'
+            ? 'bg-success-light border border-success-medium text-success' 
+            : 'bg-error-light border border-error-medium text-error'
         }`}>
           {message.text}
         </div>
       )}
       
       {/* Informations générales marque */}
-      <div className="mb-8 p-6 bg-white rounded-lg border border-neutral">
+      <div className="mb-8 p-6 bg-white rounded-lg border border-neutral-200">
         <div className="flex items-center justify-between mb-4">
           <h3 className="heading-sub font-semibold text-neutral-900">Informations générales</h3>
           <button
             onClick={saveMarqueData}
             disabled={savingMarque}
-            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover disabled:opacity-50"
+            className="bouton-primaire px-4 py-2"
           >
             {savingMarque ? 'Sauvegarde...' : 'Sauvegarder'}
           </button>
@@ -231,7 +231,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             <input
               type="text"
               value={marque.nom}
-              className="w-full px-3 py-2 border border-neutral rounded-lg bg-neutral-50"
+              className="w-full px-3 py-2 border border-neutral-200 rounded-lg bg-neutral-50"
               disabled
             />
           </div>
@@ -242,7 +242,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             <input
               type="text"
               value={marque.id}
-              className="w-full px-3 py-2 border border-neutral rounded-lg bg-neutral-50"
+              className="w-full px-3 py-2 border border-neutral-200 rounded-lg bg-neutral-50"
               disabled
             />
           </div>
@@ -259,7 +259,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
                 ...marqueFormData, 
                 secteur_marque_id: e.target.value ? parseInt(e.target.value) : null 
               })}
-              className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="">Aucun secteur</option>
               {secteurs.map(secteur => (
@@ -286,7 +286,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
               ...marqueFormData, 
               message_boycott_tips: e.target.value 
             })}
-            className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-32"
+            className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-32"
             placeholder="Message spécifique pour cette marque (optionnel). Supporte le markdown : **gras**, listes • etc."
           />
           <p className="body-xs text-neutral-500 mt-1">
@@ -297,7 +297,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       
       {/* Section Boycott Tips preview */}
       {(marqueFormData.message_boycott_tips || (marque.secteur_marque?.message_boycott_tips)) && (
-        <div className="mb-8 p-6 bg-warning-light rounded-lg border border-warning">
+        <div className="mb-8 p-6 bg-warning-light rounded-lg border border-warning-medium">
           <h3 className="heading-sub font-semibold text-neutral-900 mb-4">
             💡 Aperçu Boycott Tips
           </h3>
@@ -348,7 +348,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             const beneficiaire = marque.beneficiaires_marque[0];
             return (
               <div>
-                <div className="mb-6 p-4 bg-success-light border border-success rounded-lg">
+                <div className="mb-6 p-4 bg-success-light border border-success-medium rounded-lg">
                   <div className="flex items-center space-x-2 mb-2">
                     <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -363,7 +363,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
                     <p><strong>Type :</strong> {beneficiaire.beneficiaire.type_beneficiaire || 'individu'}</p>
                   </div>
                   {marque.beneficiaires_marque && marque.beneficiaires_marque.length > 1 && (
-                    <div className="mt-2 p-2 bg-white border border-success rounded">
+                    <div className="mt-2 p-2 bg-white border border-success-medium rounded">
                       <p className="body-xs text-success">
                         <strong>+{marque.beneficiaires_marque.length - 1} autre{marque.beneficiaires_marque.length > 2 ? 's' : ''} bénéficiaire{marque.beneficiaires_marque.length > 2 ? 's' : ''}</strong>
                       </p>
@@ -374,13 +374,13 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
                 <div className="flex space-x-3">
                   <button
                     onClick={() => router.push(`/admin/beneficiaires/${beneficiaire.beneficiaire.id}`)}
-                    className="bg-neutral-600 text-white px-4 py-2 rounded-lg hover:bg-neutral-700"
+                    className="bouton-secondaire px-4 py-2"
                   >
                     Éditer bénéficiaire
                   </button>
                   <button
                     onClick={() => alert('Fonctionnalité d\'édition de liaison à implémenter')}
-                    className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+                    className="bouton-primaire px-4 py-2"
                   >
                     Modifier liaison
                   </button>
@@ -403,7 +403,7 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             </p>
             <button
               onClick={() => router.push(`/admin/marques/${marque.id}/lier-beneficiaire`)}
-              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover"
+              className="bouton-primaire px-4 py-2"
             >
               Lier un bénéficiaire
             </button>

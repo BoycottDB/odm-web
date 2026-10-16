@@ -21,8 +21,8 @@ export const EVENT_CATEGORIES = [
 
 // Couleurs pour les badges (utilise la nouvelle palette berry)
 export const BADGE_COLORS = {
-  category: 'bg-accent-category text-neutral-800 border border-info',
-  date: 'bg-warning-light text-neutral-800 border border-warning',
+  category: 'bg-accent-category text-neutral-800 border border-info-medium',
+  date: 'bg-warning-light text-neutral-800 border border-warning-medium',
   brand: 'bg-primary-50 text-neutral-800 border border-primary'
 } as const;
 

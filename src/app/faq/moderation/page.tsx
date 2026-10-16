@@ -8,7 +8,7 @@ import { slugify } from '@/lib/slug';
 
 // Validée : le titre tel qu'il est publié sur la fiche, avec le lien vers la fiche et la réponse éventuelle.
 // Refusée : la justification seule (elle donne le motif, sans reprendre l'accusation).
-const lienClass = 'text-secondary-dark hover:text-secondary-dark-hover font-medium';
+const lienClass = 'text-secondary-dark hover:text-secondary-900 font-medium';
 
 function DecisionCard({ decision }: { decision: Decision }) {
   const date = new Date(decision.date).toLocaleDateString('fr-FR', {
@@ -72,10 +72,10 @@ export default function Moderation() {
       {/* Section Hero */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
             Modération et validation
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
             Comment les signalements sont relus, et les règles que nous appliquons
           </p>
         </div>
@@ -85,7 +85,7 @@ export default function Moderation() {
       <section className="py-8 md:py-16 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Principe de modération */}
-          <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 mb-8">
+          <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8 mb-8">
             {/* Header avec SVG et titre */}
             <div className="flex items-center mb-6">
               <div className="bg-info-light rounded-lg p-3 mr-4">
@@ -93,7 +93,7 @@ export default function Moderation() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                 </svg>
               </div>
-              <h2 className="heading-main font-bold text-neutral-900">Principe de modération</h2>
+              <h2 className="heading-main text-neutral-900">Principe de modération</h2>
             </div>
 
             {/* Contenu texte */}
@@ -108,8 +108,8 @@ export default function Moderation() {
           </div>
 
           {/* Règles éditoriales */}
-          <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 mb-8">
-            <h2 className="heading-main font-bold text-neutral-900 mb-6">Nos règles</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8 mb-8">
+            <h2 className="heading-main text-neutral-900 mb-6">Nos règles</h2>
 
             <div className="space-y-6">
               <div className="border-l-4 border-secondary pl-4">
@@ -158,14 +158,14 @@ export default function Moderation() {
                 <h3 className="font-semibold body-base text-neutral-900 mb-2">🛠️ Les corrections</h3>
                 <p className="text-neutral-700 body-base leading-snug">
                   Une information fausse ou dépassée est corrigée dès que nous en avons connaissance. Pour la signaler ou exercer un droit de réponse :{' '}
-                  <Link href="/droit-de-reponse" className="text-secondary-dark hover:text-secondary-dark-hover underline">Droit de réponse et corrections</Link>.
+                  <Link href="/droit-de-reponse" className="text-secondary-dark hover:text-secondary-900 underline">Droit de réponse et corrections</Link>.
                 </p>
               </div>
             </div>
           </div>
 
           {/* Historique des décisions */}
-          <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 mb-8">
+          <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8 mb-8">
             {/* Header avec SVG et titre */}
             <div className="flex items-center mb-6">
               <div className="bg-primary-50 rounded-lg p-3 mr-4">
@@ -173,7 +173,7 @@ export default function Moderation() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 className="heading-main font-bold text-neutral-900">Historique des décisions</h2>
+              <h2 className="heading-main text-neutral-900">Historique des décisions</h2>
             </div>
 
             {/* Contenu historique */}
@@ -186,7 +186,7 @@ export default function Moderation() {
               )}
 
               {error && (
-                <div className="bg-error-light border border-error rounded-lg p-4 mb-6">
+                <div className="bg-error-light border border-error-medium rounded-lg p-4 mb-6">
                   <div className="flex items-start">
                     <svg className="w-5 h-5 text-error mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 0v4m0-4h4m-4 0H4" />
@@ -254,7 +254,7 @@ export default function Moderation() {
           <div className="mt-8 text-center">
             <Link
               href="/faq"
-              className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

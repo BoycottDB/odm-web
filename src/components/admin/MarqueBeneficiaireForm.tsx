@@ -10,7 +10,7 @@ interface MarqueBeneficiaireFormProps {
   isLoading?: boolean;
 }
 
-const champClassName = 'bg-white w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary';
+const champClassName = 'bg-white w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary';
 
 export default function MarqueBeneficiaireForm({ marqueId, marqueNom, onSave, isLoading = false }: MarqueBeneficiaireFormProps) {
   const [beneficiaireId, setBeneficiaireId] = useState<number | null>(null);
@@ -77,7 +77,7 @@ export default function MarqueBeneficiaireForm({ marqueId, marqueNom, onSave, is
   return (
     <div className="space-y-4">
       {errors.length > 0 && (
-        <div className="p-3 bg-error-light border border-error rounded-lg">
+        <div className="p-3 bg-error-light border border-error-medium rounded-lg">
           <div className="body-small font-medium text-error mb-1">Erreurs :</div>
           <ul className="body-small text-error list-disc list-inside">
             {errors.map((error, index) => (
@@ -117,7 +117,7 @@ export default function MarqueBeneficiaireForm({ marqueId, marqueNom, onSave, is
       </div>
 
       {selectedBeneficiaire && (
-        <div className="p-3 bg-white border border-neutral rounded-lg body-small">
+        <div className="p-3 bg-white border border-neutral-200 rounded-lg body-small">
           <div className="font-medium text-neutral-900 mb-1">{selectedBeneficiaire.nom}</div>
           <div className="text-neutral-600 body-xs">
             {selectedBeneficiaire.controverses.length > 0
@@ -178,7 +178,7 @@ export default function MarqueBeneficiaireForm({ marqueId, marqueNom, onSave, is
       <button
         onClick={handleSave}
         disabled={isLoading || !beneficiaireId}
-        className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed"
+        className="bouton-primaire px-4 py-2"
       >
         {isLoading ? 'Sauvegarde...' : 'Créer liaison'}
       </button>
