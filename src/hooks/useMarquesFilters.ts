@@ -2,6 +2,7 @@ import { useReducer, useCallback, useMemo, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MarqueStats } from '@/types';
 import { lettreDe } from '@/lib/lettre';
+import { normaliser } from '@/lib/rechercheMarques';
 
 export interface MarquesFiltersState {
   searchQuery: string;
@@ -71,7 +72,7 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
   const searchIndex = useMemo(() => {
     const index = new Map<number, string>();
     initialMarques.forEach(m => {
-      index.set(m.id, m.nom.toLowerCase());
+      index.set(m.id, normaliser(m.nom));
     });
     return index;
   }, [initialMarques]);
@@ -82,7 +83,7 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
 
     // Filtre recherche
     if (filters.searchQuery.trim()) {
-      const query = filters.searchQuery.toLowerCase();
+      const query = normaliser(filters.searchQuery);
       result = result.filter(m => searchIndex.get(m.id)?.includes(query));
     }
 
@@ -179,7 +180,7 @@ export function useMarquesFilters(initialMarques: MarqueStats[]) {
 
     // Filtre recherche avec index
     if (filters.searchQuery.trim()) {
-      const query = filters.searchQuery.toLowerCase();
+      const query = normaliser(filters.searchQuery);
       result = result.filter(m => searchIndex.get(m.id)?.includes(query));
     }
 

@@ -51,3 +51,37 @@ export function suggestionExacte(suggestions: Suggestion[], saisie: string): Sug
   const exactes = suggestions.filter((suggestion) => normaliser(suggestion.nom) === normaliser(saisie));
   return exactes.find((suggestion) => suggestion.type === 'marque') ?? exactes[0];
 }
+
+// Nombre minimal de lettres à ajouter, supprimer ou remplacer pour passer d'un texte à l'autre
+function distanceEdition(a: string, b: string): number {
+  let precedente = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const courante = [i];
+    for (let j = 1; j <= b.length; j++) {
+      const remplacement = precedente[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1);
+      courante[j] = Math.min(precedente[j] + 1, courante[j - 1] + 1, remplacement);
+    }
+    precedente = courante;
+  }
+  return precedente[b.length];
+}
+
+const NOMBRE_MAX_PROCHES = 3;
+
+// Noms proches d'une saisie : ceux qui la contiennent, puis ceux mal orthographiés
+// (« christaline » propose « Cristaline », une faute tolérée pour 4 lettres, plafonnée à 3)
+export function suggestionsProches(suggestions: Suggestion[], saisie: string): Suggestion[] {
+  const recherche = normaliser(saisie);
+  if (recherche.length < LONGUEUR_MIN) return [];
+
+  const tolerance = Math.min(3, Math.max(1, Math.floor(recherche.length / 4)));
+  return suggestions
+    .map((suggestion) => {
+      const nom = normaliser(suggestion.nom);
+      return { suggestion, distance: nom.includes(recherche) ? 0 : distanceEdition(recherche, nom) };
+    })
+    .filter(({ distance }) => distance <= tolerance)
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, NOMBRE_MAX_PROCHES)
+    .map(({ suggestion }) => suggestion);
+}

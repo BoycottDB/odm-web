@@ -22,7 +22,7 @@ const chargerNoms = () => {
 };
 
 interface SearchHeroProps {
-  source?: 'marques_list' | 'marque_detail';
+  source?: 'marques_list' | 'marque_detail' | 'recherche';
 }
 
 export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
@@ -71,23 +71,28 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
 
     // Recherche dans les marques et bénéficiaires (liste déjà chargée au focus, sinon chargée ici)
     try {
-      const exactMatch = suggestionExacte(await chargerNoms(), searchQuery);
+      const tousLesNoms = await chargerNoms();
+      const exactMatch = suggestionExacte(tousLesNoms, searchQuery);
 
       if (exactMatch) {
         ouvrirSuggestion(exactMatch, searchQuery);
-      } else {
-        // Pas de correspondance exacte → redirection vers /marques?search=
-        safeTrack('search', {
-          query: searchQuery,
-          has_results: false,
-          marque_id: null,
-          source
-        });
+        return;
+      }
 
-        // Poser flag pour scroll vers liste après redirection
+      safeTrack('search', {
+        query: searchQuery,
+        has_results: false,
+        marque_id: null,
+        source
+      });
+
+      if (filtrerSuggestions(tousLesNoms, searchQuery).some((suggestion) => suggestion.type === 'marque')) {
+        // Marques dont le nom contient la saisie → liste filtrée, avec scroll vers la liste après redirection
         sessionStorage.setItem('scrollToList', 'true');
-
         router.push(`/marques?search=${encodeURIComponent(searchQuery)}`);
+      } else {
+        // Aucune correspondance → page qui reprend la saisie et invite à contribuer
+        router.push(`/recherche?q=${encodeURIComponent(searchQuery)}`);
       }
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
