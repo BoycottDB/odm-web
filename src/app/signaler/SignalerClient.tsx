@@ -11,7 +11,7 @@ export default function SignalerClient() {
       {showForm ? (
         <SignalementForm />
       ) : (
-        <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 text-center">
+        <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8 text-center">
           <div className="max-w-2xl mx-auto">
             <div className="bg-primary-50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
               <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,7 +19,7 @@ export default function SignalerClient() {
               </svg>
             </div>
 
-            <h2 className="heading-main font-bold text-neutral-900 mb-4">
+            <h2 className="heading-main text-neutral-900 mb-4">
               Prêt à contribuer ?
             </h2>
 
@@ -30,7 +30,7 @@ export default function SignalerClient() {
 
             <button
               onClick={() => setShowForm(true)}
-              className="bg-primary text-white px-8 py-4 rounded-lg font-semibold body-large hover:from-primary-hover hover:to-primary-hover transition-all duration-200 transform hover:scale-105 shadow-lg"
+              className="bouton-primaire px-8 py-4 body-large transition-all duration-200 transform hover:scale-105 shadow-lg"
             >
               Commencer mon signalement
             </button>

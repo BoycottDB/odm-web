@@ -101,7 +101,7 @@ export default function MarquesListClient({ initialMarques }: MarquesListClientP
             </p>
             <Link
               href="/signaler"
-              className="inline-flex items-center gap-2 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 border border-primary text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary-dark hover:text-white transition-colors"
               aria-label="Signaler une nouvelle controverse"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

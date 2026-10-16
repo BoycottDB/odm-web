@@ -194,19 +194,19 @@ export default function SignalementForm() {
 
   if (isSuccess) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-neutral p-8 text-center">
+      <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8 text-center">
         <div className="relative">
           {/* Animation confettis */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
             {/* Confettis animés */}
-            <div className="absolute w-2 h-2 bg-yellow-400 rounded animate-bounce" style={{top: '10%', left: '20%', animationDelay: '0s', animationDuration: '2s'}}></div>
-            <div className="absolute w-2 h-2 bg-blue-400 rounded animate-bounce" style={{top: '30%', left: '80%', animationDelay: '0.2s', animationDuration: '2.5s'}}></div>
-            <div className="absolute w-2 h-2 bg-red-400 rounded animate-bounce" style={{top: '50%', left: '10%', animationDelay: '0.4s', animationDuration: '1.8s'}}></div>
-            <div className="absolute w-2 h-2 bg-green-400 rounded animate-bounce" style={{top: '20%', left: '70%', animationDelay: '0.6s', animationDuration: '2.2s'}}></div>
-            <div className="absolute w-2 h-2 bg-purple-400 rounded animate-bounce" style={{top: '40%', left: '90%', animationDelay: '0.8s', animationDuration: '1.9s'}}></div>
-            <div className="absolute w-2 h-2 bg-pink-400 rounded animate-bounce" style={{top: '60%', left: '30%', animationDelay: '1s', animationDuration: '2.1s'}}></div>
-            <div className="absolute w-2 h-2 bg-orange-400 rounded animate-bounce" style={{top: '80%', left: '60%', animationDelay: '1.2s', animationDuration: '2.3s'}}></div>
-            <div className="absolute w-2 h-2 bg-teal-400 rounded animate-bounce" style={{top: '70%', left: '15%', animationDelay: '1.4s', animationDuration: '2s'}}></div>
+            <div className="absolute w-2 h-2 bg-primary-400 rounded animate-bounce" style={{top: '10%', left: '20%', animationDelay: '0s', animationDuration: '2s'}}></div>
+            <div className="absolute w-2 h-2 bg-accent-400 rounded animate-bounce" style={{top: '30%', left: '80%', animationDelay: '0.2s', animationDuration: '2.5s'}}></div>
+            <div className="absolute w-2 h-2 bg-secondary-500 rounded animate-bounce" style={{top: '50%', left: '10%', animationDelay: '0.4s', animationDuration: '1.8s'}}></div>
+            <div className="absolute w-2 h-2 bg-primary-300 rounded animate-bounce" style={{top: '20%', left: '70%', animationDelay: '0.6s', animationDuration: '2.2s'}}></div>
+            <div className="absolute w-2 h-2 bg-secondary-400 rounded animate-bounce" style={{top: '40%', left: '90%', animationDelay: '0.8s', animationDuration: '1.9s'}}></div>
+            <div className="absolute w-2 h-2 bg-primary-500 rounded animate-bounce" style={{top: '60%', left: '30%', animationDelay: '1s', animationDuration: '2.1s'}}></div>
+            <div className="absolute w-2 h-2 bg-accent-500 rounded animate-bounce" style={{top: '80%', left: '60%', animationDelay: '1.2s', animationDuration: '2.3s'}}></div>
+            <div className="absolute w-2 h-2 bg-accent-300 rounded animate-bounce" style={{top: '70%', left: '15%', animationDelay: '1.4s', animationDuration: '2s'}}></div>
           </div>
           
           {/* Animation de célébration */}
@@ -222,7 +222,7 @@ export default function SignalementForm() {
           </div>
         </div>
         
-        <h2 className="heading-main font-bold text-neutral-900 mb-4">
+        <h2 className="heading-main text-neutral-900 mb-4">
           {randomMessage.title}
         </h2>
         
@@ -230,7 +230,7 @@ export default function SignalementForm() {
           {randomMessage.message}
         </p>
         
-        <div className="bg-info-light border border-info rounded-lg p-4 mb-6">
+        <div className="bg-info-light border border-info-medium rounded-lg p-4 mb-6">
           <p className="text-info body-small">
             <strong>Rappel :</strong> Les décisions de modération sont consultables sur la page Modération.
           </p>
@@ -239,7 +239,7 @@ export default function SignalementForm() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => window.location.reload()}
-            className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-hover transition-colors"
+            className="bouton-primaire px-6 py-3"
           >
             Signaler une autre marque
           </button>
@@ -249,8 +249,8 @@ export default function SignalementForm() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-neutral p-8">
-      <h2 className="heading-main font-bold text-neutral-900 mb-6">Nouvelle proposition</h2>
+    <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8">
+      <h2 className="heading-main text-neutral-900 mb-6">Nouvelle proposition</h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <HoneypotField onChange={setHoneypotValue} />
@@ -266,7 +266,7 @@ export default function SignalementForm() {
                 type="text"
                 value={formData.marque_nom}
                 onChange={(e) => setFormData({ ...formData, marque_nom: e.target.value, marque_id: undefined })}
-                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Tapez le nom de la marque..."
                 autoComplete="off"
                 aria-autocomplete="list"
@@ -280,7 +280,7 @@ export default function SignalementForm() {
                 <div 
                   id="marque-suggestions"
                   role="listbox"
-                  className="absolute z-10 w-full mt-1 bg-white border border-neutral rounded-lg shadow-lg"
+                  className="absolute z-10 w-full mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg"
                 >
                   {marquesSuggestions.map((marque) => (
                     <button
@@ -292,7 +292,7 @@ export default function SignalementForm() {
                         setShowSuggestions(false);
                         setMarquesSuggestions([]);
                       }}
-                      className="w-full text-left px-3 py-2 hover:bg-neutral first:rounded-t-lg last:rounded-b-lg"
+                      className="w-full text-left px-3 py-2 hover:bg-neutral-100 first:rounded-t-lg last:rounded-b-lg"
                     >
                       {marque.nom}
                     </button>
@@ -312,7 +312,7 @@ export default function SignalementForm() {
                 value={formData.date}
                 max={new Date().toISOString().split('T')[0]} // Empêche les dates futures
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
               />
               <p className="body-small text-neutral-500 mt-1">
@@ -331,7 +331,7 @@ export default function SignalementForm() {
                 type="url"
                 value={formData.source_url}
                 onChange={(e) => setFormData({ ...formData, source_url: e.target.value })}
-                className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="https://www.mediapart.fr/article-exemple"
                 required
               />
@@ -349,7 +349,7 @@ export default function SignalementForm() {
             id="message-moderateurs"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full px-3 py-2 border border-neutral rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             rows={4}
             placeholder="Expliquez pourquoi vous signalez cette marque, les pratiques concernées, les sources d'information..."
             required
@@ -371,7 +371,7 @@ export default function SignalementForm() {
 
         {/* Erreurs */}
         {errors.length > 0 && (
-          <div className="bg-error-light border border-error rounded-lg p-4">
+          <div className="bg-error-light border border-error-medium rounded-lg p-4">
             <div className="flex items-center mb-2">
               <svg className="w-5 h-5 text-error mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -391,7 +391,7 @@ export default function SignalementForm() {
           <button
             type="submit"
             disabled={isSubmitting || !captchaVerified}
-            className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:from-primary-hover hover:to-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="bouton-primaire px-6 py-3 transition-all duration-200"
           >
             {isSubmitting ? 'Envoi en cours...' : 'Signaler'}
           </button>
@@ -399,7 +399,7 @@ export default function SignalementForm() {
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="bg-neutral-100 text-neutral-700 px-6 py-3 rounded-lg font-semibold hover:bg-neutral transition-colors"
+            className="bouton-secondaire px-6 py-3"
           >
             Annuler
           </button>

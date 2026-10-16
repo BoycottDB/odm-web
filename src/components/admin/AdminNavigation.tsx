@@ -17,7 +17,7 @@ export default function AdminNavigation() {
   ];
   
   return (
-    <nav className="bg-white border-b border-neutral mb-6">
+    <nav className="bg-white border-b border-neutral-200 mb-6">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex space-x-8">
           {navItems.map((item) => (
@@ -27,7 +27,7 @@ export default function AdminNavigation() {
               className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium body-small ${
                 isActive(item.path)
                   ? 'border-accent-500 text-accent'
-                  : 'border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral'
+                  : 'border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral-200'
               }`}
             >
               <span className="body-large">{item.icon}</span>

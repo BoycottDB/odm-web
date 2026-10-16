@@ -1,126 +1,57 @@
 'use client';
 
-import { Evenement, Marque } from '@/types';
-import { safeTrack } from '@/lib/analytics';
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
+import { Evenement } from '@/types';
+import { slugify } from '@/lib/slug';
+import { formatDateCourte } from '@/components/marque/LignesControverse';
+import { CATEGORIE_EXCLUE } from '@/components/marque/etiquettes';
+import { Badge } from '@/components/ui/Badge';
 
 interface EventCardProps {
   event: Evenement;
-  marque?: Marque | null; // Marque optionnelle quand event.marque n'est pas disponible
 }
 
-export function EventCard({ event, marque }: EventCardProps) {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+const Separateur = () => <span className="text-neutral-400" aria-hidden="true">·</span>;
 
-  const formatDateCompact = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR', {
-      year: '2-digit',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
-  const formatMarqueName = (nom: string) => {
-    const match = nom.match(/^([^(]+)(\(.+\))$/);
-    if (match) {
-      const [, mainName, parentheses] = match;
-      return {
-        mainName: mainName.trim(),
-        parentheses: parentheses.trim()
-      };
-    }
-    return { mainName: nom, parentheses: null };
-  };
+// Carte d'un signalement récent : gabarit et survol des cartes de marque (bordure qui fonce,
+// chevron qui avance). Ligne d'infos date · marque, étiquette de catégorie comme sur /marques,
+// puis le titre de la controverse.
+// Toute la carte mène à la marque : son lien est étiré sur la carte (after:inset-0)
+export function EventCard({ event }: EventCardProps) {
+  const marqueNom = event.marque?.nom;
+  const categorie = event.categorie?.nom && event.categorie.nom !== CATEGORIE_EXCLUE ? event.categorie : null;
 
   return (
-    <div className="relative z-10 bg-white rounded-3xl card-padding shadow-lg border border-primary-medium hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-      {/* En-tête principal : Marque et Date */}
-      <div className="flex items-center justify-between mb-2">
-        {/* Nom de la marque */}
-        <h3 className="heading-sub font-bold text-primary-dark">
-          {(() => {
-            const marqueNom = event.marque?.nom || marque?.nom;
-            if (marqueNom) {
-              const { mainName, parentheses } = formatMarqueName(marqueNom);
-              return (
-                <>
-                  {mainName}
-                  {parentheses && (
-                    <span className="heading-sub-brackets font-normal ml-1">{parentheses}</span>
-                  )}
-                </>
-              );
-            }
-            return null;
-          })()}
-        </h3>
-        
-        {/* Date alignée à droite */}
-        <span className="body-small sm:body-base text-primary-dark font-medium shrink-0">
-          <span className="sm:hidden">{formatDateCompact(event.date)}</span>
-          <span className="hidden sm:inline">{formatDate(event.date)}</span>
-        </span>
-      </div>
-
-      {/* Badges commentés - peut-être à retirer */}
-      {/* 
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        {event.categorie?.nom && (
-          <Badge variant="category" category={event.categorie}>
-            {event.categorie.nom}
-          </Badge>
+    <article className="group relative bg-white border border-primary-medium rounded-2xl px-4 py-3 md:px-6 md:py-4 hover:border-primary transition-colors duration-200">
+      <div className="flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm mb-1">
+            <span className="font-semibold text-secondary-dark">{formatDateCourte(event.date)}</span>
+            {marqueNom && (
+              <>
+                <Separateur />
+                <Link
+                  href={`/marques/${slugify(marqueNom)}`}
+                  className="font-bold text-primary after:absolute after:inset-0 after:rounded-2xl"
+                >
+                  {marqueNom}
+                </Link>
+              </>
+            )}
+            {categorie && (
+              <>
+                <Separateur />
+                <Badge category={categorie}>{categorie.nom}</Badge>
+              </>
+            )}
+          </div>
+          <p className="text-sm md:text-base font-medium text-neutral-900 leading-snug">{event.titre}</p>
+        </div>
+        {marqueNom && (
+          <ChevronRight className="w-6 h-6 text-primary flex-shrink-0 ml-2 transition-transform duration-200 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
         )}
       </div>
-      */}
-
-      {/* Description */}
-      <h4 className="heading-sub font-medium text-neutral-900 mb-4 leading-snug">
-        {event.titre}
-      </h4>
-
-      {/* Source */}
-      {event.source_url && (
-        <div className="pt-4 border-t border-neutral">
-          <a
-            href={event.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center body-base font-medium text-primary hover:text-primary-700 transition-colors duration-200"
-            onClick={() => safeTrack('source_click', {
-              source_type: 'evenement',
-              source_id: event.id,
-              marque_id: event.marque?.id || marque?.id
-            })}
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-            Voir la source
-          </a>
-        </div>
-      )}
-
-      {/* Réponse de la marque, seulement si elle existe */}
-      {event.reponse && (
-        <div className="pt-3">
-          <a
-            href={event.reponse}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center body-base font-medium text-primary hover:text-primary-700 transition-colors duration-200"
-          >
-            <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            Réponse officielle de la marque
-          </a>
-        </div>
-      )}
-    </div>
+    </article>
   );
 }

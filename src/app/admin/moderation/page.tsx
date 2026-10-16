@@ -78,12 +78,12 @@ export default function AdminModeration() {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="bg-error-light border border-error text-error px-4 py-3 rounded mb-4">
+          <div className="bg-error-light border border-error-medium text-error px-4 py-3 rounded mb-4">
             {error}
           </div>
           <button
             onClick={loadPropositions}
-            className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-hover"
+            className="bouton-primaire px-4 py-2"
           >
             Réessayer
           </button>
@@ -100,7 +100,7 @@ export default function AdminModeration() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
-            <h2 className="heading-main font-bold text-neutral-900">
+            <h2 className="heading-main text-neutral-900">
               Modération des signalements
             </h2>
             <div className="ml-6 flex items-center space-x-4">

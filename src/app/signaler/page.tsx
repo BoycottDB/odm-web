@@ -18,10 +18,10 @@ export default async function SignalerPage() {
       {/* Section Hero */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
             Signaler une controverse
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
             Contribuez à l&apos;enrichissement collaboratif de notre base de données
           </p>
         </div>
@@ -36,16 +36,16 @@ export default async function SignalerPage() {
 
       {/* Section Derniers signalements */}
       <section className="section-padding bg-gradient-to-b from-white to-primary-50">
-        <div className="max-w-4xl mx-4 md:mx-auto space-y-8 md:space-y-16">
-          <h2 className="heading-main font-light text-neutral-900 mb-2 text-center">
+        <div className="max-w-4xl mx-4 md:mx-auto">
+          <h2 className="heading-main text-neutral-900 mb-2 text-center">
             Derniers signalements
           </h2>
-          <p className="body-small text-neutral-600 text-center mb-12">
+          <p className="body-small text-neutral-600 text-center mb-8">
             Consultez les controverses récemment ajoutées à notre base de données collaborative.
           </p>
 
           {evenements.length > 0 ? (
-            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
+            <div className="grid gap-4 grid-cols-1">
               {evenements.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}

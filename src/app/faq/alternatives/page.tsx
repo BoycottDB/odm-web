@@ -70,10 +70,10 @@ export default function AlternativesFAQ() {
       {/* Section Hero */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
             Pourquoi ne proposons-nous pas des alternatives ?
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
             Une question légitime que nous recevons souvent
           </p>
         </div>
@@ -86,14 +86,14 @@ export default function AlternativesFAQ() {
             <div className="prose prose-lg max-w-none">
 
               <div className="mb-8">
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Notre position sur les alternatives</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Notre position sur les alternatives</h2>
                 <p className="body-base text-neutral-700 leading-snug mb-6">
                   Nous avons fait le choix délibéré de ne pas proposer d&apos;alternatives pour le moment, et voici pourquoi :
                 </p>
               </div>
 
               <div className="space-y-8">
-                <div className="border-l-4 border-error pl-6">
+                <div className="border-l-4 border-error-medium pl-6">
                   <h3 className="body-large font-semibold text-neutral-900 mb-3">Certaines marques cachent bien leur jeu</h3>
                   <p className="body-base text-neutral-700 leading-snug">
                     Il peut arriver qu&apos;une marque cache des controverses que nous n&apos;avons pas encore découvertes.
@@ -101,14 +101,14 @@ export default function AlternativesFAQ() {
                   </p>
                 </div>
 
-                <div className="border-l-4 border-warning pl-6">
+                <div className="border-l-4 border-warning-medium pl-6">
                   <h3 className="body-large font-semibold text-neutral-900 mb-3">Les situations peuvent changer</h3>
                   <p className="body-base text-neutral-700 leading-snug">
                     Une marque peut être totalement &quot;clean&quot; aujourd&apos;hui et faire quelque chose de grave demain ou se faire racheter par un bénéficiaire controversé comme <strong>Relay</strong> qui appartient maintenant à <strong>Bolloré</strong>.
                   </p>
                 </div>
 
-                <div className="border-l-4 border-success pl-6">
+                <div className="border-l-4 border-success-medium pl-6">
                   <h3 className="body-large font-semibold text-neutral-900 mb-3">Nous ne voulons pas faire de tort aux petits producteurs locaux</h3>
                   <p className="body-base text-neutral-700 leading-snug mb-4">
                     C&apos;est sûrement le point le plus important : il nous est difficile de connaître toutes les marques
@@ -156,14 +156,14 @@ export default function AlternativesFAQ() {
                   <div className="space-y-3">
                     {/* Bouton Acheteur */}
                     {acheteurStatus === 'sent' ? (
-                      <div className="w-full bg-success-light border border-success rounded-lg px-4 py-2 text-center">
+                      <div className="w-full bg-success-light border border-success-medium rounded-lg px-4 py-2 text-center">
                         <span className="text-success font-medium text-sm">Merci, votre intérêt a été noté 🙏</span>
                       </div>
                     ) : (
                       <button
                         onClick={sendAcheteurResponse}
                         disabled={acheteurStatus === 'loading'}
-                        className="w-full bg-success text-white px-2 md:px-4 py-2 rounded-md font-medium hover:bg-success-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
+                        className="w-full bg-success text-white px-2 md:px-4 py-2 rounded-md font-medium hover:bg-success-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
                       >
                         {acheteurStatus === 'loading' ? (
                           <>
@@ -180,7 +180,7 @@ export default function AlternativesFAQ() {
 
                     {/* Bouton Vendeur */}
                     {vendeurStatus === 'sent' ? (
-                      <div className="w-full bg-success-light border border-success rounded-lg px-4 py-2 text-center">
+                      <div className="w-full bg-success-light border border-success-medium rounded-lg px-4 py-2 text-center">
                         <span className="text-success font-medium text-sm">Merci, votre intérêt a été noté 🙏</span>
                       </div>
                     ) : (
@@ -214,7 +214,7 @@ export default function AlternativesFAQ() {
           <div className="mt-8 text-center">
             <Link
               href="/faq"
-              className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

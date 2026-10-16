@@ -78,7 +78,7 @@ export function AddToHomeScreenBanner() {
               <button
                 onClick={handleInstall}
                 disabled={isInstalling}
-                className="bg-primary text-white px-3 py-1.5 rounded text-xs font-medium hover:bg-primary-dark transition-colors disabled:opacity-50"
+                className="bouton-primaire px-3 py-1.5 text-xs"
               >
                 {getButtonText()}
               </button>

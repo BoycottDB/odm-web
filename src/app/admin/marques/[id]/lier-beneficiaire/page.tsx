@@ -110,10 +110,10 @@ export default function LierBeneficiairePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <h1 className="heading-hero font-bold text-neutral-900">Lier bénéficiaire controversé</h1>
+            <h1 className="heading-hero text-neutral-900">Lier bénéficiaire controversé</h1>
           </div>
 
-          <div className="bg-error-light border border-error text-error p-4 rounded-lg">
+          <div className="bg-error-light border border-error-medium text-error p-4 rounded-lg">
             {message?.text || 'Une erreur est survenue'}
           </div>
         </div>
@@ -134,7 +134,7 @@ export default function LierBeneficiairePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="heading-hero font-bold text-neutral-900">
+          <h1 className="heading-hero text-neutral-900">
             Lier bénéficiaire controversé
           </h1>
         </div>
@@ -142,14 +142,14 @@ export default function LierBeneficiairePage() {
         {message && (
           <div className={`mb-6 p-4 rounded-lg ${
             message.type === 'success' 
-              ? 'bg-success-light border border-success text-success' 
-              : 'bg-error-light border border-error text-error'
+              ? 'bg-success-light border border-success-medium text-success' 
+              : 'bg-error-light border border-error-medium text-error'
           }`}>
             {message.text}
           </div>
         )}
 
-        <div className="bg-white rounded-lg border border-neutral p-6">
+        <div className="bg-white rounded-lg border border-neutral-200 p-6">
           <h2 className="body-large font-semibold text-neutral-900 mb-4">
             Liaison bénéficiaire-marque
           </h2>

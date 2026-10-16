@@ -25,18 +25,18 @@ export default function PropositionList({ propositions, onSelectProposition }: P
 
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
-      <div className="px-6 py-4 border-b border-neutral">
+      <div className="px-6 py-4 border-b border-neutral-200">
         <h2 className="heading-sub font-medium text-neutral-900">
           Liste des propositions
         </h2>
       </div>
       
-      <div className="divide-y divide-neutral">
+      <div className="divide-y divide-neutral-200">
         {propositions.map((proposition) => {
           return (
             <div
               key={proposition.id}
-              className="px-6 py-4 hover:bg-neutral cursor-pointer transition-colors"
+              className="px-6 py-4 hover:bg-neutral-100 cursor-pointer transition-colors"
               onClick={() => onSelectProposition(proposition)}
             >
               <div className="flex items-center justify-between">

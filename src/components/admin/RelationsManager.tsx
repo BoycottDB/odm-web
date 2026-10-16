@@ -156,7 +156,7 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
         
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors"
+          className="bouton-primaire flex space-x-2 px-4 py-2"
         >
           <Plus className="w-4 h-4" />
           <span>Nouvelle relation</span>
@@ -292,14 +292,14 @@ export default function RelationsManager({ beneficiaireId, beneficiaireNom, onUp
             <div className="flex space-x-3">
               <button
                 type="submit"
-                className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors"
+                className="bouton-primaire px-4 py-2"
               >
                 Créer la relation
               </button>
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="bg-neutral-200 text-neutral-700 px-4 py-2 rounded-lg font-medium hover:bg-neutral-300 transition-colors"
+                className="bouton-secondaire px-4 py-2"
               >
                 Annuler
               </button>

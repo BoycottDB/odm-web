@@ -16,7 +16,7 @@ const libelleEtiquettes: Record<OrigineEtiquettes, string> = {
   marque_ou_beneficiaires: 'Controverses de la marque ou de ses bénéficiaires :',
 };
 
-// Carte d'une marque : habillage des anciennes cartes (ombre, survol), contenu compact
+// Carte d'une marque : au survol, la bordure fonce et le chevron avance ; contenu compact
 // comme les blocs de la page de marque : bénéficiaires controversés, puis étiquettes
 export default function MarqueCard({ marque }: MarqueCardProps) {
   const match = marque.nom.match(/^([^(]+)(\(.+\))$/);
@@ -30,7 +30,7 @@ export default function MarqueCard({ marque }: MarqueCardProps) {
   return (
     <Link
       href={`/marques/${slugify(marque.nom)}`}
-      className="block bg-white border border-primary-medium rounded-2xl px-4 py-3 md:px-6 md:py-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+      className="group block bg-white border-2 border-primary-medium rounded-2xl px-4 py-3 md:px-6 md:py-4 hover:border-primary transition-colors duration-200"
     >
       <div className="flex items-center gap-3">
         <div className="flex-1 min-w-0">
@@ -61,7 +61,7 @@ export default function MarqueCard({ marque }: MarqueCardProps) {
             />
           )}
         </div>
-        <ChevronRight className="w-6 h-6 text-primary flex-shrink-0 ml-2" aria-hidden="true" />
+        <ChevronRight className="w-6 h-6 text-primary flex-shrink-0 ml-2 transition-transform duration-200 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
       </div>
     </Link>
   );

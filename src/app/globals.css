@@ -1,7 +1,11 @@
 @import "tailwindcss";
 
 /* =============================================================================
-   VARIABLES CSS - SYSTÈME DE COULEURS ET TOKENS DE DESIGN
+   TOKENS DE DESIGN
+   Toutes les couleurs sont déclarées ici : Tailwind génère lui-même les classes
+   (bg-*, text-*, border-*, ring-*…) et leurs variantes (hover:, md:, focus:…).
+   Ne jamais réécrire ces classes à la main : hors des couches Tailwind, elles
+   écraseraient les variantes posées à côté.
    ============================================================================= */
 
 :root {
@@ -12,11 +16,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
+
   /* ---------------------------------------------------------------------------
      PALETTE PRINCIPALE - COULEURS DE MARQUE ODM
      --------------------------------------------------------------------------- */
-  
+
   /* Primary: Rouge bordeaux #98105b */
   --color-primary-50: #fdf5f7;
   --color-primary-100: #fae8ed;
@@ -28,7 +32,7 @@
   --color-primary-700: #6f0c43;
   --color-primary-800: #5c0a37;
   --color-primary-900: #4a082e;
-  
+
   /* Secondary: Lavande #9999d3 */
   --color-secondary-50: #f7f7fd;
   --color-secondary-100: #eeeefa;
@@ -52,53 +56,71 @@
   --color-accent-700: #4d6ea4;
   --color-accent-800: #3f5a87;
   --color-accent-900: #344b6d;
-  
+
+  /* Neutres chauds (légèrement rosés, accordés au fond #f8f6f7) */
+  --color-neutral-50: #fdfcfc;
+  --color-neutral-100: #f6f3f4;
+  --color-neutral-200: #e8e2e4;
+  --color-neutral-300: #d6cdd0;
+  --color-neutral-400: #765b60;
+  --color-neutral-500: #634b50;
+  --color-neutral-600: #503b40;
+  --color-neutral-700: #3d2a30;
+  --color-neutral-800: #2a1a20;
+  --color-neutral-900: #14090f;
+
   /* ---------------------------------------------------------------------------
      ALIAS SÉMANTIQUES
+     Même logique pour chaque couleur :
+     -light = fond pâle, -medium = bordure, (sans suffixe) = couleur, -dark = survol / texte appuyé
      --------------------------------------------------------------------------- */
-  
-  /* Primary aliases */
+
   --color-primary-light: var(--color-primary-50);
   --color-primary-medium: var(--color-primary-300);
   --color-primary: var(--color-primary-500);
-  --color-primary-hover: var(--color-primary-700);
   --color-primary-dark: var(--color-primary-700);
-  
-  /* Secondary aliases */
+
   --color-secondary-light: var(--color-secondary-50);
-  --color-secondary-medium: var(--color-secondary-100);
+  --color-secondary-medium: var(--color-secondary-300);
   --color-secondary: var(--color-secondary-500);
-  --color-secondary-hover: var(--color-secondary-700);
   /* Liens sur fond blanc : 800 = contraste 6:1 (700 n'atteignait que 4,5:1) */
   --color-secondary-dark: var(--color-secondary-800);
-  --color-secondary-dark-hover: var(--color-secondary-900);
-  
-  /* Accent aliases */
+
   --color-accent-light: var(--color-accent-50);
-  --color-accent-medium: var(--color-accent-100);
+  --color-accent-medium: var(--color-accent-300);
   --color-accent: var(--color-accent-500);
-  --color-accent-hover: var(--color-accent-700);
   --color-accent-dark: var(--color-accent-700);
-  
+
+  /* États */
+  --color-success-light: #ecfdf5;
+  --color-success-medium: #10b981;
+  --color-success: #059669;
+  --color-success-dark: #047857;
+
+  --color-error-light: #fef2f2;
+  --color-error-medium: #f87171;
+  --color-error: #dc2626;
+  --color-error-dark: #b91c1c;
+
+  --color-warning-light: #fffbed;
+  --color-warning-medium: #f59e0b;
+  --color-warning: #d97706;
+
+  --color-info-light: #eff6ff;
+  --color-info-medium: #60a5fa;
+  --color-info: #2563eb;
+  --color-info-dark: #1d4ed8;
+
   /* Usage contextuel */
-  --color-accent-category: var(--color-secondary-medium);
-  --color-accent-date: var(--color-accent-medium);
+  --color-accent-category: var(--color-secondary-100);
 
   /* Gradients */
   --gradient-hero: linear-gradient(to top right, var(--color-primary-100), var(--color-secondary-100), var(--color-accent-100));
 }
 
 /* =============================================================================
-   CONFIGURATION GLOBALE - BODY ET THÈMES
+   CONFIGURATION GLOBALE - BODY
    ============================================================================= */
-
-/* Désactivation du dark mode pour maintenir la cohérence du design */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #f8f6f7;
-    --foreground: #14090f;
-  }
-}
 
 body {
   background: var(--background);
@@ -109,425 +131,328 @@ body {
 
 /* =============================================================================
    CLASSES TYPOGRAPHIQUES - SYSTÈME DE TAILLES RESPONSIVE
+   Graisse et interlignage sont fixés ici : ne pas ajouter font-* ou leading-* à côté.
    ============================================================================= */
 
-/* Titres principaux */
-.heading-hero {
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  line-height: 1;
-  font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
-  font-weight: 800;
-}
+@layer components {
+  /* Titres principaux */
+  .heading-hero {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1;
+    font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
+    font-weight: 800;
+  }
 
-.heading-main {
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-  font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
-  font-weight: 600;
-}
+  .heading-main {
+    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+    font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
+    font-weight: 600;
+  }
 
-/* Sous-titres */
-.heading-sub {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.3;
-  font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
-}
+  /* Sous-titres */
+  .heading-sub {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.3;
+    font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
+  }
 
-.heading-sub-compact {
-  font-size: 0.875rem;
-  font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
-}
+  .heading-sub-compact {
+    font-size: 0.875rem;
+    font-family: var(--font-rubik), system-ui, -apple-system, sans-serif;
+  }
 
-.heading-sub-brackets {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-}
+  .heading-sub-brackets {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+  }
 
-/* Corps de texte */
-.body-large {
-  font-size: clamp(1rem, 1.5vw, 1.125rem);
-}
+  /* Corps de texte */
+  .body-large {
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+  }
 
-.body-base {
-  font-size: clamp(0.875rem, 1vw, 1rem);
-}
+  .body-base {
+    font-size: clamp(0.875rem, 1vw, 1rem);
+  }
 
-.body-small {
-  font-size: 0.875rem;
-}
+  .body-small {
+    font-size: 0.875rem;
+  }
 
-.body-xs {
-  font-size: 0.75rem;
-}
+  .body-xs {
+    font-size: 0.75rem;
+  }
 
-/* =============================================================================
-   CLASSES UTILITAIRES - COULEURS ET INTERACTIONS
-   ============================================================================= */
+  /* ---------------------------------------------------------------------------
+     BOUTONS
+     Forme commune ; la taille (px-*, py-*, body-*) reste au choix de chaque bouton.
+     --------------------------------------------------------------------------- */
 
-/* ---------------------------------------------------------------------------
-   COULEURS DE TEXTE
-   --------------------------------------------------------------------------- */
+  .bouton-primaire {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-color: var(--color-primary);
+    color: #fff;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
 
-/* Couleurs de base */
-.text-white { color: #FFF; }
-.hover\:text-white:hover { color: #FFF; }
+  .bouton-primaire:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
+  }
 
-/* Primary */
-.text-primary { color: var(--color-primary); }
-.text-primary-light { color: var(--color-primary-light); }
-.text-primary-medium { color: var(--color-primary-medium); }
-.text-primary-dark { color: var(--color-primary-dark); }
-.text-primary-hover { color: var(--color-primary-hover); }
+  .bouton-primaire:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 
-/* Secondary */
-.text-secondary { color: var(--color-secondary); }
-.text-secondary-light { color: var(--color-secondary-light); }
-.text-secondary-medium { color: var(--color-secondary-medium); }
-.text-secondary-dark { color: var(--color-secondary-dark); }
+  .bouton-secondaire {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-700);
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
 
-/* Accent */
-.text-accent { color: var(--color-accent); }
-.text-accent-light { color: var(--color-accent-light); }
-.text-accent-medium { color: var(--color-accent-medium); }
-.text-accent-dark { color: var(--color-accent-dark); }
+  .bouton-secondaire:hover:not(:disabled) {
+    background-color: var(--color-neutral-200);
+  }
 
-/* Neutres */
-.text-neutral-900 { color: #14090f; }
-.text-neutral-800 { color: #2a1a20; }
-.text-neutral-700 { color: #3d2a30; }
-.text-neutral-600 { color: #503b40; }
-.text-neutral-500 { color: #634b50; }
-.text-neutral-400 { color: #765b60; }
+  .bouton-secondaire:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 
-/* États */
-.text-success { color: #059669; }
-.text-success-dark { color: #047857; }
-.text-error { color: #dc2626; }
-.text-error-dark { color: #b91c1c; }
-.text-warning { color: #d97706; }
-.text-info { color: #2563eb; }
-.text-info-dark { color: #1d4ed8; }
+  /* ---------------------------------------------------------------------------
+     EN-TÊTE DE PAGE
+     --------------------------------------------------------------------------- */
 
-/* Hover states */
-.hover\:text-primary:hover { color: var(--color-primary-hover); }
-.hover\:text-primary-hover:hover { color: var(--color-primary-hover); }
-.hover\:text-secondary-dark:hover { color: var(--color-secondary-dark); }
-.hover\:text-accent-dark:hover { color: var(--color-accent-dark); }
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
 
-/* ---------------------------------------------------------------------------
-   COULEURS DE FOND
-   --------------------------------------------------------------------------- */
-
-/* Primary */
-.bg-primary { background-color: var(--color-primary); }
-.bg-primary-light { background-color: var(--color-primary-light); }
-.bg-primary-medium { background-color: var(--color-primary-medium); }
-.bg-primary-dark { background-color: var(--color-primary-dark); }
-.bg-primary-hover { background-color: var(--color-primary-hover); }
-
-/* Secondary */
-.bg-secondary { background-color: var(--color-secondary); }
-.bg-secondary-light { background-color: var(--color-secondary-light); }
-.bg-secondary-medium { background-color: var(--color-secondary-medium); }
-.bg-secondary-dark { background-color: var(--color-secondary-dark); }
-
-/* Accent */
-.bg-accent { background-color: var(--color-accent); }
-.bg-accent-light { background-color: var(--color-accent-light); }
-.bg-accent-medium { background-color: var(--color-accent-medium); }
-.bg-accent-dark { background-color: var(--color-accent-dark); }
-
-/* Classes spécifiques */
-.bg-accent-category { background-color: var(--color-accent-category); }
-.bg-accent-date { background-color: var(--color-accent-date); }
-
-/* Gradient backgrounds */
-.bg-gradient-hero { background: var(--gradient-hero); }
-
-/* En-tête des pages : même hauteur partout, contenu centré verticalement.
-   La hauteur minimale reprend celle d'un en-tête chargé (page de marque, Rechercher) :
-   marges + titre (heading-hero) + mb-6 + phrase (heading-sub) + mt-8 + barre de recherche.
-   Les en-têtes chargés gardent ainsi leur hauteur, seuls les plus légers grandissent. */
-.en-tete-page {
-  display: flex;
-  align-items: center;
-  /* Mobile : phrase sur 3 lignes */
-  min-height: calc(5rem + 2rem + 1.5rem + 3 * 1.375rem + 2rem + 3.5rem + 4px);
-}
-
-@media (min-width: 768px) {
-  /* Ordinateur : phrase sur 1 ligne */
+  /* En-tête des pages : même hauteur partout, contenu centré verticalement.
+     La hauteur minimale reprend celle d'un en-tête chargé (page de marque, Rechercher) :
+     marges + titre (heading-hero) + mb-6 + phrase (heading-sub) + mt-8 + barre de recherche.
+     Les en-têtes chargés gardent ainsi leur hauteur, seuls les plus légers grandissent. */
   .en-tete-page {
-    min-height: calc(8rem + clamp(2rem, 4vw, 3.5rem) + 1.5rem + clamp(1rem, 2vw, 1.25rem) * 1.375 + 2rem + 2rem + clamp(1rem, 1.5vw, 1.125rem) * 1.5 + 4px);
+    display: flex;
+    align-items: center;
+    /* Mobile : phrase sur 3 lignes */
+    min-height: calc(5rem + 2rem + 1.5rem + 3 * 1.375rem + 2rem + 3.5rem + 4px);
   }
-}
 
-/* Neutres */
-.bg-neutral-50 { background-color: #fdfcfc; }
-.bg-neutral-100 { background-color: #fbf9fa; }
-.bg-neutral-200 { background-color: #f6f3f4; }
+  @media (min-width: 768px) {
+    /* Ordinateur : phrase sur 1 ligne */
+    .en-tete-page {
+      min-height: calc(8rem + clamp(2rem, 4vw, 3.5rem) + 1.5rem + clamp(1rem, 2vw, 1.25rem) * 1.375 + 2rem + 2rem + clamp(1rem, 1.5vw, 1.125rem) * 1.5 + 4px);
+    }
+  }
 
-/* États */
-.bg-success { background-color: #059669; }
-.bg-success-light { background-color: #ecfdf5; }
-.bg-success-hover { background-color: #047857; }
-.bg-error { background-color: #dc2626; }
-.bg-error-light { background-color: #fef2f2; }
-.bg-error-hover { background-color: #b91c1c; }
-.bg-warning-light { background-color: #fffbed; }
-.bg-info { background-color: #006eff; }
-.bg-info-light { background-color: #eff6ff; }
+  /* ---------------------------------------------------------------------------
+     ESPACEMENTS RESPONSIVE
+     --------------------------------------------------------------------------- */
 
-/* Hover states */
-.hover\:bg-primary:hover { background-color: var(--color-primary-hover); }
-.hover\:bg-primary-light:hover { background-color: var(--color-primary-light); }
-.hover\:bg-primary-hover:hover { background-color: var(--color-primary-hover); }
-.hover\:bg-primary-dark:hover { background-color: var(--color-primary-dark); }
-.hover\:bg-secondary-light:hover { background-color: var(--color-secondary-light); }
-.hover\:bg-secondary:hover { background-color: var(--color-secondary); }
-.hover\:bg-accent:hover { background-color: var(--color-accent); }
-.hover\:bg-neutral:hover { background-color: #f6f3f4; }
-
-/* ---------------------------------------------------------------------------
-   COULEURS DE BORDURE
-   --------------------------------------------------------------------------- */
-
-/* Primary */
-.border-primary { border-color: var(--color-primary); }
-.border-primary-light { border-color: var(--color-primary-light); }
-.border-primary-medium { border-color: var(--color-primary-medium); }
-.border-primary-dark { border-color: var(--color-primary-dark); }
-
-/* Secondary */
-.border-secondary { border-color: var(--color-secondary); }
-.border-secondary-light { border-color: var(--color-secondary-light); }
-.border-secondary-medium { border-color: var(--color-secondary-medium); }
-.border-secondary-dark { border-color: var(--color-secondary-dark); }
-
-/* Accent */
-.border-accent { border-color: var(--color-accent); }
-.border-accent-light { border-color: var(--color-accent-light); }
-.border-accent-medium { border-color: var(--color-accent-medium); }
-.border-accent-dark { border-color: var(--color-accent-dark); }
-
-/* Neutres et états */
-.border-neutral { border-color: #e5e7eb; }
-.border-neutral-light { border-color: #f3f4f6; }
-.border-success { border-color: #10b981; }
-.border-error { border-color: #f87171; }
-.border-info { border-color: #60a5fa; }
-.border-warning { border-color: #f59e0b; }
-
-/* Hover states */
-.hover\:border-primary:hover { border-color: var(--color-primary); }
-.hover\:border-primary-light:hover { border-color: var(--color-primary-light); }
-
-/* ---------------------------------------------------------------------------
-   EFFETS SPÉCIAUX ET FOCUS
-   --------------------------------------------------------------------------- */
-
-
-/* Focus rings */
-.focus\:ring-primary-light:focus { --tw-ring-color: var(--color-primary-light); }
-.focus\:ring-primary-500:focus { --tw-ring-color: var(--color-primary-500); }
-.focus\:ring-neutral-300:focus { --tw-ring-color: #efe9ea; }
-
-/* =============================================================================
-   COMPOSANTS SPÉCIALISÉS - LAYOUTS ET INTERFACES MÉTIER
-   ============================================================================= */
-
-/* ---------------------------------------------------------------------------
-   ESPACEMENTS RESPONSIVE
-   --------------------------------------------------------------------------- */
-
-/* Cards */
-.card-padding {
-  padding: 1rem;
-}
-
-@media (min-width: 1024px) {
+  /* Cards */
   .card-padding {
-    padding: 2rem;
+    padding: 1rem;
   }
-}
 
-/* Sections */
-.section-padding {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
+  @media (min-width: 1024px) {
+    .card-padding {
+      padding: 2rem;
+    }
+  }
 
-@media (min-width: 1024px) {
+  /* Sections */
   .section-padding {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
-}
 
-/* ---------------------------------------------------------------------------
-   COMPOSANTS MÉDIA
-   --------------------------------------------------------------------------- */
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  }
 
-/* Groupes d'images responsive */
-.image-group {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 100%;
-  height: 150px;
-  gap: 0.25rem;
-  margin: 0.5rem 0;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  box-sizing: border-box;
-}
+  /* ---------------------------------------------------------------------------
+     COMPOSANTS MÉDIA
+     --------------------------------------------------------------------------- */
 
-.image-group img {
-  flex: 1 0 auto;
-  min-width: 60px;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0.375rem;
-  margin: 0;
-  cursor: pointer;
-}
-
-@media (min-width: 768px) {
+  /* Groupes d'images responsive */
   .image-group {
-    height: 200px;
-    gap: 0.5rem;
-    overflow-x: hidden;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    height: 150px;
+    gap: 0.25rem;
+    margin: 0.5rem 0;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-sizing: border-box;
   }
-  
+
   .image-group img {
-    min-width: 100px;
+    flex: 1 0 auto;
+    min-width: 60px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.375rem;
+    margin: 0;
+    cursor: pointer;
   }
-}
 
-/* ---------------------------------------------------------------------------
-   COMPOSANTS CONTENU
-   --------------------------------------------------------------------------- */
+  @media (min-width: 768px) {
+    .image-group {
+      height: 200px;
+      gap: 0.5rem;
+      overflow-x: hidden;
+    }
 
-/* Container pour contenu markdown */
-.boycott-content {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  box-sizing: border-box;
-}
+    .image-group img {
+      min-width: 100px;
+    }
+  }
 
-.boycott-content * {
-  max-width: 100%;
-  box-sizing: border-box;
-}
+  /* ---------------------------------------------------------------------------
+     COMPOSANTS CONTENU
+     --------------------------------------------------------------------------- */
 
-/* =============================================================================
-   FIXES NAVIGATEUR - AUTOCOMPLÉTION ET COMPORTEMENTS SPÉCIAUX
-   ============================================================================= */
+  /* Container pour contenu markdown */
+  .boycott-content {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
 
-/* Fix pour l'autocomplétion des champs input */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px white inset !important;
-  -webkit-text-fill-color: inherit !important;
-  background-color: white !important;
-}
+  .boycott-content * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 
-/* =============================================================================
-   CLASSES UTILITAIRES - SCROLLBAR
-   ============================================================================= */
+  /* ---------------------------------------------------------------------------
+     SCROLLBAR
+     --------------------------------------------------------------------------- */
 
-/* Cacher la scrollbar sur tous les navigateurs */
-.scrollbar-hide {
-  /* Firefox */
-  scrollbar-width: none;
-  /* Internet Explorer et Edge */
-  -ms-overflow-style: none;
-}
+  /* Cacher la scrollbar sur tous les navigateurs */
+  .scrollbar-hide {
+    /* Firefox */
+    scrollbar-width: none;
+    /* Internet Explorer et Edge */
+    -ms-overflow-style: none;
+  }
 
-/* WebKit (Chrome, Safari) */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
+  /* WebKit (Chrome, Safari) */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 
-/* =============================================================================
-   LIQUID GLASS - EFFETS DE VERRE LIQUIDE iOS 26
-   ============================================================================= */
+  /* ---------------------------------------------------------------------------
+     LIQUID GLASS - EFFETS DE VERRE (accueil et suggestions de recherche)
+     Fond, bordure et ombre sont fixés ici : ne pas ajouter bg-*, border-* ou shadow-* à côté.
+     --------------------------------------------------------------------------- */
 
-/* Base liquid glass effect */
-.liquid-glass {
-  background: linear-gradient(135deg,
-    rgba(255, 255, 255, 0.35) 0%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(152, 16, 90, 0.08) 100%);
-  backdrop-filter: blur(16px) saturate(1.6) brightness(1.2);
-  -webkit-backdrop-filter: blur(16px) saturate(1.6) brightness(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow:
-    0 16px 50px rgba(0, 0, 0, 0.15),
-    inset 0 2px 0 rgba(255, 255, 255, 0.5),
-    inset 0 -1px 0 rgba(152, 16, 90, 0.15);
-  transition: all 0.5s ease;
-}
+  .liquid-glass {
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(152, 16, 91, 0.08) 100%);
+    backdrop-filter: blur(16px) saturate(1.6) brightness(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.6) brightness(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow:
+      0 16px 50px rgba(0, 0, 0, 0.15),
+      inset 0 2px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(152, 16, 91, 0.15);
+    transition: all 0.5s ease;
+  }
 
-/* Section liquid glass - responsive */
-@media (max-width: 767px) {
-  .liquid-glass-section {
+  /* Section liquid glass - responsive */
+  @media (max-width: 767px) {
+    .liquid-glass-section {
+      background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(152, 16, 91, 0.03) 100%);
+      backdrop-filter: blur(15px) saturate(1.5) brightness(1.05);
+      -webkit-backdrop-filter: blur(15px) saturate(1.5) brightness(1.05);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -1px 0 rgba(152, 16, 91, 0.08);
+      transition: all 0.4s ease;
+    }
+  }
+
+  /* Liquid glass pour suggestions dropdown */
+  .liquid-glass-dropdown {
     background: linear-gradient(135deg,
       rgba(255, 255, 255, 0.2) 0%,
       rgba(255, 255, 255, 0.08) 50%,
-      rgba(152, 16, 90, 0.03) 100%);
-    backdrop-filter: blur(15px) saturate(1.5) brightness(1.05);
-    -webkit-backdrop-filter: blur(15px) saturate(1.5) brightness(1.05);
+      rgba(152, 16, 91, 0.03) 100%);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 20px;
     box-shadow:
       0 20px 60px rgba(0, 0, 0, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -1px 0 rgba(152, 16, 90, 0.08);
+      inset 0 -1px 0 rgba(152, 16, 91, 0.08);
     transition: all 0.4s ease;
   }
-}
 
-/* Liquid glass pour suggestions dropdown */
-.liquid-glass-dropdown {
-  background: linear-gradient(135deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(152, 16, 90, 0.03) 100%);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 20px;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    inset 0 -1px 0 rgba(152, 16, 90, 0.08);
-  transition: all 0.4s ease;
-}
+  /* Liquid glass pour items de suggestion */
+  .liquid-glass-suggestion {
+    background: transparent;
+    transition: background-color 0.2s ease;
+  }
 
-/* Liquid glass pour items de suggestion */
-.liquid-glass-suggestion {
-  background: transparent;
-  transition: background-color 0.2s ease;
-}
+  .liquid-glass-suggestion:hover,
+  .liquid-glass-suggestion.highlighted {
+    background: rgba(152, 16, 91, 0.07);
+  }
 
-.liquid-glass-suggestion:hover,
-.liquid-glass-suggestion.highlighted {
-  background: rgba(152, 16, 90, 0.07);
-}
+  /* ---------------------------------------------------------------------------
+     PARALLAX - ARRIÈRE-PLAN FIXE AVEC MOUVEMENT
+     --------------------------------------------------------------------------- */
 
+  .parallax-bg {
+    z-index: 1;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    animation: parallax 20s ease-in-out infinite;
+  }
 
-/* =============================================================================
-   PARALLAX EFFECT - ARRIÈRE-PLAN FIXE AVEC MOUVEMENT
-   ============================================================================= */
+  /* ---------------------------------------------------------------------------
+     PIÈCES DU BOUTON DE CONSEILS (page de marque)
+     --------------------------------------------------------------------------- */
 
-.parallax-bg {
-  z-index: 1;
-  transform: translate3d(0, 0, 0);
-  animation: parallax 20s ease-in-out infinite;
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-particule { animation: odm-particule linear infinite; }
+  }
+
+  /* Au survol, à l'appui et quand les conseils sont ouverts, chaque pièce fuit vers le bord le plus proche */
+  .particule-fuite {
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+  }
+
+  .group:hover .particule-fuite,
+  .group:active .particule-fuite,
+  .group[aria-expanded="true"] .particule-fuite {
+    transform: translateX(var(--fuite));
+    opacity: 0;
+  }
 }
 
 @keyframes parallax {
@@ -545,34 +470,20 @@ input:-webkit-autofill:active {
   }
 }
 
-/* Optimisation performance */
-.parallax-bg {
-  will-change: transform;
-  -webkit-transform: translateZ(0);
-  -moz-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  -o-transform: translateZ(0);
-  transform: translateZ(0);
-}
-
-/* Pièces qui montent dans le bouton de conseils (page de marque) */
 @keyframes odm-particule {
   from { transform: translateY(0) rotate(0deg); }
   to { transform: translateY(-140px) rotate(180deg); }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .animate-particule { animation: odm-particule linear infinite; }
-}
+/* =============================================================================
+   FIXES NAVIGATEUR - AUTOCOMPLÉTION
+   ============================================================================= */
 
-/* Au survol, à l'appui et quand les conseils sont ouverts, chaque pièce fuit vers le bord le plus proche */
-.particule-fuite {
-  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-}
-
-.group:hover .particule-fuite,
-.group:active .particule-fuite,
-.group[aria-expanded="true"] .particule-fuite {
-  transform: translateX(var(--fuite));
-  opacity: 0;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: inherit !important;
+  background-color: white !important;
 }

@@ -40,7 +40,7 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center heading-main font-extrabold text-neutral-900">
+          <h2 className="mt-6 text-center heading-main text-neutral-900">
             Administration
           </h2>
           <p className="mt-2 text-center body-small text-neutral-600">
@@ -60,7 +60,7 @@ export default function AdminLogin() {
               required
               value={token}
               onChange={(e) => setToken(e.target.value)}
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-neutral placeholder-neutral-400 text-neutral-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:body-small"
+              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-neutral-200 placeholder-neutral-400 text-neutral-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:body-small"
               placeholder="Token d'administration"
             />
           </div>
@@ -75,7 +75,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent body-small font-medium rounded-md text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
+              className="bouton-primaire group relative w-full flex py-2 px-4 border border-transparent body-small focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               {isLoading ? 'Connexion...' : 'Se connecter'}
             </button>

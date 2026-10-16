@@ -12,7 +12,7 @@ export default function MentionsLegales() {
       {/* Section Hero */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 tracking-tight">
             Mentions légales
           </h1>
         </div>
@@ -25,28 +25,28 @@ export default function MentionsLegales() {
             <div className="prose prose-lg max-w-none space-y-8">
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Éditeur</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Éditeur</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   Ce site est édité à titre non professionnel par un particulier. Conformément à l&apos;article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l&apos;économie numérique, son identité a été communiquée à l&apos;hébergeur.
                 </p>
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Hébergeur</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Hébergeur</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   Netlify, Inc.<br />
                   101 2nd Street, San Francisco, CA 94105, États-Unis<br />
-                  <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-dark-hover underline">www.netlify.com</a>
+                  <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">www.netlify.com</a>
                 </p>
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Contact</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Contact</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   Pour toute question, demande de correction ou exercice d&apos;un droit de réponse :{' '}
                   <AdresseContact />.
                   La procédure est décrite sur la page{' '}
-                  <Link href="/droit-de-reponse" className="text-secondary-dark hover:text-secondary-dark-hover underline">Droit de réponse et corrections</Link>.
+                  <Link href="/droit-de-reponse" className="text-secondary-dark hover:text-secondary-900 underline">Droit de réponse et corrections</Link>.
                 </p>
               </div>
 

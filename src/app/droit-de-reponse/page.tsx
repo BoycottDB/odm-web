@@ -15,10 +15,10 @@ export default function DroitDeReponse() {
       {/* Section Hero */}
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-5xl mx-auto text-center">
-          <h1 className="heading-hero md:heading-hero font-light text-neutral-900 mb-6 tracking-tight">
+          <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
             Droit de réponse et corrections
           </h1>
-          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light leading-snug">
+          <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
             Une fiche vous concerne et vous la contestez ? Une information est fausse ou n&apos;est plus à jour ? Voici comment nous le signaler.
           </p>
         </div>
@@ -31,7 +31,7 @@ export default function DroitDeReponse() {
             <div className="prose prose-lg max-w-none space-y-8">
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Demander une correction</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Demander une correction</h2>
                 <p className="body-base text-neutral-700 leading-snug mb-4">
                   Entreprise, personne citée ou simple visiteur : tout le monde peut demander une correction en écrivant à <AdresseContact />. Indiquez :
                 </p>
@@ -50,7 +50,7 @@ export default function DroitDeReponse() {
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Exercer votre droit de réponse</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Exercer votre droit de réponse</h2>
                 <p className="body-base text-neutral-700 leading-snug mb-4">
                   Toute personne, physique ou morale, nommée ou désignée sur ce site peut demander la publication d&apos;une réponse, dans les trois mois qui suivent la mise en ligne du texte en cause (article 1-1 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l&apos;économie numérique). La réponse est gratuite et publiée dans les trois jours qui suivent la réception de la demande.
                 </p>
@@ -65,7 +65,7 @@ export default function DroitDeReponse() {
                 </ul>
                 <p className="body-base text-neutral-700 leading-snug mb-4">
                   Adressez-la à <AdresseContact />. Nous accusons réception de chaque demande par retour de courriel. Ce site étant édité par un particulier qui a conservé l&apos;anonymat, vous pouvez aussi l&apos;adresser à son hébergeur, qui nous la transmettra (coordonnées dans les{' '}
-                  <Link href="/mentions-legales" className="text-secondary-dark hover:text-secondary-dark-hover underline">mentions légales</Link>).
+                  <Link href="/mentions-legales" className="text-secondary-dark hover:text-secondary-900 underline">mentions légales</Link>).
                 </p>
                 <p className="body-base text-neutral-700 leading-snug">
                   La réponse est publiée sur cette page, présentée comme l&apos;exercice d&apos;un droit de réponse, et reliée à la fiche concernée par le lien « Réponse ». Elle peut être refusée si elle est contraire à la loi ou porte atteinte à l&apos;intérêt légitime de tiers.
@@ -73,16 +73,16 @@ export default function DroitDeReponse() {
               </div>
 
               <div>
-                <h2 className="heading-main font-bold text-neutral-900 mb-4">Vos données personnelles</h2>
+                <h2 className="heading-main text-neutral-900 mb-4">Vos données personnelles</h2>
                 <p className="body-base text-neutral-700 leading-snug">
                   Si une fiche contient des données qui vous concernent, vous pouvez en demander la rectification ou vous opposer à leur publication, à la même adresse : <AdresseContact />. Le détail est dans la{' '}
-                  <Link href="/confidentialite" className="text-secondary-dark hover:text-secondary-dark-hover underline">politique de confidentialité</Link>.
+                  <Link href="/confidentialite" className="text-secondary-dark hover:text-secondary-900 underline">politique de confidentialité</Link>.
                 </p>
               </div>
 
               {reponsesPubliees.length > 0 && (
                 <div>
-                  <h2 className="heading-main font-bold text-neutral-900 mb-4">Réponses publiées</h2>
+                  <h2 className="heading-main text-neutral-900 mb-4">Réponses publiées</h2>
                   <div className="space-y-6">
                     {reponsesPubliees.map(reponse => (
                       <div key={reponse.ancre} id={reponse.ancre} className="border-l-4 border-secondary pl-6 scroll-mt-24">

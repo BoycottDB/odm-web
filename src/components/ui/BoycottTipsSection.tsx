@@ -271,7 +271,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
         // Valider que l'URL commence par http:// ou https://
         const isValidUrl = /^https?:\/\//.test(url);
         if (isValidUrl) {
-          return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-hover underline font-medium">${text}</a>`;
+          return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark underline font-medium">${text}</a>`;
         }
         return match; // Retourner le texte original si l'URL n'est pas valide
       }) // liens [texte](url) - negative lookbehind pour éviter les images ![alt](url)
