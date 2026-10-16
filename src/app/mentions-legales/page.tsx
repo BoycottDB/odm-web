@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import AdresseContact from '@/components/ui/AdresseContact';
+import NumeroAlbum from '@/components/ui/NumeroAlbum';
 
 export const metadata: Metadata = {
   title: 'Mentions légales',
@@ -48,6 +49,7 @@ export default function MentionsLegales() {
                   La procédure est décrite sur la page{' '}
                   <Link href="/droit-de-reponse" className="text-secondary-dark hover:text-secondary-900 underline">Droit de réponse et corrections</Link>.
                 </p>
+                <NumeroAlbum />
               </div>
 
             </div>
