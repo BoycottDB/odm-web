@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CheckCircle2, Lightbulb, ShoppingBasket, Tag } from 'lucide-react';
 import { safeTrack } from '@/lib/analytics';
 import Image from 'next/image';
@@ -79,6 +79,8 @@ declare global {
   }
 }
 
+const ANCRE_CONSEILS = 'conseils';
+
 interface BoycottTipsSectionProps {
   marque: Marque;
 }
@@ -92,6 +94,21 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentImageGroup, setCurrentImageGroup] = useState<ImageGroup | null>(null);
+
+  const ancreRef = useRef<HTMLDivElement>(null);
+
+  // Arrivée via l'ancre #conseils (ex. depuis l'accueil) : conseils ouverts d'emblée.
+  // On défile nous-mêmes, une fois la page affichée, pour arriver toujours au même endroit
+  // quel que soit le scroll de la page précédente (les liens vers l'ancre ont scroll={false}).
+  useEffect(() => {
+    if (window.location.hash !== `#${ANCRE_CONSEILS}`) return;
+    setIsExpanded(true);
+    // Léger délai, comme pour le défilement vers la liste des marques : laisse la navigation se terminer
+    const minuteur = setTimeout(() => {
+      ancreRef.current?.scrollIntoView({ block: 'start' });
+    }, 100);
+    return () => clearTimeout(minuteur);
+  }, []);
 
   // Effet pour attacher les event listeners aux images après le rendu
   useEffect(() => {
@@ -286,7 +303,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
 
 
   return (
-    <div>
+    <div id={ANCRE_CONSEILS} ref={ancreRef} className="scroll-mt-24">
       {/* Bouton pour ouvrir/fermer */}
       <div className="text-center">
         <button

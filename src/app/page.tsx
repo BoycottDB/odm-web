@@ -117,7 +117,8 @@ export default function Home() {
           </p>
           <div className="flex justify-center md:justify-start">
             <Link
-              href="/marques/nike"
+              href="/marques/nike#conseils"
+              scroll={false}
               className="bouton-primaire px-4 py-2 md:px-6 md:py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
             >
               <TextSearch className="w-4 h-4 md:w-5 md:h-5 mr-2" />
@@ -153,7 +154,8 @@ export default function Home() {
         </p>
         <div className="flex justify-center md:justify-start">
           <Link
-            href="/marques/nike"
+            href="/marques/nike#conseils"
+            scroll={false}
             className="bouton-primaire px-4 py-2 md:px-6 md:py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary hover:shadow-primary-dark text-sm md:text-base"
           >
             <TextSearch className="w-4 h-4 md:w-5 md:h-5 mr-2" />
