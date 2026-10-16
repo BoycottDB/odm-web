@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { dataService } from '@/lib/services/dataService';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://odm-observatoire-des-marques.netlify.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://quijenrichis.fr';
 
   // Pages statiques
   const staticPages: MetadataRoute.Sitemap = [
