@@ -44,7 +44,7 @@ export default function Home() {
         </div>
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
-          <p className="text-base md:text-lg font-light text-neutral-700 mb-4 md:mb-6 lg:mb-8">
+          <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 mb-4 md:mb-6 lg:mb-8">
             Recherchez une marque pour repérer ses éventuelles controverses documentées mais aussi ses éventuels <strong>bénéficiaires</strong> à qui vos achats profitent.
           </p>
           <div className="flex justify-center md:justify-start">
@@ -80,7 +80,7 @@ export default function Home() {
 
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
-        <p className="text-base md:text-lg font-light text-neutral-700 mb-4 md:mb-6 lg:mb-8">
+        <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 mb-4 md:mb-6 lg:mb-8">
           Recherchez une marque pour repérer ses éventuelles controverses documentées mais aussi ses éventuels <strong>bénéficiaires</strong> à qui vos achats profitent.
         </p>
         <div className="flex justify-center md:justify-start">
@@ -113,7 +113,7 @@ export default function Home() {
         </div>
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
-          <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+          <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
             Découvrez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
           </p>
           <div className="flex justify-center md:justify-start">
@@ -150,7 +150,7 @@ export default function Home() {
 
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
-        <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+        <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
           Découvrez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
         </p>
         <div className="flex justify-center md:justify-start">
@@ -184,7 +184,7 @@ export default function Home() {
         </div>
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
-          <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+          <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
             Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
           </p>
           <div className="flex justify-center md:justify-start">
@@ -227,7 +227,7 @@ export default function Home() {
 
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
-        <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+        <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
           Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
         </p>
         <div className="flex justify-center md:justify-start">
@@ -267,7 +267,7 @@ export default function Home() {
         </div>
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
-          <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+          <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
             Rejoignez le mouvement en participant à la collecte de données. Chaque signalement est relu avant publication :
             nous vérifions sa source, et les décisions sont consultables sur la page Modération.
           </p>
@@ -304,7 +304,7 @@ export default function Home() {
 
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
-        <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
+        <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
           Rejoignez le mouvement en participant à la collecte de données. Chaque signalement est relu avant publication :
           nous vérifions sa source, et les décisions sont consultables sur la page Modération.
         </p>
@@ -335,7 +335,17 @@ export default function Home() {
           <h1 className="sr-only md:not-sr-only heading-hero text-neutral-900 md:block md:mb-6">
             Qui j&apos;enrichis ?
           </h1>
-          <p className="heading-sub font-light text-neutral-700 mx-auto">
+          {/* Mobile : le titre est masqué, l'accroche prend le relais */}
+          <div className="md:hidden">
+            <p className="heading-hero text-neutral-900 mb-4">
+              À chacun de vos achats, quelqu&apos;un s&apos;enrichit.
+            </p>
+            <p className="heading-sub font-light text-neutral-700">
+              Découvrez à qui va votre argent et retrouvez des conseils pratiques
+              pour adapter vos achats vers une consommation plus éthique et responsable.
+            </p>
+          </div>
+          <p className="hidden md:block heading-sub font-light text-neutral-700 mx-auto">
             {/* Découvrez qui bénéficie vraiment de vos achats, retrouvez des conseils pratiques pour adapter votre consommation et rejoignez une communauté engagée pour une consommation éthique et responsable. */}
             Des milliers de marques commercialisées en France. À chacun de vos achats, quelqu&apos;un s&apos;enrichit. <br className="hidden lg:block" />
             Découvrez à qui va votre argent et retrouvez des conseils pratiques <br className="hidden lg:block" />

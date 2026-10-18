@@ -30,9 +30,11 @@ export function BarreMobile() {
       />
       {pathname === '/' && (
         <nav
-          className="md:hidden fixed bottom-0 inset-x-0 z-40 px-3 pt-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))] bg-gradient-to-t from-white via-white/80 to-transparent"
+          className="md:hidden fixed bottom-0 inset-x-0 z-40 px-3 pt-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))] bg-white"
           aria-label="Navigation mobile"
         >
+          {/* Fondu au-dessus de la barre pour adoucir la coupure avec le contenu */}
+          <div className="absolute inset-x-0 bottom-full h-6 bg-gradient-to-t from-white to-transparent pointer-events-none" aria-hidden="true" />
           <div className="flex items-center gap-2">
             <Link
               href="/marques"

@@ -50,7 +50,8 @@ export default function SimpleSelect<T extends { id: number; nom: string }>({
   const hasValue = value !== null;
 
   return (
-    <div className="relative" ref={containerRef}>
+    // Mobile : la liste s'ouvre sur toute la largeur du parent positionné (selects côte à côte, trop étroits)
+    <div className="sm:relative" ref={containerRef}>
       <label className="block text-xs font-medium text-neutral-700 mb-1.5">
         {label}
       </label>
@@ -99,7 +100,7 @@ export default function SimpleSelect<T extends { id: number; nom: string }>({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute z-50 w-full mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg max-h-80 overflow-hidden">
+        <div className="absolute z-50 left-4 right-4 sm:left-0 sm:right-0 mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg max-h-80 overflow-hidden">
           <div className="max-h-60 overflow-y-auto">
             <button
               onClick={() => handleSelect(null)}
