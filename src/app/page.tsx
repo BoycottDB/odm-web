@@ -113,7 +113,7 @@ export default function Home() {
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
           <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-            Découvez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
+            Découvrez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
           </p>
           <div className="flex justify-center md:justify-start">
             <Link
@@ -150,7 +150,7 @@ export default function Home() {
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
         <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-          Découvez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
+          Découvrez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
         </p>
         <div className="flex justify-center md:justify-start">
           <Link
@@ -184,7 +184,7 @@ export default function Home() {
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
           <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-            Parcourrez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
+            Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
           </p>
           <div className="flex justify-center md:justify-start">
             <Link
@@ -227,7 +227,7 @@ export default function Home() {
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
         <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-          Parcourrez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
+          Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
         </p>
         <div className="flex justify-center md:justify-start">
           <Link
