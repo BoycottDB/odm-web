@@ -13,7 +13,6 @@ export default function AdminNavigation() {
     { path: '/admin/marques', label: 'Marques', icon: '🏢' },
     { path: '/admin/beneficiaires', label: 'Bénéficiaires', icon: '💰' },
     { path: '/admin/secteurs-marque', label: 'Secteurs', icon: '🏷️' },
-    { path: '/admin/metrics', label: 'Monitoring', icon: '📊' },
   ];
   
   return (

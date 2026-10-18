@@ -61,7 +61,6 @@ Le champ `message_boycott_tips` (par marque ou par secteur) accepte un Markdown 
 
 - **Umami** : statistiques sans cookies. Le script est injecté dans `layout.tsx`, et les événements (`source_click`, `search_error`…) passent par `safeTrack` ([analytics.ts](src/lib/analytics.ts)).
 - **Sentry** : erreurs côté client, serveur et edge (`sentry.*.config.ts`). `beforeSend` retire les données personnelles.
-- **`/admin/metrics`** : santé d'odm-api et métriques internes.
 
 ## Variables d'environnement
 
