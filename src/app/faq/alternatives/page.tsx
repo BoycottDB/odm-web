@@ -112,12 +112,12 @@ export default function AlternativesFAQ() {
                   <h3 className="body-large font-semibold text-neutral-900 mb-3">Nous ne voulons pas faire de tort aux petits producteurs locaux</h3>
                   <p className="body-base text-neutral-700 leading-snug mb-4">
                     C&apos;est sûrement le point le plus important : il nous est difficile de connaître toutes les marques
-                    éthiques du pays. Il y a surement plein de petits producteurs locaux, près de chez vous dont on n&apos;entendra peut-être
+                    éthiques du pays. Il y a sûrement plein de petits producteurs locaux, près de chez vous dont on n&apos;entendra peut-être
                     jamais parler et à qui on n&apos;aimerait pas faire de l&apos;ombre en influençant ne serait-ce qu&apos;une
                     personne à consommer une autre marque.
                   </p>
                   <p className="body-base text-neutral-700 leading-snug">
-                    On espère même que toi qui lit ses lignes, tu entreprènes pour créer des alternatives éthiques et responsables.
+                    On espère même que toi qui lis ces lignes, tu entreprennes pour créer des alternatives éthiques et responsables.
                   </p>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export default function AlternativesFAQ() {
               </div>
 
               <div className="mt-10 bg-secondary-light border border-secondary rounded-xl p-6">
-                <h3 className="body-large font-bold text-neutral-900 mb-4">💡 Cela  dit, et si on créait ensemble la solution ?</h3>
+                <h3 className="body-large font-bold text-neutral-900 mb-4">💡 Cela dit, et si on créait ensemble la solution ?</h3>
                 <p className="body-base text-neutral-700 leading-snug mb-6">
                   Nous réfléchissons à développer une plateforme e-commerce éthique : une sorte d&apos;Amazon mais
                   exclusivement avec des produits responsables créés par des citoyens lambda. Actuellement,

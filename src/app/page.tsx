@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Download, Search, SearchX, Compass, TextSearch, WavesLadder, Sailboat, FileInput, CircleQuestionMark, Zap, ChevronRight } from 'lucide-react';
 import { useMobileDetection } from '@/hooks/useMobileDetection';
 import { useEffect, useState } from 'react';
@@ -113,7 +114,7 @@ export default function Home() {
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
           <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-            Découvez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
+            Découvrez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
           </p>
           <div className="flex justify-center md:justify-start">
             <Link
@@ -150,7 +151,7 @@ export default function Home() {
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
         <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-          Découvez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
+          Découvrez des conseils pratiques et adaptés à chaque secteur d&apos;activité pour vous guider sans forcément bousculer toutes vos habitudes de consommation.
         </p>
         <div className="flex justify-center md:justify-start">
           <Link
@@ -184,7 +185,7 @@ export default function Home() {
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
           <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-            Parcourrez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
+            Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
           </p>
           <div className="flex justify-center md:justify-start">
             <Link
@@ -227,7 +228,7 @@ export default function Home() {
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
         <p className="text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-          Parcourrez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
+          Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
         </p>
         <div className="flex justify-center md:justify-start">
           <Link
@@ -329,7 +330,9 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative z-10 section-padding">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="heading-hero text-neutral-900 mb-6">
+          {/* Mobile : le nom est déjà dans le header, le logo prend sa place */}
+          {/* <Image src="/logo.png" alt="" width={160} height={160} priority className="md:hidden w-16 h-16 mx-auto mb-6" /> */}
+          <h1 className="sr-only md:not-sr-only heading-hero text-neutral-900 md:block md:mb-6">
             Qui j&apos;enrichis ?
           </h1>
           <p className="heading-sub font-light text-neutral-700 mx-auto">
@@ -339,7 +342,7 @@ export default function Home() {
             pour adapter vos achats vers une consommation plus éthique et responsable.
           </p>
 
-          <div className="space-y-20 md:space-y-32 my-16 md:my-32">
+          <div className="space-y-10 md:space-y-32 my-10 md:my-32">
             {/* Ordre unifié : Recherche, BoycottTips, Extension, Signalement */}
             <div className="liquid-glass-section p-6 pb-8 md:p-0">
               <SearchSection/>

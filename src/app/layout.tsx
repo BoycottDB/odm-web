@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Script from 'next/script';
 import { usePathname } from "next/navigation";
 import { Rubik, Geist } from "next/font/google";
-import { useState } from "react";
+import { BarreMobile } from "@/components/ui/BarreMobile";
+import { BoutonRetour } from "@/components/ui/BoutonRetour";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -18,92 +19,6 @@ const geistSans = Geist({
 });
 
 
-
-function MobileNav() {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-
-  const getLinkClass = (href: string) => {
-    const isActive = pathname === href;
-    return `body-large font-medium px-4 py-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${isActive
-        ? 'text-primary bg-primary-light'
-        : 'text-neutral-900 hover:bg-primary-light'
-      }`;
-  };
-  return (
-    <>
-      <button
-        className="md:hidden flex items-center justify-center w-10 h-10 rounded-full border border-primary-medium bg-white shadow hover:bg-primary-50 transition-all focus:outline-none focus:ring-2 focus:ring-primary relative z-50"
-        aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
-        aria-expanded={open}
-        aria-controls="mobile-menu"
-        onClick={() => setOpen((o: boolean) => !o)}
-      >
-        <svg
-          className="w-6 h-6 text-primary"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          {open ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
-          )}
-        </svg>
-      </button>
-      {/* Overlay */}
-      {open && (
-        <div className="fixed inset-0 z-40 md:hidden" onClick={() => setOpen(false)} aria-hidden="true" />
-      )}
-      {open && (
-        <div
-          id="mobile-menu"
-          className="fixed top-0 right-0 z-50 w-64 md:hidden animate-in fade-in"
-          tabIndex={-1}
-          aria-modal="true"
-          role="dialog"
-        >
-          {/* Header avec bouton de fermeture */}
-          <div className="flex justify-end items-center p-3">
-            <button
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-center w-8 h-8 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
-              aria-label="Fermer le menu"
-            >
-              <svg
-                className="w-5 h-5 text-primary-dark"
-                fill="none"
-                stroke="none"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <nav className="flex flex-col gap-4 p-4 bg-white border-b border-primary-light rounded-b-2xl" role="navigation" aria-label="Navigation mobile">
-            {/* Contraste renforcé sur le menu mobile */}
-            {/* <Link href="/" className={getLinkClass('/')} onClick={() => setOpen(false)}>
-            Accueil
-          </Link> */}
-            <Link href="/marques" className={getLinkClass('/marques')} onClick={() => setOpen(false)}>
-              Rechercher
-            </Link>
-            <Link href="/signaler" className={getLinkClass('/signaler')} onClick={() => setOpen(false)}>
-              Signaler
-            </Link>
-            <Link href="/faq" className={getLinkClass('/faq')} onClick={() => setOpen(false)}>
-              Questions fréquentes
-            </Link>
-          </nav>
-        </div>
-      )}
-    </>
-  );
-}
 
 export default function RootLayout({
   children,
@@ -154,9 +69,10 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${rubik.variable} antialiased bg-background text-foreground`}>
         <header className="w-full border-b border-primary-medium bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
-          <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+          <div className="relative max-w-6xl mx-auto px-4 py-3 flex justify-center md:justify-between items-center">
+            <BoutonRetour />
             <Link href="/" aria-label="Qui j'enrichis ? – Accueil" className="heading-main text-primary hover:text-neutral-900 transition-colors flex items-center">
-              <Image src="/logo.png" alt="" width={28} height={28} priority className="w-5 h-5 mr-2 md:w-7 md:h-7" />
+              <Image src="/logo.png" alt="" width={28} height={28} priority className="hidden md:block md:w-7 md:h-7 mr-2" />
               <strong className="text-[1.4rem]">Qui j&apos;enrichis ?</strong>
             </Link>
             {/* Menu desktop */}
@@ -174,8 +90,6 @@ export default function RootLayout({
                 Questions fréquentes
               </Link>
             </nav>
-            {/* Menu mobile */}
-            <MobileNav />
           </div>
         </header>
         <main className="min-h-[calc(100vh-64px)] w-full" role="main">
@@ -212,7 +126,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <p className="relative z-10 bg-foreground text-center text-xs md:text-sm text-white/60 pb-3 md:-mt-10">
+        <p className={`relative z-10 bg-foreground text-center text-xs md:text-sm text-white/60 md:-mt-10 ${pathname === '/' ? 'pb-24 md:pb-3' : 'pb-3'}`}>
           Ce projet étant le fruit du travail d&apos;humains, il peut y avoir des erreurs ou des données non à jour. N&apos;hésitez pas à vérifier les sources et à nous signaler des éventuelles corrections.
           {' · '}
           <Link href="/droit-de-reponse" className="underline hover:text-white">
@@ -227,6 +141,7 @@ export default function RootLayout({
             Mentions légales
           </Link>
         </p>
+        <BarreMobile />
       </body>
     </html>
   );
