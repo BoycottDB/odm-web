@@ -19,8 +19,8 @@ export default function MarquesFiltersBar({
   onSecteurChange
 }: MarquesFiltersBarProps) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-4">
-      <div className="flex flex-col sm:flex-row gap-3">
+    <div className="relative bg-white rounded-xl shadow-sm border border-neutral-200 p-4">
+      <div className="flex gap-3">
         {/* Filtre secteur */}
         {filterOptions.secteurs.length > 0 && (
           <div className="flex-1 min-w-0">
