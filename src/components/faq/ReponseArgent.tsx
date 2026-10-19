@@ -27,7 +27,7 @@ export default function ReponseArgent() {
       <div className="border-l-2 border-neutral-200 pl-4">
         <h4 className="body-large font-semibold text-neutral-900 mb-3">Pourquoi « peut » ?</h4>
         <p className="body-base text-neutral-700 leading-snug">
-          Parce qu&apos;on ne connaît pas toujours la part exacte de chacun, et qu&apos;une revente n&apos;est pas toujours gagnante. Mais le principe est toujours le même : plus une marque vend, plus elle enrichit ceux qui la possèdent.
+          Parce qu&apos;on ne connaît pas toujours la part exacte de chacun et qu&apos;une revente n&apos;est pas toujours gagnante. Mais le principe est toujours le même : plus une marque vend, plus elle enrichit ceux qui la possèdent.
         </p>
       </div>
 

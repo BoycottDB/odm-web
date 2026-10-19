@@ -270,7 +270,7 @@ export default function Home() {
         <div className="hidden lg:block">
           <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
             Rejoignez le mouvement en participant à la collecte de données. Chaque signalement est relu avant publication :
-            nous vérifions sa source, et les décisions sont consultables sur la page Modération.
+            nous vérifions sa source et les décisions sont consultables sur la page Modération.
           </p>
           <div className="flex justify-center md:justify-start">
             <Link
@@ -307,7 +307,7 @@ export default function Home() {
       <div className="order-3 lg:hidden text-center md:text-left">
         <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
           Rejoignez le mouvement en participant à la collecte de données. Chaque signalement est relu avant publication :
-          nous vérifions sa source, et les décisions sont consultables sur la page Modération.
+          nous vérifions sa source et les décisions sont consultables sur la page Modération.
         </p>
         <div className="flex justify-center md:justify-start">
           <Link

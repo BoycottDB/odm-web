@@ -66,7 +66,7 @@ const faqThemes: FAQTheme[] = [
           },
           {
             id: 'tout-boycotter',
-            question: '« Je ne peux pas tout boycotter, tout est controversé de toute façon »',
+            question: '« On peut plus rien acheter, tout est controversé ! »',
             reponse: <ReponseToutBoycotter />
           },
           {
@@ -176,7 +176,7 @@ export default function FAQ() {
                           key={item.id}
                           id={item.id}
                           href={item.url}
-                          className="group flex items-center justify-between gap-4 py-5 scroll-mt-24 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
+                          className="group flex items-center justify-between gap-4 py-5 scroll-mt-24 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
                           draggable={false}
                         >
                           <h3 className="text-lg md:text-xl font-semibold text-neutral-900 group-hover:text-primary transition-colors duration-200 select-text">

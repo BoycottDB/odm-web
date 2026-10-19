@@ -8,7 +8,7 @@ interface ListeEtiquettesProps {
   className?: string;
 }
 
-// Une étiquette par catégorie : emoji, nom, et nombre à partir de deux controverses
+// Une étiquette par catégorie : emoji, nom et nombre à partir de deux controverses
 export function ListeEtiquettes({ etiquettes, libelle, className = '' }: ListeEtiquettesProps) {
   if (etiquettes.length === 0) return null;
   return (

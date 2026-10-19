@@ -82,7 +82,7 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
           {/* Pour le visiteur qui part sans avoir ouvert les conseils */}
           <p className="text-center text-sm text-neutral-500">
             <LienFaq source="fiche_marque_bas" className="underline hover:text-primary">
-              Des doutes sur le boycott ?
+              Tu doutes sur le boycott ?
             </LienFaq>
           </p>
         </div>

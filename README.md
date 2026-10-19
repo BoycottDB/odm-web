@@ -5,7 +5,7 @@
 
 # Qui j'enrichis ?
 
-Quand j'achète cette marque, qui s'enrichit ? Le site remonte la chaîne de propriété d'une marque jusqu'aux groupes et aux personnes qui en profitent, et montre leurs controverses, datées et sourcées. Chacun décide ensuite en conscience.
+Quand j'achète cette marque, qui s'enrichit ? Le site remonte la chaîne de propriété d'une marque jusqu'aux groupes et aux personnes qui en profitent et montre leurs controverses, datées et sourcées. Chacun décide ensuite en conscience.
 
 ## Principes
 

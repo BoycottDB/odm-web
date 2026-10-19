@@ -76,7 +76,7 @@ export default function Moderation() {
             Modération et validation
           </h1>
           <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
-            Comment les signalements sont relus, et les règles que nous appliquons
+            Comment les signalements sont relus et les règles que nous appliquons
           </p>
         </div>
       </section>
@@ -146,7 +146,7 @@ export default function Moderation() {
                 <h3 className="font-semibold body-base text-neutral-900 mb-2">🏷️ Le classement</h3>
                 <ul className="list-disc pl-5 text-neutral-700 space-y-2 body-base leading-snug">
                   <li>Les étiquettes désignent un domaine (environnement, conditions de travail…), pas un jugement sur l&apos;entreprise.</li>
-                  <li>Les controverses sont classées par date, de la plus récente à la plus ancienne, et non par gravité.</li>
+                  <li>Les controverses sont classées par date, de la plus récente à la plus ancienne et non par gravité.</li>
                 </ul>
               </div>
 
