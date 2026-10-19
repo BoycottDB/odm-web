@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Download, Search, SearchX, Compass, TextSearch, WavesLadder, Sailboat, FileInput, CircleQuestionMark, Zap, ChevronRight } from 'lucide-react';
+import { Download, Search, SearchX, Compass, TextSearch, WavesLadder, Sailboat, FileInput, CircleQuestionMark, Smartphone, ChevronRight } from 'lucide-react';
 import { useMobileDetection } from '@/hooks/useMobileDetection';
+import { safeTrack } from '@/lib/analytics';
 import { useEffect, useState } from 'react';
 import { VideoSkeleton } from '@/components/ui/VideoSkeleton';
 
@@ -404,7 +405,8 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             {/* Question efficacité */}
             <Link
-              href="/faq/pourquoi"
+              href="/faq#a-quoi-ca-sert"
+              onClick={() => safeTrack('faq_link_click', { source: 'accueil', question: 'a-quoi-ca-sert' })}
               className="bg-white rounded-xl p-6 border border-neutral-200 hover:shadow-secondary shadow-sm hover:shadow-md/60 transition-all duration-300 group text-left"
               draggable={false}
             >
@@ -412,7 +414,7 @@ export default function Home() {
                 <CircleQuestionMark className="w-12 h-12 text-accent-dark" />
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-2 group-hover:text-primary transition-colors">
-                    &quot;À quoi ça sert ? C&apos;est peine perdue de toute façon...&quot;
+                    « C&apos;est peine perdue de toute façon... »
                   </h3>
                   <p className="text-sm text-neutral-600">
                     Pourquoi, nous, on y croit et pourquoi ça nous semble important aujourd&apos;hui de nous mobiliser pour essayer de changer la donne.
@@ -421,20 +423,21 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* Question alternatives */}
+            {/* Question iPhone */}
             <Link
-              href="/faq/alternatives"
+              href="/faq#iphone"
+              onClick={() => safeTrack('faq_link_click', { source: 'accueil', question: 'iphone' })}
               className="bg-white rounded-xl p-6 border border-neutral-200 hover:shadow-secondary shadow-sm hover:shadow-md/60 transition-all duration-300 group text-left"
               draggable={false}
             >
               <div className="flex items-start space-x-4">
-                <Zap className="w-12 h-12 text-accent-dark" />
+                <Smartphone className="w-12 h-12 text-accent-dark" />
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-2 group-hover:text-primary transition-colors">
-                    &quot;Pourquoi ne proposez-vous pas des alternatives ?&quot;
+                    « Tu boycottes, mais tu as un iPhone ! »
                   </h3>
                   <p className="text-sm text-neutral-600">
-                    Notre position sur les alternatives et pourquoi nous mettons en lumière le mauvais plutôt que le bon, pour le moment...
+                    Personne n&apos;est parfait : pourquoi chaque boycott compte, même incomplet.
                   </p>
                 </div>
               </div>

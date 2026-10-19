@@ -17,6 +17,15 @@ const nextConfig: NextConfig = {
     ]
   },
 
+  // Anciennes pages de la FAQ, regroupées sur /faq (liens partagés, référencement, textes d'impact en base)
+  async redirects() {
+    return [
+      { source: '/faq/pourquoi', destination: '/faq#a-quoi-ca-sert', permanent: true },
+      { source: '/faq/alternatives', destination: '/faq#alternatives', permanent: true },
+      { source: '/faq/argent', destination: '/faq#argent', permanent: true },
+    ]
+  },
+
   // Configuration PWA (si applicable)
   webpack: (config) => {
     config.resolve.fallback = { fs: false, path: false }

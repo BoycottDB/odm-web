@@ -45,7 +45,7 @@ export default function Confidentialite() {
                     <strong>Hébergement (Netlify, États-Unis).</strong> Comme tout hébergeur, Netlify enregistre des journaux techniques (adresse IP, navigateur, pages demandées) pour faire fonctionner et protéger le site.
                   </li>
                   <li>
-                    <strong>Statistiques de visite (Umami).</strong> Nombre de visites, pages vues et quelques actions (recherches, clics sur les sources, partages), pour savoir ce qui est utile. Umami ne dépose aucun cookie et ne permet pas de vous identifier. Ses serveurs sont aux États-Unis et dans l&apos;Union européenne.
+                    <strong>Statistiques de visite (Umami).</strong> Nombre de visites, pages vues et quelques actions (recherches, clics sur les sources, partages, questions de la FAQ consultées), pour savoir ce qui est utile. Umami ne dépose aucun cookie et ne permet pas de vous identifier. Ses serveurs sont aux États-Unis et dans l&apos;Union européenne.
                   </li>
                   <li>
                     <strong>Suivi des erreurs (Sentry, Union européenne).</strong> Quand une page plante, un rapport technique est envoyé pour corriger le problème. Les informations d&apos;identification et les cookies en sont retirés avant l&apos;envoi.

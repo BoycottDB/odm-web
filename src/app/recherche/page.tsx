@@ -6,6 +6,7 @@ import { slugify } from '@/lib/slug';
 import { Suggestion, construireSuggestions, suggestionExacte, suggestionsProches } from '@/lib/rechercheMarques';
 import { SearchHero } from '@/components/search/SearchHero';
 import { AppelContribution } from '@/components/marque/AppelContribution';
+import LienFaq from '@/components/faq/LienFaq';
 
 // Le texte vient de l'URL : on le borne et on ne laisse pas les moteurs l'indexer
 const LONGUEUR_MAX = 80;
@@ -78,6 +79,13 @@ export default async function RecherchePage({ searchParams }: PageProps) {
           </div>
 
           <AppelContribution />
+
+          {/* Après l'invitation à signaler : pourquoi une marque peut manquer */}
+          <p className="text-sm text-neutral-600 text-center">
+            <LienFaq ancre="marque-absente" source="recherche_vide" className="underline hover:text-primary">
+              Pourquoi cette marque n&apos;est pas sur le site ?
+            </LienFaq>
+          </p>
         </div>
       </section>
     </div>

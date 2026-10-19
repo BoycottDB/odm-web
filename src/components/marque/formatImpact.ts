@@ -5,7 +5,7 @@ export const formatImpact = (text: string) => {
   return text
     .replace(/(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, (match: string, text: string, url: string) => {
       const linkClass = 'text-primary hover:text-primary-dark underline font-medium';
-      // Liens internes au site (ex. /faq/argent) : même onglet, indépendants du domaine
+      // Liens internes au site (ex. /faq#argent) : même onglet, indépendants du domaine
       if (/^\/(?!\/)/.test(url)) {
         return `<a href="${url}" class="${linkClass}">${text}</a>`;
       }
