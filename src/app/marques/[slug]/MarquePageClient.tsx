@@ -7,6 +7,7 @@ import { ShareButton } from '@/components/ui/ShareButton';
 import { SearchHero } from '@/components/search/SearchHero';
 import { useAddToHomeScreen } from '@/hooks/useAddToHomeScreen';
 import { AppelContribution } from '@/components/marque/AppelContribution';
+import LienFaq from '@/components/faq/LienFaq';
 
 interface MarquePageClientProps {
   marque: Marque;
@@ -77,6 +78,13 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
 
 
           <AppelContribution />
+
+          {/* Pour le visiteur qui part sans avoir ouvert les conseils */}
+          <p className="text-center text-sm text-neutral-500">
+            <LienFaq source="fiche_marque_bas" className="underline hover:text-primary">
+              Des doutes sur le boycott ?
+            </LienFaq>
+          </p>
         </div>
       </section>
     </div>

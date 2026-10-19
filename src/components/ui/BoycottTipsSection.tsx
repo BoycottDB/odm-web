@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { CheckCircle2, ChevronDown, Lightbulb, ShoppingBasket, Tag } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Lightbulb, MessageCircleQuestionMark, ShoppingBasket, Tag } from 'lucide-react';
 import { safeTrack } from '@/lib/analytics';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -80,6 +80,14 @@ declare global {
 }
 
 const ANCRE_CONSEILS = 'conseils';
+
+// Doutes pratiques les plus fréquents au moment d'agir, formulés comme dans la FAQ
+const DOUTES = [
+  { ancre: 'pas-les-moyens', question: '« Je n\'ai pas les moyens d\'acheter éthique »' },
+  { ancre: 'produits-deja-achetes', question: '« J\'ai déjà des produits de ces marques, que faire ? »' },
+  { ancre: 'iphone', question: '« Tu boycottes, mais tu as un iPhone ! »' },
+  { ancre: 'a-quoi-ca-sert', question: '« C\'est peine perdue de toute façon... »' },
+];
 
 interface BoycottTipsSectionProps {
   marque: Marque;
@@ -255,7 +263,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
       contenu: "**Privilégiez les petites enseignes locales.** <br>Même si elles ne sont pas parfaitement \"clean\", elles causeront toujours moins de tort à leur échelle que les grandes multinationales."
     },
     {
-      contenu: "**Ne travaillez pas pour cette marque.** <br> Si vous cherchez un emploi, privilégiez les entreprises dont les valeurs correspondent aux vôtres. <br>Si vous êtes déjà en poste dans cette boîte, **ne prenez pas une décision hâtive qui pourrait vous mettre dans une galère financière**. Prenez le temps de trouver une porte de sortie et n'hésitez pas à demander à vos dirigeants de rendre des comptes en attendant. Cœur sur vous, le marché du travail est dur 🫶"
+      contenu: "**Choisissez votre employeur selon vos valeurs.** <br> Si vous cherchez un emploi, privilégiez les entreprises dont les valeurs correspondent aux vôtres. <br>Si vous êtes déjà en poste dans cette boîte, **ne prenez pas une décision hâtive qui pourrait vous mettre dans une galère financière**. Prenez le temps de trouver une porte de sortie, ou faites bouger les lignes de l'intérieur en demandant à vos dirigeants de rendre des comptes. Cœur sur vous, le marché du travail est dur 🫶"
     }
   ];
 
@@ -383,17 +391,23 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
             </ul>
           </details>
 
-          {/* Questions que se pose souvent le visiteur au moment d'agir */}
-          <p className="text-sm text-neutral-700 text-center">
-            Pour aller plus loin :{' '}
-            <Link href="/faq/pourquoi" className="font-medium text-secondary-800 underline hover:text-secondary-900">
-              Boycotter, ça sert vraiment ?
-            </Link>
-            <span className="mx-2 text-neutral-400" aria-hidden="true">·</span>
-            <Link href="/faq/alternatives" className="font-medium text-secondary-800 underline hover:text-secondary-900">
-              Pourquoi on ne propose pas d&apos;alternatives ?
-            </Link>
-          </p>
+          {/* Doutes pratiques du visiteur au moment d'agir : chaque lien ouvre la question dans la FAQ */}
+          <section className="bg-white border rounded-xl p-4 border-secondary-200">
+            <TitreSection icone={MessageCircleQuestionMark}>Vos doutes</TitreSection>
+            <ul className="space-y-2">
+              {DOUTES.map((doute) => (
+                <li key={doute.ancre}>
+                  <Link
+                    href={`/faq#${doute.ancre}`}
+                    onClick={() => safeTrack('faq_link_click', { source: 'encart_conseils', question: doute.ancre })}
+                    className="text-sm font-medium text-secondary-800 underline hover:text-secondary-900"
+                  >
+                    {doute.question}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       </div>
 
