@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { CheckCircle2, Lightbulb, ShoppingBasket, Tag } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Lightbulb, ShoppingBasket, Tag } from 'lucide-react';
 import { safeTrack } from '@/lib/analytics';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -249,13 +249,13 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
   // Messages génériques hardcodés (option 3)
   const messagesGeneriques = [
     {
-      contenu: "**Ne travaillez pas pour cette marque.** <br> Si vous cherchez un emploi, privilégiez les entreprises dont les valeurs correspondent aux vôtres. <br>Si vous êtes déjà en poste dans cette boîte, ne prenez pas une décision hâtive qui pourrait vous mettre dans une galère financière. Prenez le temps de trouver une porte de sortie et n'hésitez pas à demander à vos dirigeants de rendre des comptes en attendant. Cœur sur vous, le marché du travail est dur 🫶"
+      contenu: "**Remettez en question votre besoin d'achat.** <br> Avant tout achat, demandez-vous : \"Ai-je vraiment besoin de ce produit aujourd'hui ?\""
     },
     {
       contenu: "**Privilégiez les petites enseignes locales.** <br>Même si elles ne sont pas parfaitement \"clean\", elles causeront toujours moins de tort à leur échelle que les grandes multinationales."
     },
     {
-      contenu: "**Remettez en question votre besoin d'achat.** <br> Avant tout achat, demandez-vous : \"Ai-je vraiment besoin de ce produit aujourd'hui ?\""
+      contenu: "**Ne travaillez pas pour cette marque.** <br> Si vous cherchez un emploi, privilégiez les entreprises dont les valeurs correspondent aux vôtres. <br>Si vous êtes déjà en poste dans cette boîte, **ne prenez pas une décision hâtive qui pourrait vous mettre dans une galère financière**. Prenez le temps de trouver une porte de sortie et n'hésitez pas à demander à vos dirigeants de rendre des comptes en attendant. Cœur sur vous, le marché du travail est dur 🫶"
     }
   ];
 
@@ -333,6 +333,12 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
           {/* Assombrissement au survol, à l'appui et quand les conseils sont ouverts */}
           <div className="absolute inset-0 rounded-2xl bg-secondary-800 opacity-0 group-hover:opacity-20 group-active:opacity-20 group-aria-expanded:opacity-20 transition-opacity duration-300"></div>
         </button>
+        {/* Annonce le contenu de l'encart : inutile une fois ouvert */}
+        {!isExpanded && (
+          <p className="mt-3 text-sm text-neutral-600">
+            Des conseils pratiques pour acheter autrement, sans culpabilité et selon vos moyens.
+          </p>
+        )}
       </div>
 
       {/* Section dépliable avec animation */}
@@ -358,9 +364,13 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
             </section>
           )}
 
-          <section className={`bg-white border rounded-xl p-4 border-secondary-200`}>
-            <TitreSection icone={Lightbulb}>Conseils généraux pour toutes marques</TitreSection>
-            <ul className="space-y-3">
+          {/* Identiques sur toutes les fiches : repliés par défaut pour ne pas alourdir la lecture */}
+          <details className="group/generaux bg-white border rounded-xl p-4 border-secondary-200">
+            <summary className="flex items-center justify-between gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden [&>h3]:mb-0">
+              <TitreSection icone={Lightbulb}>Conseils généraux pour toutes marques</TitreSection>
+              <ChevronDown className="w-5 h-5 flex-shrink-0 text-secondary-700 transition-transform duration-300 group-open/generaux:rotate-180" aria-hidden="true" />
+            </summary>
+            <ul className="mt-3 space-y-3">
               {messagesGeneriques.map((message, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <CheckCircle2 className={`w-4 h-4 mt-0.5 flex-shrink-0 text-secondary-600`} aria-hidden="true" />
@@ -371,7 +381,7 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                 </li>
               ))}
             </ul>
-          </section>
+          </details>
 
           {/* Questions que se pose souvent le visiteur au moment d'agir */}
           <p className="text-sm text-neutral-700 text-center">
@@ -383,10 +393,6 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
             <Link href="/faq/alternatives" className="font-medium text-secondary-800 underline hover:text-secondary-900">
               Pourquoi on ne propose pas d&apos;alternatives ?
             </Link>
-          </p>
-
-          <p className="text-xs text-neutral-500 text-center">
-            Ces conseils sont donnés à titre informatif pour vous aider dans vos choix de consommation.
           </p>
         </div>
       </div>
