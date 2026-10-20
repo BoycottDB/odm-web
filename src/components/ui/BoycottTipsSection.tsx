@@ -81,7 +81,7 @@ declare global {
 
 const ANCRE_CONSEILS = 'conseils';
 
-// Doutes pratiques les plus fréquents au moment d'agir, formulés comme dans la FAQ
+// Doutes pratiques les plus fréquents au moment d'agir, formulés comme dans /boycotter
 const DOUTES = [
   { ancre: 'pas-les-moyens', question: '« Je n\'ai pas les moyens d\'acheter éthique »' },
   { ancre: 'produits-deja-achetes', question: '« J\'ai déjà des produits de ces marques, que faire ? »' },
@@ -391,14 +391,14 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
             </ul>
           </details>
 
-          {/* Doutes pratiques du visiteur au moment d'agir : chaque lien ouvre la question dans la FAQ */}
+          {/* Doutes pratiques du visiteur au moment d'agir : chaque lien ouvre la question dans /boycotter */}
           <section className="bg-white border rounded-xl p-4 border-secondary-200">
             <TitreSection icone={MessageCircleQuestionMark}>Vos doutes</TitreSection>
             <ul className="space-y-2">
               {DOUTES.map((doute) => (
                 <li key={doute.ancre}>
                   <Link
-                    href={`/faq#${doute.ancre}`}
+                    href={`/boycotter#${doute.ancre}`}
                     onClick={() => safeTrack('faq_link_click', { source: 'encart_conseils', question: doute.ancre })}
                     className="text-sm font-medium text-secondary-800 underline hover:text-secondary-900"
                   >

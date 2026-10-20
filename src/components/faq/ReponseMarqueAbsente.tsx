@@ -10,7 +10,7 @@ export default function ReponseMarqueAbsente() {
       <div className="border-l-2 border-neutral-200 pl-4">
         <h4 className="body-large font-semibold text-neutral-900 mb-3">Une marque absente n&apos;est pas une marque « clean »</h4>
         <p className="body-base text-neutral-700 leading-snug">
-          Si une marque n&apos;apparaît pas, ça veut seulement dire qu&apos;on ne l&apos;a pas encore étudiée, ou qu&apos;on n&apos;a pas encore trouvé de controverse documentée. Une marque peut aussi <a href="/faq#alternatives" target="_blank" rel="noopener noreferrer" className={lienClass}>cacher son jeu</a>.
+          Si une marque n&apos;apparaît pas, ça veut seulement dire qu&apos;on ne l&apos;a pas encore étudiée, ou qu&apos;on n&apos;a pas encore trouvé de controverse documentée. Une marque peut aussi <a href="/boycotter#alternatives" target="_blank" rel="noopener noreferrer" className={lienClass}>cacher son jeu</a>.
         </p>
       </div>
 

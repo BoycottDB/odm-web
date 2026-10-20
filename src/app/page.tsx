@@ -392,7 +392,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section FAQ */}
+      {/* Section doutes */}
       <section className="relative z-10 section-padding">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="heading-main text-neutral-900 mb-4">
@@ -405,7 +405,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             {/* Question efficacité */}
             <Link
-              href="/faq#a-quoi-ca-sert"
+              href="/boycotter#a-quoi-ca-sert"
               onClick={() => safeTrack('faq_link_click', { source: 'accueil', question: 'a-quoi-ca-sert' })}
               className="bg-white rounded-xl p-6 border border-neutral-200 hover:shadow-secondary shadow-sm hover:shadow-md/60 transition-all duration-300 group text-left"
               draggable={false}
@@ -425,7 +425,7 @@ export default function Home() {
 
             {/* Question iPhone */}
             <Link
-              href="/faq#iphone"
+              href="/boycotter#iphone"
               onClick={() => safeTrack('faq_link_click', { source: 'accueil', question: 'iphone' })}
               className="bg-white rounded-xl p-6 border border-neutral-200 hover:shadow-secondary shadow-sm hover:shadow-md/60 transition-all duration-300 group text-left"
               draggable={false}
@@ -443,12 +443,12 @@ export default function Home() {
               </div>
             </Link>
           </div>
-          {/* Lien vers FAQ complète */}
+          {/* Lien vers tous les doutes */}
           <Link
-            href="/faq"
+            href="/boycotter"
             className="bouton-primaire px-6 py-3 transition-all duration-300 shadow-sm hover:shadow-lg/60 hover:shadow-secondary"
           >
-            Consulter la FAQ complète
+            Voir toutes nos réponses
             <ChevronRight className="w-4 h-4 ml-2" />
           </Link>
         </div>

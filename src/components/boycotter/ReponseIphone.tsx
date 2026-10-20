@@ -26,7 +26,7 @@ export default function ReponseIphone() {
           Aujourd&apos;hui, on est une grande majorité à avoir besoin d&apos;un smartphone pour vivre ou travailler. Ça peut tout à fait être également un outil pour militer, que ce soit pour le boycott ou pour d&apos;autres combats.
         </p>
         <p className="body-base text-neutral-700 leading-snug mb-3">
-          <a href="/faq#produits-deja-achetes" target="_blank" rel="noopener noreferrer" className={lienClass}>Le boycott porte sur tes prochains achats</a> : garder ton téléphone le plus longtemps possible, c&apos;est même déjà moins d&apos;argent pour cette marque ou une autre et un bon geste pour la planète.
+          <a href="/boycotter#produits-deja-achetes" target="_blank" rel="noopener noreferrer" className={lienClass}>Le boycott porte sur tes prochains achats</a> : garder ton téléphone le plus longtemps possible, c&apos;est même déjà moins d&apos;argent pour cette marque ou une autre et un bon geste pour la planète.
         </p>
         <p className="body-base text-neutral-700 leading-snug">
           J&apos;ai personnellement un Fairphone qui, sur le papier et à l&apos;heure où j&apos;écris, est une bonne alternative mais j&apos;ai conscience que ce n&apos;est pas encore une alternative très connue ou accessible du grand public et qu&apos;elle ne répondra pas à tous les besoins.

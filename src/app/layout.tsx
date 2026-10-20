@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Script from 'next/script';
 import { usePathname } from "next/navigation";
 import { Rubik, Geist } from "next/font/google";
-import { BarreMobile } from "@/components/ui/BarreMobile";
+import { BarreMobile, barreMobileVisible } from "@/components/ui/BarreMobile";
 import { BoutonRetour } from "@/components/ui/BoutonRetour";
 import "./globals.css";
 
@@ -86,8 +86,11 @@ export default function RootLayout({
               <Link href="/signaler" className={getDesktopLinkClass('/signaler')}>
                 Signaler
               </Link>
+              <Link href="/boycotter" className={getDesktopLinkClass('/boycotter')}>
+                Boycotter ?
+              </Link>
               <Link href="/faq" className={getDesktopLinkClass('/faq')}>
-                Questions fréquentes
+                FAQ
               </Link>
             </nav>
           </div>
@@ -126,7 +129,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <p className={`relative z-10 bg-foreground text-center text-xs md:text-sm text-white/60 md:-mt-10 ${pathname === '/' ? 'pb-24 md:pb-3' : 'pb-3'}`}>
+        <p className={`relative z-10 bg-foreground text-center text-xs md:text-sm text-white/60 md:-mt-10 ${barreMobileVisible(pathname) ? 'pb-24 md:pb-3' : 'pb-3'}`}>
           Ce projet étant le fruit du travail d&apos;humains, il peut y avoir des erreurs ou des données non à jour. N&apos;hésitez pas à vérifier les sources et à nous signaler des éventuelles corrections.
           {' · '}
           <Link href="/droit-de-reponse" className="underline hover:text-white">

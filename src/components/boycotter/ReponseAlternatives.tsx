@@ -29,7 +29,7 @@ export default function ReponseAlternatives() {
           personne à consommer une autre marque.
         </p>
         <p className="body-base text-neutral-700 leading-snug">
-          On espère même que toi qui lis ces lignes, <a href="/faq#proposer-des-alternatives" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">tu entreprennes pour créer des alternatives éthiques et responsables</a>.
+          On espère même que toi qui lis ces lignes, <a href="/boycotter#proposer-des-alternatives" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">tu entreprennes pour créer des alternatives éthiques et responsables</a>.
         </p>
       </div>
 
