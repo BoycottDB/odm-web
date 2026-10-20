@@ -437,7 +437,7 @@ export default function Home() {
                     « Tu boycottes, mais tu as un iPhone ! »
                   </h3>
                   <p className="text-sm text-neutral-600">
-                    Personne n&apos;est parfait : pourquoi chaque boycott compte, même incomplet.
+                    Pourquoi cette argument est falacieux alors que tout boycott, même « incomplet » et à l&apos;échelle individuelle, compte.
                   </p>
                 </div>
               </div>
