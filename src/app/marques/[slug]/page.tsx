@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = `Qui j'enrichis en consommant ${marque.nom} ?`;
   const description = acteurs.length > 0
     ? `En consommant ${marque.nom}, j'enrichis ${new Intl.ListFormat('fr', { type: 'conjunction' }).format(acteurs)}. Découvrez pourquoi ça peut poser problème et comment consommer autrement.`
-    : `Découvrez qui s'enrichit quand vous consommez ${marque.nom}, et comment consommer autrement.`;
+    : `Découvrez qui s'enrichit quand vous consommez ${marque.nom} et comment consommer autrement.`;
 
   return {
     title,

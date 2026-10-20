@@ -5,22 +5,21 @@ export default function ReponseAQuoiCaSert() {
         On comprend ce sentiment, mais non : même si une marque ne plie pas, ton argent n&apos;enrichit plus ses bénéficiaires. C&apos;est tout le sens de « Qui j&apos;enrichis ? ».
       </p>
 
-
       <div className="border-l-2 border-neutral-200 pl-4">
-        <h4 className="body-large font-semibold text-neutral-900 mb-3">Pas besoin que tout le monde s&apos;y mette</h4>
-        <p className="body-base text-neutral-700 leading-snug mb-3">
-          Les marques réagissent à quelques clients perdus, pas seulement à une désertion massive. Dans <a href="https://www.youtube.com/watch?v=Yc_DlyC4w_g&t=389s" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">un reportage de Sept à Huit</a>, le vice-président de Lidl France explique avoir baissé ses marges, par exemple sur des céréales au miel passées de 5,50 € à 2,33 €, parce que des clients fidèles allaient acheter certains produits moins chers chez ses concurrents : « je peux pas accepter ça ».
+        <h4 className="body-large font-semibold text-neutral-900 mb-3">Tout part d&apos;un geste individuel</h4>
+        <p className="body-base text-neutral-700 leading-snug">
+          Le boycott, c&apos;est juste une question simple avant chaque achat : « Est-ce que je veux vraiment donner mon euro à cette entreprise ? »
         </p>
         <p className="body-base text-neutral-700 leading-snug">
-          Et on ne voit pas les boycotts : ceux qui n&apos;achètent plus ne font pas de bruit, alors que ceux qui achètent restent bien visibles. Sans compter que chaque personne qui boycotte en parle autour d&apos;elle, et donne des idées à d&apos;autres.
+          Peu importe ce que font les autres, ça doit d&apos;abord venir de toi et de tes convictions personnelles.
         </p>
       </div>
 
       <div className="border-l-2 border-neutral-200 pl-4">
-        <h4 className="body-large font-semibold text-neutral-900 mb-3">Des boycotts qui ont pesé</h4>
+        <h4 className="body-large font-semibold text-neutral-900 mb-3">Des résultats collectifs</h4>
         <div className="space-y-4">
           <div>
-            <h5 className="font-medium text-neutral-900 mb-2">Les ventes baissent, et les dirigeants le reconnaissent :</h5>
+            <h5 className="font-medium text-neutral-900 mb-2">Les ventes baissent et les dirigeants le reconnaissent :</h5>
             <div className="space-y-2 ml-2">
               <p className="body-base text-neutral-700 leading-snug">
                 <strong>🍔 McDonald&apos;s (2024) :</strong> après des appels au boycott lancés quand sa filiale israélienne a offert des repas à des soldats, son PDG a reconnu un « impact significatif » sur ses ventes <a href="https://fortune.com/2024/01/05/mcdonalds-boycott-chris-kempczinski-business-impact/" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">dans plusieurs marchés du Moyen-Orient et au-delà</a>, qu&apos;il attribue à la guerre et à la « désinformation ».
@@ -35,7 +34,7 @@ export default function ReponseAQuoiCaSert() {
             <h5 className="font-medium text-neutral-900 mb-2">Une entreprise recule sur un point précis :</h5>
             <div className="space-y-2 ml-2">
               <p className="body-base text-neutral-700 leading-snug">
-                <strong>🛢️ Shell (1995) :</strong> Shell voulait couler en mer sa plateforme pétrolière Brent Spar. Des automobilistes allemands, suédois ou norvégiens ont boycotté ses stations-service, ses ventes d&apos;essence ont chuté jusqu&apos;à 30 %, et Shell <a href="https://www.csmonitor.com/1995/0622/22062.html" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">a renoncé à son projet</a>.
+                <strong>🛢️ Shell (1995) :</strong> Shell voulait couler en mer sa plateforme pétrolière Brent Spar. Des automobilistes allemands, suédois ou norvégiens ont boycotté ses stations-service, ses ventes d&apos;essence ont chuté jusqu&apos;à 30 % et Shell <a href="https://www.csmonitor.com/1995/0622/22062.html" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">a renoncé à son projet</a>.
               </p>
             </div>
           </div>
@@ -61,6 +60,13 @@ export default function ReponseAQuoiCaSert() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="border-l-2 border-neutral-200 pl-4">
+        <h4 className="body-large font-semibold text-neutral-900 mb-3">Des effets parfois invisibles mais pas sans incidence</h4>
+        <p className="body-base text-neutral-700 leading-snug">
+          Il y a énormément de boycotts peu médiatisés mais ça ne veut pas dire que les entreprises n&apos;en sont pas impactées, beaucoup tremblent même devant une légère chute de profit. De plus, un impact peut prendre du temps en faisant son chemin à travers chaque personne qui en parle autour d&apos;elle et donne des idées à d&apos;autres.
+        </p>
       </div>
 
       <div className="bg-secondary-light border border-secondary rounded-xl p-4 md:p-5">

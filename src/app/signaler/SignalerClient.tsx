@@ -25,7 +25,7 @@ export default function SignalerClient() {
 
             <p className="body-large text-neutral-700 mb-8 leading-snug">
               Signalez une controverse liée à une marque pour informer les consommateurs.
-              Chaque signalement est relu, et n&apos;est publié qu&apos;avec une source vérifiable.
+              Chaque signalement est relu et n&apos;est publié qu&apos;avec une source vérifiable.
             </p>
 
             <button
@@ -36,7 +36,7 @@ export default function SignalerClient() {
             </button>
 
             <p className="text-primary body-small mt-4 leading-snug">
-              Le formulaire ne demande ni nom ni adresse email, et votre adresse IP n&apos;est pas enregistrée.
+              Le formulaire ne demande ni nom ni adresse email et votre adresse IP n&apos;est pas enregistrée.
             </p>
           </div>
         </div>

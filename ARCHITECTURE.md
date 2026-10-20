@@ -47,11 +47,11 @@ odm-web (Next.js sur Netlify)
 - **Accès admin** : `/admin/*` exige le cookie `admin_token`, comparé à `ADMIN_TOKEN` ([admin.ts](src/lib/auth/admin.ts)). Sans `ADMIN_TOKEN` défini, tout accès est refusé.
 - **Écritures** : [middleware.ts](src/middleware.ts) refuse toute écriture sur `/api/*` sans token admin, sauf deux exceptions publiques : `POST /api/propositions` (signalement) et `POST /api/sondage-ecommerce`.
 - **Signalements** : stockés en `en_attente`, sans email ni IP, protégés par un honeypot et un captcha. Ils ne deviennent des controverses qu'après approbation ([moderation.ts](src/lib/services/moderation.ts)). La lecture des signalements est réservée à l'admin.
-- **Supabase** : RLS activé sur toutes les tables. Le rôle anon (odm-api) n'a que `SELECT` sur les tables publiques, et `Proposition` est réservée à `service_role`.
+- **Supabase** : RLS activé sur toutes les tables. Le rôle anon (odm-api) n'a que `SELECT` sur les tables publiques et `Proposition` est réservée à `service_role`.
 
 ## Chaîne de bénéficiaires
 
-Une marque est liée à des bénéficiaires (`Marque_beneficiaire`), eux-mêmes liés entre eux (`beneficiaire_relation`). odm-api remonte cette chaîne récursivement, avec une protection contre les cycles, et [ChaineBeneficiaires.tsx](src/components/events/ChaineBeneficiaires.tsx) l'affiche. Schéma complet : `SCHEMA.md` à la racine du dépôt parent.
+Une marque est liée à des bénéficiaires (`Marque_beneficiaire`), eux-mêmes liés entre eux (`beneficiaire_relation`). odm-api remonte cette chaîne récursivement, avec une protection contre les cycles et [ChaineBeneficiaires.tsx](src/components/events/ChaineBeneficiaires.tsx) l'affiche. Schéma complet : `SCHEMA.md` à la racine du dépôt parent.
 
 ## Conseils de boycott
 
@@ -59,7 +59,7 @@ Le champ `message_boycott_tips` (par marque ou par secteur) accepte un Markdown 
 
 ## Suivi
 
-- **Umami** : statistiques sans cookies. Le script est injecté dans `layout.tsx`, et les événements (`source_click`, `search_error`…) passent par `safeTrack` ([analytics.ts](src/lib/analytics.ts)).
+- **Umami** : statistiques sans cookies. Le script est injecté dans `layout.tsx` et les événements (`source_click`, `search_error`…) passent par `safeTrack` ([analytics.ts](src/lib/analytics.ts)).
 - **Sentry** : erreurs côté client, serveur et edge (`sentry.*.config.ts`). `beforeSend` retire les données personnelles.
 
 ## Variables d'environnement

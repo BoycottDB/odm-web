@@ -68,7 +68,7 @@ export default function DroitDeReponse() {
                   <Link href="/mentions-legales" className="text-secondary-dark hover:text-secondary-900 underline">mentions légales</Link>).
                 </p>
                 <p className="body-base text-neutral-700 leading-snug">
-                  La réponse est publiée sur cette page, présentée comme l&apos;exercice d&apos;un droit de réponse, et reliée à la fiche concernée par le lien « Réponse ». Elle peut être refusée si elle est contraire à la loi ou porte atteinte à l&apos;intérêt légitime de tiers.
+                  La réponse est publiée sur cette page, présentée comme l&apos;exercice d&apos;un droit de réponse et reliée à la fiche concernée par le lien « Réponse ». Elle peut être refusée si elle est contraire à la loi ou porte atteinte à l&apos;intérêt légitime de tiers.
                 </p>
               </div>
 

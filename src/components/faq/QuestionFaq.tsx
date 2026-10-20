@@ -61,7 +61,7 @@ export default function QuestionFaq({ id, question, children }: QuestionFaqProps
       // Les marges négatives gardent le texte aligné sur les questions fermées.
       className="group/question scroll-mt-24 transition-colors duration-300 open:bg-white open:-mx-4 open:px-4 md:open:-mx-6 md:open:px-6"
     >
-      <summary className="flex items-center justify-between gap-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden py-5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4">
+      <summary className="flex items-center justify-between gap-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden -mx-4 px-4 md:-mx-6 md:px-6 py-5 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary">
         <h3 className="text-lg md:text-xl font-semibold text-neutral-900 group-hover/question:text-primary group-open/question:text-primary transition-colors duration-200">{question}</h3>
         <ChevronDown className="w-6 h-6 flex-shrink-0 text-neutral-900 transition-transform duration-300 group-open/question:rotate-180" aria-hidden="true" />
       </summary>

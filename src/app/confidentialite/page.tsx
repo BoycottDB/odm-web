@@ -4,7 +4,7 @@ import AdresseContact from '@/components/ui/AdresseContact';
 
 export const metadata: Metadata = {
   title: 'Confidentialité',
-  description: 'Les données que traite le site, pourquoi, où et combien de temps, et comment exercer vos droits.',
+  description: 'Les données que traite le site, pourquoi, où et combien de temps et comment exercer vos droits.',
 };
 
 const lienClass = 'text-secondary-dark hover:text-secondary-900 underline';
@@ -19,7 +19,7 @@ export default function Confidentialite() {
             Confidentialité
           </h1>
           <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
-            Pas de compte, pas de cookie de suivi, aucune donnée vendue. Voici ce que le site traite, et pourquoi.
+            Pas de compte, pas de cookie de suivi, aucune donnée vendue. Voici ce que le site traite et pourquoi.
           </p>
         </div>
       </section>
@@ -59,14 +59,14 @@ export default function Confidentialite() {
               <div>
                 <h2 className="heading-main text-neutral-900 mb-4">Ce qui est enregistré dans votre navigateur</h2>
                 <p className="body-base text-neutral-700 leading-snug">
-                  Aucun cookie n&apos;est déposé pour les visiteurs. Le site garde seulement, dans votre navigateur, quelques réglages d&apos;affichage : par exemple, si vous avez fermé la proposition d&apos;ajouter le site à votre écran d&apos;accueil. Ces informations ne quittent pas votre appareil, et vous pouvez les effacer depuis les réglages de votre navigateur.
+                  Aucun cookie n&apos;est déposé pour les visiteurs. Le site garde seulement, dans votre navigateur, quelques réglages d&apos;affichage : par exemple, si vous avez fermé la proposition d&apos;ajouter le site à votre écran d&apos;accueil. Ces informations ne quittent pas votre appareil et vous pouvez les effacer depuis les réglages de votre navigateur.
                 </p>
               </div>
 
               <div>
                 <h2 className="heading-main text-neutral-900 mb-4">Quand vous signalez une controverse</h2>
                 <p className="body-base text-neutral-700 leading-snug">
-                  Le formulaire de signalement est anonyme : il ne demande ni nom ni adresse email, et votre adresse IP n&apos;est pas enregistrée. Seuls la marque, la description, la date et la source sont conservés, dans une base de données hébergée dans l&apos;Union européenne (Supabase). La décision de modération est publique. N&apos;écrivez pas de données personnelles dans la description.
+                  Le formulaire de signalement est anonyme : il ne demande ni nom ni adresse email et votre adresse IP n&apos;est pas enregistrée. Seuls la marque, la description, la date et la source sont conservés, dans une base de données hébergée dans l&apos;Union européenne (Supabase). La décision de modération est publique. N&apos;écrivez pas de données personnelles dans la description.
                 </p>
               </div>
 
