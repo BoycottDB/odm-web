@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Search, Flag, Megaphone, CircleHelp, type LucideIcon } from 'lucide-react';
 
@@ -38,7 +38,6 @@ function estChampDeSaisie(element: EventTarget | null) {
 // Barre d'onglets fixée en bas d'écran sur mobile : rechercher, signaler, boycotter, FAQ
 export function BarreMobile() {
   const pathname = usePathname();
-  const champRelaisRef = useRef<HTMLInputElement>(null);
   const [saisieEnCours, setSaisieEnCours] = useState(false);
 
   // Masque la barre tant qu'un champ de saisie a le focus (formulaire de signalement, recherche des fiches)
@@ -54,50 +53,33 @@ export function BarreMobile() {
     };
   }, []);
 
-  // Le clavier mobile ne s'ouvre que sur un focus déclenché par le geste : on le donne à un champ relais
-  // qui reste dans le layout, puis la barre de recherche de /marques reprend le focus (clavier toujours ouvert)
-  const ouvrirRecherche = () => {
-    sessionStorage.setItem('focusRecherche', 'true');
-    champRelaisRef.current?.focus();
-  };
+  if (!barreMobileVisible(pathname) || saisieEnCours) return null;
 
   return (
-    <>
-      <input
-        ref={champRelaisRef}
-        type="text"
-        tabIndex={-1}
-        aria-hidden="true"
-        className="fixed top-0 left-0 w-px h-px opacity-0 pointer-events-none text-base"
-      />
-      {barreMobileVisible(pathname) && !saisieEnCours && (
-        <nav
-          className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-primary-medium shadow-[0_-2px_8px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom)]"
-          aria-label="Navigation mobile"
-        >
-          <ul className="grid grid-cols-4">
-            {ONGLETS.map(({ href, libelle, icone: Icone }) => {
-              const actif = ongletActif(pathname, href);
-              return (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    onClick={href === '/marques' ? ouvrirRecherche : undefined}
-                    aria-current={actif ? 'page' : undefined}
-                    className={`flex flex-col items-center gap-1 pt-2 pb-2 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${actif ? 'text-primary' : 'text-neutral-700 hover:text-primary'}`}
-                  >
-                    {/* Pastille sous l'icône de l'onglet actif */}
-                    <span className={`flex items-center justify-center w-14 h-8 rounded-full transition-colors ${actif ? 'bg-primary-light' : ''}`}>
-                      <Icone className="w-6 h-6" strokeWidth={actif ? 2.25 : 2} aria-hidden="true" />
-                    </span>
-                    {libelle}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      )}
-    </>
+    <nav
+      className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-primary-medium shadow-[0_-2px_8px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom)]"
+      aria-label="Navigation mobile"
+    >
+      <ul className="grid grid-cols-4">
+        {ONGLETS.map(({ href, libelle, icone: Icone }) => {
+          const actif = ongletActif(pathname, href);
+          return (
+            <li key={href}>
+              <Link
+                href={href}
+                aria-current={actif ? 'page' : undefined}
+                className={`flex flex-col items-center gap-1 pt-2 pb-2 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${actif ? 'text-primary' : 'text-neutral-700 hover:text-primary'}`}
+              >
+                {/* Pastille sous l'icône de l'onglet actif */}
+                <span className={`flex items-center justify-center w-14 h-8 rounded-full transition-colors ${actif ? 'bg-primary-light' : ''}`}>
+                  <Icone className="w-6 h-6" strokeWidth={actif ? 2.25 : 2} aria-hidden="true" />
+                </span>
+                {libelle}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }

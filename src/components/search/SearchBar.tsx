@@ -169,15 +169,6 @@ export function SearchBar({
   onBlur
 }: SearchBarProps) {
   const [isFocusedLocal, setIsFocusedLocal] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // Arrivée depuis la loupe de la barre mobile : curseur directement dans la recherche
-  useEffect(() => {
-    if (sessionStorage.getItem('focusRecherche')) {
-      sessionStorage.removeItem('focusRecherche');
-      inputRef.current?.focus();
-    }
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -216,7 +207,6 @@ export function SearchBar({
             </svg>
           </div>
           <input
-            ref={inputRef}
             id="search-input"
             type="text"
             value={value}
