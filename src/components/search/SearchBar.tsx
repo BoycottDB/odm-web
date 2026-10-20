@@ -28,9 +28,23 @@ const iconeSuggestion = (suggestion: Suggestion) => {
   return suggestion.type_beneficiaire === 'groupe' ? Building2 : User;
 };
 
-// Exemples de marques affichés dans la barre de recherche : uniquement des marques présentes en base
-const EXEMPLES_RECHERCHE = "Nesquik, Starbucks, Decathlon, Smartbox, L'Oréal, Nous Anti Gaspi, Vittel, La Laitière, Biscuits St Michel, Twitter, CANAL+";
+// Exemples affichés dans la barre de recherche : uniquement des marques et bénéficiaires présents en base
+const EXEMPLES_RECHERCHE = "Nesquik, Starbucks, Decathlon, Pierre-Édouard Stérin, RFM, Fleury Michon, L'Oréal, Nous Anti Gaspi, Vincent Bolloré, Cristaline, Nestlé, La Laitière, Lactalis, Biscuits St Michel, Elon Musk, Twitter, Panzani";
 const MOTS_EXEMPLES = EXEMPLES_RECHERCHE.split(',').map((mot) => mot.trim());
+
+// Mélange de Fisher-Yates ; le mot à éviter n'est jamais placé en premier (pas deux fois le même nom d'affilée)
+function melanger(words: string[], motAEviter: string | null): string[] {
+  const ordre = [...words];
+  for (let i = ordre.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [ordre[i], ordre[j]] = [ordre[j], ordre[i]];
+  }
+  if (ordre.length > 1 && ordre[0] === motAEviter) {
+    const j = 1 + Math.floor(Math.random() * (ordre.length - 1));
+    [ordre[0], ordre[j]] = [ordre[j], ordre[0]];
+  }
+  return ordre;
+}
 
 // Hook d'animation pour placeholder "tapé"
 function useTypingPlaceholder(words: string[], enabled: boolean) {
@@ -39,6 +53,8 @@ function useTypingPlaceholder(words: string[], enabled: boolean) {
   const wordIndexRef = useRef(0);
   const charIndexRef = useRef(0);
   const phaseRef = useRef<'typing' | 'pausingAfterType' | 'deleting' | 'pausingAfterDelete'>('typing');
+  // Dernier mot affiché, conservé d'une apparition à l'autre de l'animation
+  const dernierMotRef = useRef<string | null>(null);
 
   // Nettoyage timer
   const clearTimer = () => {
@@ -63,10 +79,13 @@ function useTypingPlaceholder(words: string[], enabled: boolean) {
       return;
     }
 
+    // Nouvel ordre à chaque apparition, puis à chaque tour complet de la liste
+    let ordre = melanger(words, dernierMotRef.current);
+
     // Respecte prefers-reduced-motion: pas d'animation, affiche un exemple statique
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) {
-      setText(words[0] ?? '');
+      setText(ordre[0] ?? '');
       return;
     }
 
@@ -80,7 +99,8 @@ function useTypingPlaceholder(words: string[], enabled: boolean) {
 
     const tick = () => {
       if (cancelled) return;
-      const currentWord = words[wordIndexRef.current] ?? '';
+      const currentWord = ordre[wordIndexRef.current] ?? '';
+      dernierMotRef.current = currentWord;
       let delay = TYPE_MS;
 
       switch (phaseRef.current) {
@@ -112,7 +132,11 @@ function useTypingPlaceholder(words: string[], enabled: boolean) {
           break;
         }
         case 'pausingAfterDelete': {
-          wordIndexRef.current = words.length > 0 ? (wordIndexRef.current + 1) % words.length : 0;
+          wordIndexRef.current += 1;
+          if (wordIndexRef.current >= ordre.length) {
+            ordre = melanger(words, dernierMotRef.current);
+            wordIndexRef.current = 0;
+          }
           phaseRef.current = 'typing';
           delay = TYPE_MS;
           break;
@@ -184,7 +208,7 @@ export function SearchBar({
       <form onSubmit={handleSubmit} className="relative" role="search">
         <div className="relative">
           <label htmlFor="search-input" className="sr-only">
-            Rechercher une marque
+            Rechercher une marque, un groupe ou une personne
           </label>
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <svg className="h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -202,7 +226,7 @@ export function SearchBar({
             onBlur={handleBlurWrapped}
             placeholder={effectivePlaceholder}
             autoComplete="off"
-            aria-label="Rechercher une marque"
+            aria-label="Rechercher une marque, un groupe ou une personne"
             aria-autocomplete="list"
             aria-expanded={suggestions.visible && suggestions.items.length > 0}
             aria-owns={suggestions.visible && suggestions.items.length > 0 ? "search-suggestions" : undefined}
