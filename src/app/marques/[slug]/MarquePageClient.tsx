@@ -5,9 +5,8 @@ import { ChaineQuiJenrichis } from '@/components/marque/ChaineQuiJenrichis';
 import { nomsDesActeursControverses } from '@/components/marque/chaine';
 import { ShareButton } from '@/components/ui/ShareButton';
 import { SearchHero } from '@/components/search/SearchHero';
-import { useAddToHomeScreen } from '@/hooks/useAddToHomeScreen';
 import { AppelContribution } from '@/components/marque/AppelContribution';
-import LienFaq from '@/components/faq/LienFaq';
+import LienQuestion from '@/components/ui/LienQuestion';
 
 interface MarquePageClientProps {
   marque: Marque;
@@ -15,8 +14,6 @@ interface MarquePageClientProps {
 }
 
 export default function MarquePageClient({ marque, slug }: MarquePageClientProps) {
-  const { canInstall } = useAddToHomeScreen();
-
   const acteurs = nomsDesActeursControverses(marque);
   const listeActeurs = new Intl.ListFormat('fr', { type: 'conjunction' }).format(acteurs);
 
@@ -60,8 +57,8 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
       <section className="section-padding bg-gradient-to-b from-white to-primary-50">
         <div className="max-w-3xl mx-4 md:mx-auto space-y-12 md:space-y-16">
 
-          {/* Bouton flottant desktop & mobile */}
-          <div className={`fixed right-6 z-50 md:bottom-24 md:right-24 ${canInstall ? 'bottom-16' : 'bottom-6'}`}>
+          {/* Bouton flottant desktop & mobile : sur mobile, au-dessus de la barre d'onglets */}
+          <div className="fixed right-6 z-50 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] md:bottom-24 md:right-24">
             <ShareButton
               url={`/marques/${slug}`}
               title={`Qui j'enrichis en consommant ${marque.nom} ?`}
@@ -81,9 +78,9 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
 
           {/* Pour le visiteur qui part sans avoir ouvert les conseils */}
           <p className="text-center text-sm text-neutral-500">
-            <LienFaq source="fiche_marque_bas" className="underline hover:text-primary">
+            <LienQuestion page="/boycotter" source="fiche_marque_bas" className="underline hover:text-primary">
               Tu doutes sur le boycott ?
-            </LienFaq>
+            </LienQuestion>
           </p>
         </div>
       </section>

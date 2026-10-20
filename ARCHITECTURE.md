@@ -35,11 +35,12 @@ odm-web (Next.js sur Netlify)
 
 | Route | Rendu | Rôle |
 |---|---|---|
-| `/` | client | Accueil : présentation, vidéo, FAQ |
+| `/` | client | Accueil : présentation, vidéo, doutes sur le boycott |
 | `/marques` | ISR 10 min | Liste des marques, filtres, tri |
 | `/marques/[slug]` | ISR 10 min, pré-générée (`generateStaticParams`) | Fiche marque : controverses, chaîne de bénéficiaires, conseils |
 | `/signaler` | ISR 10 min | Formulaire de signalement |
-| `/faq`, `/faq/*` | statique | FAQ (argent, modération, alternatives, pourquoi) |
+| `/boycotter` | statique | Réponses aux doutes sur le boycott |
+| `/faq`, `/faq/*` | statique | FAQ (argent, marques absentes, règles du site) |
 | `/mentions-legales` | statique | Mentions légales |
 
 ## Administration et sécurité

@@ -1,17 +1,19 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Link2 } from 'lucide-react';
+import { ChevronDown, Share2 } from 'lucide-react';
 import { safeTrack } from '@/lib/analytics';
 
-interface QuestionFaqProps {
+interface QuestionDepliableProps {
   id: string;
   question: string;
+  // Libellé du bouton de partage, propre à chaque page
+  libellePartage: string;
   children: React.ReactNode;
 }
 
-// Question dépliable, ouverte d'emblée quand on arrive par son ancre (/faq#argent)
-export default function QuestionFaq({ id, question, children }: QuestionFaqProps) {
+// Question dépliable (/boycotter, /faq), ouverte d'emblée quand on arrive par son ancre (/faq#argent)
+export default function QuestionDepliable({ id, question, libellePartage, children }: QuestionDepliableProps) {
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const [lienCopie, setLienCopie] = useState(false);
 
@@ -38,10 +40,28 @@ export default function QuestionFaq({ id, question, children }: QuestionFaqProps
     });
   };
 
-  // Lien direct vers la question, pour répondre à un doute ailleurs (réseaux sociaux…)
-  const copierLien = async () => {
+  // Lien direct vers la question, pour répondre à un doute ailleurs (réseaux sociaux…).
+  // Sur mobile, partage natif comme sur les fiches marque ; sur ordinateur, copie du lien
+  const partager = async () => {
+    const url = `${window.location.origin}${window.location.pathname}#${id}`;
+    const estMobile = /iphone|ipad|ipod|android/.test(navigator.userAgent.toLowerCase());
+
+    if (estMobile && navigator.share) {
+      try {
+        await navigator.share({ title: question, url });
+        safeTrack('faq_link_share', { question: id });
+      } catch (error) {
+        // Partage annulé par l'utilisateur : rien à faire
+        if ((error as Error).name !== 'AbortError') await copierLien(url);
+      }
+      return;
+    }
+    await copierLien(url);
+  };
+
+  const copierLien = async (url: string) => {
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/faq#${id}`);
+      await navigator.clipboard.writeText(url);
       setLienCopie(true);
       safeTrack('faq_link_copy', { question: id });
       setTimeout(() => setLienCopie(false), 2000);
@@ -54,8 +74,8 @@ export default function QuestionFaq({ id, question, children }: QuestionFaqProps
     <details
       ref={detailsRef}
       id={id}
-      // Même name sur toutes les questions : en ouvrir une referme les autres (comportement natif)
-      name="faq"
+      // Même name sur toutes les questions de la page : en ouvrir une referme les autres (comportement natif)
+      name="questions"
       onToggle={handleToggle}
       // Ouverte, la question prend simplement un fond blanc, un peu plus large que le texte.
       // Les marges négatives gardent le texte aligné sur les questions fermées.
@@ -70,11 +90,11 @@ export default function QuestionFaq({ id, question, children }: QuestionFaqProps
         <div className="flex justify-end">
           <button
             type="button"
-            onClick={copierLien}
+            onClick={partager}
             className="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-primary transition-colors rounded-md outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
-            <Link2 className="w-4 h-4" aria-hidden="true" />
-            <span aria-live="polite">{lienCopie ? 'Lien copié !' : 'Copier le lien de cette question'}</span>
+            <Share2 className="w-4 h-4" aria-hidden="true" />
+            <span aria-live="polite">{lienCopie ? 'Lien copié !' : libellePartage}</span>
           </button>
         </div>
       </div>

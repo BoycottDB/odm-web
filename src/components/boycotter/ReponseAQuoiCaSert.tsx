@@ -55,7 +55,7 @@ export default function ReponseAQuoiCaSert() {
             <h5 className="font-medium text-neutral-900 mb-2">Le boycott fait partie de grandes victoires collectives :</h5>
             <div className="space-y-2 ml-2">
               <p className="body-base text-neutral-700 leading-snug">
-                <strong>🚌 Les bus de Montgomery en soutien à Rosa Parks :</strong> le boycott le plus célèbre de l&apos;histoire. Avec <a href="/faq#etats" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">les luttes en justice et dans la rue</a>, il a abouti à <a href="https://fr.wikipedia.org/wiki/Boycott_des_bus_de_Montgomery" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">l&apos;abolition de la ségrégation raciale dans les transports</a>.
+                <strong>🚌 Les bus de Montgomery en soutien à Rosa Parks :</strong> le boycott le plus célèbre de l&apos;histoire. Avec <a href="/boycotter#etats" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">les luttes en justice et dans la rue</a>, il a abouti à <a href="https://fr.wikipedia.org/wiki/Boycott_des_bus_de_Montgomery" target="_blank" rel="noopener noreferrer" className="text-secondary-dark hover:text-secondary-900 underline">l&apos;abolition de la ségrégation raciale dans les transports</a>.
               </p>
             </div>
           </div>
