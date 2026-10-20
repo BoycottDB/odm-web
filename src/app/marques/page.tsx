@@ -38,7 +38,7 @@ export default async function MarquesPage() {
             Rechercher une marque
           </h1>
           <p className="heading-sub text-neutral-700 font-light">
-            Découvrez l&apos;ensemble des marques documentées dans notre base de données collaborative.
+            Cherchez une marque, un groupe ou une personne : on vous montre à qui profitent vos achats.
           </p>
 
           {/* Barre de recherche */}

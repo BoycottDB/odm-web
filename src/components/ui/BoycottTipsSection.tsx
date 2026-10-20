@@ -247,13 +247,6 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
     }
   }, [selectedImage, currentImageGroup]);
 
-  // Vérifier s'il y a des tips à afficher
-  const hasBoycottTips = marque.message_boycott_tips || marque.secteur_marque?.message_boycott_tips;
-  
-  if (!hasBoycottTips) {
-    return null;
-  }
-
   // Messages génériques hardcodés (option 3)
   const messagesGeneriques = [
     {
