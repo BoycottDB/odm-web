@@ -21,7 +21,7 @@ export default function ReponseToutBoycotter() {
           Un magasin ne peut pas tout proposer. Il garde en rayon ce qui se vend le mieux ou ce que les grands fournisseurs ont payé pour mettre en avant. Les marques aux plus gros budgets prennent donc la place. Pourtant, rien qu&apos;en 2025, plus de 100 000 demandes de marques ont été déposées en France.
         </p>
         <p className="body-base text-neutral-700 leading-snug">
-          Derrière, il y a des artisans, des petites entreprises, des créateurs… Pleins d&apos;alternatives potentielles qui n&apos;attendent que toi.
+          Derrière, il y a des artisans, des petites entreprises, des créateurs… Plein d&apos;alternatives potentielles qui n&apos;attendent que toi.
         </p>
       </div>
     </>

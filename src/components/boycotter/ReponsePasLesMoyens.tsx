@@ -10,7 +10,7 @@ export default function ReponsePasLesMoyens() {
       <div className="border-l-2 border-neutral-200 pl-4">
         <h4 className="body-large font-semibold text-neutral-900 mb-3">Boycotter, ce n&apos;est pas forcément remplacer</h4>
         <p className="body-base text-neutral-700 leading-snug">
-          Boycotter peut vouloir dire acheter ailleurs mais ça peut aussi dire acheter moins, ou ne plus acheter du tout. Avant un achat, demande-toi : « Ai-je vraiment besoin de ce produit aujourd&apos;hui ? ».<a href="/boycotter#produits-deja-achetes" target="_blank" rel="noopener noreferrer" className={lienClass}>Peut-être peux-tu faire avec ce que tu as déjà !</a>
+          Boycotter peut vouloir dire acheter ailleurs mais ça peut aussi dire acheter moins, ou ne plus acheter du tout. Avant un achat, demande-toi : « Ai-je vraiment besoin de ce produit aujourd&apos;hui ? ». <a href="/boycotter#produits-deja-achetes" target="_blank" rel="noopener noreferrer" className={lienClass}>Peut-être peux-tu faire avec ce que tu as déjà !</a>
         </p>
       </div>
 
