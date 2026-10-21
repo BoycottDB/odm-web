@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { CheckCircle2, ChevronDown, Lightbulb, MessageCircleQuestionMark, ShoppingBasket, Tag } from 'lucide-react';
+import { BookOpen, CheckCircle2, ChevronDown, Lightbulb, MessageCircleQuestionMark, ShoppingBasket, Tag } from 'lucide-react';
 import { safeTrack } from '@/lib/analytics';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -80,14 +80,6 @@ declare global {
 }
 
 const ANCRE_CONSEILS = 'conseils';
-
-// Doutes pratiques les plus fréquents au moment d'agir, formulés comme dans /boycotter
-const DOUTES = [
-  { ancre: 'pas-les-moyens', question: '« Je n\'ai pas les moyens d\'acheter éthique »' },
-  { ancre: 'produits-deja-achetes', question: '« J\'ai déjà des produits de ces marques, que faire ? »' },
-  { ancre: 'iphone', question: '« Tu boycottes, mais tu as un iPhone ! »' },
-  { ancre: 'a-quoi-ca-sert', question: '« C\'est peine perdue de toute façon... »' },
-];
 
 interface BoycottTipsSectionProps {
   marque: Marque;
@@ -384,22 +376,28 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
             </ul>
           </details>
 
-          {/* Doutes pratiques du visiteur au moment d'agir : chaque lien ouvre la question dans /boycotter */}
-          <section className="bg-white border rounded-xl p-4 border-secondary-200">
-            <TitreSection icone={MessageCircleQuestionMark}>Vos doutes</TitreSection>
-            <ul className="space-y-2">
-              {DOUTES.map((doute) => (
-                <li key={doute.ancre}>
-                  <Link
-                    href={`/boycotter#${doute.ancre}`}
-                    onClick={() => safeTrack('faq_link_click', { source: 'encart_conseils', question: doute.ancre })}
-                    className="text-sm font-medium text-secondary-800 underline hover:text-secondary-900"
-                  >
-                    {doute.question}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Donne envie de découvrir la page « Boycotter ? » : une accroche et un seul bouton */}
+          {/* Fond blanc et bordure en dégradé, aux couleurs de l'en-tête, pour se distinguer des encarts de conseils */}
+          <section className="rounded-xl p-4 text-center border-2 border-transparent [background:linear-gradient(white,white)_padding-box,linear-gradient(to_top_right,var(--color-primary-300),var(--color-secondary-300),var(--color-accent-300))_border-box] [&>h3]:justify-center">
+            <TitreSection icone={MessageCircleQuestionMark}>Des doutes sur le boycott ?</TitreSection>
+            <p className={texteConseil + ' mb-1'}>
+              « On peut plus rien acheter », « C&apos;est peine perdue », « Le consommateur n&apos;a aucun pouvoir »
+            </p>
+            <p className={texteConseil}>
+              Rassurez-vous, nous aussi on s&apos;en est posé des questions.
+            </p>
+            <div className="mt-4 text-center">
+              <Link
+                href="/boycotter"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => safeTrack('faq_link_click', { source: 'encart_conseils', question: 'boycotter' })}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary-700 text-sm font-semibold text-white hover:bg-secondary-800 transition-colors duration-200"
+              >
+                <BookOpen className="w-4 h-4" aria-hidden="true" />
+                Découvrir nos réponses
+              </Link>
+            </div>
           </section>
         </div>
       </div>
