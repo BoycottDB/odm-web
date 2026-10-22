@@ -5,8 +5,7 @@ import { dataService } from '@/lib/services/dataService';
 import { slugify } from '@/lib/slug';
 import { Suggestion, construireSuggestions, suggestionExacte, suggestionsProches } from '@/lib/rechercheMarques';
 import { SearchHero } from '@/components/search/SearchHero';
-import { AppelContribution } from '@/components/marque/AppelContribution';
-import LienQuestion from '@/components/ui/LienQuestion';
+import { AppelNomAbsent } from '@/components/search/AppelNomAbsent';
 
 // Le texte vient de l'URL : on le borne et on ne laisse pas les moteurs l'indexer
 const LONGUEUR_MAX = 80;
@@ -57,35 +56,23 @@ export default async function RecherchePage({ searchParams }: PageProps) {
       </section>
 
       <section className="section-padding bg-gradient-to-b from-white to-primary-50">
-        <div className="max-w-3xl mx-4 md:mx-auto space-y-12 md:space-y-16">
-          {/* Le constat, puis la piste : les noms proches de la saisie */}
-          <div className="text-center space-y-1">
-            <p className="text-base font-medium text-neutral-800">
-              Aucune marque, entreprise ni personne de ce nom dans notre base pour l&apos;instant.
+        <div className="max-w-3xl mx-4 md:mx-auto space-y-6">
+          {/* La piste d'abord : les noms proches de la saisie */}
+          {proches.length > 0 && (
+            <p className="text-base text-neutral-600 text-center">
+              Peut-être cherchiez-vous{' '}
+              {proches.map((proche, index) => (
+                <span key={`${proche.type}-${proche.id}`}>
+                  {index > 0 && ' ou '}
+                  <Link href={lienSuggestion(proche)} className="font-semibold text-primary underline hover:text-primary-dark">
+                    {proche.nom}
+                  </Link>
+                </span>
+              ))}{' '}?
             </p>
-            {proches.length > 0 && (
-              <p className="text-base text-neutral-600">
-                Peut-être cherchiez-vous{' '}
-                {proches.map((proche, index) => (
-                  <span key={`${proche.type}-${proche.id}`}>
-                    {index > 0 && ' ou '}
-                    <Link href={lienSuggestion(proche)} className="font-semibold text-primary underline hover:text-primary-dark">
-                      {proche.nom}
-                    </Link>
-                  </span>
-                ))}{' '}?
-              </p>
-            )}
-          </div>
+          )}
 
-          <AppelContribution />
-
-          {/* Après l'invitation à signaler : pourquoi une marque peut manquer */}
-          <p className="text-sm text-neutral-600 text-center">
-            <LienQuestion page="/faq" ancre="marque-absente" source="recherche_vide" className="underline hover:text-primary">
-              Pourquoi cette marque n&apos;est pas sur le site ?
-            </LienQuestion>
-          </p>
+          <AppelNomAbsent saisie={saisie} />
         </div>
       </section>
     </div>
