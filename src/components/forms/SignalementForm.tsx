@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { validateHoneypot, validateSubmissionTime } from '@/lib/security/honeypot';
 import Captcha from '@/components/ui/Captcha';
 import HoneypotField from '@/components/ui/HoneypotField';
@@ -17,9 +18,11 @@ interface SimilarResults {
 export default function SignalementForm() {
   // Plus de choix de type - seules les controverses sont autorisées
   const type = 'evenement' as const;
+  // Nom pré-rempli depuis une recherche sans résultat (/signaler?nom=…)
+  const nomInitial = (useSearchParams().get('nom') ?? '').trim().slice(0, 80);
   const [formData, setFormData] = useState({
     // Evenement fields seulement
-    marque_nom: '',
+    marque_nom: nomInitial,
     marque_id: undefined as number | undefined,
     description: '',
     date: new Date().toISOString().split('T')[0], // Date du jour par défaut
@@ -259,7 +262,7 @@ export default function SignalementForm() {
             {/* Marque pour controverse */}
             <div className="relative">
               <label htmlFor="marque-nom" className="block body-small font-medium text-neutral-700 mb-2">
-                Marque concernée *
+                Marque, groupe ou personne qu&apos;elle enrichit *
               </label>
               <input
                 id="marque-nom"
@@ -267,7 +270,7 @@ export default function SignalementForm() {
                 value={formData.marque_nom}
                 onChange={(e) => setFormData({ ...formData, marque_nom: e.target.value, marque_id: undefined })}
                 className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Tapez le nom de la marque..."
+                placeholder="Tapez le nom..."
                 autoComplete="off"
                 aria-autocomplete="list"
                 aria-expanded={showSuggestions}
@@ -351,7 +354,7 @@ export default function SignalementForm() {
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             rows={4}
-            placeholder="Expliquez pourquoi vous signalez cette marque, les pratiques concernées, les sources d'information..."
+            placeholder="Expliquez la controverse, les pratiques concernées, les sources d'information..."
             required
             maxLength={1000}
             minLength={10}

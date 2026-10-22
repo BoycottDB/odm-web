@@ -7,7 +7,7 @@ export const revalidate = 600; // ISR 10 minutes
 
 export const metadata: Metadata = {
   title: 'Signaler une controverse | Répertoire des marques à boycotter',
-  description: 'Contribuez à l\'enrichissement collaboratif de notre base de données. Signalez une controverse liée à une marque.',
+  description: 'Contribuez à l\'enrichissement collaboratif de notre base de données. Signalez une controverse liée à une marque, à son groupe ou à une personne qu\'elle enrichit.',
 };
 
 export default async function SignalerPage() {

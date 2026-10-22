@@ -22,9 +22,9 @@ export default function ReponseMarqueAbsente() {
       </div>
 
       <div className="border-l-2 border-neutral-200 pl-4">
-        <h4 className="body-large font-semibold text-neutral-900 mb-3">Tu peux nous aider</h4>
+        <h4 className="body-large font-semibold text-neutral-900 mb-3">À toi de nous aider</h4>
         <p className="body-base text-neutral-700 leading-snug">
-          Tu connais une controverse sur une marque absente du site ? <a href="/signaler" target="_blank" rel="noopener noreferrer" className={lienClass}>Signale-la</a> : chaque signalement est relu et publié s&apos;il respecte les règles de modération.
+          Tu connais une controverse sur une marque absente du site ? <a href="/signaler" target="_blank" rel="noopener noreferrer" className={lienClass}>Signale-la</a> : c&apos;est anonyme et chaque signalement est relu et publié s&apos;il respecte les règles de modération.
         </p>
       </div>
     </>
