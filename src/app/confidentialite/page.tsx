@@ -59,7 +59,7 @@ export default function Confidentialite() {
               <div>
                 <h2 className="heading-main text-neutral-900 mb-4">Ce qui est enregistré dans votre navigateur</h2>
                 <p className="body-base text-neutral-700 leading-snug">
-                  Aucun cookie n&apos;est déposé pour les visiteurs. Le site garde seulement, dans votre navigateur, quelques réglages d&apos;affichage : par exemple, si vous avez fermé la proposition d&apos;ajouter le site à votre écran d&apos;accueil. Ces informations ne quittent pas votre appareil et vous pouvez les effacer depuis les réglages de votre navigateur.
+                  Aucun cookie n&apos;est déposé pour les visiteurs. Le site garde seulement, dans votre navigateur et le temps de votre visite, quelques informations de navigation : par exemple, pour vous ramener à la liste des marques après une recherche. Elles ne quittent pas votre appareil et disparaissent à la fermeture de l&apos;onglet.
                 </p>
               </div>
 

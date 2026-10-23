@@ -6,6 +6,7 @@ import { safeTrack } from '@/lib/analytics';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Marque } from '@/types';
+import { LienEcranAccueil } from './LienEcranAccueil';
 
 // Titre de section : pastille avec icône, puis libellé
 const TitreSection = ({ icone: Icone, children }: { icone: typeof Tag; children: React.ReactNode }) => (
@@ -399,6 +400,8 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
               </Link>
             </div>
           </section>
+
+          <LienEcranAccueil className="text-center text-sm text-neutral-500" />
         </div>
       </div>
 
