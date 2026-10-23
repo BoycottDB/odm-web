@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { slugify } from '@/lib/slug';
+import { demarrerNavigation } from '@/components/ui/BarreProgression';
 
 interface Marque {
   id: number;
@@ -17,7 +18,9 @@ export function MarquesBadges({ marques }: MarquesBadgesProps) {
 
   const handleMarqueClick = (marque: Marque, event: React.MouseEvent | React.KeyboardEvent) => {
     event.stopPropagation();
-    router.push(`/marques/${slugify(marque.nom)}`);
+    const href = `/marques/${slugify(marque.nom)}`;
+    demarrerNavigation(href);
+    router.push(href);
   };
 
   if (marques.length === 0) {

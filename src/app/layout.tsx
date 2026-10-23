@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Rubik, Geist } from "next/font/google";
 import { BarreMobile, barreMobileVisible } from "@/components/ui/BarreMobile";
 import { BoutonRetour } from "@/components/ui/BoutonRetour";
+import { BarreProgression } from "@/components/ui/BarreProgression";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -68,6 +69,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
       </head>
       <body className={`${geistSans.variable} ${rubik.variable} antialiased bg-background text-foreground`}>
+        <BarreProgression />
         <header className="w-full border-b border-primary-medium bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
           <div className="relative max-w-6xl mx-auto px-4 py-3 flex justify-center md:justify-between items-center">
             <BoutonRetour />

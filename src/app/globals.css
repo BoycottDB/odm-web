@@ -453,6 +453,14 @@ body {
     transform: translateX(var(--fuite));
     opacity: 0;
   }
+
+  /* ---------------------------------------------------------------------------
+     BARRE DE PROGRESSION DE NAVIGATION
+     --------------------------------------------------------------------------- */
+
+  /* Avance vite puis ralentit sans jamais atteindre le bout tant que la page n'est pas là */
+  .animate-progression { animation: odm-progression 10s cubic-bezier(0.1, 0.8, 0.2, 1) 150ms both; }
+  .animate-progression-fin { animation: odm-progression-fin 300ms ease-out both; }
 }
 
 @keyframes parallax {
@@ -473,6 +481,16 @@ body {
 @keyframes odm-particule {
   from { transform: translateY(0) rotate(0deg); }
   to { transform: translateY(-140px) rotate(180deg); }
+}
+
+@keyframes odm-progression {
+  from { width: 0; }
+  to { width: 90%; }
+}
+
+@keyframes odm-progression-fin {
+  from { width: 100%; opacity: 1; }
+  to { width: 100%; opacity: 0; }
 }
 
 /* =============================================================================
