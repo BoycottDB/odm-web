@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ListeQuestions, TitrePartie, type Question } from '@/components/ui/ListeQuestions';
 import ReponseArgent from '@/components/faq/ReponseArgent';
 import ReponseMarqueAbsente from '@/components/faq/ReponseMarqueAbsente';
+import ReponseEcranAccueil from '@/components/faq/ReponseEcranAccueil';
 
 export const metadata: Metadata = {
   title: "Questions fréquentes | Qui j'enrichis ?",
@@ -46,6 +47,16 @@ const parties: PartieFaq[] = [
         id: 'confidentialite',
         question: 'Quelles données sont collectées quand j\'utilise le site ?',
         url: '/confidentialite'
+      }
+    ]
+  },
+  {
+    titre: 'Utilisation',
+    questions: [
+      {
+        id: 'ecran-accueil',
+        question: 'Comment ajouter le site à l\'écran d\'accueil de mon téléphone ?',
+        reponse: <ReponseEcranAccueil />
       }
     ]
   }
