@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { SearchBar } from '@/components/search/SearchBar';
 import { dataService } from '@/lib/services/dataService';
 import { slugify } from '@/lib/slug';
+import { demarrerNavigation } from '@/components/ui/BarreProgression';
 import { safeTrack } from '@/lib/analytics';
 import { Suggestion, construireSuggestions, filtrerSuggestions, suggestionExacte } from '@/lib/rechercheMarques';
 
@@ -27,6 +28,10 @@ interface SearchHeroProps {
 
 export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
   const router = useRouter();
+  const naviguer = useCallback((href: string) => {
+    demarrerNavigation(href);
+    router.push(href);
+  }, [router]);
   const [query, setQuery] = useState('');
   const [noms, setNoms] = useState<Suggestion[]>([]);
   const [suggestionHighlighted, setSuggestionHighlighted] = useState(-1);
@@ -51,13 +56,13 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
   const ouvrirSuggestion = useCallback((suggestion: Suggestion, query: string) => {
     if (suggestion.type === 'marque') {
       safeTrack('search', { query, has_results: true, marque_id: suggestion.id, source });
-      router.push(`/marques/${slugify(suggestion.nom)}`);
+      naviguer(`/marques/${slugify(suggestion.nom)}`);
     } else {
       safeTrack('search', { query, has_results: true, beneficiaire_id: suggestion.id, source });
       sessionStorage.setItem('scrollToList', 'true');
-      router.push(`/marques?beneficiaire=${suggestion.id}`);
+      naviguer(`/marques?beneficiaire=${suggestion.id}`);
     }
-  }, [router, source]);
+  }, [naviguer, source]);
 
   const handleSuggestionSelect = useCallback((suggestion: Suggestion) => {
     setShowSuggestions(false);
@@ -89,19 +94,19 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
       if (filtrerSuggestions(tousLesNoms, searchQuery).some((suggestion) => suggestion.type === 'marque')) {
         // Marques dont le nom contient la saisie → liste filtrée, avec scroll vers la liste après redirection
         sessionStorage.setItem('scrollToList', 'true');
-        router.push(`/marques?search=${encodeURIComponent(searchQuery)}`);
+        naviguer(`/marques?search=${encodeURIComponent(searchQuery)}`);
       } else {
         // Aucune correspondance → page qui reprend la saisie et invite à contribuer
-        router.push(`/recherche?q=${encodeURIComponent(searchQuery)}`);
+        naviguer(`/recherche?q=${encodeURIComponent(searchQuery)}`);
       }
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
 
       // En cas d'erreur, redirection vers /marques?search=
       sessionStorage.setItem('scrollToList', 'true');
-      router.push(`/marques?search=${encodeURIComponent(searchQuery)}`);
+      naviguer(`/marques?search=${encodeURIComponent(searchQuery)}`);
     }
-  }, [router, source, ouvrirSuggestion]);
+  }, [naviguer, source, ouvrirSuggestion]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
