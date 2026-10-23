@@ -49,7 +49,8 @@ export default function SignalementForm() {
 
   // Recherche de marques pour auto-complétion - Pattern admin cohérent
   useEffect(() => {
-    if (type === 'evenement' && formData.marque_nom.length > 1) {
+    // Pas de recherche quand une suggestion vient d'être choisie (marque_id défini)
+    if (type === 'evenement' && formData.marque_id === undefined && formData.marque_nom.length > 1) {
       const searchMarques = async () => {
         try {
           // Utilise le même pattern que les pages admin : fetch direct vers API route
@@ -70,7 +71,7 @@ export default function SignalementForm() {
     } else {
       setShowSuggestions(false);
     }
-  }, [formData.marque_nom, type]);
+  }, [formData.marque_nom, formData.marque_id, type]);
 
   // Recherche de doublons  
   useEffect(() => {
