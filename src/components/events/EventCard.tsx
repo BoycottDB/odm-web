@@ -15,11 +15,16 @@ interface EventCardProps {
 const Separateur = () => <span className="text-neutral-400" aria-hidden="true">·</span>;
 
 // Carte d'un signalement récent : gabarit et survol des cartes de marque (bordure qui fonce,
-// chevron qui avance). Ligne d'infos date · marque, étiquette de catégorie comme sur /marques,
+// chevron qui avance). Ligne d'infos date · marque ou bénéficiaire, étiquette de catégorie comme sur /marques,
 // puis le titre de la controverse.
-// Toute la carte mène à la marque : son lien est étiré sur la carte (after:inset-0)
+// Toute la carte mène à la marque, ou pour un bénéficiaire à la liste de ses marques :
+// son lien est étiré sur la carte (after:inset-0)
 export function EventCard({ event }: EventCardProps) {
-  const marqueNom = event.marque?.nom;
+  const cible = event.beneficiaire
+    ? { nom: event.beneficiaire.nom, href: `/marques?beneficiaire=${event.beneficiaire.id}` }
+    : event.marque?.nom
+      ? { nom: event.marque.nom, href: `/marques/${slugify(event.marque.nom)}` }
+      : null;
   const categorie = event.categorie?.nom && event.categorie.nom !== CATEGORIE_EXCLUE ? event.categorie : null;
 
   return (
@@ -28,14 +33,14 @@ export function EventCard({ event }: EventCardProps) {
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm mb-1">
             <span className="font-semibold text-secondary-dark">{formatDateCourte(event.date)}</span>
-            {marqueNom && (
+            {cible && (
               <>
                 <Separateur />
                 <Link
-                  href={`/marques/${slugify(marqueNom)}`}
+                  href={cible.href}
                   className="font-bold text-primary after:absolute after:inset-0 after:rounded-2xl"
                 >
-                  {marqueNom}
+                  {cible.nom}
                 </Link>
               </>
             )}
@@ -48,7 +53,7 @@ export function EventCard({ event }: EventCardProps) {
           </div>
           <p className="text-sm md:text-base font-medium text-neutral-900 leading-snug">{event.titre}</p>
         </div>
-        {marqueNom && (
+        {cible && (
           <ChevronRight className="w-6 h-6 text-primary flex-shrink-0 ml-2 transition-transform duration-200 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
         )}
       </div>
