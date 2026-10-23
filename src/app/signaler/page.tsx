@@ -47,7 +47,7 @@ export default async function SignalerPage() {
           {evenements.length > 0 ? (
             <div className="grid gap-4 grid-cols-1">
               {evenements.map((event) => (
-                <EventCard key={event.id} event={event} />
+                <EventCard key={`${event.beneficiaire ? 'beneficiaire' : 'marque'}-${event.id}`} event={event} />
               ))}
             </div>
           ) : (

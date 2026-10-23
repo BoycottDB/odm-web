@@ -128,6 +128,7 @@ export interface Evenement {
   created_at?: string;
   updated_at?: string;
   marque?: Marque;
+  beneficiaire?: { id: number; nom: string }; // Controverse d'un bénéficiaire (signalements récents)
 }
 
 // Types pour les résultats de recherche
