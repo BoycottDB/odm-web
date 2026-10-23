@@ -3,6 +3,7 @@ import { ListeQuestions, TitrePartie, type Question } from '@/components/ui/List
 import ReponseArgent from '@/components/faq/ReponseArgent';
 import ReponseMarqueAbsente from '@/components/faq/ReponseMarqueAbsente';
 import ReponseEcranAccueil from '@/components/faq/ReponseEcranAccueil';
+import ReponseAutresSources from '@/components/faq/ReponseAutresSources';
 
 export const metadata: Metadata = {
   title: "Questions fréquentes | Qui j'enrichis ?",
@@ -27,6 +28,11 @@ const parties: PartieFaq[] = [
         id: 'marque-absente',
         question: 'Pourquoi certaines marques ne sont-elles pas sur le site ?',
         reponse: <ReponseMarqueAbsente />
+      },
+      {
+        id: 'autres-sources',
+        question: 'Où m\'informer sur ce que le site ne couvre pas ?',
+        reponse: <ReponseAutresSources />
       }
     ]
   },
