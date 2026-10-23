@@ -1,6 +1,12 @@
+import type { Metadata } from 'next';
 import { ListeQuestions, TitrePartie, type Question } from '@/components/ui/ListeQuestions';
 import ReponseArgent from '@/components/faq/ReponseArgent';
 import ReponseMarqueAbsente from '@/components/faq/ReponseMarqueAbsente';
+
+export const metadata: Metadata = {
+  title: "Questions fréquentes | Qui j'enrichis ?",
+  description: "Comment fonctionne le site et comment ton argent remonte jusqu'aux bénéficiaires.",
+};
 
 interface PartieFaq {
   titre: string;
