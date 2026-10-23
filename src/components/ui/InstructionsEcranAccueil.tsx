@@ -49,7 +49,7 @@ export function InstructionsEcranAccueil({ os, onClose }: InstructionsEcranAccue
                   </div>
                   <div>
                     <p className="text-sm text-neutral-700">
-                      Appuyez sur l&apos;icône <strong>Partager</strong> dans la barre de navigation
+                      Appuyez sur l&apos;icône <strong>Partager</strong> en bas de l&apos;écran
                     </p>
                     <div className="mt-2 flex items-center justify-center">
                       <div className="text-secondary-500 p-1 mr-8">
@@ -69,10 +69,10 @@ export function InstructionsEcranAccueil({ os, onClose }: InstructionsEcranAccue
                   </div>
                   <div>
                     <p className="text-sm text-neutral-700">
-                      Sélectionnez <strong>&quot;Ajouter à l&apos;écran d&apos;accueil&quot;</strong>
+                      Sélectionnez <strong>&quot;Sur l&apos;écran d&apos;accueil&quot;</strong>
                     </p>
                     <div className="mt-2 bg-neutral-100 rounded p-2 text-xs text-neutral-600">
-                      📱 Ajouter à l&apos;écran d&apos;accueil
+                      📱 Sur l&apos;écran d&apos;accueil
                     </div>
                   </div>
                 </div>
