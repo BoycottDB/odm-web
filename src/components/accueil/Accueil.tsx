@@ -8,6 +8,15 @@ import { safeTrack } from '@/lib/analytics';
 import { useEffect, useState } from 'react';
 import { VideoSkeleton } from '@/components/ui/VideoSkeleton';
 
+const togglePlayback = (e: React.MouseEvent<HTMLVideoElement>) => {
+  const video = e.currentTarget;
+  if (video.paused) {
+    video.play();
+  } else {
+    video.pause();
+  }
+};
+
 export default function Accueil() {
   const { isMobile } = useMobileDetection();
 
@@ -70,7 +79,8 @@ export default function Accueil() {
           playsInline
           onCanPlayThrough={handleLoaded}
           onLoadedData={handleLoaded}
-          className={`w-full aspect-[3/2] object-cover rounded-lg transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
+          onClick={togglePlayback}
+          className={`w-full aspect-[3/2] object-cover rounded-lg cursor-pointer transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
         />
         {!ready && (
           <div className="absolute inset-0 p-0 md:p-3">
@@ -140,7 +150,8 @@ export default function Accueil() {
           playsInline
           onCanPlayThrough={handleLoaded}
           onLoadedData={handleLoaded}
-          className={`w-full aspect-[3/2] object-cover rounded-lg transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
+          onClick={togglePlayback}
+          className={`w-full aspect-[3/2] object-cover rounded-lg cursor-pointer transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
         />
         {!ready && (
           <div className="absolute inset-0 p-0 md:p-3">
@@ -217,7 +228,8 @@ export default function Accueil() {
           playsInline
           onCanPlayThrough={handleLoaded}
           onLoadedData={handleLoaded}
-          className={`w-full aspect-[3/2] object-cover rounded-lg transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
+          onClick={togglePlayback}
+          className={`w-full aspect-[3/2] object-cover rounded-lg cursor-pointer transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
         />
         {!ready && (
           <div className="absolute inset-0 p-0 md:p-3">
@@ -294,7 +306,8 @@ export default function Accueil() {
           playsInline
           onCanPlayThrough={handleLoaded}
           onLoadedData={handleLoaded}
-          className={`w-full aspect-[3/2] object-cover rounded-lg transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
+          onClick={togglePlayback}
+          className={`w-full aspect-[3/2] object-cover rounded-lg cursor-pointer transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
         />
         {!ready && (
           <div className="absolute inset-0 p-0 md:p-3">
