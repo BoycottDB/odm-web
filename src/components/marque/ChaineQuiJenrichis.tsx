@@ -1,9 +1,10 @@
 'use client';
 
-import { Fragment, ReactNode, useEffect, useRef, useState } from 'react';
+import { Fragment, ReactNode, useLayoutEffect, useState } from 'react';
 import { ArrowDown } from 'lucide-react';
 import { Marque } from '@/types';
 import { safeTrack } from '@/lib/analytics';
+import { ramenerALEcran } from '@/lib/ramenerALEcran';
 import BoycottTipsSection from '@/components/ui/BoycottTipsSection';
 import { BlocMarque } from './BlocMarque';
 import { NiveauBeneficiaires } from './NiveauBeneficiaires';
@@ -39,7 +40,6 @@ const suivreOuverture = (marqueId: number, beneficiaireId: number) => {
 // un seul s'ouvre à la fois (le contenu d'un bloc sur une ligne de plusieurs passe sous la ligne).
 export function ChaineQuiJenrichis({ marque }: ChaineQuiJenrichisProps) {
   const [ouvert, setOuvert] = useState<string | null>(null);
-  const chaineRef = useRef<HTMLDivElement>(null);
   const niveaux = niveauxDeLaChaine(marque.chaine_beneficiaires || []);
 
   const basculer = (cle: string, beneficiaireId?: number) => {
@@ -48,16 +48,9 @@ export function ChaineQuiJenrichis({ marque }: ChaineQuiJenrichisProps) {
     if (ouverture && beneficiaireId !== undefined) suivreOuverture(marque.id, beneficiaireId);
   };
 
-  // Fermer au clic en dehors des blocs
-  useEffect(() => {
-    if (!ouvert) return;
-    const fermerAuClicExterieur = (event: MouseEvent) => {
-      if (chaineRef.current && !chaineRef.current.contains(event.target as Node)) {
-        setOuvert(null);
-      }
-    };
-    document.addEventListener('mousedown', fermerAuClicExterieur);
-    return () => document.removeEventListener('mousedown', fermerAuClicExterieur);
+  // La fermeture d'un bloc plus haut peut faire remonter l'en-tête ouvert hors de l'écran
+  useLayoutEffect(() => {
+    if (ouvert) ramenerALEcran(document.querySelector<HTMLElement>(`[aria-controls="contenu-${ouvert}"]`));
   }, [ouvert]);
 
   // Étapes du trajet, séparées par une flèche
@@ -83,14 +76,12 @@ export function ChaineQuiJenrichis({ marque }: ChaineQuiJenrichisProps) {
 
   return (
     <div>
-      <div ref={chaineRef}>
-        {etapes.map((etape, index) => (
-          <Fragment key={index}>
-            {index > 0 && <Fleche />}
-            {etape}
-          </Fragment>
-        ))}
-      </div>
+      {etapes.map((etape, index) => (
+        <Fragment key={index}>
+          {index > 0 && <Fleche />}
+          {etape}
+        </Fragment>
+      ))}
 
       <div className="mt-10">
         <BoycottTipsSection marque={marque} />

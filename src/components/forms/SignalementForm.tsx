@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { validateHoneypot, validateSubmissionTime } from '@/lib/security/honeypot';
 import Captcha from '@/components/ui/Captcha';
 import HoneypotField from '@/components/ui/HoneypotField';
 import SimilarItems from './SimilarItems';
+import { ramenerALEcran } from '@/lib/ramenerALEcran';
 import { Marque, Evenement, Proposition, SimilarityScore } from '@/types';
 
 interface SimilarResults {
@@ -32,6 +33,7 @@ export default function SignalementForm() {
   // State management
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const succesRef = useRef<HTMLDivElement>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [startTime] = useState(Date.now());
   
@@ -196,9 +198,14 @@ export default function SignalementForm() {
     return successMessages[Math.floor(Math.random() * successMessages.length)];
   }, [isSuccess, successMessages]);
 
+  // Le message de succès remplace le long formulaire : on le ramène à l'écran si besoin
+  useLayoutEffect(() => {
+    if (isSuccess) ramenerALEcran(succesRef.current);
+  }, [isSuccess]);
+
   if (isSuccess) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8 text-center">
+      <div ref={succesRef} className="bg-white rounded-lg shadow-sm border border-neutral-200 p-8 text-center">
         <div className="relative">
           {/* Animation confettis */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
