@@ -99,7 +99,7 @@ export default function Boycotter() {
             Boycotter ?
           </h1>
           <p className="heading-sub text-neutral-700 max-w-4xl mx-auto font-light">
-            Tu as des doutes ? Voici nos arguments pour y répondre
+            Tu as des doutes ? Nous aussi, on en a eu et voici nos réponses
           </p>
         </div>
       </section>
@@ -107,6 +107,19 @@ export default function Boycotter() {
       {/* Largeur de lecture : titres, questions et réponses restent alignés */}
       <section className="py-8 md:py-16 px-4">
         <div className="max-w-3xl mx-auto space-y-10 md:space-y-12">
+          <div className="text-center">
+            <p className="body-base text-neutral-700 leading-snug mb-3">
+              Tu trouveras ci-dessous des arguments pour te convaincre toi-même ou convaincre tes proches que le boycott, ça marche et que c&apos;est à la portée de tous.
+              Tu verras que le moindre petit geste compte : même réduire de 10 % ta consommation d&apos;une seule marque que tu achetais régulièrement, c&apos;est un bon début.
+            </p>
+            <p className="body-base text-neutral-700 leading-snug">
+              Maintenant, permets-moi un aparté :
+            </p>
+            <p className="body-base text-neutral-700 leading-snug">
+              J&apos;ai lu toutes les controverses publiées sur le site, j&apos;en ai eu le ventre retourné et j&apos;en ai fait des insomnies. Je t&apos;en supplie, <strong className="text-neutral-900">n&apos;arrête jamais de t&apos;indigner et d&apos;agir</strong>. Ce n&apos;est pas normal qu&apos;on finance sans le savoir des gens et des entreprises aussi puissants dont les actions sont aux antipodes de nos valeurs.
+            </p>
+          </div>
+
           {parties.map((partie, index) => (
             <div key={index}>
               <TitrePartie>{partie.titre}</TitrePartie>

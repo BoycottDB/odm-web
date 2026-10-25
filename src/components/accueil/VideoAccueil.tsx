@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Maximize2 } from 'lucide-react';
 import { VideoSkeleton } from '@/components/ui/VideoSkeleton';
@@ -18,19 +18,38 @@ const togglePlayback = (e: React.MouseEvent<HTMLVideoElement>) => {
   }
 };
 
-// Vidéo compressée en boucle, agrandie au clic sur le bouton avec la version HD (chargée seulement à l'ouverture)
+// Vidéo compressée en boucle, chargée à l'approche de l'écran (bande passante facturée),
+// agrandie au clic sur le bouton avec la version HD (chargée seulement à l'ouverture)
 export default function VideoAccueil({ nom }: VideoAccueilProps) {
+  const conteneurRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
   const [ready, setReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [agrandie, setAgrandie] = useState(false);
 
   useEffect(() => {
-    if (ready) return;
+    const conteneur = conteneurRef.current;
+    if (!conteneur) return;
+    const observer = new IntersectionObserver(
+      ([entree]) => {
+        if (entree.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(conteneur);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (ready || !visible) return;
     const id = setInterval(() => {
       setProgress((p) => Math.min(p + 8, 95));
     }, 200);
     return () => clearInterval(id);
-  }, [ready]);
+  }, [ready, visible]);
 
   const handleLoaded = () => {
     setReady(true);
@@ -50,9 +69,9 @@ export default function VideoAccueil({ nom }: VideoAccueilProps) {
   }, [agrandie]);
 
   return (
-    <div className="relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center">
+    <div ref={conteneurRef} className="relative liquid-glass rounded-xl md:rounded-2xl p-0 md:p-3 text-center">
       <video
-        src={`/videos/${nom}.mp4`}
+        src={visible ? `/videos/${nom}.mp4` : undefined}
         autoPlay
         muted
         loop
@@ -73,7 +92,7 @@ export default function VideoAccueil({ nom }: VideoAccueilProps) {
       )}
       {!ready && (
         <div className="absolute inset-0 p-0 md:p-3">
-          <VideoSkeleton progress={progress} shouldLoad={!ready} />
+          <VideoSkeleton progress={progress} shouldLoad={visible} />
         </div>
       )}
 

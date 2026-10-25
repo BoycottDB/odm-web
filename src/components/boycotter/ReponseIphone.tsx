@@ -16,7 +16,7 @@ export default function ReponseIphone() {
           Imagine qu&apos;il y ait 100 marques à boycotter, dont l&apos;iPhone. Quelqu&apos;un qui boycotte les 99 autres, c&apos;est déjà énorme. Même quelqu&apos;un qui n&apos;en boycotte qu&apos;une seule, c&apos;est un bon début, qu&apos;il pourra poursuivre avec d&apos;autres marques.
         </p>
         <p>
-          Puis qu&apos;en sais-tu si le téléphone a été légué, volé en magasin, acheté reconditionné, voire est un faux ?
+          Puis qu&apos;en sais-tu si le téléphone a été légué, acheté reconditionné, voire est un faux ?
         </p>
       </div>
 
