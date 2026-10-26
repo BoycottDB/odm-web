@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ListeQuestions, TitrePartie, type Question } from '@/components/ui/ListeQuestions';
+import SuiviVisibilite from '@/components/ui/SuiviVisibilite';
 import ReponseAQuoiCaSert from '@/components/boycotter/ReponseAQuoiCaSert';
 import ReponseAttendreMouvement from '@/components/boycotter/ReponseAttendreMouvement';
 import ReponseEtats from '@/components/boycotter/ReponseEtats';
@@ -107,18 +108,6 @@ export default function Boycotter() {
       {/* Largeur de lecture : titres, questions et réponses restent alignés */}
       <section className="py-8 md:py-16 px-4">
         <div className="max-w-3xl mx-auto space-y-10 md:space-y-12">
-          <div className="text-center">
-            <p className="body-base text-neutral-700 leading-snug mb-3">
-              Tu trouveras ci-dessous des arguments pour te convaincre toi-même ou convaincre tes proches que le boycott, ça marche et que c&apos;est à la portée de tous.
-              Tu verras que le moindre petit geste compte : même réduire de 10 % ta consommation d&apos;une seule marque que tu achetais régulièrement, c&apos;est un bon début.
-            </p>
-            <p className="body-base text-neutral-700 leading-snug">
-              Maintenant, permets-moi un aparté :
-            </p>
-            <p className="body-base text-neutral-700 leading-snug">
-              J&apos;ai lu toutes les controverses publiées sur le site, j&apos;en ai eu le ventre retourné et j&apos;en ai fait des insomnies. Je t&apos;en supplie, <strong className="text-neutral-900">n&apos;arrête jamais de t&apos;indigner et d&apos;agir</strong>. Ce n&apos;est pas normal qu&apos;on finance sans le savoir des gens et des entreprises aussi puissants dont les actions sont aux antipodes de nos valeurs.
-            </p>
-          </div>
 
           {parties.map((partie, index) => (
             <div key={index}>
@@ -126,6 +115,22 @@ export default function Boycotter() {
               <ListeQuestions questions={partie.questions} libellePartage="Partager cet argumentaire à un proche" />
             </div>
           ))}
+
+          <SuiviVisibilite evenement="boycotter_aparte_view" className="text-center">
+            <p className="body-base text-neutral-700 leading-snug">
+              Aparté de fin :
+            </p>
+            <p className="body-base text-neutral-700 leading-snug mb-3">
+              J&apos;ai lu toutes les controverses publiées sur le site, j&apos;en ai eu le ventre retourné et j&apos;en ai fait des insomnies.
+              On peut vite se torturer et culpabiliser d&apos;avoir enrichi des gens ou des entreprises dont les actions sont aux antipodes de nos valeurs, d&apos;autant qu&apos;on est parfois encore contraint de le faire.
+            </p>
+            <p className="body-base text-neutral-700 leading-snug">
+              Cela dit, <strong>la culpabilité, ce n&apos;est pas à toi de la porter, c&apos;est à eux</strong>.
+            </p>
+            <p className="body-base text-neutral-700 leading-snug mb-3">
+              Reste indigné·e mais sois indulgent·e avec toi-même.
+            </p>
+          </SuiviVisibilite>
         </div>
       </section>
     </div>
