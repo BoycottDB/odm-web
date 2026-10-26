@@ -24,7 +24,7 @@ export function BlocMarque({ marque, ouvert, onToggle }: BlocMarqueProps) {
       ouvert={ouvert}
       onToggle={onToggle}
     >
-      <ControversesDocumentees controverses={evenements} sourceType="evenement" marqueId={marque.id} />
+      <ControversesDocumentees controverses={evenements} sourceType="evenement" marqueNom={marque.nom} blocNom={marque.nom} />
     </BlocActeur>
   );
 }

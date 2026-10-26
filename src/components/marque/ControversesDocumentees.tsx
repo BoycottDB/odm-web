@@ -3,14 +3,15 @@ import { Controverse, LigneDateCategorie, LigneLiens, SourceControverse } from '
 interface ControversesDocumenteesProps {
   controverses: Controverse[];
   sourceType: SourceControverse;
-  marqueId: number;
+  marqueNom: string;
+  blocNom: string;
 }
 
 const parDateDecroissante = (a: Controverse, b: Controverse) =>
   (b.date ? new Date(b.date).getTime() : 0) - (a.date ? new Date(a.date).getTime() : 0);
 
 // Frise des controverses d'un acteur, de la plus récente à la plus ancienne
-export function ControversesDocumentees({ controverses, sourceType, marqueId }: ControversesDocumenteesProps) {
+export function ControversesDocumentees({ controverses, sourceType, marqueNom, blocNom }: ControversesDocumenteesProps) {
   return (
     <div className="mb-6">
       <div className="font-semibold text-xs mb-3 text-primary">
@@ -22,7 +23,7 @@ export function ControversesDocumentees({ controverses, sourceType, marqueId }: 
             <span className="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-primary" aria-hidden="true" />
             <LigneDateCategorie controverse={controverse} />
             <p className="text-sm font-medium text-neutral-900 leading-snug mb-1">{controverse.titre}</p>
-            <LigneLiens controverse={controverse} sourceType={sourceType} marqueId={marqueId} />
+            <LigneLiens controverse={controverse} sourceType={sourceType} marqueNom={marqueNom} blocNom={blocNom} />
           </li>
         ))}
       </ol>

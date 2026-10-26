@@ -20,10 +20,10 @@ const Fleche = () => (
   </div>
 );
 
-// Ouverture d'un bénéficiaire : suivie une fois par session et par marque
-const suivreOuverture = (marqueId: number, beneficiaireId: number) => {
-  const storageKey = 'odm_beneficiary_chain_viewed';
-  const trackKey = `${marqueId}:${beneficiaireId}`;
+// Ouverture d'un bloc (la marque ou un bénéficiaire) : suivie une fois par session et par marque
+const suivreOuverture = (marqueNom: string, blocNom: string, blocType: 'marque' | 'beneficiaire') => {
+  const storageKey = 'odm_block_opened';
+  const trackKey = `${marqueNom}:${blocNom}`;
   try {
     const viewed: Record<string, boolean> = JSON.parse(sessionStorage.getItem(storageKey) || '{}');
     if (viewed[trackKey]) return;
@@ -32,7 +32,7 @@ const suivreOuverture = (marqueId: number, beneficiaireId: number) => {
   } catch {
     // Stockage indisponible : on suit quand même
   }
-  safeTrack('beneficiary_chain_view', { marque_id: marqueId, beneficiaire_id: beneficiaireId });
+  safeTrack('block_open', { marque: marqueNom, bloc: blocNom, bloc_type: blocType });
 };
 
 // La marque (si elle a ses propres controverses), puis ses bénéficiaires dans l'ordre
@@ -42,10 +42,10 @@ export function ChaineQuiJenrichis({ marque }: ChaineQuiJenrichisProps) {
   const [ouvert, setOuvert] = useState<string | null>(null);
   const niveaux = niveauxDeLaChaine(marque.chaine_beneficiaires || []);
 
-  const basculer = (cle: string, beneficiaireId?: number) => {
+  const basculer = (cle: string, blocNom: string, blocType: 'marque' | 'beneficiaire') => {
     const ouverture = ouvert !== cle;
     setOuvert(ouverture ? cle : null);
-    if (ouverture && beneficiaireId !== undefined) suivreOuverture(marque.id, beneficiaireId);
+    if (ouverture) suivreOuverture(marque.nom, blocNom, blocType);
   };
 
   // La fermeture d'un bloc plus haut peut faire remonter l'en-tête ouvert hors de l'écran
@@ -57,7 +57,7 @@ export function ChaineQuiJenrichis({ marque }: ChaineQuiJenrichisProps) {
   const etapes: ReactNode[] = [];
   if ((marque.evenements?.length ?? 0) > 0) {
     etapes.push(
-      <BlocMarque key="marque" marque={marque} ouvert={ouvert === 'marque'} onToggle={() => basculer('marque')} />
+      <BlocMarque key="marque" marque={marque} ouvert={ouvert === 'marque'} onToggle={() => basculer('marque', marque.nom, 'marque')} />
     );
   }
   niveaux.forEach((noeuds, index) => {
@@ -67,9 +67,8 @@ export function ChaineQuiJenrichis({ marque }: ChaineQuiJenrichisProps) {
         noeuds={noeuds}
         niveauPrecedent={niveaux[index - 1]}
         marqueNom={marque.nom}
-        marqueId={marque.id}
         ouvert={ouvert}
-        onToggle={basculer}
+        onToggle={(cle, blocNom) => basculer(cle, blocNom, 'beneficiaire')}
       />
     );
   });
