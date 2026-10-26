@@ -7,9 +7,8 @@ interface NiveauBeneficiairesProps {
   noeuds: NoeudChaine[];
   niveauPrecedent?: NoeudChaine[];
   marqueNom: string;
-  marqueId: number;
   ouvert: string | null;
-  onToggle: (cle: string, beneficiaireId: number) => void;
+  onToggle: (cle: string, blocNom: string) => void;
 }
 
 // Au-delà de 3, une seule ligne serait trop serrée : les blocs sont empilés,
@@ -25,7 +24,7 @@ export const cleBeneficiaire = (noeud: NoeudChaine) => `beneficiaire-${noeud.ben
 // Bénéficiaires d'un même niveau côte à côte sur ordinateur (Eutopia et Otium pour Feed.).
 // Le contenu ouvert passe sous la ligne sur ordinateur (order-last), sous l'onglet ouvert,
 // et reste sous son en-tête sur mobile.
-export function NiveauBeneficiaires({ noeuds, niveauPrecedent, marqueNom, marqueId, ouvert, onToggle }: NiveauBeneficiairesProps) {
+export function NiveauBeneficiaires({ noeuds, niveauPrecedent, marqueNom, ouvert, onToggle }: NiveauBeneficiairesProps) {
   if (noeuds.length === 1 || noeuds.length > MAX_EN_LIGNE) {
     return (
       <div className="space-y-3">
@@ -38,9 +37,9 @@ export function NiveauBeneficiaires({ noeuds, niveauPrecedent, marqueNom, marque
               id={cle}
               {...enteteBeneficiaire(noeud, liens)}
               ouvert={ouvert === cle}
-              onToggle={() => onToggle(cle, noeud.beneficiaire.id)}
+              onToggle={() => onToggle(cle, noeud.beneficiaire.nom)}
             >
-              <ContenuBeneficiaire noeud={noeud} liens={liens} marqueId={marqueId} />
+              <ContenuBeneficiaire noeud={noeud} liens={liens} marqueNom={marqueNom} />
             </BlocActeur>
           );
         })}
@@ -60,7 +59,7 @@ export function NiveauBeneficiaires({ noeuds, niveauPrecedent, marqueNom, marque
             <EnteteActeur
               {...enteteBeneficiaire(noeud, liens)}
               ouvert={estOuvert}
-              onToggle={() => onToggle(cle, noeud.beneficiaire.id)}
+              onToggle={() => onToggle(cle, noeud.beneficiaire.nom)}
               contenuId={contenuId}
               enLigne
               className={index > 0 ? 'mt-3 md:mt-0' : ''}
@@ -72,7 +71,7 @@ export function NiveauBeneficiaires({ noeuds, niveauPrecedent, marqueNom, marque
                 coinOnglet={coinOnglet(index, noeuds.length)}
                 className="md:order-last md:col-span-full"
               >
-                <ContenuBeneficiaire noeud={noeud} liens={liens} marqueId={marqueId} />
+                <ContenuBeneficiaire noeud={noeud} liens={liens} marqueNom={marqueNom} />
               </ContenuActeur>
             )}
           </Fragment>

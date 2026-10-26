@@ -9,7 +9,7 @@ import { NoeudChaine, LienEntrant } from './chaine';
 interface ContenuBeneficiaireProps {
   noeud: NoeudChaine;
   liens: LienEntrant[];
-  marqueId: number;
+  marqueNom: string;
 }
 
 // Un lien entrant : son texte ; plusieurs : « Via A et B », les textes sont dans le contenu
@@ -31,7 +31,7 @@ export function enteteBeneficiaire(noeud: NoeudChaine, liens: LienEntrant[]): En
   };
 }
 
-export function ContenuBeneficiaire({ noeud, liens, marqueId }: ContenuBeneficiaireProps) {
+export function ContenuBeneficiaire({ noeud, liens, marqueNom }: ContenuBeneficiaireProps) {
   const { beneficiaire, marques_directes, marques_indirectes } = noeud;
   const controverses = beneficiaire.controverses || [];
 
@@ -64,7 +64,8 @@ export function ContenuBeneficiaire({ noeud, liens, marqueId }: ContenuBeneficia
         <ControversesDocumentees
           controverses={controverses.map((controverse) => ({ ...controverse, categorie: controverse.Categorie }))}
           sourceType="beneficiaire"
-          marqueId={marqueId}
+          marqueNom={marqueNom}
+          blocNom={beneficiaire.nom}
         />
       )}
 

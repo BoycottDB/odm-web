@@ -47,11 +47,18 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Qui j'enrichis ?" />
-        {/* Umami Analytics */}
+        {/* Umami Analytics : seulement sur le vrai domaine (pas les deploy previews), jamais sur /admin */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "window.umamiBeforeSend=function(t,p){return p&&p.url&&p.url.indexOf('/admin')===0?false:p}",
+          }}
+        />
         <Script
           async
           src={`${process.env.NEXT_PUBLIC_UMAMI_URL}/script.js`}
           data-website-id={websiteId}
+          data-domains={appEnv === 'prod' ? 'quijenrichis.fr,www.quijenrichis.fr' : undefined}
+          data-before-send="umamiBeforeSend"
         />
 
         {/* Favicons */}

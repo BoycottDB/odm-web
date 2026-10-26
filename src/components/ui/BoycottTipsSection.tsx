@@ -153,13 +153,13 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
         }
 
         if (!viewed[trackKey]) {
-          safeTrack('boycott_tips_view', { marque_id: marque.id });
+          safeTrack('boycott_tips_view', { marque: marque.nom });
           viewed[trackKey] = true;
           sessionStorage.setItem(storageKey, JSON.stringify(viewed));
         }
       } catch (e) {
         // En cas d'échec du storage, on track quand même (best-effort)
-        safeTrack('boycott_tips_view', { marque_id: marque.id });
+        safeTrack('boycott_tips_view', { marque: marque.nom });
       }
     }
   }, [isExpanded, marque.id]);

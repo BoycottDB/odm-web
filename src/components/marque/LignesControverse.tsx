@@ -20,11 +20,13 @@ const lienClass = 'text-primary font-medium hover:text-accent-700 transition-col
 interface LigneLiensProps {
   controverse: Controverse;
   sourceType: SourceControverse;
-  marqueId?: number;
+  marqueNom: string;
+  blocNom: string;
 }
 
 // Source et Réponse sur une ligne, séparées par « · »
-export const LigneLiens = ({ controverse, sourceType, marqueId }: LigneLiensProps) => {
+export const LigneLiens = ({ controverse, sourceType, marqueNom, blocNom }: LigneLiensProps) => {
+  const suivi = { marque: marqueNom, bloc: blocNom, source_type: sourceType, controverse_id: controverse.id };
   const elements = [
     <a
       key="source"
@@ -32,12 +34,19 @@ export const LigneLiens = ({ controverse, sourceType, marqueId }: LigneLiensProp
       target="_blank"
       rel="noopener noreferrer"
       className={lienClass}
-      onClick={() => safeTrack('source_click', { source_type: sourceType, source_id: controverse.id, marque_id: marqueId })}
+      onClick={() => safeTrack('source_click', suivi)}
     >
       Source ↗
     </a>,
     controverse.reponse ? (
-      <a key="reponse" href={controverse.reponse} target="_blank" rel="noopener noreferrer" className={lienClass}>
+      <a
+        key="reponse"
+        href={controverse.reponse}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={lienClass}
+        onClick={() => safeTrack('response_click', suivi)}
+      >
         Réponse ↗
       </a>
     ) : null,

@@ -55,10 +55,10 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
   // Marque → sa page ; bénéficiaire → liste des marques filtrée sur lui
   const ouvrirSuggestion = useCallback((suggestion: Suggestion, query: string) => {
     if (suggestion.type === 'marque') {
-      safeTrack('search', { query, has_results: true, marque_id: suggestion.id, source });
+      safeTrack('search', { query, has_results: true, result: suggestion.nom, result_type: 'marque', source });
       naviguer(`/marques/${slugify(suggestion.nom)}`);
     } else {
-      safeTrack('search', { query, has_results: true, beneficiaire_id: suggestion.id, source });
+      safeTrack('search', { query, has_results: true, result: suggestion.nom, result_type: 'beneficiaire', source });
       sessionStorage.setItem('scrollToList', 'true');
       naviguer(`/marques?beneficiaire=${suggestion.id}`);
     }
@@ -87,7 +87,6 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
       safeTrack('search', {
         query: searchQuery,
         has_results: false,
-        marque_id: null,
         source
       });
 
