@@ -2,6 +2,7 @@ export interface MarqueNom {
   id: number;
   nom: string;
   autres_noms: string[];
+  variantes: string[];
 }
 
 export interface BeneficiaireNom {
@@ -10,28 +11,38 @@ export interface BeneficiaireNom {
   type_beneficiaire: 'individu' | 'groupe';
 }
 
-// Une suggestion de la barre : une marque, l'autre nom d'une marque (nomMarque différent de nom,
-// ex. « Knacki » mène à Herta) ou un bénéficiaire controversé
+// Une suggestion de la barre : une marque, le produit d'une marque (nomMarque différent de nom,
+// ex. « Knacki » mène à Herta) ou un bénéficiaire controversé.
+// Les variantes du nom (ex. « Total ») trouvent leur marque sans être affichées
 export type Suggestion =
-  | { type: 'marque'; id: number; nom: string; nomMarque: string }
+  | { type: 'marque'; id: number; nom: string; nomMarque: string; variantes: string[] }
   | ({ type: 'beneficiaire' } & BeneficiaireNom);
 
 const LONGUEUR_MIN = 2;
 const NOMBRE_MAX = 10;
 
-// Minuscules sans accents : « hepar » trouve « Hépar »
+// Minuscules sans accents, apostrophe typographique comme droite :
+// « hepar » trouve « Hépar », « mcdonald's » trouve « McDonald’s »
 export const normaliser = (texte: string) =>
-  texte.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  texte.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’‘]/g, "'").toLowerCase().trim();
 
-// Marques, leurs autres noms et bénéficiaires réunis en une seule liste, par ordre alphabétique
+// Noms qui trouvent une suggestion : le sien et, pour une marque, ses variantes
+const nomsCherches = (suggestion: Suggestion) =>
+  [suggestion.nom, ...(suggestion.type === 'marque' ? suggestion.variantes : [])].map(normaliser);
+
+// Marques (avec leurs variantes), leurs produits et bénéficiaires réunis en une seule liste, par ordre alphabétique
 export function construireSuggestions(marques: MarqueNom[], beneficiaires: BeneficiaireNom[]): Suggestion[] {
   return [
-    ...marques.flatMap((marque) => [marque.nom, ...marque.autres_noms].map((nom) => ({
-      type: 'marque' as const,
-      id: marque.id,
-      nom,
-      nomMarque: marque.nom,
-    }))),
+    ...marques.flatMap((marque) => [
+      { type: 'marque' as const, id: marque.id, nom: marque.nom, nomMarque: marque.nom, variantes: marque.variantes },
+      ...marque.autres_noms.map((nom) => ({
+        type: 'marque' as const,
+        id: marque.id,
+        nom,
+        nomMarque: marque.nom,
+        variantes: [],
+      })),
+    ]),
     ...beneficiaires.map((beneficiaire) => ({ type: 'beneficiaire' as const, ...beneficiaire })),
   ].sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
 }
@@ -45,17 +56,18 @@ export function filtrerSuggestions(suggestions: Suggestion[], saisie: string): S
   const debut: Suggestion[] = [];
   const contient: Suggestion[] = [];
   for (const suggestion of suggestions) {
-    const nom = normaliser(suggestion.nom);
-    if (nom.startsWith(recherche)) debut.push(suggestion);
-    else if (nom.includes(recherche)) contient.push(suggestion);
+    const noms = nomsCherches(suggestion);
+    if (noms.some((nom) => nom.startsWith(recherche))) debut.push(suggestion);
+    else if (noms.some((nom) => nom.includes(recherche))) contient.push(suggestion);
   }
   return [...debut, ...contient].slice(0, NOMBRE_MAX);
 }
 
-// Suggestion dont le nom correspond exactement à la saisie (accents et casse ignorés) ;
+// Suggestion dont le nom ou une variante correspond exactement à la saisie (accents et casse ignorés) ;
 // une marque passe avant un bénéficiaire du même nom
 export function suggestionExacte(suggestions: Suggestion[], saisie: string): Suggestion | undefined {
-  const exactes = suggestions.filter((suggestion) => normaliser(suggestion.nom) === normaliser(saisie));
+  const recherche = normaliser(saisie);
+  const exactes = suggestions.filter((suggestion) => nomsCherches(suggestion).includes(recherche));
   return exactes.find((suggestion) => suggestion.type === 'marque') ?? exactes[0];
 }
 
@@ -83,10 +95,10 @@ export function suggestionsProches(suggestions: Suggestion[], saisie: string): S
 
   const tolerance = Math.min(3, Math.max(1, Math.floor(recherche.length / 4)));
   return suggestions
-    .map((suggestion) => {
-      const nom = normaliser(suggestion.nom);
-      return { suggestion, distance: nom.includes(recherche) ? 0 : distanceEdition(recherche, nom) };
-    })
+    .map((suggestion) => ({
+      suggestion,
+      distance: Math.min(...nomsCherches(suggestion).map((nom) => nom.includes(recherche) ? 0 : distanceEdition(recherche, nom))),
+    }))
     .filter(({ distance }) => distance <= tolerance)
     .sort((a, b) => a.distance - b.distance)
     .slice(0, NOMBRE_MAX_PROCHES)

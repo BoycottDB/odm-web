@@ -38,13 +38,14 @@ export function EnteteActeur({ icone, nom, sousTitre, etiquettes = [], ouvert, o
       aria-controls={contenuId}
       className={`group w-full border-2 transition-colors duration-200 ${ouvert ? styleOuvert(enLigne) : 'bg-white border-primary-medium rounded-2xl hover:border-primary'} p-2 md:p-4 text-left min-h-[5rem] ${className}`}
     >
-      <div className="flex items-center gap-3">
+      {/* Sur une ligne, les blocs ont la même hauteur : le texte part du haut pour aligner les noms */}
+      <div className={`flex items-center gap-3 ${enLigne ? 'md:h-full' : ''}`}>
         <div className="w-8 h-8 flex items-center justify-center flex-shrink-0 text-primary" aria-hidden="true">
           {icone}
         </div>
-        <div className="flex-1 min-w-0">
+        <div className={`flex-1 min-w-0 ${enLigne ? 'md:self-start' : ''}`}>
           <div className="font-semibold text-sm md:text-base truncate">{nom}</div>
-          {sousTitre && <div className="text-xs opacity-75 md:truncate">{sousTitre}</div>}
+          {sousTitre && <div className="text-xs opacity-75">{sousTitre}</div>}
           <ListeEtiquettes etiquettes={etiquettes} className="mt-2" />
         </div>
         <div className="flex-shrink-0 ml-2">

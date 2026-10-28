@@ -5,10 +5,13 @@ import { getErrorMessage } from '@/lib/utils/helpers';
 import { slugify } from '@/lib/slug';
 
 /**
- * Premier autre nom dont l'adresse (/marques/<slug>) est déjà prise par une marque
- * ou par l'autre nom d'une autre marque ; null si aucun conflit
+ * Premier autre nom (produit ou variante) dont l'adresse (/marques/<slug>) est déjà prise par une marque,
+ * par l'autre nom d'une autre marque ou par un autre nom de la liste ; null si aucun conflit
  */
 async function conflitAutresNoms(marqueId: number, noms: string[]): Promise<string | null> {
+  const doublon = noms.find((nom, index) => noms.findIndex((autre) => slugify(autre) === slugify(nom)) !== index);
+  if (doublon) return `« ${doublon} » est en double dans les produits et les variantes`;
+
   const [{ data: marques, error: marquesError }, { data: autresNoms, error: autresError }] = await Promise.all([
     supabaseAdmin.from('Marque').select('id, nom'),
     supabaseAdmin.from('marque_autre_nom').select('marque_id, nom').neq('marque_id', marqueId),
@@ -59,7 +62,7 @@ export async function GET(request: NextRequest) {
           lien_financier,
           beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey(*)
         ),
-        marque_autre_nom(nom)
+        marque_autre_nom(nom, type)
       `);
 
     if (search) {
@@ -78,11 +81,15 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error;
 
-    // Autres noms à plat, comme dans odm-api
-    const marquesAvecAutresNoms = (marques || []).map(({ marque_autre_nom, ...marque }) => ({
-      ...marque,
-      autres_noms: (marque_autre_nom as Array<{ nom: string }>).map((autre) => autre.nom),
-    }));
+    // Produits et variantes à plat, comme dans odm-api
+    const marquesAvecAutresNoms = (marques || []).map(({ marque_autre_nom, ...marque }) => {
+      const autres = marque_autre_nom as Array<{ nom: string; type: 'produit' | 'variante' }>;
+      return {
+        ...marque,
+        autres_noms: autres.filter((autre) => autre.type === 'produit').map((autre) => autre.nom),
+        variantes: autres.filter((autre) => autre.type === 'variante').map((autre) => autre.nom),
+      };
+    });
 
     return NextResponse.json(marquesAvecAutresNoms, {
       headers: {
@@ -102,7 +109,7 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, secteur_marque_id, message_boycott_tips, autres_noms } = body;
+    const { id, secteur_marque_id, message_boycott_tips, autres_noms, variantes } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -111,17 +118,23 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Autres noms : vérifiés avant toute écriture, puis remplacés en entier
-    if (autres_noms !== undefined) {
-      const validation = validateAutresNoms(autres_noms);
-      if (!validation.success) {
+    // Produits et variantes : envoyés ensemble, vérifiés avant toute écriture, puis remplacés en entier
+    if (autres_noms !== undefined || variantes !== undefined) {
+      const produits = validateAutresNoms(autres_noms);
+      const variantesValides = validateAutresNoms(variantes);
+      if (!produits.success || !variantesValides.success) {
         return NextResponse.json(
-          { error: 'Données invalides', details: validation.errors },
+          { error: 'Données invalides', details: [...(produits.errors ?? []), ...(variantesValides.errors ?? [])] },
           { status: 400 }
         );
       }
 
-      const conflit = await conflitAutresNoms(id, validation.data!);
+      const lignes = [
+        ...produits.data!.map((nom) => ({ marque_id: id, nom, type: 'produit' })),
+        ...variantesValides.data!.map((nom) => ({ marque_id: id, nom, type: 'variante' })),
+      ];
+
+      const conflit = await conflitAutresNoms(id, lignes.map((ligne) => ligne.nom));
       if (conflit) {
         return NextResponse.json({ error: conflit }, { status: 409 });
       }
@@ -132,10 +145,10 @@ export async function PUT(request: NextRequest) {
         .eq('marque_id', id);
       if (suppressionError) throw suppressionError;
 
-      if (validation.data!.length > 0) {
+      if (lignes.length > 0) {
         const { error: ajoutError } = await supabaseAdmin
           .from('marque_autre_nom')
-          .insert(validation.data!.map((nom) => ({ marque_id: id, nom })));
+          .insert(lignes);
         if (ajoutError) throw ajoutError;
       }
     }
