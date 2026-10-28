@@ -12,7 +12,8 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Autre nom de la marque cherché par l'adresse (ex. « Knacki » pour /marques/knacki, page d'Herta)
+// Produit de la marque cherché par l'adresse (ex. « Knacki » pour /marques/knacki, page d'Herta) ;
+// une variante (ex. /marques/total) garde le nom de la marque en titre
 const autreNomDeLAdresse = (marque: Marque, slug: string) =>
   marque.autres_noms?.find((nom) => slugify(nom) === slug);
 

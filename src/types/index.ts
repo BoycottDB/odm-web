@@ -27,6 +27,8 @@ export interface Marque {
   nom: string;
   // Gammes vendues sous la marque (ex. Knacki pour Herta) : elles mènent à sa page
   autres_noms?: string[];
+  // Autres façons d'écrire la marque (ex. Total pour TotalEnergies) : elles mènent à sa page, sans y être listées
+  variantes?: string[];
   evenements?: Evenement[];
   // Champs pour les Boycott Tips
   message_boycott_tips?: string;
@@ -167,6 +169,7 @@ export interface MarqueUpdateRequest {
   secteur_marque_id?: number;
   message_boycott_tips?: string;
   autres_noms?: string[];
+  variantes?: string[];
 }
 
 export interface EvenementCreateRequest {

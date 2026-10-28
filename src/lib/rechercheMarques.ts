@@ -2,6 +2,7 @@ export interface MarqueNom {
   id: number;
   nom: string;
   autres_noms: string[];
+  variantes: string[];
 }
 
 export interface BeneficiaireNom {
@@ -11,7 +12,7 @@ export interface BeneficiaireNom {
 }
 
 // Une suggestion de la barre : une marque, l'autre nom d'une marque (nomMarque différent de nom,
-// ex. « Knacki » mène à Herta) ou un bénéficiaire controversé
+// ex. le produit « Knacki » ou la variante « Total » mènent à leur marque) ou un bénéficiaire controversé
 export type Suggestion =
   | { type: 'marque'; id: number; nom: string; nomMarque: string }
   | ({ type: 'beneficiaire' } & BeneficiaireNom);
@@ -19,14 +20,15 @@ export type Suggestion =
 const LONGUEUR_MIN = 2;
 const NOMBRE_MAX = 10;
 
-// Minuscules sans accents : « hepar » trouve « Hépar »
+// Minuscules sans accents, apostrophe typographique comme droite :
+// « hepar » trouve « Hépar », « mcdonald's » trouve « McDonald’s »
 export const normaliser = (texte: string) =>
-  texte.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  texte.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’‘]/g, "'").toLowerCase().trim();
 
-// Marques, leurs autres noms et bénéficiaires réunis en une seule liste, par ordre alphabétique
+// Marques, leurs produits, variantes et bénéficiaires réunis en une seule liste, par ordre alphabétique
 export function construireSuggestions(marques: MarqueNom[], beneficiaires: BeneficiaireNom[]): Suggestion[] {
   return [
-    ...marques.flatMap((marque) => [marque.nom, ...marque.autres_noms].map((nom) => ({
+    ...marques.flatMap((marque) => [marque.nom, ...marque.autres_noms, ...marque.variantes].map((nom) => ({
       type: 'marque' as const,
       id: marque.id,
       nom,
