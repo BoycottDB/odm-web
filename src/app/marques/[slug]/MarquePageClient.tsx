@@ -11,11 +11,14 @@ import LienQuestion from '@/components/ui/LienQuestion';
 interface MarquePageClientProps {
   marque: Marque;
   slug: string;
+  // Autre nom par lequel on arrive (ex. « Knacki » sur la page d'Herta) : il remplace le nom de la marque en titre
+  autreNom?: string;
 }
 
-export default function MarquePageClient({ marque, slug }: MarquePageClientProps) {
+export default function MarquePageClient({ marque, slug, autreNom }: MarquePageClientProps) {
   const acteurs = nomsDesActeursControverses(marque);
   const listeActeurs = new Intl.ListFormat('fr', { type: 'conjunction' }).format(acteurs);
+  const nom = autreNom ?? marque.nom;
 
   // JSON-LD Schema
   const jsonLd = {
@@ -39,11 +42,11 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
       <section className="en-tete-page bg-gradient-hero py-10 md:py-16 px-4">
         <div className="w-full max-w-4xl mx-auto text-center">
           <h1 className="heading-hero md:heading-hero text-neutral-900 mb-6 tracking-tight">
-            {marque.nom}
+            {nom}
           </h1>
           {acteurs.length > 0 && (
             <p className="heading-sub text-neutral-700 font-light">
-              En consommant {marque.nom}, j&apos;enrichis <strong className="font-semibold text-neutral-900">{listeActeurs}</strong>
+              En consommant {nom}, j&apos;enrichis <strong className="font-semibold text-neutral-900">{listeActeurs}</strong>
             </p>
           )}
 
@@ -61,17 +64,17 @@ export default function MarquePageClient({ marque, slug }: MarquePageClientProps
           <div className="fixed right-6 z-50 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] md:bottom-24 md:right-24">
             <ShareButton
               url={`/marques/${slug}`}
-              title={`Qui j'enrichis en consommant ${marque.nom} ?`}
+              title={`Qui j'enrichis en consommant ${nom} ?`}
               text={acteurs.length > 0
-                ? `En consommant ${marque.nom}, j'enrichis ${listeActeurs}. Découvrez pourquoi ça peut poser problème.`
-                : `Qui j'enrichis en consommant ${marque.nom} ?`}
+                ? `En consommant ${nom}, j'enrichis ${listeActeurs}. Découvrez pourquoi ça peut poser problème.`
+                : `Qui j'enrichis en consommant ${nom} ?`}
               variant="primary"
               size="lg"
               className="shadow-xl rounded-full px-4 py-4 hover:scale-105 transition-transform"
             />
           </div>
 
-          <ChaineQuiJenrichis marque={marque} />
+          <ChaineQuiJenrichis marque={marque} autreNom={autreNom} />
 
 
           <AppelContribution />

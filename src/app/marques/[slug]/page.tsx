@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { dataService } from '@/lib/services/dataService';
+import { slugify } from '@/lib/slug';
+import { Marque } from '@/types';
 import MarquePageClient from './MarquePageClient';
 import { nomsDesActeursControverses } from '@/components/marque/chaine';
 
@@ -9,6 +11,10 @@ export const revalidate = 600; // ISR 10 minutes
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+// Autre nom de la marque cherché par l'adresse (ex. « Knacki » pour /marques/knacki, page d'Herta)
+const autreNomDeLAdresse = (marque: Marque, slug: string) =>
+  marque.autres_noms?.find((nom) => slugify(nom) === slug);
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -21,11 +27,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const nom = autreNomDeLAdresse(marque, slug) ?? marque.nom;
   const acteurs = nomsDesActeursControverses(marque);
-  const title = `Qui j'enrichis en consommant ${marque.nom} ?`;
+  const title = `Qui j'enrichis en consommant ${nom} ?`;
   const description = acteurs.length > 0
-    ? `En consommant ${marque.nom}, j'enrichis ${new Intl.ListFormat('fr', { type: 'conjunction' }).format(acteurs)}. Découvrez pourquoi ça peut poser problème et comment consommer autrement.`
-    : `Découvrez qui s'enrichit quand vous consommez ${marque.nom} et comment consommer autrement.`;
+    ? `En consommant ${nom}, j'enrichis ${new Intl.ListFormat('fr', { type: 'conjunction' }).format(acteurs)}. Découvrez pourquoi ça peut poser problème et comment consommer autrement.`
+    : `Découvrez qui s'enrichit quand vous consommez ${nom} et comment consommer autrement.`;
 
   return {
     title,
@@ -41,7 +48,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
     },
     alternates: {
-      canonical: `/marques/${slug}`
+      // Une page d'autre nom reprend celle de sa marque : les moteurs n'indexent que la marque
+      canonical: `/marques/${slugify(marque.nom)}`
     }
   };
 }
@@ -68,5 +76,5 @@ export default async function MarquePage({ params }: PageProps) {
     notFound();
   }
 
-  return <MarquePageClient marque={marque} slug={slug} />;
+  return <MarquePageClient marque={marque} slug={slug} autreNom={autreNomDeLAdresse(marque, slug)} />;
 }

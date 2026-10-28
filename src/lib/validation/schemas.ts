@@ -6,6 +6,26 @@ export interface ValidationResult<T> {
   errors?: string[];
 }
 
+// Autres noms d'une marque (gammes vendues sous la marque) : liste de textes, vides et doublons retirés
+export function validateAutresNoms(data: unknown): ValidationResult<string[]> {
+  if (!Array.isArray(data) || data.some((nom) => typeof nom !== 'string')) {
+    return { success: false, errors: ['Les autres noms doivent être une liste de textes'] };
+  }
+
+  const noms = data.map((nom: string) => nom.trim()).filter((nom) => nom.length > 0);
+  const uniques = noms.filter((nom, index) => noms.findIndex((autre) => autre.toLowerCase() === nom.toLowerCase()) === index);
+
+  const errors = uniques
+    .filter((nom) => nom.length < 2 || nom.length > 100)
+    .map((nom) => `L'autre nom « ${nom} » doit contenir entre 2 et 100 caractères`);
+
+  if (errors.length > 0) {
+    return { success: false, errors };
+  }
+
+  return { success: true, data: uniques };
+}
+
 export function validateMarqueCreate(data: unknown): ValidationResult<{ nom: string }> {
   const errors: string[] = [];
 

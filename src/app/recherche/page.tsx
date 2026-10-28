@@ -19,7 +19,7 @@ interface PageProps {
   searchParams: Promise<{ q?: string }>;
 }
 
-// Marque → sa page ; bénéficiaire → liste des marques filtrée sur lui
+// Marque ou autre nom → sa page (celle de la marque, vue depuis l'autre nom) ; bénéficiaire → liste des marques filtrée sur lui
 const lienSuggestion = (suggestion: Suggestion) =>
   suggestion.type === 'marque'
     ? `/marques/${slugify(suggestion.nom)}`
@@ -62,7 +62,7 @@ export default async function RecherchePage({ searchParams }: PageProps) {
             <p className="text-base text-neutral-600 text-center">
               Peut-être cherchiez-vous{' '}
               {proches.map((proche, index) => (
-                <span key={`${proche.type}-${proche.id}`}>
+                <span key={`${proche.type}-${proche.id}-${proche.nom}`}>
                   {index > 0 && ' ou '}
                   <Link href={lienSuggestion(proche)} className="font-semibold text-primary underline hover:text-primary-dark">
                     {proche.nom}

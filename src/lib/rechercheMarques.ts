@@ -1,6 +1,7 @@
 export interface MarqueNom {
   id: number;
   nom: string;
+  autres_noms: string[];
 }
 
 export interface BeneficiaireNom {
@@ -9,9 +10,10 @@ export interface BeneficiaireNom {
   type_beneficiaire: 'individu' | 'groupe';
 }
 
-// Une suggestion de la barre : une marque ou un bénéficiaire controversé
+// Une suggestion de la barre : une marque, l'autre nom d'une marque (nomMarque différent de nom,
+// ex. « Knacki » mène à Herta) ou un bénéficiaire controversé
 export type Suggestion =
-  | ({ type: 'marque' } & MarqueNom)
+  | { type: 'marque'; id: number; nom: string; nomMarque: string }
   | ({ type: 'beneficiaire' } & BeneficiaireNom);
 
 const LONGUEUR_MIN = 2;
@@ -21,10 +23,15 @@ const NOMBRE_MAX = 10;
 export const normaliser = (texte: string) =>
   texte.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
 
-// Marques et bénéficiaires réunis en une seule liste, par ordre alphabétique
+// Marques, leurs autres noms et bénéficiaires réunis en une seule liste, par ordre alphabétique
 export function construireSuggestions(marques: MarqueNom[], beneficiaires: BeneficiaireNom[]): Suggestion[] {
   return [
-    ...marques.map((marque) => ({ type: 'marque' as const, ...marque })),
+    ...marques.flatMap((marque) => [marque.nom, ...marque.autres_noms].map((nom) => ({
+      type: 'marque' as const,
+      id: marque.id,
+      nom,
+      nomMarque: marque.nom,
+    }))),
     ...beneficiaires.map((beneficiaire) => ({ type: 'beneficiaire' as const, ...beneficiaire })),
   ].sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
 }

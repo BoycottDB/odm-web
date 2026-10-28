@@ -236,7 +236,7 @@ export function SearchBar({
             const Icone = iconeSuggestion(suggestion);
             return (
               <button
-                key={`${suggestion.type}-${suggestion.id}`}
+                key={`${suggestion.type}-${suggestion.id}-${suggestion.nom}`}
                 type="button"
                 role="option"
                 aria-selected={index === suggestions.highlighted}
@@ -249,6 +249,9 @@ export function SearchBar({
               >
                 <Icone className="w-5 h-5 shrink-0 text-neutral-500" aria-hidden="true" />
                 <span className="body-large font-medium text-neutral-900">{suggestion.nom}</span>
+                {suggestion.type === 'marque' && suggestion.nom !== suggestion.nomMarque && (
+                  <span className="body-small text-neutral-500">({suggestion.nomMarque})</span>
+                )}
               </button>
             );
           })}

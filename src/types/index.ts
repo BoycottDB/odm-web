@@ -25,6 +25,8 @@ export interface MarqueStats {
 export interface Marque {
   id: number;
   nom: string;
+  // Gammes vendues sous la marque (ex. Knacki pour Herta) : elles mènent à sa page
+  autres_noms?: string[];
   evenements?: Evenement[];
   // Champs pour les Boycott Tips
   message_boycott_tips?: string;
@@ -164,6 +166,7 @@ export interface MarqueUpdateRequest {
   nom?: string;
   secteur_marque_id?: number;
   message_boycott_tips?: string;
+  autres_noms?: string[];
 }
 
 export interface EvenementCreateRequest {

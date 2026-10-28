@@ -19,7 +19,7 @@ export function MarquesBadges({ marques }: MarquesBadgesProps) {
     <div className="flex flex-wrap gap-2">
       {marques.map((marque) => (
         <Link
-          key={marque.id}
+          key={marque.nom}
           href={`/marques/${slugify(marque.nom)}`}
           className="inline-flex items-center px-3 py-1 rounded-full body-xs font-semibold bg-secondary-light text-secondary-dark border border-secondary hover:bg-secondary hover:text-white transition-colors"
         >
