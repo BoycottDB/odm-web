@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { dataService } from '@/lib/services/dataService';
 import { slugify } from '@/lib/slug';
 import { Marque } from '@/types';
@@ -12,8 +12,7 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Produit de la marque cherché par l'adresse (ex. « Knacki » pour /marques/knacki, page d'Herta) ;
-// une variante (ex. /marques/total) garde le nom de la marque en titre
+// Produit de la marque cherché par l'adresse (ex. « Knacki » pour /marques/knacki, page d'Herta)
 const autreNomDeLAdresse = (marque: Marque, slug: string) =>
   marque.autres_noms?.find((nom) => slugify(nom) === slug);
 
@@ -75,6 +74,11 @@ export default async function MarquePage({ params }: PageProps) {
 
   if (!marque) {
     notFound();
+  }
+
+  // Variante du nom (ex. /marques/total) : même page que la marque, à sa propre adresse
+  if (marque.variantes?.some((nom) => slugify(nom) === slug)) {
+    permanentRedirect(`/marques/${slugify(marque.nom)}`);
   }
 
   return <MarquePageClient marque={marque} slug={slug} autreNom={autreNomDeLAdresse(marque, slug)} />;
