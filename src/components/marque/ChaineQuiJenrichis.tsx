@@ -12,6 +12,8 @@ import { niveauxDeLaChaine } from './chaine';
 
 interface ChaineQuiJenrichisProps {
   marque: Marque;
+  // Autre nom par lequel on arrive (ex. « Knacki ») : retiré de la liste des produits de la marque
+  autreNom?: string;
 }
 
 const Fleche = () => (
@@ -35,10 +37,10 @@ const suivreOuverture = (marqueNom: string, blocNom: string, blocType: 'marque' 
   safeTrack('block_open', { marque: marqueNom, bloc: blocNom, bloc_type: blocType });
 };
 
-// La marque (si elle a ses propres controverses), puis ses bénéficiaires dans l'ordre
+// La marque (si elle a ses propres controverses ou d'autres noms), puis ses bénéficiaires dans l'ordre
 // du trajet de l'argent, puis les conseils. Tous les blocs sont fermés au départ,
 // un seul s'ouvre à la fois (le contenu d'un bloc sur une ligne de plusieurs passe sous la ligne).
-export function ChaineQuiJenrichis({ marque }: ChaineQuiJenrichisProps) {
+export function ChaineQuiJenrichis({ marque, autreNom }: ChaineQuiJenrichisProps) {
   const [ouvert, setOuvert] = useState<string | null>(null);
   const niveaux = niveauxDeLaChaine(marque.chaine_beneficiaires || []);
 
@@ -55,9 +57,9 @@ export function ChaineQuiJenrichis({ marque }: ChaineQuiJenrichisProps) {
 
   // Étapes du trajet, séparées par une flèche
   const etapes: ReactNode[] = [];
-  if ((marque.evenements?.length ?? 0) > 0) {
+  if ((marque.evenements?.length ?? 0) > 0 || (marque.autres_noms?.length ?? 0) > 0) {
     etapes.push(
-      <BlocMarque key="marque" marque={marque} ouvert={ouvert === 'marque'} onToggle={() => basculer('marque', marque.nom, 'marque')} />
+      <BlocMarque key="marque" marque={marque} autreNom={autreNom} ouvert={ouvert === 'marque'} onToggle={() => basculer('marque', marque.nom, 'marque')} />
     );
   }
   niveaux.forEach((noeuds, index) => {

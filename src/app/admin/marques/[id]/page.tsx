@@ -31,7 +31,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [marqueFormData, setMarqueFormData] = useState({
     secteur_marque_id: null as number | null,
-    message_boycott_tips: ''
+    message_boycott_tips: '',
+    autres_noms: '' // un nom par ligne
   });
   const router = useRouter();
   
@@ -50,7 +51,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
           setMarque(foundMarque);
           setMarqueFormData({
             secteur_marque_id: foundMarque.secteur_marque_id || null,
-            message_boycott_tips: foundMarque.message_boycott_tips || ''
+            message_boycott_tips: foundMarque.message_boycott_tips || '',
+            autres_noms: (foundMarque.autres_noms ?? []).join('\n')
           });
         } else {
           setMessage({ type: 'error', text: 'Marque non trouvée' });
@@ -129,7 +131,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       const updateData: MarqueUpdateRequest = {
         id: marque.id,
         secteur_marque_id: marqueFormData.secteur_marque_id || undefined,
-        message_boycott_tips: marqueFormData.message_boycott_tips?.trim() || undefined
+        message_boycott_tips: marqueFormData.message_boycott_tips?.trim() || undefined,
+        autres_noms: marqueFormData.autres_noms.split('\n')
       };
       
       const response = await fetch('/api/marques', {
@@ -140,9 +143,9 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
       
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de la mise à jour');
+        throw new Error([error.error, ...(error.details ?? [])].filter(Boolean).join(' : ') || 'Erreur lors de la mise à jour');
       }
-      
+
       setMessage({ type: 'success', text: 'Marque mise à jour avec succès' });
       await loadMarqueData();
     } catch (error) {
@@ -273,6 +276,23 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
                 Secteur actuel : {marque.secteur_marque.nom}
               </p>
             )}
+          </div>
+          <div>
+            <label className="block body-small font-medium text-neutral-700 mb-1">
+              Autres noms (un par ligne)
+            </label>
+            <textarea
+              value={marqueFormData.autres_noms}
+              onChange={(e) => setMarqueFormData({
+                ...marqueFormData,
+                autres_noms: e.target.value
+              })}
+              className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-24"
+              placeholder={'Knacki\nLe Bon Paris'}
+            />
+            <p className="body-xs text-neutral-500 mt-1">
+              Gammes vendues sous cette marque : la recherche et leur adresse mènent à cette page.
+            </p>
           </div>
         </div>
         

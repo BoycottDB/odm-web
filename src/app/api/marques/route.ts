@@ -1,7 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
-import { validateMarqueCreate } from '@/lib/validation/schemas';
+import { validateAutresNoms, validateMarqueCreate } from '@/lib/validation/schemas';
 import { getErrorMessage } from '@/lib/utils/helpers';
+import { slugify } from '@/lib/slug';
+
+/**
+ * Premier autre nom dont l'adresse (/marques/<slug>) est déjà prise par une marque
+ * ou par l'autre nom d'une autre marque ; null si aucun conflit
+ */
+async function conflitAutresNoms(marqueId: number, noms: string[]): Promise<string | null> {
+  const [{ data: marques, error: marquesError }, { data: autresNoms, error: autresError }] = await Promise.all([
+    supabaseAdmin.from('Marque').select('id, nom'),
+    supabaseAdmin.from('marque_autre_nom').select('marque_id, nom').neq('marque_id', marqueId),
+  ]);
+  if (marquesError) throw marquesError;
+  if (autresError) throw autresError;
+
+  for (const nom of noms) {
+    const slug = slugify(nom);
+    const marque = marques?.find((m) => slugify(m.nom) === slug);
+    if (marque) return `« ${nom} » correspond déjà à la marque ${marque.nom}`;
+    const autre = autresNoms?.find((a) => slugify(a.nom) === slug);
+    if (autre) {
+      const proprietaire = marques?.find((m) => m.id === autre.marque_id);
+      return `« ${nom} » est déjà un autre nom de la marque ${proprietaire?.nom ?? autre.marque_id}`;
+    }
+  }
+  return null;
+}
 
 /**
  * GET /api/marques - ADMIN ONLY
@@ -32,7 +58,8 @@ export async function GET(request: NextRequest) {
           id,
           lien_financier,
           beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey(*)
-        )
+        ),
+        marque_autre_nom(nom)
       `);
 
     if (search) {
@@ -51,7 +78,13 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error;
 
-    return NextResponse.json(marques || [], {
+    // Autres noms à plat, comme dans odm-api
+    const marquesAvecAutresNoms = (marques || []).map(({ marque_autre_nom, ...marque }) => ({
+      ...marque,
+      autres_noms: (marque_autre_nom as Array<{ nom: string }>).map((autre) => autre.nom),
+    }));
+
+    return NextResponse.json(marquesAvecAutresNoms, {
       headers: {
         'X-Data-Source': 'direct-supabase-admin',
         'X-Warning': 'Admin endpoint - use dataService for public access'
@@ -69,7 +102,7 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, secteur_marque_id, message_boycott_tips } = body;
+    const { id, secteur_marque_id, message_boycott_tips, autres_noms } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -78,17 +111,43 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Autres noms : vérifiés avant toute écriture, puis remplacés en entier
+    if (autres_noms !== undefined) {
+      const validation = validateAutresNoms(autres_noms);
+      if (!validation.success) {
+        return NextResponse.json(
+          { error: 'Données invalides', details: validation.errors },
+          { status: 400 }
+        );
+      }
+
+      const conflit = await conflitAutresNoms(id, validation.data!);
+      if (conflit) {
+        return NextResponse.json({ error: conflit }, { status: 409 });
+      }
+
+      const { error: suppressionError } = await supabaseAdmin
+        .from('marque_autre_nom')
+        .delete()
+        .eq('marque_id', id);
+      if (suppressionError) throw suppressionError;
+
+      if (validation.data!.length > 0) {
+        const { error: ajoutError } = await supabaseAdmin
+          .from('marque_autre_nom')
+          .insert(validation.data!.map((nom) => ({ marque_id: id, nom })));
+        if (ajoutError) throw ajoutError;
+      }
+    }
+
     const updateData: Record<string, unknown> = {};
     if (secteur_marque_id !== undefined) updateData.secteur_marque_id = secteur_marque_id;
     if (message_boycott_tips !== undefined) updateData.message_boycott_tips = message_boycott_tips;
 
-    // Update directly via Supabase
-    const { data: updatedMarque, error } = await supabaseAdmin
-      .from('Marque')
-      .update(updateData)
-      .eq('id', id)
-      .select()
-      .single();
+    // Update directly via Supabase (simple lecture si seuls les autres noms changent)
+    const { data: updatedMarque, error } = Object.keys(updateData).length > 0
+      ? await supabaseAdmin.from('Marque').update(updateData).eq('id', id).select().single()
+      : await supabaseAdmin.from('Marque').select().eq('id', id).single();
 
     if (error) throw error;
 
@@ -134,6 +193,22 @@ export async function POST(req: NextRequest) {
     if (existingMarque) {
       return NextResponse.json(
         { error: 'Cette marque existe déjà' },
+        { status: 409 }
+      );
+    }
+
+    // Le nom ne doit pas être l'autre nom d'une marque : il mène déjà à sa page
+    const { data: autresNoms, error: autresError } = await supabaseAdmin
+      .from('marque_autre_nom')
+      .select('nom, marque:Marque!marque_id(nom)');
+
+    if (autresError) throw autresError;
+
+    const autreNom = autresNoms?.find(a => slugify(a.nom) === slugify(validation.data!.nom));
+    if (autreNom) {
+      const marqueDuNom = autreNom.marque as unknown as { nom: string } | null;
+      return NextResponse.json(
+        { error: `« ${autreNom.nom} » est déjà un autre nom de la marque ${marqueDuNom?.nom ?? ''}`.trim() },
         { status: 409 }
       );
     }

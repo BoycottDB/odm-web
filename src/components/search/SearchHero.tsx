@@ -52,7 +52,7 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
     setSuggestionHighlighted(-1);
   };
 
-  // Marque → sa page ; bénéficiaire → liste des marques filtrée sur lui
+  // Marque ou autre nom → sa page (celle de la marque, vue depuis l'autre nom) ; bénéficiaire → liste des marques filtrée sur lui
   const ouvrirSuggestion = useCallback((suggestion: Suggestion, query: string) => {
     if (suggestion.type === 'marque') {
       safeTrack('search', { query, has_results: true, result: suggestion.nom, result_type: 'marque', source });
@@ -90,7 +90,8 @@ export function SearchHero({ source = 'marques_list' }: SearchHeroProps) {
         source
       });
 
-      if (filtrerSuggestions(tousLesNoms, searchQuery).some((suggestion) => suggestion.type === 'marque')) {
+      // La liste /marques ne filtre que sur le nom principal : un autre nom partiel passe par /recherche
+      if (filtrerSuggestions(tousLesNoms, searchQuery).some((suggestion) => suggestion.type === 'marque' && suggestion.nom === suggestion.nomMarque)) {
         // Marques dont le nom contient la saisie → liste filtrée, avec scroll vers la liste après redirection
         sessionStorage.setItem('scrollToList', 'true');
         naviguer(`/marques?search=${encodeURIComponent(searchQuery)}`);
