@@ -136,7 +136,7 @@ export default function Moderation() {
                 <h3 className="font-semibold body-base text-neutral-900 mb-2">👥 Qui figure sur le site</h3>
                 <ul className="list-disc pl-5 text-neutral-700 space-y-2 body-base leading-snug">
                   <li>Des marques disponibles en France et connues du grand public.</li>
-                  <li>Un propriétaire ou un actionnaire n&apos;apparaît que s&apos;il fait l&apos;objet de controverses documentées : le but n&apos;est pas de recenser tous les actionnaires. Un gestionnaire de fonds n&apos;est rattaché à une marque que s&apos;il en détient plus de 5 %, d&apos;après les documents officiels de l&apos;entreprise.</li>
+                  <li>Un propriétaire ou un actionnaire n&apos;apparaît que s&apos;il fait l&apos;objet de controverses documentées : le but n&apos;est pas de recenser tous les actionnaires. Un gestionnaire de fonds comme BlackRock est rattaché à chaque entreprise cotée dont ses fonds possèdent une partie, quelle que soit cette part : même avec quelques pour cent, il touche des frais et vote aux assemblées de toutes ces entreprises.</li>
                   <li>Une controverse porte sur un acte précis de l&apos;entreprise ou de la personne, jamais sur une nationalité, une origine ou une religion.</li>
                   <li>Les personnes citées le sont pour des faits liés à leur rôle public. Leur vie privée n&apos;est évoquée que lorsqu&apos;elle rejoint ce rôle ou un débat d&apos;intérêt général.</li>
                 </ul>
