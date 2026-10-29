@@ -28,7 +28,7 @@ export default function MentionsLegales() {
               <div>
                 <h2 className="heading-main text-neutral-900 mb-4">Éditeur</h2>
                 <p className="body-base text-neutral-700 leading-snug">
-                  Ce site est édité à titre non professionnel par un particulier. Conformément à l&apos;article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l&apos;économie numérique, son identité a été communiquée à l&apos;hébergeur.
+                  Ce site est édité à titre non professionnel par un particulier. Conformément à l&apos;article 1-1 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l&apos;économie numérique, son identité a été communiquée à l&apos;hébergeur.
                 </p>
               </div>
 
