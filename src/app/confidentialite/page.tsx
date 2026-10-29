@@ -45,14 +45,14 @@ export default function Confidentialite() {
                     <strong>Hébergement (Netlify, États-Unis).</strong> Comme tout hébergeur, Netlify enregistre des journaux techniques (adresse IP, navigateur, pages demandées) pour faire fonctionner et protéger le site.
                   </li>
                   <li>
-                    <strong>Statistiques de visite (Umami).</strong> Nombre de visites, pages vues et quelques actions (recherches, blocs ouverts sur les fiches des marques, clics sur les sources, partages, questions de la FAQ consultées), pour savoir ce qui est utile. Umami ne dépose aucun cookie et ne permet pas de vous identifier. Ses serveurs sont aux États-Unis et dans l&apos;Union européenne.
+                    <strong>Statistiques de visite (Umami).</strong> Nombre de visites, pages vues et quelques actions (recherches, blocs ouverts sur les fiches des marques, clics sur les sources, partages, questions de la FAQ consultées), pour savoir ce qui est utile. Umami ne dépose aucun cookie et ne permet pas de vous identifier. Ses données sont hébergées dans l&apos;Union européenne (Francfort).
                   </li>
                   <li>
                     <strong>Suivi des erreurs (Sentry, Union européenne).</strong> Quand une page plante, un rapport technique est envoyé pour corriger le problème. Les informations d&apos;identification et les cookies en sont retirés avant l&apos;envoi.
                   </li>
                 </ul>
                 <p className="body-base text-neutral-700 leading-snug mt-4">
-                  Ces traitements reposent sur l&apos;intérêt légitime de l&apos;éditeur à faire fonctionner le site et à l&apos;améliorer. Les transferts vers les États-Unis sont encadrés par les garanties prévues par le règlement général sur la protection des données (RGPD), détaillées dans les conditions de ces prestataires.
+                  Ces traitements reposent sur l&apos;intérêt légitime de l&apos;éditeur à faire fonctionner le site et à l&apos;améliorer. Le transfert vers les États-Unis lié à l&apos;hébergement est encadré par les garanties prévues par le règlement général sur la protection des données (RGPD), détaillées dans les conditions de Netlify.
                 </p>
               </div>
 
@@ -99,7 +99,7 @@ export default function Confidentialite() {
                 </p>
               </div>
 
-              <p className="body-small text-neutral-500">Dernière mise à jour : 15 octobre 2026.</p>
+              <p className="body-small text-neutral-500">Dernière mise à jour : 29 octobre 2026.</p>
 
             </div>
           </div>
