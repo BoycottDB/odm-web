@@ -32,9 +32,10 @@ export default function RootLayout({
     ? process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID_LOCAL
     : process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
 
-  const getDesktopLinkClass = (href: string) => {
+  // misEnAvant : texte en gras pour distinguer l'onglet sans le confondre avec l'onglet actif (fond plein)
+  const getDesktopLinkClass = (href: string, misEnAvant = false) => {
     const isActive = pathname === href;
-    return `body-base font-medium px-3 py-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${isActive
+    return `body-base ${misEnAvant ? 'font-semibold' : 'font-medium'} px-3 py-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${isActive
         ? 'text-primary bg-primary-light'
         : 'text-neutral-900 hover:text-primary-dark hover:bg-primary-light'
       }`;
@@ -89,14 +90,14 @@ export default function RootLayout({
               {/* <Link href="/" className={getDesktopLinkClass('/')}>
                 Accueil
               </Link> */}
-              <Link href="/marques" className={getDesktopLinkClass('/marques')}>
+              <Link href="/marques" className={getDesktopLinkClass('/marques', true)}>
                 Rechercher
+              </Link>
+              <Link href="/boycotter" className={getDesktopLinkClass('/boycotter', true)}>
+                Boycotter ?
               </Link>
               <Link href="/signaler" className={getDesktopLinkClass('/signaler')}>
                 Signaler
-              </Link>
-              <Link href="/boycotter" className={getDesktopLinkClass('/boycotter')}>
-                Boycotter ?
               </Link>
               <Link href="/faq" className={getDesktopLinkClass('/faq')}>
                 FAQ

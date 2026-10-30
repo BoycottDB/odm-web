@@ -9,12 +9,13 @@ interface Onglet {
   href: string;
   libelle: string;
   icone: LucideIcon;
+  misEnAvant?: boolean;
 }
 
 const ONGLETS: Onglet[] = [
   { href: '/marques', libelle: 'Rechercher', icone: Search },
+  { href: '/boycotter', libelle: 'Boycotter ?', icone: Megaphone, misEnAvant: true },
   { href: '/signaler', libelle: 'Signaler', icone: Flag },
-  { href: '/boycotter', libelle: 'Boycotter ?', icone: Megaphone },
   { href: '/faq', libelle: 'FAQ', icone: CircleHelp },
 ];
 
@@ -35,7 +36,7 @@ function estChampDeSaisie(element: EventTarget | null) {
   return element instanceof HTMLElement && element.isContentEditable;
 }
 
-// Barre d'onglets fixée en bas d'écran sur mobile : rechercher, signaler, boycotter, FAQ
+// Barre d'onglets fixée en bas d'écran sur mobile : rechercher, boycotter, signaler, FAQ
 export function BarreMobile() {
   const pathname = usePathname();
   const [saisieEnCours, setSaisieEnCours] = useState(false);
@@ -61,14 +62,14 @@ export function BarreMobile() {
       aria-label="Navigation mobile"
     >
       <ul className="grid grid-cols-4">
-        {ONGLETS.map(({ href, libelle, icone: Icone }) => {
+        {ONGLETS.map(({ href, libelle, icone: Icone, misEnAvant }) => {
           const actif = ongletActif(pathname, href);
           return (
             <li key={href}>
               <Link
                 href={href}
                 aria-current={actif ? 'page' : undefined}
-                className={`flex flex-col items-center gap-1 pt-2 pb-2 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${actif ? 'text-primary' : 'text-neutral-700 hover:text-primary'}`}
+                className={`flex flex-col items-center gap-1 pt-2 pb-2 text-xs ${misEnAvant ? 'font-bold' : 'font-medium'} transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${actif ? 'text-primary' : 'text-neutral-700 hover:text-primary'}`}
               >
                 {/* Pastille sous l'icône de l'onglet actif */}
                 <span className={`flex items-center justify-center w-14 h-8 rounded-full transition-colors ${actif ? 'bg-primary-light' : ''}`}>
