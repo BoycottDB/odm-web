@@ -76,9 +76,11 @@ export default async function MarquePage({ params }: PageProps) {
     notFound();
   }
 
-  // Variante du nom (ex. /marques/total) : même page que la marque, à sa propre adresse
-  if (marque.variantes?.some((nom) => slugify(nom) === slug)) {
-    permanentRedirect(`/marques/${slugify(marque.nom)}`);
+  // Variante du nom (ex. /marques/total) : même page que la marque, à sa propre adresse.
+  // Pas de redirection si la variante a la même adresse que la marque (ex. « Eco+ » et « Éco+ ») : elle bouclerait.
+  const adresseDeLaMarque = slugify(marque.nom);
+  if (slug !== adresseDeLaMarque && marque.variantes?.some((nom) => slugify(nom) === slug)) {
+    permanentRedirect(`/marques/${adresseDeLaMarque}`);
   }
 
   return <MarquePageClient marque={marque} slug={slug} autreNom={autreNomDeLAdresse(marque, slug)} />;
