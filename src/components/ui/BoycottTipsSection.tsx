@@ -309,6 +309,9 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
 
           {/* Icône */}
           <div className="relative flex items-center space-x-2 md:space-x-3">
+            <span className="relative z-10 text-white [text-shadow:_2px_2px_0_rgba(152,16,91,0.5),_-2px_-2px_0_rgba(152,16,91,0.5),_2px_-2px_0_rgba(152,16,91,0.5),_-2px_2px_0_rgba(152,16,91,0.5)]">
+              Je ne veux plus leur donner mon argent
+            </span>
             <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
               <svg
                 className={`w-3 h-3 md:w-4 md:h-4 text-white transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
@@ -319,9 +322,6 @@ export default function BoycottTipsSection({ marque }: BoycottTipsSectionProps) 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            <span className="relative z-10 text-white [text-shadow:_2px_2px_0_rgba(152,16,91,0.5),_-2px_-2px_0_rgba(152,16,91,0.5),_2px_-2px_0_rgba(152,16,91,0.5),_-2px_2px_0_rgba(152,16,91,0.5)]">
-              Je ne veux plus leur donner mon argent
-            </span>
           </div>
 
           {/* Assombrissement au survol, à l'appui et quand les conseils sont ouverts */}
