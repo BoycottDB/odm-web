@@ -10,11 +10,11 @@ interface AppelNomAbsentProps {
 export function AppelNomAbsent({ saisie }: AppelNomAbsentProps) {
   return (
     <section className="border border-dashed border-primary/30 rounded-2xl px-6 py-5 text-center" aria-labelledby="nom-absent-titre">
-      <h2 id="nom-absent-titre" className="text-base font-medium text-neutral-800 mb-1">
-        « {saisie} » n&apos;est pas encore sur le site
+      <h2 id="nom-absent-titre" className="text-base font-semibold text-neutral-900 mb-2">
+        Aucune controverse pour « {saisie} » actuellement
       </h2>
       <p className="text-sm text-neutral-600 mb-4">
-        Le site est collaboratif : une marque, son groupe ou une personne qu&apos;elle enrichit y entre quand quelqu&apos;un signale une controverse qui la concerne.
+        Le site est collaboratif : une marque, son groupe ou une personne qu&apos;elle enrichit n&apos;y entre que quand quelqu&apos;un signale une controverse les concernant. Sans controverse, nous n&apos;affichons pas non plus à qui elle appartient. Si vous en connaissez une, n&apos;hésitez pas à la signaler :
       </p>
       <Link
         href={`/signaler?nom=${encodeURIComponent(saisie)}`}
