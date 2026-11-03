@@ -16,6 +16,13 @@ export function niveauxDeLaChaine(chaine: NoeudChaine[]): NoeudChaine[][] {
   return [...parNiveau.entries()].sort(([a], [b]) => a - b).map(([, noeuds]) => noeuds);
 }
 
+// Pour chaque bénéficiaire d'un niveau : mène-t-il à un bénéficiaire du niveau suivant ?
+// (pour Obole, le groupe Bolloré mène à Vincent Bolloré, Stérin à personne)
+export function meneAuNiveauSuivant(noeuds: NoeudChaine[], niveauSuivant: NoeudChaine[]): boolean[] {
+  const cibles = new Set(niveauSuivant.map((noeud) => noeud.beneficiaire.id));
+  return noeuds.map((noeud) => noeud.relations_suivantes.some((relation) => cibles.has(relation.beneficiaire_cible_id)));
+}
+
 // Liens qui mènent à un bénéficiaire : depuis la marque au niveau 0, sinon depuis
 // chaque bénéficiaire du niveau précédent qui pointe vers lui (Stérin via Eutopia et Otium)
 export function liensEntrants(noeud: NoeudChaine, niveauPrecedent: NoeudChaine[] | undefined, marqueNom: string): LienEntrant[] {
