@@ -82,7 +82,7 @@ export default function RootLayout({
           <div className="relative max-w-6xl mx-auto px-4 py-3 flex justify-center md:justify-between items-center">
             <BoutonRetour />
             <Link href="/" aria-label="Qui j'enrichis ? – Accueil" className="heading-main text-primary hover:text-neutral-900 transition-colors flex items-center">
-              <Image src="/logo.png" alt="" width={28} height={28} priority className="hidden md:block md:w-7 md:h-7 mr-2" />
+              <Image src="/logo.png" alt="" width={64} height={28} priority className="hidden md:block md:w-auto md:h-7 mr-2" />
               <strong className="text-[1.4rem]">Qui j&apos;enrichis ?</strong>
             </Link>
             {/* Menu desktop */}
