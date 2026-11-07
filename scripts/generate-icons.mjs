@@ -1,4 +1,4 @@
-// Génère le logo du header, les favicons et les icônes PWA/Apple depuis les SVG de assets/
+// Génère le logo du header, les favicons et les icônes PWA/Apple depuis assets/logo.svg
 // Usage : node scripts/generate-icons.mjs
 import sharp from 'sharp';
 import path from 'node:path';
@@ -10,13 +10,41 @@ const PUBLIC = path.join(ROOT, 'public');
 
 // Logo X€? du header
 const LOGO_HEIGHT = 84;
-// X€? sur fond carré coupé à la main, transparent autour
+// Logo X€? centré dans un carré, transparent autour
 const FAVICON_SIZES = [16, 32];
-// X€? plein cadre : le contenu reste dans la zone sûre des icônes « maskable »
+// Logo X€? coupé à la main sur le fond du site
+const APP_ICON_BACKGROUND = '#f8f6f7'; // = --background du site
+const APP_ICON_LOGO_WIDTH = 0.92;
+// Android peut rogner ces icônes en cercle : le logo doit rester dans leur zone sûre (cercle de 80 %)
+const MASKABLE_ICON_SIZES = [192, 512];
+const MASKABLE_ICON_LOGO_WIDTH = 0.73;
 const APP_ICON_SIZES = [16, 32, 48, 57, 60, 72, 76, 96, 114, 120, 128, 144, 152, 167, 180, 192, 512];
 
 function render(source) {
   return sharp(path.join(ASSETS, source), { density: 300 });
+}
+
+// Logo sans sa marge transparente, à la largeur voulue
+async function renderTrimmedLogo(width) {
+  const trimmed = await render('logo.svg').trim().png().toBuffer();
+  return sharp(trimmed).resize({ width }).png().toBuffer();
+}
+
+async function renderFavicon(size) {
+  const logo = await renderTrimmedLogo(size);
+  return sharp({ create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+    .composite([{ input: logo, gravity: 'center' }])
+    .png()
+    .toBuffer();
+}
+
+async function renderAppIcon(size) {
+  const ratio = MASKABLE_ICON_SIZES.includes(size) ? MASKABLE_ICON_LOGO_WIDTH : APP_ICON_LOGO_WIDTH;
+  const logo = await renderTrimmedLogo(Math.round(size * ratio));
+  return sharp({ create: { width: size, height: size, channels: 4, background: APP_ICON_BACKGROUND } })
+    .composite([{ input: logo, gravity: 'center' }])
+    .png()
+    .toBuffer();
 }
 
 async function main() {
@@ -24,12 +52,12 @@ async function main() {
   console.log('✓ logo.png');
   for (const size of FAVICON_SIZES) {
     const output = `favicon-${size}x${size}.png`;
-    await render('icon-favicon.svg').resize(size, size).png().toFile(path.join(PUBLIC, output));
+    await sharp(await renderFavicon(size)).toFile(path.join(PUBLIC, output));
     console.log(`✓ ${output}`);
   }
   for (const size of APP_ICON_SIZES) {
     const output = `icon-${size}.png`;
-    await render('icon-app.svg').resize(size, size).png().toFile(path.join(PUBLIC, output));
+    await sharp(await renderAppIcon(size)).toFile(path.join(PUBLIC, output));
     console.log(`✓ ${output}`);
   }
 }
