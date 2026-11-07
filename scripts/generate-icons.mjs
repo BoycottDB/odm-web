@@ -13,11 +13,12 @@ const LOGO_HEIGHT = 84;
 // Logo X€? centré dans un carré, transparent autour
 const FAVICON_SIZES = [16, 32];
 // Logo X€? coupé à la main sur le fond du site
-const APP_ICON_BACKGROUND = '#f8f6f7'; // = --background du site
-const APP_ICON_LOGO_WIDTH = 0.92;
+// Fond transparent : c'est le téléphone qui choisit la couleur de remplissage
+const APP_ICON_BACKGROUND = { r: 0, g: 0, b: 0, alpha: 0 };
+const APP_ICON_LOGO_WIDTH = 0.96;
 // Android peut rogner ces icônes en cercle : le logo doit rester dans leur zone sûre (cercle de 80 %)
 const MASKABLE_ICON_SIZES = [192, 512];
-const MASKABLE_ICON_LOGO_WIDTH = 0.73;
+const MASKABLE_ICON_LOGO_WIDTH = 0.75; // limite : les coins du logo, légèrement penché, touchent ce cercle
 const APP_ICON_SIZES = [16, 32, 48, 57, 60, 72, 76, 96, 114, 120, 128, 144, 152, 167, 180, 192, 512];
 
 function render(source) {
