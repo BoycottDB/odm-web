@@ -11,7 +11,7 @@ export function AppelNomAbsent({ saisie }: AppelNomAbsentProps) {
   return (
     <section className="border border-dashed border-primary/30 rounded-2xl px-6 py-5 text-center" aria-labelledby="nom-absent-titre">
       <h2 id="nom-absent-titre" className="text-base font-semibold text-neutral-900 mb-2">
-        Aucune controverse pour « {saisie} » actuellement
+        Aucune marque ni aucun bénéficiaire du nom de « {saisie} » n&apos;est répertorié pour le moment
       </h2>
       <p className="text-sm text-neutral-600 mb-4">
         Le site est collaboratif : une marque, son groupe ou une personne qu&apos;elle enrichit n&apos;y entre que quand quelqu&apos;un signale une controverse les concernant. Sans controverse, nous n&apos;affichons pas non plus à qui elle appartient. Si vous en connaissez une, n&apos;hésitez pas à la signaler :
