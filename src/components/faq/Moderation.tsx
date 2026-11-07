@@ -128,7 +128,7 @@ export default function Moderation() {
                 <ul className="list-disc pl-5 text-neutral-700 space-y-2 body-base leading-snug">
                   <li>Chaque controverse a une source, dont nous gardons une copie archivée.</li>
                   <li>Nous privilégions la source d&apos;origine (décision, rapport, étude), puis les médias et les ONG d&apos;enquête indépendants, puis la presse généraliste. Une source militante peut compléter, mais ne suffit pas seule à établir un fait grave.</li>
-                  <li>Nous ne citons pas de média détenu par une personne ou un groupe présent sur le site.</li>
+                  <li>Nous ne mettons aucun lien vers un média détenu par une personne ou un groupe présent sur le site. Nous pouvons le nommer quand un fait vient de lui.</li>
                 </ul>
               </div>
 
