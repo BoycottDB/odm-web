@@ -3,7 +3,7 @@ import { supabaseAdmin } from '@/lib/supabaseClient';
 import { Decision } from '@/types';
 
 // Une décision affiche la controverse telle qu'elle est publiée aujourd'hui, jamais le texte du signalement :
-// - approuvée : titre, réponse et marque actuels de la controverse créée (masquée si elle a été supprimée depuis) ;
+// - approuvée : titre, réponse et marque actuels de la controverse créée (absente si elle a été supprimée ou masquée depuis) ;
 //   pas de source, qui se lit sur la fiche de la marque ;
 // - refusée : marque et justification seulement, pour ne pas republier une accusation jugée infondée.
 export async function GET(request: NextRequest) {
@@ -33,7 +33,8 @@ export async function GET(request: NextRequest) {
     const { data: evenements, error: evenementsError } = await supabaseAdmin
       .from('Evenement')
       .select('proposition_source_id, titre, reponse, marque:Marque!marque_id (nom)')
-      .in('proposition_source_id', approuveIds);
+      .in('proposition_source_id', approuveIds)
+      .eq('masquee', false); // service_role ignore le RLS : filtre explicite
 
     if (evenementsError) {
       console.error('Erreur lors de la récupération des controverses publiées:', evenementsError);

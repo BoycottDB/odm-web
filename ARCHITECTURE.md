@@ -42,13 +42,14 @@ odm-web (Next.js sur Netlify)
 | `/boycotter` | statique | Réponses aux doutes sur le boycott |
 | `/faq`, `/faq/*` | statique | FAQ (argent, marques absentes, règles du site) |
 | `/mentions-legales` | statique | Mentions légales |
+| `/droit-de-reponse` | ISR 10 min | Corrections et droit de réponse ; les réponses publiées viennent de la table `droit_reponse` (une requête SQL suffit à en publier une) |
 
 ## Administration et sécurité
 
 - **Accès admin** : `/admin/*` exige le cookie `admin_token`, comparé à `ADMIN_TOKEN` ([admin.ts](src/lib/auth/admin.ts)). Sans `ADMIN_TOKEN` défini, tout accès est refusé.
 - **Écritures** : [middleware.ts](src/middleware.ts) refuse toute écriture sur `/api/*` sans token admin, sauf deux exceptions publiques : `POST /api/propositions` (signalement) et `POST /api/sondage-ecommerce`.
 - **Signalements** : stockés en `en_attente`, sans email ni IP, protégés par un honeypot et un captcha. Ils ne deviennent des controverses qu'après approbation ([moderation.ts](src/lib/services/moderation.ts)). La lecture des signalements est réservée à l'admin.
-- **Supabase** : RLS activé sur toutes les tables. Le rôle anon (odm-api) n'a que `SELECT` sur les tables publiques et `Proposition` est réservée à `service_role`.
+- **Supabase** : RLS activé sur toutes les tables. Le rôle anon (odm-api) n'a que `SELECT` sur les tables publiques et `Proposition` est réservée à `service_role`. Il ne voit pas les controverses masquées (`masquee = true`) ; les routes publiques qui lisent les controverses avec `supabaseAdmin`, qui ignore le RLS, filtrent `masquee` elles-mêmes (`decisions`, `search-similaire`, `marques`, `beneficiaires`, `controverses-beneficiaire`).
 
 ## Chaîne de bénéficiaires
 

@@ -63,7 +63,8 @@ export async function GET(request: NextRequest) {
           beneficiaire:Beneficiaires!marque_beneficiaire_beneficiaire_id_fkey(*)
         ),
         marque_autre_nom(nom, type)
-      `);
+      `)
+      .eq('evenements.masquee', false); // service_role ignore le RLS : filtre explicite
 
     if (search) {
       query = query.ilike('nom', `%${search}%`);

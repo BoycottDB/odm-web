@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
           controverses:controverse_beneficiaire(*)
         `)
         .eq('id', parseInt(beneficiaireId))
+        .eq('controverses.masquee', false) // service_role ignore le RLS : filtre explicite
         .single();
 
       if (beneficiaireError || !beneficiaire) {
@@ -89,6 +90,7 @@ export async function GET(request: NextRequest) {
           updated_at,
           controverses:controverse_beneficiaire(*)
         `)
+        .eq('controverses.masquee', false) // service_role ignore le RLS : filtre explicite
         .order('nom', { ascending: true });
 
       if (error) {

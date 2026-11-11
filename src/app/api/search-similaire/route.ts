@@ -211,6 +211,7 @@ export async function GET(req: NextRequest) {
           marque:Marque!inner(*),
           categorie:Categorie!Evenement_categorie_id_fkey(*)
         `)
+        .eq('masquee', false) // service_role ignore le RLS : filtre explicite
         .order('date', { ascending: false });
       
       if (evenementsError) throw evenementsError;
