@@ -206,6 +206,17 @@ export interface Decision {
   date: string;
 }
 
+// Réponse publiée au titre du droit de réponse (table droit_reponse), ancre /droit-de-reponse#reponse-<id>
+export interface ReponsePubliee {
+  id: number;
+  demandeur: string; // nom de la personne ou de l'entreprise qui exerce son droit
+  fiche_titre: string; // texte en cause, tel qu'il était publié à la réception de la demande
+  fiche_lien: string; // page où il figure, ex. /marques/kellogg-s
+  date_reception: string; // AAAA-MM-JJ
+  date_publication: string; // AAAA-MM-JJ
+  texte: string; // texte de la réponse, tel que reçu
+}
+
 export interface SimilarityScore {
   marque: number;
   description: number;

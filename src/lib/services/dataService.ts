@@ -11,6 +11,7 @@ import {
   Evenement, 
   SecteurMarque,
   Categorie,
+  ReponsePubliee,
   MarqueCreateRequest,
   EvenementCreateRequest
 } from '@/types';
@@ -110,6 +111,14 @@ class DataService {
     const endpoint = id ? `secteurs-marque?id=${id}` : 'secteurs-marque';
     // Secteurs: TTL 20min
     return this.fetchFromExtensionApi<SecteurMarque[] | SecteurMarque>(endpoint, { revalidate: 1200 });
+  }
+
+  /**
+   * Réponses publiées au titre du droit de réponse
+   */
+  async getReponsesPubliees(): Promise<ReponsePubliee[]> {
+    // TTL 10 min, comme la page : une réponse doit être en ligne dans les 3 jours
+    return this.fetchFromExtensionApi<ReponsePubliee[]>('droits-reponse', { revalidate: 600 });
   }
 
   /**

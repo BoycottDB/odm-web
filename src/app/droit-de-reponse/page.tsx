@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import AdresseContact from '@/components/ui/AdresseContact';
-import { reponsesPubliees } from '@/lib/reponsesPubliees';
+import { dataService } from '@/lib/services/dataService';
 import { formatDate } from '@/lib/utils/helpers';
 
 export const metadata: Metadata = {
@@ -9,7 +9,12 @@ export const metadata: Metadata = {
   description: 'Contester une fiche, demander une correction ou exercer votre droit de réponse.',
 };
 
-export default function DroitDeReponse() {
+// ISR 10 minutes : une réponse ajoutée en base s'affiche sans déploiement
+export const revalidate = 600;
+
+export default async function DroitDeReponse() {
+  const reponsesPubliees = await dataService.getReponsesPubliees();
+
   return (
     <div className="w-full">
       {/* Section Hero */}
@@ -85,12 +90,12 @@ export default function DroitDeReponse() {
                   <h2 className="heading-main text-neutral-900 mb-4">Réponses publiées</h2>
                   <div className="space-y-6">
                     {reponsesPubliees.map(reponse => (
-                      <div key={reponse.ancre} id={reponse.ancre} className="border-l-4 border-secondary pl-6 scroll-mt-24">
+                      <div key={reponse.id} id={`reponse-${reponse.id}`} className="border-l-4 border-secondary pl-6 scroll-mt-24">
                         <h3 className="body-large font-semibold text-neutral-900 mb-1">
                           Droit de réponse de {reponse.demandeur}
                         </h3>
                         <p className="body-small text-neutral-600 mb-3">
-                          À propos de « <Link href={reponse.ficheConcernee.href} className="underline">{reponse.ficheConcernee.titre}</Link> » · reçue le {formatDate(reponse.dateReception)}, publiée le {formatDate(reponse.datePublication)}
+                          À propos de « <Link href={reponse.fiche_lien} className="underline">{reponse.fiche_titre}</Link> » · reçue le {formatDate(reponse.date_reception)}, publiée le {formatDate(reponse.date_publication)}
                         </p>
                         <p className="body-base text-neutral-700 leading-snug whitespace-pre-line">{reponse.texte}</p>
                       </div>

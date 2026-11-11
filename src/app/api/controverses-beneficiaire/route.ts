@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
         Categorie!controverse_beneficiaire_categorie_id_fkey(*)
       `)
       .eq('beneficiaire_id', beneficiaire_id)
+      .eq('masquee', false) // service_role ignore le RLS : filtre explicite
       .order('date', { ascending: false, nullsFirst: false });
 
     if (error) throw error;
