@@ -4,7 +4,21 @@ export default function ReponseArgent() {
   return (
     <>
       <div>
-        <h4 className="body-large font-semibold text-neutral-900 mb-3">Il y a deux chemins principaux</h4>
+        <h4 className="body-large font-semibold text-neutral-900 mb-3">De l&apos;argent, mais pas seulement</h4>
+        <p className="body-base text-neutral-700 leading-snug">
+          Quand tu achètes une marque, tu enrichis ceux qui la possèdent de deux façons. En argent : une partie de ce que tu paies remonte jusqu&apos;à eux. En poids : plus une marque vend, plus ses propriétaires gagnent en moyens et en influence.
+        </p>
+      </div>
+
+      <div>
+        <h4 className="body-large font-semibold text-neutral-900 mb-3">Le poids et l&apos;influence</h4>
+        <p className="body-base text-neutral-700 leading-snug">
+          Une entreprise qui vend bien a les moyens de racheter d&apos;autres marques, de financer du lobbying ou de peser dans le débat public. Un fonds qui possède une partie d&apos;une entreprise vote à ses assemblées et pèse sur ses choix. Tes achats renforcent tout ça.
+        </p>
+      </div>
+
+      <div>
+        <h4 className="body-large font-semibold text-neutral-900 mb-3">L&apos;argent : deux chemins principaux</h4>
         <p className="body-base text-neutral-700 leading-snug">
           Une marque appartient à une ou plusieurs entreprises, qui appartiennent elles-mêmes à d&apos;autres entreprises ou à des personnes. Quand tu achètes, l&apos;argent remonte cette chaîne de deux façons.
         </p>
@@ -25,9 +39,9 @@ export default function ReponseArgent() {
       </div>
 
       <div className="border-l-2 border-neutral-200 pl-4">
-        <h4 className="body-large font-semibold text-neutral-900 mb-3">Pourquoi « peut » ?</h4>
+        <h4 className="body-large font-semibold text-neutral-900 mb-3">Combien, exactement ?</h4>
         <p className="body-base text-neutral-700 leading-snug">
-          Parce qu&apos;on ne connaît pas toujours la part exacte de chacun et qu&apos;une revente n&apos;est pas toujours gagnante. Mais le principe est toujours le même : plus une marque vend, plus elle enrichit ceux qui la possèdent.
+          On ne le sait pas toujours : on ne connaît pas toujours la part exacte de chacun et une revente n&apos;est pas forcément gagnante. C&apos;est pour ça que les pages de marque disent qu&apos;une part de ton argent « peut » finir chez eux. Mais le principe reste le même : plus une marque vend, plus elle enrichit ceux qui la possèdent.
         </p>
       </div>
 
