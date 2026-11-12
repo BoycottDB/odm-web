@@ -3,6 +3,7 @@ import Link from 'next/link';
 import AdresseContact from '@/components/ui/AdresseContact';
 import { dataService } from '@/lib/services/dataService';
 import { formatDate } from '@/lib/utils/helpers';
+import type { ReponsePubliee } from '@/types';
 
 export const metadata: Metadata = {
   title: 'Droit de réponse et corrections',
@@ -11,6 +12,11 @@ export const metadata: Metadata = {
 
 // ISR 10 minutes : une réponse ajoutée en base s'affiche sans déploiement
 export const revalidate = 600;
+
+// Le texte en cause est désigné par sa nature, jamais par son titre : le republier ici annulerait un masquage ou une correction
+function estControverse(reponse: ReponsePubliee): boolean {
+  return reponse.fiche_table === 'Evenement' || reponse.fiche_table === 'controverse_beneficiaire';
+}
 
 export default async function DroitDeReponse() {
   const reponsesPubliees = await dataService.getReponsesPubliees();
@@ -95,7 +101,8 @@ export default async function DroitDeReponse() {
                           Droit de réponse de {reponse.demandeur}
                         </h3>
                         <p className="body-small text-neutral-600 mb-3">
-                          À propos de « <Link href={reponse.fiche_lien} className="underline">{reponse.fiche_titre}</Link> » · reçue le {formatDate(reponse.date_reception)}, publiée le {formatDate(reponse.date_publication)}
+                          À propos {estControverse(reponse) ? "d'une " : "d'un "}
+                          <Link href={reponse.fiche_lien} className="underline">{estControverse(reponse) ? 'controverse' : 'lien financier'}</Link> · reçue le {formatDate(reponse.date_reception)}, publiée le {formatDate(reponse.date_publication)}
                         </p>
                         <p className="body-base text-neutral-700 leading-snug whitespace-pre-line">{reponse.texte}</p>
                       </div>

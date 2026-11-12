@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
   // Headers personnalisés (si nécessaire)
   async headers() {
     return [
+      // Avant le lancement : hors des moteurs de recherche (CHANTIERS-BONNE-FOI.md, 6.5). Retirer au lancement, avec le sitemap de robots.ts
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
       {
         source: '/api/:path*',
         headers: [

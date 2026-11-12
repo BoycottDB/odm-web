@@ -56,20 +56,6 @@ class DataService {
   }
 
   /**
-   * Get all brands with search capability
-   */
-  async getMarques(search?: string, limit?: number, offset?: number): Promise<Marque[]> {
-    const params = new URLSearchParams();
-    if (search) params.append('search', search);
-    if (limit) params.append('limit', limit.toString());
-    if (offset) params.append('offset', offset.toString());
-
-    const endpoint = `marques${params.toString() ? '?' + params.toString() : ''}`;
-    // TTL adaptatif: 10min pour recherche, 20min pour liste complète
-    return this.fetchFromExtensionApi<Marque[]>(endpoint, { revalidate: search ? 600 : 1200 });
-  }
-
-  /**
    * Noms de toutes les marques, pour la recherche (filtrée dans le navigateur)
    */
   async getMarquesNoms(): Promise<MarqueNom[]> {

@@ -1,14 +1,13 @@
 import { MetadataRoute } from 'next';
 
+// Avant le lancement : exploration permise pour que les moteurs lisent le noindex (next.config.ts) et désindexent
+// les pages ; pas de sitemap annoncé. Au lancement, remettre `sitemap: \`${baseUrl}/sitemap.xml\``
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://quijenrichis.fr';
-
   return {
     rules: {
       userAgent: '*',
       allow: '/',
       disallow: ['/admin', '/api']
-    },
-    sitemap: `${baseUrl}/sitemap.xml`
+    }
   };
 }
