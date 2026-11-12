@@ -21,7 +21,7 @@ const parties: PartieFaq[] = [
     questions: [
       {
         id: 'argent',
-        question: 'Comment l\'argent de mes achats arrive-t-il jusqu\'aux bénéficiaires ?',
+        question: 'Que veut dire « j\'enrichis » ?',
         reponse: <ReponseArgent />
       },
       {
