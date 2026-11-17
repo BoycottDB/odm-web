@@ -137,7 +137,7 @@ export default function Accueil() {
         {/* Texte et CTA - visibles sur desktop seulement */}
         <div className="hidden lg:block">
           <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-            Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
+            Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous montre qui vous enrichissez dès qu&apos;un produit d&apos;une marque répertoriée apparaît sur votre écran.
           </p>
           <div className="flex justify-center md:justify-start">
             <Link
@@ -166,7 +166,7 @@ export default function Accueil() {
       {/* Texte et CTA - order-3 sur mobile, caché sur desktop */}
       <div className="order-3 lg:hidden text-center md:text-left">
         <p className="font-[family-name:var(--font-rubik)] text-base md:text-lg font-light text-neutral-700 leading-snug mb-4 md:mb-6 lg:mb-8">
-          Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous signale automatiquement les produits de marques controversées qui apparaissent sur votre écran.
+          Parcourez les sites de vente en ligne en toute tranquillité, notre extension guette et vous montre qui vous enrichissez dès qu&apos;un produit d&apos;une marque répertoriée apparaît sur votre écran.
         </p>
         <div className="flex justify-center md:justify-start">
           <Link
