@@ -33,7 +33,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
     secteur_marque_id: null as number | null,
     message_boycott_tips: '',
     autres_noms: '', // un nom par ligne
-    variantes: '' // un nom par ligne
+    variantes: '', // un nom par ligne
+    noms_ambigus: '' // un nom par ligne
   });
   const router = useRouter();
   
@@ -54,7 +55,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             secteur_marque_id: foundMarque.secteur_marque_id || null,
             message_boycott_tips: foundMarque.message_boycott_tips || '',
             autres_noms: (foundMarque.autres_noms ?? []).join('\n'),
-            variantes: (foundMarque.variantes ?? []).join('\n')
+            variantes: (foundMarque.variantes ?? []).join('\n'),
+            noms_ambigus: (foundMarque.noms_ambigus ?? []).join('\n')
           });
         } else {
           setMessage({ type: 'error', text: 'Marque non trouvée' });
@@ -135,7 +137,8 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
         secteur_marque_id: marqueFormData.secteur_marque_id || undefined,
         message_boycott_tips: marqueFormData.message_boycott_tips?.trim() || undefined,
         autres_noms: marqueFormData.autres_noms.split('\n'),
-        variantes: marqueFormData.variantes.split('\n')
+        variantes: marqueFormData.variantes.split('\n'),
+        noms_ambigus: marqueFormData.noms_ambigus.split('\n')
       };
       
       const response = await fetch('/api/marques', {
@@ -312,6 +315,23 @@ function MarqueEditContent({ params }: { params: { id: string } }) {
             />
             <p className="body-xs text-neutral-500 mt-1">
               Ancien nom ou autre orthographe : mène à cette page, sans être listé parmi les produits.
+            </p>
+          </div>
+          <div>
+            <label className="block body-small font-medium text-neutral-700 mb-1">
+              Noms ambigus (un par ligne)
+            </label>
+            <textarea
+              value={marqueFormData.noms_ambigus}
+              onChange={(e) => setMarqueFormData({
+                ...marqueFormData,
+                noms_ambigus: e.target.value
+              })}
+              className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary h-24"
+              placeholder={'Apple\nMac'}
+            />
+            <p className="body-xs text-neutral-500 mt-1">
+              Parmi le nom de la marque, ses produits et ses variantes, ceux qui sont aussi un mot, un prénom ou un lieu courant : l&apos;extension ne les reconnaît que si le site marchand les donne lui-même comme marque.
             </p>
           </div>
         </div>

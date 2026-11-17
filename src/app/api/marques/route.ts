@@ -32,6 +32,35 @@ async function conflitAutresNoms(marqueId: number, noms: string[]): Promise<stri
   return null;
 }
 
+// « Ajax (ménage) » → « Ajax » : le nom que les sites marchands écrivent
+const nomSansPrecision = (nom: string) => nom.replace(/\s*\(.+\)\s*$/, '').trim();
+
+/**
+ * Noms ambigus tels que la marque les écrit, ou le premier qui n'est ni son nom, ni un de ses produits,
+ * ni une de ses variantes. `autresNoms` : produits et variantes envoyés avec la requête, sinon ceux en base.
+ */
+async function resoudreNomsAmbigus(
+  marqueId: number,
+  nomsAmbigus: string[],
+  autresNoms: string[] | undefined
+): Promise<{ noms: string[] } | { inconnu: string }> {
+  const [{ data: marque, error: marqueError }, { data: enBase, error: autresError }] = await Promise.all([
+    supabaseAdmin.from('Marque').select('nom').eq('id', marqueId).single(),
+    supabaseAdmin.from('marque_autre_nom').select('nom').eq('marque_id', marqueId),
+  ]);
+  if (marqueError) throw marqueError;
+  if (autresError) throw autresError;
+
+  const nomsDeLaMarque = [nomSansPrecision(marque.nom), ...(autresNoms ?? (enBase ?? []).map((autre) => autre.nom))];
+  const noms: string[] = [];
+  for (const nomAmbigu of nomsAmbigus) {
+    const nom = nomsDeLaMarque.find((candidat) => candidat.toLowerCase() === nomAmbigu.toLowerCase());
+    if (!nom) return { inconnu: nomAmbigu };
+    noms.push(nom);
+  }
+  return { noms };
+}
+
 /**
  * GET /api/marques - ADMIN ONLY
  * Accès direct Supabase avec tous les champs pour l'administration
@@ -110,13 +139,34 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, secteur_marque_id, message_boycott_tips, autres_noms, variantes } = body;
+    const { id, secteur_marque_id, message_boycott_tips, autres_noms, variantes, noms_ambigus } = body;
 
     if (!id) {
       return NextResponse.json(
         { error: 'L\'ID de la marque est requis' },
         { status: 400 }
       );
+    }
+
+    const updateData: Record<string, unknown> = {};
+
+    // Noms ambigus : vérifiés avant toute écriture, contre les produits et variantes envoyés avec eux
+    if (noms_ambigus !== undefined) {
+      const ambigus = validateAutresNoms(noms_ambigus);
+      const autresEnvoyes = autres_noms !== undefined || variantes !== undefined
+        ? [validateAutresNoms(autres_noms), validateAutresNoms(variantes)].flatMap((liste) => liste.data ?? [])
+        : undefined;
+      if (!ambigus.success) {
+        return NextResponse.json({ error: 'Données invalides', details: ambigus.errors }, { status: 400 });
+      }
+      const resolus = await resoudreNomsAmbigus(id, ambigus.data!, autresEnvoyes);
+      if ('inconnu' in resolus) {
+        return NextResponse.json(
+          { error: `« ${resolus.inconnu} » n'est ni le nom de la marque, ni un de ses produits, ni une de ses variantes` },
+          { status: 400 }
+        );
+      }
+      updateData.noms_ambigus = resolus.noms;
     }
 
     // Produits et variantes : envoyés ensemble, vérifiés avant toute écriture, puis remplacés en entier
@@ -154,7 +204,6 @@ export async function PUT(request: NextRequest) {
       }
     }
 
-    const updateData: Record<string, unknown> = {};
     if (secteur_marque_id !== undefined) updateData.secteur_marque_id = secteur_marque_id;
     if (message_boycott_tips !== undefined) updateData.message_boycott_tips = message_boycott_tips;
 

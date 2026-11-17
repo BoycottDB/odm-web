@@ -29,6 +29,9 @@ export interface Marque {
   autres_noms?: string[];
   // Autres façons d'écrire la marque (ex. Total pour TotalEnergies) : elles mènent à sa page, sans y être listées
   variantes?: string[];
+  // Noms de la marque (le sien, un produit ou une variante) qui sont aussi un mot, un prénom ou un lieu courant :
+  // l'extension ne les reconnaît que si le site marchand les donne lui-même comme marque
+  noms_ambigus?: string[];
   evenements?: Evenement[];
   // Champs pour les Boycott Tips
   message_boycott_tips?: string;
@@ -170,6 +173,7 @@ export interface MarqueUpdateRequest {
   message_boycott_tips?: string;
   autres_noms?: string[];
   variantes?: string[];
+  noms_ambigus?: string[];
 }
 
 export interface EvenementCreateRequest {
