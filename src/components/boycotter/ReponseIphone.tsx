@@ -55,10 +55,10 @@ export default function ReponseIphone() {
           Alors reprocher à quelqu&apos;un ce qu&apos;on ignorait soi-même la veille, n&apos;est-ce pas un peu mesquin ?
         </p>
         <p className="body-base text-neutral-700 leading-snug mb-3">
-          Se reprocher nos achats les uns aux autres ne touche aucune marque mais divise ceux qui pourraient agir ensemble. On a mieux à faire que de s&apos;alpaguer : sensibiliser et être solidaires dans la recherche d&apos;alternatives.
+          Se reprocher nos achats les uns aux autres ne touche aucune marque mais divise ceux qui pourraient agir ensemble. Dans les milieux militants, on parle même d&apos;une « culture du martyr » : on se juge sur ce qu&apos;on sacrifie pour la cause, on regarde de travers ceux qui en font moins et tout le monde finit épuisé.
         </p>
         <p className="body-base text-neutral-700 leading-snug">
-          Que ce soit par autoflagellation ou vis à vis des autres : il ne faut pas chercher et encore moins exiger, une pureté performative et complète. Il faut seulement chercher à faire mieux que le « moi » d&apos;hier.
+          Que ce soit par autoflagellation ou vis à vis des autres : il ne faut pas chercher et encore moins exiger, une pureté performative et complète. Il faut seulement chercher à faire mieux que le « moi » d&apos;hier. On a mieux à faire que de s&apos;alpaguer : sensibiliser et être solidaires dans la recherche d&apos;alternatives.
         </p>
       </div>
     </>
